@@ -25,7 +25,16 @@ export interface Experiment {
   status: ExperimentStatus
 }
 
-export const experiments: readonly Experiment[] = []
+export const experiments: readonly Experiment[] = [
+  {
+    number: 1,
+    slug: 'trip-board',
+    title: 'Trip Board',
+    summary: "A private board for gathering your trip research in one place and marking what you've decided, saved only in your browser.",
+    shipped: '2026-10-08',
+    status: 'live',
+  },
+]
 
 /** Formats an experiment number for display: 1 → "#001". */
 export function formatNumber(number: number): string {
