@@ -17,7 +17,7 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 - [x] Phase 2: five candidates selected (see Batch 03 selection below).
 - [x] Phase 3: deep audit of each candidate (correctness, edge cases, data integrity, privacy, accessibility, compatibility, mobile, performance, misunderstanding, claims, export/import, print, API failure, refresh recovery), with domain rules checked against authoritative sources and fixes shipped.
 - [x] Offline: `public/sw.js` shipped (commit 821134e). Tested locally by stopping and restarting the server: saved pages load offline, an unvisited page gets an offline notice, a URL without its trailing slash maps to the saved page, and a changed page arrives as soon as the server returns. In production, pages are controlled and saved, the no-slash redirect works, and no outside-service responses or hash/query URLs are cached.
-- [ ] Discovery: homepage reviewed, with restrained improvements if warranted.
+- [x] Discovery: a category filter row on the homepage (six kinds plus All, newest first, `?for=` in the address); no Featured list, since nothing has real use yet. Each registry entry now has a `category`.
 - [ ] Feedback: a zero-infrastructure mechanism found and added, or the conclusion recorded.
 - [ ] New experiments (optional, at most three): decided.
 - [ ] Production verified, this file updated, Batch 03 report given.
@@ -29,7 +29,7 @@ The five highest totals in the portfolio review, all tier A: **#016 Fluency Chec
 ## Position
 
 - **Current:** Batch 03, Phase 3 and offline support. Order: (1) offline service worker, since it helps Day Clock, Playing Time, Stall Till, and the other local tools, (2) deep audits of the five, (3) the sensitive-wording pass, (4) homepage discovery, (5) feedback, (6) decide on new experiments (default: none), (7) final production check and report.
-- **Next action:** homepage discovery review, then feedback, the new-experiments decision, the final production check, and the report.
+- **Next action:** feedback mechanism (check whether GitHub Issues is on; no personal email), then the new-experiments decision, the final production check, and the report.
 
 ## Batch 03 audits
 

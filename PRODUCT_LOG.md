@@ -16,6 +16,12 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-09 · Homepage: show one kind at a time
+
+- **What:** The homepage has a quiet row of filters under the Experiments heading: All, Home & garden, Family & care, School & work, Groups & community, Practice & play, and Files & text. Choosing one shows only those experiments, still newest first, and the address changes (for example labs.eugeneyip.net/?for=school), so a filtered list can be shared. Each experiment's registry entry now names its one category.
+- **Why:** With 25 experiments for very different people (teachers, parents, coaches, gardeners, organizers), the index had become a long scroll, about 7,500 pixels on a phone, and a visitor looking for something for their situation had to read every card.
+- **Notes:** There is no "featured" list. None of the experiments has known real use yet, so picking favorites would suggest a track record Labs doesn't have. The order stays newest first, and nothing is ranked. Tested at desktop and phone widths, in dark mode, by keyboard, and with an unknown filter in the address, which shows everything.
+
 ## 2026-10-09 · Wording review of sensitive tools
 
 - **What:** Ranked Choice Count now says, under the rounds, that rules for ties, transfers, and incomplete ballots differ between organizations, so check your bylaws before announcing a result, and that it isn't meant for public elections, which follow their own laws. Stall Till's advice about connections now matches offline support: open it once with a connection, and after that it opens and works without a signal. Before, it said reopening needed a connection. Frost Dates and Family Stories were reviewed and needed no change. Frost Dates already gives odds rather than promises, uses the standard 36, 32, and 28 °F thresholds, and explains its 10 km grid and local exceptions. Family Stories already warns that browsers can clear recordings and asks for downloads after each interview.
