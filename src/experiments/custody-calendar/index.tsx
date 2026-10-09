@@ -34,8 +34,10 @@ export default function CustodyCalendar() {
   const [loaded] = useState(start)
   const [schedule, setSchedule] = useState<Schedule>(loaded.schedule)
   const [replaced, setReplaced] = useState<Schedule | null>(loaded.replaced)
+  const [broken, setBroken] = useState(loaded.broken)
   const [year, setYear] = useState(() => new Date().getFullYear())
   const [copied, setCopied] = useState<'yes' | 'no' | null>(null)
+  const [note, setNote] = useState<string | null>(null)
 
   // The shared schedule is now saved here, so the link's copy comes off the address.
   useEffect(() => {
@@ -59,6 +61,8 @@ export default function CustodyCalendar() {
   const [a, b] = useMemo(() => totals(schedule, year), [schedule, year])
   const next = useMemo(() => exchanges(schedule, today, 6), [schedule, today])
   const swaps = Object.keys(schedule.overrides).length
+  // Share links have room for this many swaps, so the schedule stops taking more.
+  const full = swaps >= LIMITS.overrides
 
   const setWeeks = (n: number) => {
     const nights = Array.from({ length: n * 7 }, (_, i) => schedule.nights[i % schedule.nights.length])
@@ -76,6 +80,7 @@ export default function CustodyCalendar() {
     link.download = `custody-calendar-${year}.ics`
     link.click()
     setTimeout(() => URL.revokeObjectURL(url), 1000)
+    setNote(`Downloaded ${link.download}. Open it to add the stays to a calendar app, ideally to a calendar of their own, so they’re easy to replace after changes. In Google Calendar, import it on a computer, from Settings.`)
   }
   const share = () => {
     const url = `${location.origin}${location.pathname}#${encode(schedule)}`
@@ -84,7 +89,13 @@ export default function CustodyCalendar() {
       setTimeout(() => setCopied(null), 2500)
     }
     if (!navigator.clipboard) return done('no')
-    navigator.clipboard.writeText(url).then(() => done('yes'), () => done('no'))
+    navigator.clipboard.writeText(url).then(
+      () => {
+        done('yes')
+        setNote('Link copied. It holds the schedule as it is now: changes made later don’t reach it, so send a new link after any change.')
+      },
+      () => done('no'),
+    )
   }
 
   const pct = (n: number) => `${((n / (a + b)) * 100).toFixed(1)}%`
@@ -96,6 +107,15 @@ export default function CustodyCalendar() {
           <p className="max-w-prose text-pretty text-dim">
             A calendar for two homes. Choose the repeating pattern of nights, and see the whole year by who has the children each night, with each parent’s share of overnights and the next handovers. Swap nights for holidays, then add it to your calendar or share it with the other parent. Nothing is sent anywhere.
           </p>
+
+          {broken && (
+            <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 rounded-xl border border-rule p-4 text-sm" role="status">
+              <span>This share link couldn’t be read, so nothing was changed. It may have been cut short when it was sent: ask for the link again.</span>
+              <button type="button" onClick={() => setBroken(false)} className="cursor-pointer text-dim underline underline-offset-4 hover:text-ink">
+                OK
+              </button>
+            </div>
+          )}
 
           {replaced && (
             <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 rounded-xl border border-rule p-4 text-sm" role="status">
@@ -199,6 +219,11 @@ export default function CustodyCalendar() {
               </button>
             </div>
           </div>
+          {note && (
+            <p className="mt-3 max-w-prose text-sm text-pretty text-dim print:hidden" role="status">
+              {note}
+            </p>
+          )}
 
           <div className="mt-4 grid gap-2">
             <p className="flex flex-wrap gap-x-6 gap-y-1 text-sm">
@@ -242,7 +267,7 @@ export default function CustodyCalendar() {
               <span className="inline-block h-3.5 w-3.5 rounded-sm outline-[1.5px] outline-ink outline-dashed" aria-hidden="true" />
               Swapped night
             </span>
-            <span className="print:hidden">Tap any day to swap that night, for holidays or trips.</span>
+            <span className="print:hidden">{full ? `That’s ${LIMITS.overrides} swapped nights, the most a schedule can hold. Undo some to swap more.` : 'Tap any day to swap that night, for holidays or trips.'}</span>
             {swaps > 0 && (
               <button type="button" onClick={() => change({ overrides: {} })} className="cursor-pointer underline underline-offset-4 hover:text-ink print:hidden">
                 Undo all {swaps} {swaps === 1 ? 'swap' : 'swaps'}
@@ -252,13 +277,13 @@ export default function CustodyCalendar() {
 
           <div className="mt-4 grid gap-x-6 gap-y-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 print:grid-cols-3 print:gap-x-4 print:gap-y-3">
             {Array.from({ length: 12 }, (_, m) => (
-              <Month key={m} year={year} month={m} schedule={named} today={today} onSwap={(day) => setSchedule((s) => swapNight(s, day))} />
+              <Month key={m} year={year} month={m} schedule={named} today={today} onSwap={(day) => setSchedule((s) => (Object.keys(s.overrides).length >= LIMITS.overrides && !(isoDate(day) in s.overrides) ? s : swapNight(s, day)))} />
             ))}
           </div>
         </section>
 
         <p className="mt-12 max-w-prose text-sm text-pretty text-dim print:mt-4 print:text-[8pt]">
-          Each day counts toward whoever has the children that night, the way custody time is usually counted. Courts and child-support formulas can count differently, so check how yours does. The share link holds the names and the schedule; anyone with it can see them.
+          Each day counts toward whoever has the children that night, a common way to count custody time. Courts and child-support formulas can count differently, so check how yours does. A share link holds the names and a copy of the schedule: anyone with it can see them, and later changes don’t reach it.
         </p>
       </div>
       <style>{`.stripes { background-image: repeating-linear-gradient(135deg, transparent 0 4px, rgb(0 0 0 / 0.07) 4px 6px); }
@@ -326,6 +351,7 @@ function Month({ year, month, schedule, today, onSwap }: { year: number; month: 
               data-night={p}
               onClick={() => onSwap(day)}
               className={`relative h-8 cursor-pointer rounded-[4px] tabular-nums text-ink print:h-[0.22in] ${FILL[p]} ${handover ? 'border-l-[3px] border-ink' : ''} ${swapped ? 'outline-[1.5px] outline-offset-[-2px] outline-ink outline-dashed' : ''} ${day === today ? 'font-bold underline underline-offset-2' : ''}`}
+              aria-current={day === today ? 'date' : undefined}
               aria-label={`${fullDate.format(atDay(day))}: night with ${schedule.names[p]}${handover ? ', handover day' : ''}${swapped ? ', swapped' : ''}. Tap to swap.`}
             >
               {new Date(atDay(day)).getUTCDate()}
@@ -337,13 +363,14 @@ function Month({ year, month, schedule, today, onSwap }: { year: number; month: 
   )
 }
 
-function start(): { schedule: Schedule; replaced: Schedule | null } {
+function start(): { schedule: Schedule; replaced: Schedule | null; broken: boolean } {
   const saved = loadSaved()
   const fresh: Schedule = { names: ['', ''], nights: presetNights('2-2-5-5', SUNDAY_FIRST), anchor: startOfWeek(isoDate(todayDay()), SUNDAY_FIRST), overrides: {} }
   const hash = location.hash.slice(1)
   const shared = hash ? decode(hash) : null
-  if (shared) return { schedule: shared, replaced: saved && encode(saved) !== encode(shared) ? saved : null }
-  return { schedule: saved ?? fresh, replaced: null }
+  if (shared) return { schedule: shared, replaced: saved && encode(saved) !== encode(shared) ? saved : null, broken: false }
+  // A link that fails to read, such as one cut short in a message, says so rather than quietly showing another schedule.
+  return { schedule: saved ?? fresh, replaced: null, broken: hash !== '' }
 }
 
 function loadSaved(): Schedule | null {

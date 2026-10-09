@@ -2,7 +2,7 @@
  * Custody Calendar's schedule math. A schedule is a repeating run of nights,
  * one parent per night, starting from the first day of week 1, plus any
  * single nights swapped by hand (holidays, trips). A day belongs to whoever
- * has the child that night, which is how custody time is usually counted.
+ * has the child that night, a common way to count custody time.
  */
 
 export type Parent = 0 | 1
@@ -120,15 +120,30 @@ export function stays(s: Schedule, from: number, to: number): { parent: Parent; 
 const icsText = (s: string) => s.replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n')
 const icsDate = (day: number) => isoDate(day).replace(/-/g, '')
 
-/** An iCalendar file with one all-day event per stay, which calendar apps can import. */
+/** Widens a range of days to whole stays, so a stay crossing either end isn't cut in two. */
+export function wholeStays(s: Schedule, from: number, to: number, limit = 366): [number, number] {
+  let start = from
+  let end = to
+  while (start > from - limit && nightOf(s, start - 1) === nightOf(s, start)) start--
+  while (end < to + limit && nightOf(s, end) === nightOf(s, end - 1)) end++
+  return [start, end]
+}
+
+/**
+ * An iCalendar file with one all-day event per stay, which calendar apps can
+ * import. Stays at the ends are kept whole, so files for neighboring years
+ * share those events, and each event's ID includes the names, so two
+ * families' schedules in one calendar don't overwrite each other.
+ */
 export function toICS(s: Schedule, from: number, to: number, stamp: Date): string {
   const dtstamp = stamp.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '')
+  const family = hash(s.names.map((n) => n.trim().toLocaleLowerCase()).join('\n'))
   const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Labs//Custody Calendar//EN', 'CALSCALE:GREGORIAN', `X-WR-CALNAME:${icsText(`${s.names[0]} and ${s.names[1]}`)}`]
-  for (const stay of stays(s, from, to)) {
+  for (const stay of stays(s, ...wholeStays(s, from, to))) {
     const nights = stay.to - stay.from
     lines.push(
       'BEGIN:VEVENT',
-      `UID:${icsDate(stay.from)}-${stay.parent}-custody@labs.eugeneyip.net`,
+      `UID:${icsDate(stay.from)}-${stay.parent}-${family}-custody@labs.eugeneyip.net`,
       `DTSTAMP:${dtstamp}`,
       `DTSTART;VALUE=DATE:${icsDate(stay.from)}`,
       `DTEND;VALUE=DATE:${icsDate(stay.to)}`,
@@ -140,6 +155,12 @@ export function toICS(s: Schedule, from: number, to: number, stamp: Date): strin
   }
   lines.push('END:VCALENDAR')
   return lines.map(fold).join('\r\n') + '\r\n'
+}
+
+function hash(text: string): string {
+  let h = 0x811c9dc5
+  for (let i = 0; i < text.length; i++) h = Math.imul(h ^ text.charCodeAt(i), 0x01000193)
+  return (h >>> 0).toString(36)
 }
 
 /** Lines longer than 75 bytes are folded, as the format requires. */

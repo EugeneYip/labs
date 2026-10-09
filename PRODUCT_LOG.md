@@ -16,6 +16,12 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-09 · #020 Custody Calendar update
+
+- **What:** A share link that can't be read, for example one cut short in a message, now says so and changes nothing. Before, it quietly showed whatever schedule was already saved. After copying a link, the page explains that the link holds the schedule as it is now and that later changes don't reach it. After downloading the calendar file, it suggests importing into a calendar of its own, so the events are easy to replace after changes. Calendar files keep a stay whole when it crosses New Year, so the count of nights is right and files for neighboring years share that event. Event IDs now differ between families, so two schedules in one calendar app don't overwrite each other. The schedule stops taking swaps at the 1,000 a share link can hold, which before would have reset the saved schedule on the next visit. The page now calls counting by nights "a common way" to count custody time rather than the usual way.
+- **Why:** The Batch 03 audit found these gaps in the places where a parent relies on the calendar matching the other parent's: links, imported calendars, and counts.
+- **Notes:** Tested with good, cut-short, and made-up links, a schedule with 1,000 swaps, calendar files across the year boundary, print, and phone width in dark mode.
+
 ## 2026-10-09 · #016 Fluency Check update
 
 - **What:** The scoring guide now follows the published DIBELS 8 oral reading rules more closely. Mispronounced words, words read out of order, and words sounded out but not blended count as errors. A skipped line counts each of its words. Differences in pronunciation due to accent, dialect, or articulation don't count. The accuracy levels are now labeled as a common guideline, and the guide says one check is a snapshot of speed and accuracy, not of understanding. A check in progress now survives a reload: after a quick reload the clock carries on, and after a longer break it's paused at the moment the page was left. Saved checks can be loaded back from a downloaded CSV, which restores the log after a browser clears its data, or moves it to another device.
