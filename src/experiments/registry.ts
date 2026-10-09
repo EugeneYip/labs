@@ -42,6 +42,14 @@ export const experiments: readonly Experiment[] = [
     shipped: '2026-10-09',
     status: 'live',
   },
+  {
+    number: 3,
+    slug: 'fair-share',
+    title: 'Fair Share',
+    summary: 'Splits shared costs in a group and shows the fewest payments to settle up, with the whole group kept in its link instead of an account.',
+    shipped: '2026-10-09',
+    status: 'live',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */

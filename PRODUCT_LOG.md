@@ -16,6 +16,14 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-09 · #003 Fair Share
+
+- **What:** [labs.eugeneyip.net/fair-share](https://labs.eugeneyip.net/fair-share/). Start a group with names and a currency, add who paid for what, split equally among any of the people, and see each person's balance and the fewest payments that settle everyone up. "Mark paid" records a payment. Amounts are kept in whole cents, so shares always add up exactly, and both "12,50" and "12.50" are understood. The whole group is compressed into the page address after "#", which browsers never send to the server. Bookmarking or sharing that address is how you save and share it, and a short list of recent groups is remembered on the device.
+- **Problem it tests:** Splitting costs among friends or roommates is common and fiddly. The best-known tool needs everyone to have an account, and its free plan is limited. Is a no-account version that lives entirely in a link good enough for a weekend trip or a shared dinner?
+- **Scope decisions:** Equal splits among chosen people only, with no custom shares, percentages, or itemized receipts. One currency per group, with no exchange rates. There's no sync: whoever edits gets an updated link to pass on. Links are strictly validated, and decompression is capped so a crafted link can't freeze the page.
+- **Limitations:** Edits on different phones don't merge, so two people adding expenses separately end up with two versions. Links grow with the number of expenses, though a realistic weekend stays under about 300 characters. The currency can't change after the group is created, and anyone with the link can see every name and amount.
+- **Revisit if:** groups get passed around by link, or people ask for uneven splits or a way to merge two versions of a group. Uneven splits would be a small change, and merging would be the real test of the link-only model.
+
 ## 2026-10-09 · #002 Photo Scrub
 
 - **What:** [labs.eugeneyip.net/photo-scrub](https://labs.eugeneyip.net/photo-scrub/). Drop in or choose JPEG, PNG, or WebP photos to see the hidden details they carry: GPS position (with a map link), place names, camera and serial numbers, dates, author and copyright, software, edit history, embedded thumbnails, and extra embedded images. It then gives you clean copies, one at a time, as a ZIP, or through the phone's share sheet. Cleaning copies the image data byte for byte and keeps only the orientation and color profile, so quality doesn't change, and each clean copy is read back to confirm nothing is left. Nothing is uploaded or stored.

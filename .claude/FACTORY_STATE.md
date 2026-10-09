@@ -11,10 +11,10 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 
 ## Position
 
-- **Last shipped:** #002 Photo Scrub (`photo-scrub`), 2026-10-09 (pushing now; verify production if a session resumes here)
-- **Current experiment:** none (choose #003)
-- **Stage:** #002 committed and pushed; production check pending
-- **Next action:** confirm the Actions run for #002 succeeded and labs.eugeneyip.net/photo-scrub/ works, then choose #003 (not a file tool, and not privacy, right after #002).
+- **Last shipped:** #003 Fair Share (`fair-share`), 2026-10-09 (pushing now; verify production if a session resumes here)
+- **Current experiment:** none (choose #004)
+- **Stage:** #003 committed and pushed; production check pending
+- **Next action:** confirm the Actions run for #003 succeeded and labs.eugeneyip.net/fair-share/ works, then choose #004. Make it a different domain and interaction from money and links: text/language, data, a creator tool, education, or print.
 
 ## Shipped
 
@@ -22,6 +22,7 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 |---|------|------|----------|-------------------|----------|---------|
 | 001 | Trip Board | trip-board | Travel / information organization | Saved list, paste-to-add | Self-planning travelers | 2026-10-08 |
 | 002 | Photo Scrub | photo-scrub | Privacy / browser file tool | Drop files in, clean files out | Anyone sharing photos (marketplaces, forums) | 2026-10-09 |
+| 003 | Fair Share | fair-share | Group money / expense splitting | Ledger form; the link is the document | Friend groups, roommates | 2026-10-09 |
 
 ## Category distribution
 
@@ -29,6 +30,7 @@ Limits across #001–#015: at most 3 per product category, at most 2 primarily t
 
 - Travel / information organization: 1 (travel cap 2)
 - Privacy / browser file tools: 1
+- Group money: 1
 
 ## Dropped ideas
 
@@ -38,7 +40,6 @@ None yet. A dropped idea does not use up a number.
 
 Ideas only, not commitments. Pick each experiment based on what has shipped. Remove used or rejected ideas.
 
-- Group expense settle-up with a shareable link (money, groups)
 - CSV quick profiler: drop a file, see columns, types, gaps, top values (data)
 - Text mender: fix text pasted from PDFs and emails (line breaks, hyphens, spacing) (text)
 - Teleprompter with script timing (creators, speakers)
