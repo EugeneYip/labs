@@ -4,7 +4,7 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 
 ## Batch
 
-- **Batch:** 02 (Batch 01, #002–#015, finished 2026-10-09; its report was given to the owner).
+- **Batch:** 02, complete (#016–#025, finished 2026-10-09; report given). Batch 01 (#002–#015) finished 2026-10-09; its report was given to the owner too.
 - **Goal:** ship experiments #016 through #025, one at a time, each verified in production. Then stop and give the owner one Batch 02 report (format at the end of this file). Do not start #026 without a new batch authorization.
 - **Authority:** the owner authorized researching, choosing, building, testing, committing, pushing to `main`, deploying, and verifying #016–#025 without routine approval, as long as each experiment meets the Constitution. Lack of analytics or user feedback on earlier experiments is not a blocker: don't pause for it and don't ask the owner to test anything. Reject ideas that would need credentials, payment, a rule exception, or new infrastructure.
 - **Earlier experiments (#001–#015):** shipped products. Don't redesign them, add speculative features, or rewrite them. Fix one only if current work exposes a real regression or serious defect.
@@ -17,11 +17,10 @@ More selective than Batch 01. For each experiment: generate several candidates, 
 
 ## Position
 
-- **Last shipped:** #024 Ranked Choice Count (`ranked-choice-count`), 2026-10-09, verified in production (commit 41e14d0): 200 with the right title, a Google Forms grid paste counts correctly live, console clean, homepage shows 24 shipped.
-- **Current experiment:** #025 Stall Till (`stall-till`), small business / market stalls, the last of the batch. A till for craft fairs, farmers' markets, bake sales, and garage sales: your items as big buttons, a running sale, cash tendered with quick amounts and the change due, or card/other. Today's sales by item and by payment method, with delete. Cash-up counts the box by denomination for the currency, compares it with the starting float plus cash sales, and suggests which coins and notes to keep as tomorrow's float. CSV of sales and a printable summary; everything stays on the device. Alternative checked: free-cash-register.net needs registration, caps the free plan at 500 entries, and prints ads on receipts; the offline options are iPhone apps.
-- **Stage:** built and tested; committing and pushing.
-- **Next action:** push, verify https://labs.eugeneyip.net/stall-till/ in production, mark Batch 02 complete here, then give the owner the Batch 02 report.
-- **Plan for the rest of the batch:** #022 Day Clock (dementia orientation display for any tablet), #023 Discussion Map (tap who speaks in a seminar or meeting: turns, talk time, lines between speakers), #024 ranked-choice vote counter (paper ballots by tapping plus forgiving CSV import), #025 the market-stall till or a stronger idea found by then. No two consecutive experiments may solve the same type of problem.
+- **Last shipped:** #025 Stall Till (`stall-till`), 2026-10-09, verified in production (commit 7161cea). All 25 addresses return 200, the homepage shows 25 shipped with #025 first, an unknown path gets the 404 page, and the console is clean apart from that expected 404.
+- **Current experiment:** none. **Batch 02 is complete.**
+- **Stage:** done. The Batch 02 report was given to the owner on 2026-10-09.
+- **Next action:** none without the owner. Do not start #026 or a third batch without a new batch authorization. Outside a batch, every public push needs the owner's review and a clear yes again.
 
 ## Batch 02 research notes
 
@@ -97,6 +96,12 @@ Limits across #001–#015: at most 3 per product category, at most 2 primarily t
 None dropped after building: every experiment started was shipped. A dropped idea does not use up a number.
 
 Rejected at the idea stage (no code written), mostly because a good free tool already exists: passport photos (UK rules forbid cropped or edited photos; free in-browser makers exist), weighted decision matrix, timeline maker, camera exposure simulator, classroom seating chart, unit-price comparer, printable paper, pickleball round robin, tape-measure calculator, hike turnaround time, caffeine cutoff, tempo-ramp metronome.
+
+## Batch 02 outcomes
+
+- **Dropped after building:** none. Every experiment started in Batch 02 shipped.
+- **Rejected at the idea stage (crowded or weak):** rotating shift calendars (ToolGrit, Teambridge), event and wedding seating with keep-apart rules (TableTact, kissmyskills, Seatbee and others), stage plots for bands (Stage Plot Designer, Hive Mind, StageOn), Swiss tournament pairings (swiss-chess, Chess Caddy, ChessPairings.org), and fair rotation of meeting times across time zones (TimeDate, itime.day). Also considered and set aside without a full search, as crowded or trivial: tally counters, pace bands, plate calculators, cousin calculators, recipe scalers, and cut-list optimizers.
+- **Domains added in Batch 02:** education (reading assessment), gardening and climate, theater, sports technique video, co-parenting, family history, elder care, meeting facilitation, organizational voting, small business.
 
 ## Candidate pool
 
