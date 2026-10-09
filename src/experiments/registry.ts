@@ -194,6 +194,14 @@ export const experiments: readonly Experiment[] = [
     shipped: '2026-10-09',
     status: 'live',
   },
+  {
+    number: 22,
+    slug: 'day-clock',
+    title: 'Day Clock',
+    summary: 'A large, calm display of the day, the time of day, and the date for someone living with dementia, with reminders, for an old tablet left on by their chair.',
+    shipped: '2026-10-09',
+    status: 'live',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */

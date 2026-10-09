@@ -17,10 +17,10 @@ More selective than Batch 01. For each experiment: generate several candidates, 
 
 ## Position
 
-- **Last shipped:** #020 Custody Calendar (`custody-calendar`), 2026-10-09, verified in production (commit 71d22f0): 200 with the right title, a share link opens live with the right names and totals, console clean, homepage shows 20 shipped.
-- **Current experiment:** #021 Family Stories (`family-stories`), family history: a guided interview recorder for talking with grandparents and other relatives. Pick topics from about 60 original questions (or write your own), show one big question at a time, and record an answer per question with a level meter, timer, and screen kept on. Recordings stay in this browser (IndexedDB `labs:family-stories`) until you download them, one at a time or all in a ZIP with an index of the questions. Several interviews, one per person.
+- **Last shipped:** #021 Family Stories (`family-stories`), 2026-10-09, verified in production (commit 9caafd7): 200 with the right title, a recorded answer saves to IndexedDB `labs:family-stories` live, console clean, homepage shows 21 shipped.
+- **Current experiment:** #022 Day Clock (`day-clock`), elder care: a full-screen orientation display for someone living with dementia, for an old tablet left on: the weekday, the part of the day (morning, afternoon, evening, night, with editable times and words), the date, and optionally the time. It also shows a caregiver's message and daily or weekday reminders, night colors after dark, and keeps the screen awake. It can go full screen, speak the day when tapped, and drift slightly to avoid burn-in. Settings sit behind a press-and-hold so they aren't changed by accident.
 - **Stage:** built and tested; committing and pushing.
-- **Next action:** push, verify https://labs.eugeneyip.net/family-stories/ in production (microphone stand-in plus `--autoplay-policy=no-user-gesture-required`), then build #022 Day Clock.
+- **Next action:** push, verify https://labs.eugeneyip.net/day-clock/ in production, then build #023 Discussion Map.
 - **Plan for the rest of the batch:** #022 Day Clock (dementia orientation display for any tablet), #023 Discussion Map (tap who speaks in a seminar or meeting: turns, talk time, lines between speakers), #024 ranked-choice vote counter (paper ballots by tapping plus forgiving CSV import), #025 the market-stall till or a stronger idea found by then. No two consecutive experiments may solve the same type of problem.
 
 ## Batch 02 research notes
@@ -68,6 +68,7 @@ Checked 2026-10-09. Keep these so later picks don't repeat the research.
 | 019 | Form Check | form-check | Sports technique / video | Local video with frame stepping, slow motion, drawn lines and angles, and a linked side-by-side | Athletes, coaches, hobbyists (golf, running, lifting) | 2026-10-09 |
 | 020 | Custody Calendar | custody-calendar | Family / co-parenting | Pattern to year calendar, tap to swap nights, .ics export, share link, print | Separated parents sharing custody | 2026-10-09 |
 | 021 | Family Stories | family-stories | Family history / oral history | Guided question cards with per-question audio recording, stored in IndexedDB, ZIP download | Families interviewing elders | 2026-10-09 |
+| 022 | Day Clock | day-clock | Elder care / dementia | Ambient full-screen display with fitted type, night colors, wake lock, timed reminders, press-and-hold settings | Families and carers of people with dementia | 2026-10-09 |
 
 ## Category distribution
 
