@@ -4,23 +4,32 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 
 ## Batch
 
-- **Batch:** 02, complete (#016–#025, finished 2026-10-09; report given). Batch 01 (#002–#015) finished 2026-10-09; its report was given to the owner too.
-- **Goal:** ship experiments #016 through #025, one at a time, each verified in production. Then stop and give the owner one Batch 02 report (format at the end of this file). Do not start #026 without a new batch authorization.
-- **Authority:** the owner authorized researching, choosing, building, testing, committing, pushing to `main`, deploying, and verifying #016–#025 without routine approval, as long as each experiment meets the Constitution. Lack of analytics or user feedback on earlier experiments is not a blocker: don't pause for it and don't ask the owner to test anything. Reject ideas that would need credentials, payment, a rule exception, or new infrastructure.
-- **Earlier experiments (#001–#015):** shipped products. Don't redesign them, add speculative features, or rewrite them. Fix one only if current work exposes a real regression or serious defect.
-- **Started:** 2026-10-09
-- **If interrupted:** a fresh session reads this file, checks `git status` and `git log`, and continues from "Next action" without waiting for the owner. Unfinished experiment files are either finished or deleted, never pushed half-done.
+- **Batch:** 03, Portfolio Hardening, in progress (started 2026-10-09). Batch 01 (#002–#015) and Batch 02 (#016–#025) are complete, with reports given.
+- **Goal:** not a run of new experiments. Score all 25 experiments in `.claude/PORTFOLIO_REVIEW.md`, pick about five of the strongest by that evidence, audit them deeply, and fix real defects. Evaluate offline support (a service worker) and ship it only if safe. Review homepage discovery, explore a feedback mechanism that fits the Constitution, and build at most three new experiments (#026–#028), only if clearly worth more than hardening. Verify production, then stop and give the owner the Batch 03 report (format at the end of this file).
+- **Authority:** the owner authorized inspecting and testing experiments, researching competitors and authoritative references, fixing genuine defects, improving accessibility and compatibility, making high-value shared infrastructure improvements, committing, pushing, deploying, and verifying, without routine approval, as long as the Constitution holds. Don't ask the owner to test ordinary features.
+- **Limits:** no redesigns for visual consistency, no refactoring of working code for neatness, no rewrites. Fix what matters. Sensitive tools (custody, dementia care, student assessment, ranked voting, climate estimates, recordings, cash) must not imply legal, medical, educational, electoral, or professional authority they don't have, and limitations stay short rather than becoming walls of disclaimers. Never cache sensitive user content globally, and don't break GitHub Pages. Don't publish a personal email address unless one already exists in the project and is clearly meant for public contact.
+- **If interrupted:** a fresh session reads this file, checks `git status` and `git log`, and continues from "Next action" without waiting for the owner.
 
-## Batch 02 selection standard
+## Batch 03 checklist
 
-More selective than Batch 01. For each experiment: generate several candidates, check briefly whether strong free alternatives already solve the problem, reject crowded, trivial, repetitive, or poorly differentiated ideas, and pick the strongest. Prefer problems where a static, local-first browser tool has a real advantage (privacy, no account, works offline, browser-native processing, direct manipulation, replacing an awkward manual workflow) for a narrow audience with a concrete recurring problem. Explore new problem spaces: don't repeat the core concept of any of #001–#015. A similar audience is fine only when the problem and the interaction model are clearly different. No two consecutive experiments solve the same type of problem. Don't polish past what users would notice: ship the next strong experiment instead.
+- [x] Phase 0: production smoke test of all 25 experiments: all load at 1280 px and 390 px, no overflow, no console errors (2026-10-09).
+- [x] Phase 1: `.claude/PORTFOLIO_REVIEW.md` scores all 25 on the 13 criteria (risk criteria inverted, maximum 65), in tiers A to D.
+- [x] Phase 2: five candidates selected (see Batch 03 selection below).
+- [ ] Phase 3: deep audit of each candidate (correctness, edge cases, data integrity, privacy, accessibility, compatibility, mobile, performance, misunderstanding, claims, export/import, print, API failure, refresh recovery), with domain rules checked against authoritative sources and fixes shipped.
+- [ ] Offline: service worker evaluated, and if sound, implemented and tested online → offline → online, including update propagation.
+- [ ] Discovery: homepage reviewed, with restrained improvements if warranted.
+- [ ] Feedback: a zero-infrastructure mechanism found and added, or the conclusion recorded.
+- [ ] New experiments (optional, at most three): decided.
+- [ ] Production verified, this file updated, Batch 03 report given.
+
+## Batch 03 selection
+
+The five highest totals in the portfolio review, all tier A: **#016 Fluency Check (52), #020 Custody Calendar (52), #022 Day Clock (52), #006 Secret Santa (50), #014 Playing Time (50).** These scored highest on clear audiences with recurring needs, privacy or local-first advantage, and spread potential, with moderate risks. Secret Santa's differentiation was marked down after finding several free, no-email, link-based draws. The next three (Photo Scrub, Frost Dates, Ranked Choice Count, 48 each) were not added by default. Frost Dates and Ranked Choice Count still get the sensitive-wording pass, as do Family Stories and Stall Till.
 
 ## Position
 
-- **Last shipped:** #025 Stall Till (`stall-till`), 2026-10-09, verified in production (commit 7161cea). All 25 addresses return 200, the homepage shows 25 shipped with #025 first, an unknown path gets the 404 page, and the console is clean apart from that expected 404.
-- **Current experiment:** none. **Batch 02 is complete.**
-- **Stage:** done. The Batch 02 report was given to the owner on 2026-10-09.
-- **Next action:** none without the owner. Do not start #026 or a third batch without a new batch authorization. Outside a batch, every public push needs the owner's review and a clear yes again.
+- **Current:** Batch 03, Phase 3 and offline support. Order: (1) offline service worker, since it helps Day Clock, Playing Time, Stall Till, and the other local tools, (2) deep audits of the five, (3) the sensitive-wording pass, (4) homepage discovery, (5) feedback, (6) decide on new experiments (default: none), (7) final production check and report.
+- **Next action:** design and test the service worker locally (build, then the `pages` server on port 4174): online visit, offline reload, online update.
 
 ## Batch 02 research notes
 
@@ -167,6 +176,8 @@ Where applicable: core flow; persistence or file handling; several edge cases; i
 - Storage keys must be `labs:<slug>` (Constitution, amended 2026-10-09 with owner authorization).
 
 ## Batch report formats
+
+- **Batch 03 (Portfolio Hardening):** 1. portfolio ranking or tiers; 2. the five strongest and why; 3. the weakest and why; 4. defects found and repaired; 5. shared infrastructure improvements; 6. the offline-support outcome; 7. any new experiments; 8. which experiments justify becoming standalone products; 9. a recommendation for Batch 04.
 
 - **Batch 01 (given 2026-10-09):** experiments shipped; experiments dropped; categories explored; most promising; weakest; infrastructure improvements; recurring product patterns; any experiment worth promoting outside Labs; recommendation on a second batch.
 - **Batch 02 (after #025):** a concise report covering #016–#025; rejected ideas; category coverage; strongest experiments; weakest experiments; recurring opportunities; any products now worth promoting; what the first 25 Labs experiments collectively suggest; recommendation for Batch 03.
