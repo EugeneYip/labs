@@ -16,6 +16,14 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-09 · #012 Glance
+
+- **What:** [labs.eugeneyip.net/glance](https://labs.eugeneyip.net/glance/). A daily estimation game. Five fields of dots each appear for about a second: a few dots, big and small ones, dots in groups, squares among circles (count only the squares), and a crowd. After each one you guess how many you saw, then see the field again with the answer and your points. Everyone gets the same five on a given day, and a new set arrives at local midnight. Results come as a score out of 500 with a row of colored squares to share. There's an unlimited practice mode, and the device remembers your days, best, average, and streak.
+- **Problem it tests:** Daily puzzles with shareable results are a popular habit, and number sense (estimating quantities at a glance) is a real skill that few games train. Will people come back for a 30-second daily estimation round?
+- **Scope decisions:** Points depend on the ratio between guess and answer, so being 20% high counts the same as 20% low: 100 for exact, falling to 0 at half or double. Puzzles are generated from the date, so there's no server, no leaderboard, and no accounts. Shapes never overlap, and squares have the same area as circles so size gives nothing away. The squares round uses shape, not color, so it works for color-blind players.
+- **Limitations:** The game is visual, so it doesn't work with a screen reader. Nothing stops replaying a day in another browser or reading the page's code, which is fine for a game played for fun. Display time is a timer, so a very slow device may show the dots slightly longer. Streaks live only in this browser.
+- **Revisit if:** people share results. Possible next steps are a weekly "hard mode", a results calendar, and showing how far off typical guesses are (which would need a shared count, so not as a static site).
+
 ## 2026-10-09 · #011 Line Dry
 
 - **What:** [labs.eugeneyip.net/line-dry](https://labs.eugeneyip.net/line-dry/). Search for a town or use the device's location, and choose shirts and sheets or towels and jeans. For today and each of the next six days, Line Dry says whether it's a good day to dry washing outside, when to hang it out, and when it should be dry. Otherwise it explains why not: rain coming, too damp and dull, or too late in the day. An hour-by-hour chart shows drying power (taller bars dry faster), rainy hours striped, and the suggested time out shaded; tapping an hour shows its temperature, humidity, wind, and chance of rain. The place and load type are remembered on the device.

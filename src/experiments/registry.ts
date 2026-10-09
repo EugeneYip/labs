@@ -114,6 +114,14 @@ export const experiments: readonly Experiment[] = [
     shipped: '2026-10-09',
     status: 'live',
   },
+  {
+    number: 12,
+    slug: 'glance',
+    title: 'Glance',
+    summary: 'A daily game: five fields of dots flash for about a second, and you guess how many you saw. Everyone gets the same five each day.',
+    shipped: '2026-10-09',
+    status: 'live',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */
