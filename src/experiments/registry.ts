@@ -50,6 +50,14 @@ export const experiments: readonly Experiment[] = [
     shipped: '2026-10-09',
     status: 'live',
   },
+  {
+    number: 4,
+    slug: 'clean-paste',
+    title: 'Clean Paste',
+    summary: 'Repairs text copied from PDFs and emails: rejoins broken lines and split words and removes page numbers and repeated headers.',
+    shipped: '2026-10-09',
+    status: 'live',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */

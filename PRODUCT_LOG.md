@@ -16,6 +16,14 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-09 · #004 Clean Paste
+
+- **What:** [labs.eugeneyip.net/clean-paste](https://labs.eugeneyip.net/clean-paste/). Paste text copied from a PDF or an email and get readable paragraphs back, live as you type, with a copy button. It rejoins lines broken mid-sentence and words split by hyphens, keeping real compounds like "well-known" when the text writes them that way elsewhere. It also removes page numbers and headers repeated on every page, keeps bulleted and numbered lists, strips email ">" marks, and fixes ligatures (ﬁ), odd spaces, and invisible characters. Chinese and Japanese lines are joined without inserting spaces. A summary says what it changed, and the options are remembered; the text isn't.
+- **Problem it tests:** Copying from PDFs is a daily annoyance for students, researchers, and office workers, and typical "remove line breaks" sites flatten everything into one block. Does a version that understands paragraphs, lists, and page clutter earn a spot in someone's routine?
+- **Scope decisions:** Rule-based and instant, with no AI and no dictionary. Lines are only rejoined when the text looks hard-wrapped at a fixed width, so text with one paragraph per line, and poems, pass through untouched. Headers are only dropped when they repeat far apart, so a song's repeated chorus survives. No file upload or PDF reading, just pasting.
+- **Limitations:** These are heuristics, so a paragraph whose last line happens to be nearly full width can be merged with the next one, and a hyphenated compound that appears only at a line break loses its hyphen. Columns, tables, and footnotes copied from PDFs often arrive scrambled and aren't untangled. Thai and other languages written without spaces are only partly handled.
+- **Revisit if:** people paste real documents and keep coming back. The next step would be a "differences" view that highlights what changed, or reading a PDF file directly.
+
 ## 2026-10-09 · #003 Fair Share
 
 - **What:** [labs.eugeneyip.net/fair-share](https://labs.eugeneyip.net/fair-share/). Start a group with names and a currency, add who paid for what, split equally among any of the people, and see each person's balance and the fewest payments that settle everyone up. "Mark paid" records a payment. Amounts are kept in whole cents, so shares always add up exactly, and both "12,50" and "12.50" are understood. The whole group is compressed into the page address after "#", which browsers never send to the server. Bookmarking or sharing that address is how you save and share it, and a short list of recent groups is remembered on the device.
