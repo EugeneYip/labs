@@ -178,6 +178,14 @@ export const experiments: readonly Experiment[] = [
     shipped: '2026-10-09',
     status: 'live',
   },
+  {
+    number: 20,
+    slug: 'custody-calendar',
+    title: 'Custody Calendar',
+    summary: 'Turns a co-parenting schedule like 2-2-5-5 or alternating weeks into a year calendar of who has the children each night, with overnight shares, handovers, and a calendar file.',
+    shipped: '2026-10-09',
+    status: 'live',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */

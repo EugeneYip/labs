@@ -17,10 +17,10 @@ More selective than Batch 01. For each experiment: generate several candidates, 
 
 ## Position
 
-- **Last shipped:** #018 Off Book (`off-book`), 2026-10-09, verified in production (commit 070662c): 200 with the right title, sample and cue cards work live, console clean, homepage shows 18 shipped.
-- **Current experiment:** #019 Form Check (`form-check`), sports and hobbies technique: open a video from the device (never uploaded), step frame by frame, play slow motion, draw lines (with their angle from level or vertical) and three-point angles over it, save a snapshot of the frame with the drawings, and compare two videos side by side with linked stepping.
+- **Last shipped:** #019 Form Check (`form-check`), 2026-10-09, verified in production (commit 4432285): 200 with the right title, a generated video opens, the angle tool and linked steps work live, console clean, homepage shows 19 shipped.
+- **Current experiment:** #020 Custody Calendar (`custody-calendar`), family / co-parenting: a repeating overnight pattern (presets 2-2-3, 2-2-5-5, 3-4-4-3, alternating weeks, every other weekend with or without a weeknight, or tap to make your own over 1–4 weeks), a start week, and the two parents' names, giving a year calendar colored by who has each night. It shows overnight totals and percentages for the year, the next exchanges, tap-to-swap days for holidays, an .ics export, a share link (everything in the part after #), and a one-page print.
 - **Stage:** built and tested; committing and pushing.
-- **Next action:** push, verify https://labs.eugeneyip.net/form-check/ in production with a generated video, then pick #020.
+- **Next action:** push, verify https://labs.eugeneyip.net/custody-calendar/ in production, then pick #021: not a calendar.
 
 ## Batch 02 research notes
 
@@ -60,6 +60,7 @@ Checked 2026-10-09. Keep these so later picks don't repeat the research.
 | 017 | Frost Dates | frost-dates | Gardening / climate | Place to 30-year climate odds, a season-by-season chart, and a planting calendar | Gardeners worldwide, especially outside North America | 2026-10-09 |
 | 018 | Off Book | off-book | Theater / performing arts | Paste a script, then self-tested cue cards and a read-through with your lines masked | Actors in school, community, and professional shows | 2026-10-09 |
 | 019 | Form Check | form-check | Sports technique / video | Local video with frame stepping, slow motion, drawn lines and angles, and a linked side-by-side | Athletes, coaches, hobbyists (golf, running, lifting) | 2026-10-09 |
+| 020 | Custody Calendar | custody-calendar | Family / co-parenting | Pattern to year calendar, tap to swap nights, .ics export, share link, print | Separated parents sharing custody | 2026-10-09 |
 
 ## Category distribution
 
