@@ -122,6 +122,14 @@ export const experiments: readonly Experiment[] = [
     shipped: '2026-10-09',
     status: 'live',
   },
+  {
+    number: 13,
+    slug: 'in-tune',
+    title: 'In Tune',
+    summary: 'Singing practice: it plays a note, asks for an interval up or down, and shows your pitch live as you sing it, using the microphone on your device.',
+    shipped: '2026-10-09',
+    status: 'live',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */

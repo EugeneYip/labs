@@ -11,11 +11,11 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 
 ## Position
 
-- **Last shipped:** #011 Line Dry (`line-dry`), 2026-10-09, verified in production with a live forecast (commit 38ae13f)
-- **Current experiment:** #012 Glance (`glance`): a daily estimation game. Five rounds; each flashes a field of dots (or squares among circles) for about a second, then you guess how many. Same puzzle for everyone each day (seeded by the local date), scored 0–100 per round on how close the guess is (exact 100, off by a factor of two 0). Shareable result with squares, practice mode, local history and streak in localStorage `labs:glance`.
-- **Why this one:** new domain (games), interaction (flash, then guess), and audience (daily puzzle players). Research: dot-estimation exists as an iPhone app ("Guess This Count") and classroom activities; no daily web game. Next in line: #013 a singing interval trainer with live pitch from the microphone (free web options are thin: Vocalify Me and PerfectPitch.training are freemium, Sing Test only tests).
-- **Stage:** built and tested (model 5/5, including a year of daily puzzles drawn without overlaps; full game in the pane; screenshots of every stage, phone and desktop, light and dark); shipping
-- **Next action:** commit "Add Experiment #012: Glance", push, watch the Actions run, smoke-test production, then mark verified and start #013 (singing interval trainer).
+- **Last shipped:** #012 Glance (`glance`), 2026-10-09, verified in production (commits c34a822, then 488b903 so each guess saves on submit)
+- **Current experiment:** #013 In Tune (`in-tune`): singing interval practice with live pitch from the microphone. It plays a reference note in your voice range and asks for an interval up or down (or the same note). A meter shows your sung pitch against the target in cents, and holding within tolerance for a second counts as a match. Pitch detection (YIN) runs in the browser; audio is never recorded or sent. Settings in localStorage `labs:in-tune`.
+- **Why this one:** new domain (music), interaction (real-time microphone feedback), and audience (choir singers, voice students). Free web options are thin: Vocalify Me and PerfectPitch.training are freemium, Sing Test only tests your range. Remaining after this: #014 and #015, avoiding home topics; candidates are hike turnaround time (outdoors), a caffeine-at-bedtime estimator (wellness), and analog clock practice for kids.
+- **Stage:** built and tested (model 7/7 with synthetic voices E2–G5 within 3 cents; end to end with a generated voice standing in for the microphone: match, sharp, far low then sliding in, a major third, releasing the mic, refusal; screenshots phone/desktop, light/dark); shipping
+- **Next action:** commit "Add Experiment #013: In Tune", push, watch the Actions run, smoke-test production, then mark verified and choose #014.
 
 ## Shipped
 
@@ -33,6 +33,7 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 | 010 | Gallery Wall | gallery-wall | Home / decorating (counts with Cooking / home: 2) | Physical layout calculator with a to-scale drawing | Renters and homeowners hanging art | 2026-10-09 |
 | 011 | Line Dry | line-dry | Weather / household (home-ish: 3 of 3) | Live keyless API to a recommendation with an hourly chart | Households drying washing outside | 2026-10-09 |
 | 012 | Glance | glance | Games / daily puzzle | Flash, then guess; shareable daily score | Daily puzzle players | 2026-10-09 |
+| 013 | In Tune | in-tune | Music | Real-time microphone pitch feedback | Choir singers, voice students | 2026-10-09 |
 
 ## Category distribution
 
@@ -49,6 +50,7 @@ Limits across #001–#015: at most 3 per product category, at most 2 primarily t
 - Community / print: 1
 - Weather / household: 1 (counted toward "home" too, which is now at its cap of 3)
 - Games: 1
+- Music: 1
 
 ## Dropped ideas
 
@@ -102,6 +104,7 @@ Where applicable: core flow; persistence or file handling; several edge cases; i
 - **Screenshots:** `node .claude/qa/shot.mjs plan.json` drives headless Brave with a throwaway profile (gitignored helper; see its header for the plan format). The in-app browser pane can be tiny, so use this for visual checks. First launch can take about a minute. Plans can stub browser APIs before page scripts run (`initScript`) and send real key presses (`keys`) for keyboard and focus checks. Tab presses in the in-app pane don't reliably move focus, so test keyboard use with `keys`.
 - **Helper option added in #009:** `pdf: true` saves a real print (`Page.printToPDF`, CSS page size, no background graphics) next to the screenshot; the Read tool can open the PDF to check pages and layout.
 - **Fixtures:** `.claude/qa/fixtures/` holds saved real API answers (London, Madrid forecasts, London place search) for stable screenshots; stub `fetch` and `Date.now` in an `initScript`.
+- **Microphone in tests:** headless Brave's `getUserMedia` hangs even with fake-device flags and granted permission. Instead, replace `navigator.mediaDevices.getUserMedia` in an `initScript` with a stream from an oscillator through `createMediaStreamDestination()`; everything after the stream is the real code.
 - **Lesson from #012:** `requestAnimationFrame` stops entirely in background tabs (the in-app pane counts as one), so anything that must end on time uses a timer.
 - **Lesson from #009:** `img.decode()` can wait forever while a tab is in the background (seen in the in-app pane). Use `onload`/`onerror` for images the user picks.
 - **Helper options added in #008:** `print: true` emulates print media; `preScript` sets up state before `keys`. For time-dependent pages, an `initScript` that replaces `Date.now` with a fixed clock (and writes localStorage) gives stable screenshots.
