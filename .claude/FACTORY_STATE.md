@@ -11,11 +11,11 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 
 ## Position
 
-- **Last shipped:** #013 In Tune (`in-tune`), 2026-10-09, verified in production with the stand-in voice (commit 7f29ff0)
-- **Current experiment:** #014 Playing Time (`playing-time`): fair substitution plans for youth sports. Roster (with "not here today"), players on the field, periods and their length, how often to change, and optionally a goalkeeper per period. It builds shifts giving everyone near-equal minutes and no long benchings, lists who goes on and off at each change, and prints as a grid. Roster and settings in localStorage `labs:playing-time`.
-- **Why this one:** new domain (sports coaching), audience (volunteer youth coaches), and interaction (roster to a generated schedule with calls for each change). Research: allPlay Soccer caps free use at three lineups; Pitch Planner and SubNow are apps; Hoops Geek is basketball-only; PlayingTimeCalculator.com dates from 2015. Rejected this round: hike turnaround (trailhiking.com.au already does Naismith plus sunset), caffeine cutoff (many free calculators), tempo-ramp metronome (Unchained and PaidTabs do it free on the web).
-- **Stage:** built and tested (model 8/8 across 5–16 players, four field sizes, five formats, with and without keepers; fairness rewritten to count future time in goal; pane flows; screenshots; one-page PDF); shipping
-- **Next action:** commit "Add Experiment #014: Playing Time", push, watch the Actions run, smoke-test production, then mark verified and choose #015, the last of the batch.
+- **Last shipped:** #014 Playing Time (`playing-time`), 2026-10-09, verified in production (commit a0e57d7)
+- **Current experiment:** #015 Back Row (`back-row`), the last of the batch: see a slide, poster, or sign as the back row would. Image from a file, paste, drop, or a generated sample slide; screen or poster width; viewing distance; eyesight (20/20, 20/40, 20/70). It blurs the image by the detail the viewer can resolve (minimum angle of resolution times distance, mapped into image pixels), can show it at its true apparent size, and gives readable and comfortable letter heights plus the matching slide font size in points. Settings only in localStorage `labs:back-row`; the image is never stored or sent.
+- **Why this one:** new domain (accessibility and presenting), audience (presenters, teachers, sign makers), and interaction (perceptual simulation of an image). Research: no general web simulator; the closest is Eclipse ACTF's ODF-only desktop preview, plus a screen maker's physical eye-test chart. Rejected this round: hike turnaround, caffeine cutoff, tempo-ramp metronome (all have free web tools).
+- **Stage:** built and tested (model 5/5 against eye-chart and slide-size references; pane flows: bad file, paste, eyesight, units, distance, saving; screenshots phone/desktop, light/dark, poster and true size); shipping
+- **Next action:** commit "Add Experiment #015: Back Row", push, watch the Actions run, smoke-test production, mark verified, then write the batch report and stop (no #016 without the owner).
 
 ## Shipped
 
@@ -35,6 +35,7 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 | 012 | Glance | glance | Games / daily puzzle | Flash, then guess; shareable daily score | Daily puzzle players | 2026-10-09 |
 | 013 | In Tune | in-tune | Music | Real-time microphone pitch feedback | Choir singers, voice students | 2026-10-09 |
 | 014 | Playing Time | playing-time | Sports / coaching | Roster to a generated fair schedule with sideline calls; print | Volunteer youth coaches | 2026-10-09 |
+| 015 | Back Row | back-row | Accessibility / presenting | Perceptual simulation of an image, with sizing advice | Presenters, teachers, sign makers | 2026-10-09 |
 
 ## Category distribution
 
@@ -53,6 +54,7 @@ Limits across #001–#015: at most 3 per product category, at most 2 primarily t
 - Games: 1
 - Music: 1
 - Sports / coaching: 1
+- Accessibility / presenting: 1
 
 ## Dropped ideas
 

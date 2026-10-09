@@ -138,6 +138,14 @@ export const experiments: readonly Experiment[] = [
     shipped: '2026-10-09',
     status: 'live',
   },
+  {
+    number: 15,
+    slug: 'back-row',
+    title: 'Back Row',
+    summary: 'Shows a slide, poster, or sign as the back of the room sees it, and how big your text needs to be to read from there.',
+    shipped: '2026-10-09',
+    status: 'live',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */
