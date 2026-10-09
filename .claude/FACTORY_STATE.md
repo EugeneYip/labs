@@ -17,10 +17,10 @@ More selective than Batch 01. For each experiment: generate several candidates, 
 
 ## Position
 
-- **Last shipped:** #017 Frost Dates (`frost-dates`), 2026-10-09, verified in production (commit 68ef157): 200 with the right title, and a live lookup for Edinburgh works (typical last frost Apr 10, first Nov 17). Console clean.
-- **Current experiment:** #018 Off Book (`off-book`), theater: a line-learning page for actors. Paste a script, or open a text file, and it finds the characters. Pick your role and practice with cue cards (the cue, then your hidden line, with hints, marked got it or missed) or read through with your lines shown in full, as first letters, or hidden. Cues can be read aloud by the device's voice, and progress is kept on the device. The sample is the public-domain opening of The Importance of Being Earnest.
+- **Last shipped:** #018 Off Book (`off-book`), 2026-10-09, verified in production (commit 070662c): 200 with the right title, sample and cue cards work live, console clean, homepage shows 18 shipped.
+- **Current experiment:** #019 Form Check (`form-check`), sports and hobbies technique: open a video from the device (never uploaded), step frame by frame, play slow motion, draw lines (with their angle from level or vertical) and three-point angles over it, save a snapshot of the frame with the drawings, and compare two videos side by side with linked stepping.
 - **Stage:** built and tested; committing and pushing.
-- **Next action:** push, verify https://labs.eugeneyip.net/off-book/ in production, then pick #019: not text-based, not another practice loop.
+- **Next action:** push, verify https://labs.eugeneyip.net/form-check/ in production with a generated video, then pick #020.
 
 ## Batch 02 research notes
 
@@ -30,8 +30,11 @@ Checked 2026-10-09. Keep these so later picks don't repeat the research.
 - **Ranked-choice vote counter (medium):** RankedVote's free tier needs an account and allows one contest and 100 voters. Its CSV importer runs locally but needs its template. OpenTally is free and local but wants BLT files, pyrcv.org reads Google Forms CSVs, and OpaVote's free count is capped at 25 voters. Differentiate only with tap-to-enter paper ballots and forgiving CSV import, or skip it.
 - **Line rehearsal for actors (chosen for #018):** the options are iPhone and iPad apps, mostly freemium (HitCue, MyLines, Cue-to-Cue, Acting Pal, Linus, Scene Partner), plus two small web tools: Line Memorizer, a new Product Hunt launch with unknown pricing and no spoken cues, and Go Off-Book, for audition snippets only.
 - **Worldwide frost dates (chosen for #017):** every lookup found covers only the US and Canada. A 30-year daily request to Open-Meteo's archive takes under a second (about 195 KB). Checked against NOAA-based dates (30% risk, 32°F, 1991–2020) for Boston, Denver, Minneapolis, Atlanta, and Portland, the reanalysis at 0°C lands within 0–8 days, except downtown Portland: 19 days later in spring and 12 earlier in autumn, the cautious direction. ERA5-Land and the default model gave the same dates.
-- **Video technique analysis (candidate):** Coach's Eye shut down. Kinovea is Windows-only. The rest are apps, often golf-only or paid.
+- **Video technique analysis (chosen for #019):** Coach's Eye shut down. Kinovea is Windows-only. Motion Marker, VideFlow, KineVision, OnForm, and CoachNow are apps, often paid for angles. No free browser tool that steps frames and draws angles without uploading was found.
 - **Market stall till (candidate):** the offline options are iPhone apps. Web registers exist but don't promise offline use or no account.
+- **Custody calendar (strong, later):** no free, no-account tool found that turns a co-parenting pattern (2-2-3, 2-2-5-5, alternating weeks, every other weekend) into a calendar with overnight percentages and an .ics file. MyKidsCal uploads custody documents to AI, and OurFamilyWizard, qustody, and Custody X Change need accounts or payment.
+- **Day clock for dementia care (strong, later):** the free options are iPad apps (Day Clock, Clarity, DayDateClock, RecallCue, Calendar Clock), and the hardware clocks cost $40–190. A web page would run full-screen on any old tablet, Android or Fire included, with a wake lock.
+- **Event seating with keep-apart rules (rejected):** crowded. TableTact, kissmyskills, planning.wedding, Seatbee, and The Table Plan offer free or no-account planners, several with automatic rules.
 - **Rotating shift calendar (rejected):** ToolGrit and Teambridge already offer free, no-account pattern calendars, and ToolGrit exports .ics.
 
 ## Shipped
@@ -56,6 +59,7 @@ Checked 2026-10-09. Keep these so later picks don't repeat the research.
 | 016 | Fluency Check | fluency-check | Education / reading assessment | Live tap-to-mark while listening, on a timer; print and on-device log | Teachers, tutors, reading specialists | 2026-10-09 |
 | 017 | Frost Dates | frost-dates | Gardening / climate | Place to 30-year climate odds, a season-by-season chart, and a planting calendar | Gardeners worldwide, especially outside North America | 2026-10-09 |
 | 018 | Off Book | off-book | Theater / performing arts | Paste a script, then self-tested cue cards and a read-through with your lines masked | Actors in school, community, and professional shows | 2026-10-09 |
+| 019 | Form Check | form-check | Sports technique / video | Local video with frame stepping, slow motion, drawn lines and angles, and a linked side-by-side | Athletes, coaches, hobbyists (golf, running, lifting) | 2026-10-09 |
 
 ## Category distribution
 
@@ -140,6 +144,7 @@ Where applicable: core flow; persistence or file handling; several edge cases; i
 - **GitHub:** `gh` is logged in as EugeneYip. Pages deploys from Actions; the custom domain is in the Pages settings.
 - **Lesson from #016:** typing a `\u` escape (like `\u00AD`) in a tool call's text writes the literal invisible character into the file. Write such escapes from Python with `chr(92)` and always run the invisible-character scan over `src/` before committing.
 - **Fixtures added in #017:** `frost-boston.json`, `frost-canberra.json`, `frost-seville.json` (1995-01-01 to 2026-10-07 daily lows), plus 1991–2020 copies for Boston, Denver, and Portland. Seed settings before page scripts with an `initScript` guarded by a sessionStorage flag: the helper's `storage` option races a lazily loaded experiment that saves its defaults on mount.
+- **Video in tests (from #019):** `.claude/qa/form-video.js` is an `initScript` that adds `__makeVideo()` (a canvas animation recorded with MediaRecorder as WebM), `__open(...files)` (puts files into the page's file input with a DataTransfer), and `__tap(svg, fx, fy)` (pointer events). Recorded WebM has no stated duration (the player seeks to the end to find it) and irregular frame timing.
 - **zsh gotcha:** never name a shell loop variable `path`; zsh ties it to `PATH`, so commands like curl stop being found.
 - Storage keys must be `labs:<slug>` (Constitution, amended 2026-10-09 with owner authorization).
 

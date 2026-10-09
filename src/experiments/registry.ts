@@ -170,6 +170,14 @@ export const experiments: readonly Experiment[] = [
     shipped: '2026-10-09',
     status: 'live',
   },
+  {
+    number: 19,
+    slug: 'form-check',
+    title: 'Form Check',
+    summary: 'Steps through a video of your swing, stride, or lift frame by frame, in slow motion, with lines and angles drawn on it, and compares two side by side.',
+    shipped: '2026-10-09',
+    status: 'live',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */
