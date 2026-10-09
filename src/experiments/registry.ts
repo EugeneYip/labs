@@ -58,6 +58,14 @@ export const experiments: readonly Experiment[] = [
     shipped: '2026-10-09',
     status: 'live',
   },
+  {
+    number: 5,
+    slug: 'csv-checkup',
+    title: 'CSV Checkup',
+    summary: 'Checks a CSV file on your own device: columns and data types, empty values, repeated rows, common values, and problems spreadsheets tend to cause.',
+    shipped: '2026-10-09',
+    status: 'live',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */

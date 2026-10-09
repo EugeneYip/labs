@@ -11,10 +11,10 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 
 ## Position
 
-- **Last shipped:** #004 Clean Paste (`clean-paste`), 2026-10-09 (pushing now; verify production if a session resumes here)
-- **Current experiment:** none (choose #005)
-- **Stage:** #004 committed and pushed; production check pending
-- **Next action:** confirm the Actions run for #004 succeeded and labs.eugeneyip.net/clean-paste/ works, then choose #005. Different again: data, a creator tool, education/print, a visualization, or a playful useful idea.
+- **Last shipped:** #005 CSV Checkup (`csv-checkup`), 2026-10-09 (pushing now; verify production if a session resumes here)
+- **Current experiment:** none (choose #006)
+- **Stage:** #005 committed and pushed; production check pending
+- **Next action:** confirm the Actions run for #005 succeeded and labs.eugeneyip.net/csv-checkup/ works, then choose #006. Avoid files and analysis right after #005; consider a creator/speaker tool, education/print, a playful useful idea, events or social, or shopping on phones.
 
 ## Shipped
 
@@ -24,6 +24,7 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 | 002 | Photo Scrub | photo-scrub | Privacy / browser file tool | Drop files in, clean files out | Anyone sharing photos (marketplaces, forums) | 2026-10-09 |
 | 003 | Fair Share | fair-share | Group money / expense splitting | Ledger form; the link is the document | Friend groups, roommates | 2026-10-09 |
 | 004 | Clean Paste | clean-paste | Language / text repair | Paste in, live clean text out | Students, researchers, office workers | 2026-10-09 |
+| 005 | CSV Checkup | csv-checkup | Data tools | Drop a file, read a report | Analysts, ops and small-business staff | 2026-10-09 |
 
 ## Category distribution
 
@@ -33,6 +34,7 @@ Limits across #001–#015: at most 3 per product category, at most 2 primarily t
 - Privacy / browser file tools: 1
 - Group money: 1
 - Language / text: 1
+- Data tools: 1
 
 ## Dropped ideas
 
@@ -42,7 +44,6 @@ None yet. A dropped idea does not use up a number.
 
 Ideas only, not commitments. Pick each experiment based on what has shipped. Remove used or rejected ideas.
 
-- CSV quick profiler: drop a file, see columns, types, gaps, top values (data)
 - Teleprompter with script timing (creators, speakers)
 - Wedding/event seating planner with constraints (events, drag and drop)
 - Secret Santa draw with a private link per person (social, seasonal)
