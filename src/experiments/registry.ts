@@ -202,6 +202,14 @@ export const experiments: readonly Experiment[] = [
     shipped: '2026-10-09',
     status: 'live',
   },
+  {
+    number: 23,
+    slug: 'discussion-map',
+    title: 'Discussion Map',
+    summary: 'Tap whoever starts speaking in a seminar or meeting to map the discussion: lines between speakers, turns and talk time for each person, and who has not spoken yet.',
+    shipped: '2026-10-09',
+    status: 'live',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */

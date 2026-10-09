@@ -17,10 +17,10 @@ More selective than Batch 01. For each experiment: generate several candidates, 
 
 ## Position
 
-- **Last shipped:** #021 Family Stories (`family-stories`), 2026-10-09, verified in production (commit 9caafd7): 200 with the right title, a recorded answer saves to IndexedDB `labs:family-stories` live, console clean, homepage shows 21 shipped.
-- **Current experiment:** #022 Day Clock (`day-clock`), elder care: a full-screen orientation display for someone living with dementia, for an old tablet left on: the weekday, the part of the day (morning, afternoon, evening, night, with editable times and words), the date, and optionally the time. It also shows a caregiver's message and daily or weekday reminders, night colors after dark, and keeps the screen awake. It can go full screen, speak the day when tapped, and drift slightly to avoid burn-in. Settings sit behind a press-and-hold so they aren't changed by accident.
+- **Last shipped:** #022 Day Clock (`day-clock`), 2026-10-09, verified in production (commit 817e4b2): 200 with the right title, the live clock shows the real day and time, settings open by keyboard, console clean, homepage shows 22 shipped.
+- **Current experiment:** #023 Discussion Map (`discussion-map`), facilitation: enter the people in a seminar, meeting, or circle, arrange them around the table, then tap whoever starts speaking. It draws lines between consecutive speakers (the paper Harkness map) and counts each person's turns and talk time, with pause, undo, and who hasn't spoken. Save the map as an image, download the turns as a CSV, or print the summary. Names, seats, and the current discussion stay on the device.
 - **Stage:** built and tested; committing and pushing.
-- **Next action:** push, verify https://labs.eugeneyip.net/day-clock/ in production, then build #023 Discussion Map.
+- **Next action:** push, verify https://labs.eugeneyip.net/discussion-map/ in production, then build #024, the ranked-choice vote counter.
 - **Plan for the rest of the batch:** #022 Day Clock (dementia orientation display for any tablet), #023 Discussion Map (tap who speaks in a seminar or meeting: turns, talk time, lines between speakers), #024 ranked-choice vote counter (paper ballots by tapping plus forgiving CSV import), #025 the market-stall till or a stronger idea found by then. No two consecutive experiments may solve the same type of problem.
 
 ## Batch 02 research notes
@@ -69,6 +69,7 @@ Checked 2026-10-09. Keep these so later picks don't repeat the research.
 | 020 | Custody Calendar | custody-calendar | Family / co-parenting | Pattern to year calendar, tap to swap nights, .ics export, share link, print | Separated parents sharing custody | 2026-10-09 |
 | 021 | Family Stories | family-stories | Family history / oral history | Guided question cards with per-question audio recording, stored in IndexedDB, ZIP download | Families interviewing elders | 2026-10-09 |
 | 022 | Day Clock | day-clock | Elder care / dementia | Ambient full-screen display with fitted type, night colors, wake lock, timed reminders, press-and-hold settings | Families and carers of people with dementia | 2026-10-09 |
+| 023 | Discussion Map | discussion-map | Facilitation / meetings and seminars | Tap-to-log speakers on a seating map, lines between consecutive speakers, talk-time stats, drag seats | Teachers (Harkness, Socratic seminars), facilitators | 2026-10-09 |
 
 ## Category distribution
 
