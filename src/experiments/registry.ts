@@ -106,6 +106,14 @@ export const experiments: readonly Experiment[] = [
     shipped: '2026-10-09',
     status: 'live',
   },
+  {
+    number: 11,
+    slug: 'line-dry',
+    title: 'Line Dry',
+    summary: 'Finds the best time this week to dry washing outside, from the forecast for your town, and says when it should be dry.',
+    shipped: '2026-10-09',
+    status: 'live',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */

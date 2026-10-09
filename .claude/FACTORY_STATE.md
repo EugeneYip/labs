@@ -11,11 +11,11 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 
 ## Position
 
-- **Last shipped:** #009 Tear-Off Flyer (`tear-off-flyer`), 2026-10-09, verified in production (commit 1c0cf18)
-- **Current experiment:** #010 Gallery Wall (`gallery-wall`): where to put the nails for a row or grid of picture frames. Frames with size and hanger (wire or sawtooth with a drop, or two hooks with a spread), row or grid, gap, alignment, group center or bottom-edge height (57 in / 145 cm default), measured from the wall's left edge or from a center mark. To-scale SVG drawing, nail list in fractions of an inch or millimeters, printable. Settings in localStorage `labs:gallery-wall`.
-- **Why this one:** new interaction (physical layout calculator with a to-scale drawing), audience (renters and homeowners decorating), and a clear gap: searches turn up blog math and spam pages, not a working multi-frame planner. Rejected this round: timeline maker (kissmyskills already does paste, any date format, across or down, PNG/SVG, no account), camera exposure simulator (CameraSim, Canon's, and a roundup of nine), classroom seating charts (Seating Randomizer and uplup cover keep-apart rules for free).
-- **Stage:** built and tested (model 9/9; pane flows: invalid input, add, mark mode, grid, unit round trip; screenshots phone/desktop, light/dark; real PDF print on one page); shipping
-- **Next action:** commit "Add Experiment #010: Gallery Wall", push, watch the Actions run, smoke-test production, then mark verified and choose #011.
+- **Last shipped:** #010 Gallery Wall (`gallery-wall`), 2026-10-09, verified in production (commit 5bcfcd0)
+- **Current experiment:** #011 Line Dry (`line-dry`): the best hours this week to dry laundry outside. Forecast from Open-Meteo (free, no key, non-commercial, CC BY 4.0 credit required): hourly temperature, humidity, rain and its chance, wind, and FAO reference evapotranspiration (ET0) as drying power. For each day: the start time that gets a light or heavy load dry soonest before rain or dark, and a verdict. Place by city search (Open-Meteo geocoding) or device location rounded to about 1 km. Place and load type in localStorage `labs:line-dry`.
+- **Why this one:** new data source (a live, keyless public API), domain (weather), and interaction (forecast to a recommendation and hourly chart). Laundry forecasts exist as phone apps (Washcast, Pegs Out, Laundry Timer), not as a free web page. Keep the remaining four away from home topics: Cooking, Gallery Wall, and this make three "home-ish" picks.
+- **Stage:** built and tested (model 9/9; screenshots from saved real forecasts for London and Madrid with a fixed clock: desktop, phone, dark, evening, search, offline error; live search and forecast for Edinburgh in the pane); shipping
+- **Next action:** commit "Add Experiment #011: Line Dry", push, watch the Actions run, smoke-test production with a live forecast, then mark verified and choose #012 (not home).
 
 ## Shipped
 
@@ -31,6 +31,7 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 | 008 | Serve Time | serve-time | Cooking / home | Plan backward from a deadline, then a live countdown | Home cooks hosting meals | 2026-10-09 |
 | 009 | Tear-Off Flyer | tear-off-flyer | Community / print | Form to live print layout (paper output) | Neighbors, tutors, people posting notices | 2026-10-09 |
 | 010 | Gallery Wall | gallery-wall | Home / decorating (counts with Cooking / home: 2) | Physical layout calculator with a to-scale drawing | Renters and homeowners hanging art | 2026-10-09 |
+| 011 | Line Dry | line-dry | Weather / household (home-ish: 3 of 3) | Live keyless API to a recommendation with an hourly chart | Households drying washing outside | 2026-10-09 |
 
 ## Category distribution
 
@@ -45,6 +46,7 @@ Limits across #001–#015: at most 3 per product category, at most 2 primarily t
 - Language learning: 1 (shares the language family with #004, which counts as 2 if grouped)
 - Cooking / home: 1, plus Home / decorating: 1 (2 if grouped as "home"; cap 3)
 - Community / print: 1
+- Weather / household: 1 (counted toward "home" too, which is now at its cap of 3)
 
 ## Dropped ideas
 
@@ -97,6 +99,7 @@ Where applicable: core flow; persistence or file handling; several edge cases; i
 
 - **Screenshots:** `node .claude/qa/shot.mjs plan.json` drives headless Brave with a throwaway profile (gitignored helper; see its header for the plan format). The in-app browser pane can be tiny, so use this for visual checks. First launch can take about a minute. Plans can stub browser APIs before page scripts run (`initScript`) and send real key presses (`keys`) for keyboard and focus checks. Tab presses in the in-app pane don't reliably move focus, so test keyboard use with `keys`.
 - **Helper option added in #009:** `pdf: true` saves a real print (`Page.printToPDF`, CSS page size, no background graphics) next to the screenshot; the Read tool can open the PDF to check pages and layout.
+- **Fixtures:** `.claude/qa/fixtures/` holds saved real API answers (London, Madrid forecasts, London place search) for stable screenshots; stub `fetch` and `Date.now` in an `initScript`.
 - **Lesson from #009:** `img.decode()` can wait forever while a tab is in the background (seen in the in-app pane). Use `onload`/`onerror` for images the user picks.
 - **Helper options added in #008:** `print: true` emulates print media; `preScript` sets up state before `keys`. For time-dependent pages, an `initScript` that replaces `Date.now` with a fixed clock (and writes localStorage) gives stable screenshots.
 - **In-app pane quirk:** `Math.random` appears seeded the same on each load there (the first number repeated across reloads). Not a product bug; headless Brave varies normally.
