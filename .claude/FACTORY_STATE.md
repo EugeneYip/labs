@@ -11,22 +11,24 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 
 ## Position
 
-- **Last shipped:** #001 Trip Board (`trip-board`), 2026-10-08
-- **Current experiment:** #002, not yet chosen
-- **Stage:** batch setup (Constitution storage amendment + this file)
-- **Next action:** commit and push the batch setup, then choose #002 from the candidate pool.
+- **Last shipped:** #002 Photo Scrub (`photo-scrub`), 2026-10-09 (pushing now; verify production if a session resumes here)
+- **Current experiment:** none (choose #003)
+- **Stage:** #002 committed and pushed; production check pending
+- **Next action:** confirm the Actions run for #002 succeeded and labs.eugeneyip.net/photo-scrub/ works, then choose #003 (not a file tool, and not privacy, right after #002).
 
 ## Shipped
 
 | # | Name | Slug | Category | Interaction model | Audience | Shipped |
 |---|------|------|----------|-------------------|----------|---------|
 | 001 | Trip Board | trip-board | Travel / information organization | Saved list, paste-to-add | Self-planning travelers | 2026-10-08 |
+| 002 | Photo Scrub | photo-scrub | Privacy / browser file tool | Drop files in, clean files out | Anyone sharing photos (marketplaces, forums) | 2026-10-09 |
 
 ## Category distribution
 
 Limits across #001–#015: at most 3 per product category, at most 2 primarily travel, no two consecutive experiments solving the same type of problem. By #010, at least 6 distinct problem domains.
 
 - Travel / information organization: 1 (travel cap 2)
+- Privacy / browser file tools: 1
 
 ## Dropped ideas
 
@@ -36,7 +38,6 @@ None yet. A dropped idea does not use up a number.
 
 Ideas only, not commitments. Pick each experiment based on what has shipped. Remove used or rejected ideas.
 
-- Photo metadata scrubber: strip location/camera data before sharing, locally (privacy, file tool)
 - Group expense settle-up with a shareable link (money, groups)
 - CSV quick profiler: drop a file, see columns, types, gaps, top values (data)
 - Text mender: fix text pasted from PDFs and emails (line breaks, hyphens, spacing) (text)

@@ -16,6 +16,14 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-09 · #002 Photo Scrub
+
+- **What:** [labs.eugeneyip.net/photo-scrub](https://labs.eugeneyip.net/photo-scrub/). Drop in or choose JPEG, PNG, or WebP photos to see the hidden details they carry: GPS position (with a map link), place names, camera and serial numbers, dates, author and copyright, software, edit history, embedded thumbnails, and extra embedded images. It then gives you clean copies, one at a time, as a ZIP, or through the phone's share sheet. Cleaning copies the image data byte for byte and keeps only the orientation and color profile, so quality doesn't change, and each clean copy is read back to confirm nothing is left. Nothing is uploaded or stored.
+- **Problem it tests:** Phone photos record exactly where they were taken, and people share them on marketplaces, forums, and by email without knowing it. Most web tools that remove this data upload the photo first. Will people use a local tool that shows the leak and fixes it in one step?
+- **Scope decisions:** Everything except orientation and color profile is removed, with no "keep the date" options. No re-encoding, resizing, or editing, and no storage at all. HEIC isn't processed: iPhones convert photos to JPEG when they're chosen in a browser, and desktop HEIC files get an explanation instead.
+- **Limitations:** No HEIC, AVIF, GIF, TIFF, or RAW files. It can't hide what's visible in the picture itself, such as faces, street signs, or screens. Tested with real browser-made images carrying metadata modeled on real cameras, not a library of files straight from cameras. The share button appears only where the browser supports sharing files, mostly on phones.
+- **Revisit if:** people use it for marketplace listings or ask for HEIC support, resizing to fit upload limits, or an option to keep dates. Or if searches like "remove location from photo" bring steady traffic.
+
 ## 2026-10-08 · #001 Trip Board
 
 - **What:** A private board for trip research at [labs.eugeneyip.net/trip-board](https://labs.eugeneyip.net/trip-board/). Paste links or type ideas, sort them into seven categories (Flight, Stay, Transport, Activity, Food, Research, Other), and mark each one Researching, Considering, Decided, Booked, or Skip. It has search and filters, undo for deleting, importing, and starting over, and export and import of a versioned file (`labs.trip-board`, version 1). Everything stays in the visitor's browser.

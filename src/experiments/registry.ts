@@ -34,6 +34,14 @@ export const experiments: readonly Experiment[] = [
     shipped: '2026-10-08',
     status: 'live',
   },
+  {
+    number: 2,
+    slug: 'photo-scrub',
+    title: 'Photo Scrub',
+    summary: 'Shows the hidden location, camera, and date details inside your photos and makes clean copies to share, without uploading them anywhere.',
+    shipped: '2026-10-09',
+    status: 'live',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */
