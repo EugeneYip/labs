@@ -210,6 +210,14 @@ export const experiments: readonly Experiment[] = [
     shipped: '2026-10-09',
     status: 'live',
   },
+  {
+    number: 24,
+    slug: 'ranked-choice-count',
+    title: 'Ranked Choice Count',
+    summary: 'Counts a ranked-choice vote for a club or committee, by instant runoff or STV: tap in paper ballots or paste a Google or Microsoft Forms export, and see every round explained.',
+    shipped: '2026-10-09',
+    status: 'live',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */

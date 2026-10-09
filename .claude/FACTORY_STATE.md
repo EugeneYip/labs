@@ -17,10 +17,10 @@ More selective than Batch 01. For each experiment: generate several candidates, 
 
 ## Position
 
-- **Last shipped:** #022 Day Clock (`day-clock`), 2026-10-09, verified in production (commit 817e4b2): 200 with the right title, the live clock shows the real day and time, settings open by keyboard, console clean, homepage shows 22 shipped.
-- **Current experiment:** #023 Discussion Map (`discussion-map`), facilitation: enter the people in a seminar, meeting, or circle, arrange them around the table, then tap whoever starts speaking. It draws lines between consecutive speakers (the paper Harkness map) and counts each person's turns and talk time, with pause, undo, and who hasn't spoken. Save the map as an image, download the turns as a CSV, or print the summary. Names, seats, and the current discussion stay on the device.
+- **Last shipped:** #023 Discussion Map (`discussion-map`), 2026-10-09, verified in production (commit 467fa04): 200 with the right title, sample group, taps, lines, and summary work live, console clean, homepage shows 23 shipped.
+- **Current experiment:** #024 Ranked Choice Count (`ranked-choice-count`), civic / organizations: count ranked ballots for clubs, unions, school councils, and awards. Enter paper ballots by tapping (with number keys), or paste or open a Google Forms grid export, a Microsoft Forms ranking export, a CSV of choice columns, or plain lines ("Ava > Ben > Cleo"). It counts one winner by instant runoff (majority of continuing ballots) or several seats by STV (Droop quota, fractional surplus transfers). Overvotes end a ballot, skipped ranks are skipped, repeats are ignored, and ties are broken by earlier rounds, then by lot. It shows every round with bars, a plain-language account of each transfer, and the first-choice-only comparison, with copy, CSV, and print.
 - **Stage:** built and tested; committing and pushing.
-- **Next action:** push, verify https://labs.eugeneyip.net/discussion-map/ in production, then build #024, the ranked-choice vote counter.
+- **Next action:** push, verify https://labs.eugeneyip.net/ranked-choice-count/ in production, then choose and build #025, the last of the batch.
 - **Plan for the rest of the batch:** #022 Day Clock (dementia orientation display for any tablet), #023 Discussion Map (tap who speaks in a seminar or meeting: turns, talk time, lines between speakers), #024 ranked-choice vote counter (paper ballots by tapping plus forgiving CSV import), #025 the market-stall till or a stronger idea found by then. No two consecutive experiments may solve the same type of problem.
 
 ## Batch 02 research notes
@@ -70,6 +70,7 @@ Checked 2026-10-09. Keep these so later picks don't repeat the research.
 | 021 | Family Stories | family-stories | Family history / oral history | Guided question cards with per-question audio recording, stored in IndexedDB, ZIP download | Families interviewing elders | 2026-10-09 |
 | 022 | Day Clock | day-clock | Elder care / dementia | Ambient full-screen display with fitted type, night colors, wake lock, timed reminders, press-and-hold settings | Families and carers of people with dementia | 2026-10-09 |
 | 023 | Discussion Map | discussion-map | Facilitation / meetings and seminars | Tap-to-log speakers on a seating map, lines between consecutive speakers, talk-time stats, drag seats | Teachers (Harkness, Socratic seminars), facilitators | 2026-10-09 |
+| 024 | Ranked Choice Count | ranked-choice-count | Civic / organizations (voting) | Tap-entered paper ballots or forgiving export import, then IRV/STV rounds with bars and plain-language transfers | Clubs, unions, councils, award committees | 2026-10-09 |
 
 ## Category distribution
 
