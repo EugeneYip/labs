@@ -16,6 +16,14 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-09 · #014 Playing Time
+
+- **What:** [labs.eugeneyip.net/playing-time](https://labs.eugeneyip.net/playing-time/). For volunteer coaches. Enter the roster, tap anyone not here today, and set the format: players on the field at once, periods and their length, and how often to change. Presets cover soccer 7v7 and 9v9, basketball, and hockey. Optionally a goalkeeper plays each whole period, and the job rotates. You get a plan that gives everyone minutes as even as the format allows: a grid of who plays each shift, minutes per player, and a "from the sideline" list of who comes off and goes on at each break. Shuffle gives another fair plan. It prints on one page, and the roster and format are remembered on the device.
+- **Problem it tests:** Fair playing time is the most common worry in youth sports and the hardest thing to manage from the sideline with a clipboard. The tools that do it are apps with paid tiers, or basketball-only. Will coaches use a free page that does the math before the game?
+- **Scope decisions:** Changes happen only at set breaks, and a very short tail of a period joins the shift before it. Shifts go to whoever is furthest behind their fair share for the time they have left. That means a player due in goal later gets their field time first, and nobody sits twice in a row when the bench allows it. Keepers are chosen up front, rotating, so their time in goal counts from the start. Positions, skill balancing, and live game timing are left out on purpose.
+- **Limitations:** It plans and doesn't time the game, so injuries, late arrivals, and tired legs mean adjusting on the fly. When a period in goal is longer than a fair share, as with a small number on the field, keepers end up with more minutes. Everyone else stays within one shift of each other. There's no sharing with assistant coaches or parents beyond printing.
+- **Revisit if:** coaches use it on game days. Likely asks are positions or "must play" constraints, marking substitutions as they happen with a running tally, and season totals across games.
+
 ## 2026-10-09 · #013 In Tune
 
 - **What:** [labs.eugeneyip.net/in-tune](https://labs.eugeneyip.net/in-tune/). Singing practice for intervals. Pick your voice (low, middle, or high), the intervals to work on (from the same note up to an octave), up, down, or both, and how close counts (within 50, 30, or 15 cents). In Tune plays a reference note and asks for, say, "a major third up from G3". As you sing, a meter shows your pitch against the target, with words to match: "2 semitones too low", "12 cents sharp: go a little lower", "in tune, hold it". Holding it in tune for a second counts as a match. You can replay the note, hear the answer, or skip. Settings are remembered on the device.

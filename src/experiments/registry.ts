@@ -130,6 +130,14 @@ export const experiments: readonly Experiment[] = [
     shipped: '2026-10-09',
     status: 'live',
   },
+  {
+    number: 14,
+    slug: 'playing-time',
+    title: 'Playing Time',
+    summary: 'Plans substitutions for youth sports so every player gets fair minutes, with who goes on and off at each break and a grid to print.',
+    shipped: '2026-10-09',
+    status: 'live',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */

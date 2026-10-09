@@ -11,11 +11,11 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 
 ## Position
 
-- **Last shipped:** #012 Glance (`glance`), 2026-10-09, verified in production (commits c34a822, then 488b903 so each guess saves on submit)
-- **Current experiment:** #013 In Tune (`in-tune`): singing interval practice with live pitch from the microphone. It plays a reference note in your voice range and asks for an interval up or down (or the same note). A meter shows your sung pitch against the target in cents, and holding within tolerance for a second counts as a match. Pitch detection (YIN) runs in the browser; audio is never recorded or sent. Settings in localStorage `labs:in-tune`.
-- **Why this one:** new domain (music), interaction (real-time microphone feedback), and audience (choir singers, voice students). Free web options are thin: Vocalify Me and PerfectPitch.training are freemium, Sing Test only tests your range. Remaining after this: #014 and #015, avoiding home topics; candidates are hike turnaround time (outdoors), a caffeine-at-bedtime estimator (wellness), and analog clock practice for kids.
-- **Stage:** built and tested (model 7/7 with synthetic voices E2–G5 within 3 cents; end to end with a generated voice standing in for the microphone: match, sharp, far low then sliding in, a major third, releasing the mic, refusal; screenshots phone/desktop, light/dark); shipping
-- **Next action:** commit "Add Experiment #013: In Tune", push, watch the Actions run, smoke-test production, then mark verified and choose #014.
+- **Last shipped:** #013 In Tune (`in-tune`), 2026-10-09, verified in production with the stand-in voice (commit 7f29ff0)
+- **Current experiment:** #014 Playing Time (`playing-time`): fair substitution plans for youth sports. Roster (with "not here today"), players on the field, periods and their length, how often to change, and optionally a goalkeeper per period. It builds shifts giving everyone near-equal minutes and no long benchings, lists who goes on and off at each change, and prints as a grid. Roster and settings in localStorage `labs:playing-time`.
+- **Why this one:** new domain (sports coaching), audience (volunteer youth coaches), and interaction (roster to a generated schedule with calls for each change). Research: allPlay Soccer caps free use at three lineups; Pitch Planner and SubNow are apps; Hoops Geek is basketball-only; PlayingTimeCalculator.com dates from 2015. Rejected this round: hike turnaround (trailhiking.com.au already does Naismith plus sunset), caffeine cutoff (many free calculators), tempo-ramp metronome (Unchained and PaidTabs do it free on the web).
+- **Stage:** built and tested (model 8/8 across 5–16 players, four field sizes, five formats, with and without keepers; fairness rewritten to count future time in goal; pane flows; screenshots; one-page PDF); shipping
+- **Next action:** commit "Add Experiment #014: Playing Time", push, watch the Actions run, smoke-test production, then mark verified and choose #015, the last of the batch.
 
 ## Shipped
 
@@ -34,6 +34,7 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 | 011 | Line Dry | line-dry | Weather / household (home-ish: 3 of 3) | Live keyless API to a recommendation with an hourly chart | Households drying washing outside | 2026-10-09 |
 | 012 | Glance | glance | Games / daily puzzle | Flash, then guess; shareable daily score | Daily puzzle players | 2026-10-09 |
 | 013 | In Tune | in-tune | Music | Real-time microphone pitch feedback | Choir singers, voice students | 2026-10-09 |
+| 014 | Playing Time | playing-time | Sports / coaching | Roster to a generated fair schedule with sideline calls; print | Volunteer youth coaches | 2026-10-09 |
 
 ## Category distribution
 
@@ -51,6 +52,7 @@ Limits across #001–#015: at most 3 per product category, at most 2 primarily t
 - Weather / household: 1 (counted toward "home" too, which is now at its cap of 3)
 - Games: 1
 - Music: 1
+- Sports / coaching: 1
 
 ## Dropped ideas
 
