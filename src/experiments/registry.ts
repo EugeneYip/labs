@@ -162,6 +162,14 @@ export const experiments: readonly Experiment[] = [
     shipped: '2026-10-09',
     status: 'live',
   },
+  {
+    number: 18,
+    slug: 'off-book',
+    title: 'Off Book',
+    summary: 'Helps actors learn their lines: paste a script, pick your part, and practice from your cues with your lines hidden until you say them.',
+    shipped: '2026-10-09',
+    status: 'live',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */
