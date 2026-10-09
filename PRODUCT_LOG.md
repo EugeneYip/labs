@@ -16,6 +16,12 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-09 · #022 Day Clock update
+
+- **What:** Screen readers no longer read out the time every minute. Only a reminder is announced, as it appears. The reminders settings now say plainly that reminders only show on the screen, with no sound, and that nothing records whether they were seen, so they shouldn't be relied on alone for medicines. Settings are saved again as each part of the day begins, so if a browser clears the data of a page left untouched for weeks, the running clock puts it back.
+- **Why:** The Batch 03 audit found the whole clock marked as a live region, which made screen readers announce every minute. A caregiver could also mistake an on-screen reminder for an alarm. Safari can delete a site's saved data after seven days of browser use without a tap on the site, which is exactly how a day clock is used.
+- **Notes:** The default parts of the day (morning from 5, afternoon from 12, evening from 5 PM, night from 9 PM) were compared with commercial dementia clocks. These start morning between 4 and 7 AM, evening at 5 or 6 PM, and night at 9 or 10 PM, with no standard, so the defaults stay and remain editable. Offline loading was tested with the offline support added in this batch.
+
 ## 2026-10-09 · #020 Custody Calendar update
 
 - **What:** A share link that can't be read, for example one cut short in a message, now says so and changes nothing. Before, it quietly showed whatever schedule was already saved. After copying a link, the page explains that the link holds the schedule as it is now and that later changes don't reach it. After downloading the calendar file, it suggests importing into a calendar of its own, so the events are easy to replace after changes. Calendar files keep a stay whole when it crosses New Year, so the count of nights is right and files for neighboring years share that event. Event IDs now differ between families, so two schedules in one calendar app don't overwrite each other. The schedule stops taking swaps at the 1,000 a share link can hold, which before would have reset the saved schedule on the next visit. The page now calls counting by nights "a common way" to count custody time rather than the usual way.

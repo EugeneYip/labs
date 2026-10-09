@@ -29,14 +29,6 @@ export default function DayClock() {
   const [scale, setScale] = useState(1)
 
   useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 1, ...settings }))
-    } catch {
-      // Private browsing or full storage: settings just won't be remembered.
-    }
-  }, [settings])
-
-  useEffect(() => {
     const onChange = () => setFull(!!document.fullscreenElement)
     document.addEventListener('fullscreenchange', onChange)
     return () => document.removeEventListener('fullscreenchange', onChange)
@@ -45,6 +37,15 @@ export default function DayClock() {
 
   const part = partOf(minutesOf(now), settings.starts)
   const night = settings.nightColors && part === 'night'
+
+  // Saved again as each part of the day begins: a browser can clear the data of a page left untouched for weeks, and this puts it back.
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 1, ...settings }))
+    } catch {
+      // Private browsing or full storage: settings just won't be remembered.
+    }
+  }, [settings, part])
   const locale = navigator.language
   const day = new Intl.DateTimeFormat(locale, { weekday: 'long' }).format(now)
   const date = new Intl.DateTimeFormat(locale, { month: 'long', day: 'numeric', ...(settings.showYear ? { year: 'numeric' } : {}) }).format(now)
@@ -88,7 +89,7 @@ export default function DayClock() {
   return (
     <div ref={root} className={`relative flex flex-none flex-col overflow-hidden ${night ? 'bg-black text-amber-200/80' : 'bg-[#fffdf8] text-stone-950'}`} style={{ height: full ? '100dvh' : 'calc(100dvh - 3rem)' }}>
       <div ref={area} className={`flex flex-1 flex-col items-center justify-center overflow-hidden px-[4vw] pt-[3vh] pb-16 text-center ${settings.speak ? 'cursor-pointer' : ''}`} onClick={speak}>
-        <div ref={content} className="flex flex-col items-center" style={{ transform: `translate(${drift}px, ${-drift}px)` }} aria-live="polite">
+        <div ref={content} className="flex flex-col items-center" style={{ transform: `translate(${drift}px, ${-drift}px)` }}>
           <p className="leading-none font-semibold tracking-tight" style={{ fontSize: size(fit(day, 17, 24)) }}>
             {day}
           </p>
@@ -105,20 +106,19 @@ export default function DayClock() {
               {time}
             </p>
           )}
-          {(settings.message || due.length > 0) && (
-            <div className="grid max-w-[90vw]" style={{ fontSize: `max(1rem, ${size('min(4.6vw, 6vh)')})`, marginTop: size('5vh'), gap: size('1.5vh') }}>
-              {settings.message && (
-                <p className={`rounded-2xl px-[3vw] leading-snug text-pretty ${night ? 'bg-amber-200/10' : 'bg-amber-100'}`} style={{ paddingBlock: size('1.5vh') }} dir="auto">
-                  {settings.message}
-                </p>
-              )}
-              {due.map((r) => (
-                <p key={r.id} className={`rounded-2xl px-[3vw] leading-snug font-medium text-pretty ${night ? 'bg-amber-200/15' : 'bg-sky-100'}`} style={{ paddingBlock: size('1.5vh') }} dir="auto">
-                  {r.text}
-                </p>
-              ))}
-            </div>
-          )}
+          {/* Reminders are announced to screen readers as they appear; the time isn't, or it would be read out every minute. */}
+          <div className="grid max-w-[90vw]" style={settings.message || due.length > 0 ? { fontSize: `max(1rem, ${size('min(4.6vw, 6vh)')})`, marginTop: size('5vh'), gap: size('1.5vh') } : undefined} aria-live="polite">
+            {settings.message && (
+              <p className={`rounded-2xl px-[3vw] leading-snug text-pretty ${night ? 'bg-amber-200/10' : 'bg-amber-100'}`} style={{ paddingBlock: size('1.5vh') }} dir="auto">
+                {settings.message}
+              </p>
+            )}
+            {due.map((r) => (
+              <p key={r.id} className={`rounded-2xl px-[3vw] leading-snug font-medium text-pretty ${night ? 'bg-amber-200/15' : 'bg-sky-100'}`} style={{ paddingBlock: size('1.5vh') }} dir="auto">
+                {r.text}
+              </p>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -243,7 +243,7 @@ function SettingsPanel({ settings, onChange, onDone, awake }: { settings: Settin
           <textarea value={settings.message} maxLength={200} onChange={(e) => set({ message: e.target.value })} rows={2} placeholder="Sarah is coming for lunch on Sunday." className={`${control} w-full py-2`} dir="auto" />
         </Section>
 
-        <Section title="Reminders" hint="Each one appears at its time and stays for a while, every day or on chosen days.">
+        <Section title="Reminders" hint="Each one appears at its time and stays for a while, every day or on chosen days. Reminders only show on the screen, with no sound, and nothing records whether they were seen, so don’t rely on them alone for medicines.">
           <ul className="grid gap-3">
             {settings.reminders.map((r) => (
               <li key={r.id} className="grid gap-3 rounded-xl border border-rule p-3">
