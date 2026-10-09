@@ -277,7 +277,7 @@ function Setup({ exchange, onChange, onDrawn }: { exchange: Exchange; onChange: 
 
 function Links({ exchange, links, onRedraw, onEdit, onReset }: { exchange: Exchange; links: string[]; onRedraw: (links: string[]) => void; onEdit: () => void; onReset: () => void }) {
   const [copied, setCopied] = useState<number | null>(null)
-  const [confirming, setConfirming] = useState<'redraw' | 'reset' | null>(null)
+  const [confirming, setConfirming] = useState<'redraw' | 'edit' | 'reset' | null>(null)
   const url = (k: number) => `${location.origin}${location.pathname}#${links[k]}`
   const canShare = typeof navigator.share === 'function'
 
@@ -357,6 +357,16 @@ function Links({ exchange, links, onRedraw, onEdit, onReset }: { exchange: Excha
               Cancel
             </button>
           </p>
+        ) : confirming === 'edit' ? (
+          <p className="flex flex-wrap items-center gap-2 text-sm">
+            Changing people or rules means drawing again, so links you’ve already sent would no longer match. Go ahead?
+            <button type="button" onClick={onEdit} className={primary}>
+              Change them
+            </button>
+            <button type="button" onClick={() => setConfirming(null)} className={quiet}>
+              Cancel
+            </button>
+          </p>
         ) : confirming === 'reset' ? (
           <p className="flex flex-wrap items-center gap-2 text-sm">
             This forgets the people and links on this device. Sent links keep working.
@@ -372,7 +382,7 @@ function Links({ exchange, links, onRedraw, onEdit, onReset }: { exchange: Excha
             <button type="button" onClick={() => setConfirming('redraw')} className={quiet}>
               Draw again
             </button>
-            <button type="button" onClick={onEdit} className={quiet}>
+            <button type="button" onClick={() => setConfirming('edit')} className={quiet}>
               Change people or rules
             </button>
             <button type="button" onClick={() => setConfirming('reset')} className={quiet}>

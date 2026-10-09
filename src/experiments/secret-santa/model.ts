@@ -100,7 +100,8 @@ export function encodeMatch(match: Match): string {
 /** Reads a person's link. Null for anything incomplete, edited, or not made here. */
 export function decodeMatch(token: string): Match | null {
   try {
-    if (!/^[A-Za-z0-9_-]{12,2000}$/.test(token)) return null
+    // Long enough for every field at its limit, even in scripts that take three bytes a character.
+    if (!/^[A-Za-z0-9_-]{12,8000}$/.test(token)) return null
     const bytes = fromBase64Url(token)
     const json = new TextDecoder('utf-8', { fatal: true }).decode(scramble(bytes.subarray(6), bytes.subarray(0, 6)))
     const data: unknown = JSON.parse(json)

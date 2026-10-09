@@ -16,6 +16,12 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-09 · #006 Secret Santa update
+
+- **What:** "Change people or rules" now asks first, like "Draw again", because going back to the setup throws away the drawn links. Before, one tap lost them. Links also work when every field is filled to its limit in a script like Chinese, where a link used to come out too long and show "This link doesn't work".
+- **Why:** The Batch 03 audit found both. An organizer who has sent some links and loses the rest has to draw again and resend everything, and the people who already have links would hold old matches.
+- **Notes:** The draw was checked again: it shuffles until it finds an arrangement that fits the rules, so every valid draw is equally likely, and it falls back to a search only when the rules leave very few. Tested with the longest possible link, and with confirming, cancelling, and reloading.
+
 ## 2026-10-09 · #022 Day Clock update
 
 - **What:** Screen readers no longer read out the time every minute. Only a reminder is announced, as it appears. The reminders settings now say plainly that reminders only show on the screen, with no sound, and that nothing records whether they were seen, so they shouldn't be relied on alone for medicines. Settings are saved again as each part of the day begins, so if a browser clears the data of a page left untouched for weeks, the running clock puts it back.
