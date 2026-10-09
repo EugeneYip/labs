@@ -1,14 +1,18 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { localStamp, percent, toCSV, type Check } from './model.ts'
+import { checkKey, fromCSV, localStamp, newId, percent, toCSV, type Check } from './model.ts'
 import { control, dateText, outline, quiet, shortDate, whenText } from './ui.ts'
 
 const ALL = ''
 
-/** Checks saved on this device: a table, a progress chart for one student, CSV export, and deleting. */
+const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`
+
+/** Checks saved on this device: a table, a progress chart for one student, CSV export and loading, and deleting. */
 export function Log({ log, onChange }: { log: Check[]; onChange: (log: Check[]) => void }) {
   const [student, setStudent] = useState(ALL)
   const [deleted, setDeleted] = useState<Check[] | null>(null)
+  const [loaded, setLoaded] = useState<{ text: string; ids: string[] } | null>(null)
   const [confirming, setConfirming] = useState(false)
+  const fileInput = useRef<HTMLInputElement>(null)
 
   const students = useMemo(() => {
     const names = new Map<string, string>()
@@ -22,8 +26,47 @@ export function Log({ log, onChange }: { log: Check[]; onChange: (log: Check[]) 
     const ids = new Set(gone.map((c) => c.id))
     onChange(log.filter((c) => !ids.has(c.id)))
     setDeleted(gone)
+    setLoaded(null)
     setConfirming(false)
   }
+
+  // A CSV downloaded here brings checks back after the browser's data is cleared, or onto another device.
+  const loadFile = async (file: File) => {
+    setDeleted(null)
+    const result = await file.text().then((text) => fromCSV(text, newId), () => null)
+    if (!result) return setLoaded({ text: `${file.name} isn’t a CSV downloaded from Fluency Check, so nothing was added.`, ids: [] })
+    const known = new Set(log.map(checkKey))
+    const added = result.checks.filter((c) => {
+      const key = checkKey(c)
+      if (known.has(key)) return false
+      known.add(key)
+      return true
+    })
+    const already = result.checks.length - added.length
+    const parts = [added.length ? `Added ${plural(added.length, 'check')} from ${file.name}.` : `Nothing new in ${file.name}.`]
+    if (already) parts.push(`${plural(already, 'check')} ${already === 1 ? 'was' : 'were'} already here.`)
+    if (result.unreadable) parts.push(`${plural(result.unreadable, 'row')} couldn’t be read.`)
+    if (added.length) onChange([...log, ...added].sort((a, b) => a.at - b.at))
+    setLoaded({ text: parts.join(' '), ids: added.map((c) => c.id) })
+  }
+  const loadButton = (className: string, label: string) => (
+    <>
+      <button type="button" onClick={() => fileInput.current?.click()} className={className}>
+        {label}
+      </button>
+      <input
+        ref={fileInput}
+        type="file"
+        accept=".csv,text/csv"
+        className="hidden"
+        onChange={(e) => {
+          const file = e.target.files?.[0]
+          e.target.value = ''
+          if (file) void loadFile(file)
+        }}
+      />
+    </>
+  )
 
   const download = () => {
     const blob = new Blob(['\uFEFF', toCSV([...shown].reverse())], { type: 'text/csv;charset=utf-8' })
@@ -36,7 +79,12 @@ export function Log({ log, onChange }: { log: Check[]; onChange: (log: Check[]) 
     setTimeout(() => URL.revokeObjectURL(url), 1000)
   }
 
-  if (!log.length && !deleted) return null
+  if (!log.length && !deleted && !loaded)
+    return (
+      <p className="mt-14 max-w-prose text-sm text-pretty text-dim">
+        Saved checks will appear here. To bring back checks from another browser, {loadButton('cursor-pointer underline underline-offset-4 hover:text-ink', 'load a CSV')} downloaded from Fluency Check.
+      </p>
+    )
 
   return (
     <section aria-labelledby="log-heading" className="mt-14">
@@ -45,7 +93,7 @@ export function Log({ log, onChange }: { log: Check[]; onChange: (log: Check[]) 
           <h2 id="log-heading" className="text-lg font-semibold tracking-tight">
             Saved on this device
           </h2>
-          <p className="mt-1 text-sm text-dim">Only in this browser. Nothing is sent anywhere, so download a copy to keep it safe.</p>
+          <p className="mt-1 max-w-prose text-sm text-pretty text-dim">Only in this browser, and nothing is sent anywhere. Browsers can clear saved data, so download a CSV now and then: you can load it back here or on another device.</p>
         </div>
         <div className="flex flex-wrap items-end gap-2">
           {students.length > 1 && (
@@ -64,6 +112,7 @@ export function Log({ log, onChange }: { log: Check[]; onChange: (log: Check[]) 
           <button type="button" onClick={download} disabled={!shown.length} className={outline}>
             Download CSV
           </button>
+          {loadButton(outline, 'Load a CSV')}
         </div>
       </div>
 
@@ -80,6 +129,25 @@ export function Log({ log, onChange }: { log: Check[]; onChange: (log: Check[]) 
           >
             Undo
           </button>
+        </p>
+      )}
+
+      {loaded && (
+        <p className="mt-4 flex flex-wrap items-center gap-x-3 text-sm text-pretty" role="status" dir="auto">
+          {loaded.text}
+          {loaded.ids.length > 0 && (
+            <button
+              type="button"
+              onClick={() => {
+                const ids = new Set(loaded.ids)
+                onChange(log.filter((c) => !ids.has(c.id)))
+                setLoaded(null)
+              }}
+              className="cursor-pointer underline underline-offset-4 hover:text-dim"
+            >
+              Undo
+            </button>
+          )}
         </p>
       )}
 

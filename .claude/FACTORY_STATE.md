@@ -16,7 +16,7 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 - [x] Phase 1: `.claude/PORTFOLIO_REVIEW.md` scores all 25 on the 13 criteria (risk criteria inverted, maximum 65), in tiers A to D.
 - [x] Phase 2: five candidates selected (see Batch 03 selection below).
 - [ ] Phase 3: deep audit of each candidate (correctness, edge cases, data integrity, privacy, accessibility, compatibility, mobile, performance, misunderstanding, claims, export/import, print, API failure, refresh recovery), with domain rules checked against authoritative sources and fixes shipped.
-- [ ] Offline: service worker evaluated, and if sound, implemented and tested online → offline → online, including update propagation.
+- [x] Offline: `public/sw.js` shipped (commit 821134e). Tested locally by stopping and restarting the server: saved pages load offline, an unvisited page gets an offline notice, a URL without its trailing slash maps to the saved page, and a changed page arrives as soon as the server returns. In production, pages are controlled and saved, the no-slash redirect works, and no outside-service responses or hash/query URLs are cached.
 - [ ] Discovery: homepage reviewed, with restrained improvements if warranted.
 - [ ] Feedback: a zero-infrastructure mechanism found and added, or the conclusion recorded.
 - [ ] New experiments (optional, at most three): decided.
@@ -29,7 +29,11 @@ The five highest totals in the portfolio review, all tier A: **#016 Fluency Chec
 ## Position
 
 - **Current:** Batch 03, Phase 3 and offline support. Order: (1) offline service worker, since it helps Day Clock, Playing Time, Stall Till, and the other local tools, (2) deep audits of the five, (3) the sensitive-wording pass, (4) homepage discovery, (5) feedback, (6) decide on new experiments (default: none), (7) final production check and report.
-- **Next action:** design and test the service worker locally (build, then the `pages` server on port 4174): online visit, offline reload, online update.
+- **Next action:** deep audit of #020 Custody Calendar (ICS correctness, diverging copies, legal-authority wording, accessibility), then #022, #006, #014.
+
+## Batch 03 audits
+
+- **#016 Fluency Check (done).** Checked against Amplify's mCLASS DIBELS 8 scoring summary (ORF table). Fixed: the guide now lists mispronunciations, words read out of order, and sounded-out-not-blended words as errors, skipped lines as one error per word, and dialect, accent, and articulation as not errors. Accuracy bands are now "a common guideline", with one line saying a check is a snapshot, not comprehension. A reload mid-check lost the run, and a re-read inflates the score, so the run is now kept in `labs:fluency-check:run`. A quick reload (15 s or less) carries the clock on. A longer gap pauses at the last moment the page was visible, or goes to "Time!" if the minute ran out. A saved, finished run is dropped after an hour. Sound unlocks again on the next tap. The CSV couldn't restore the log, and Safari's seven-day storage cap makes that real for school holidays, so "Load a CSV" now reads the app's own export back (columns by name, `;` and tab separators, decimal commas, AM/PM times, de-duplicated to the minute, with undo). It also appears as one line when the log is empty. Tests: 15 model tests, plus a browser plan (`.claude/qa/plan-fluency-5.json`) covering the reload cases and CSV loading at desktop, phone, and dark.
 
 ## Batch 02 research notes
 
@@ -172,6 +176,7 @@ Where applicable: core flow; persistence or file handling; several edge cases; i
 - **Fixtures added in #017:** `frost-boston.json`, `frost-canberra.json`, `frost-seville.json` (1995-01-01 to 2026-10-07 daily lows), plus 1991–2020 copies for Boston, Denver, and Portland. Seed settings before page scripts with an `initScript` guarded by a sessionStorage flag: the helper's `storage` option races a lazily loaded experiment that saves its defaults on mount.
 - **Video in tests (from #019):** `.claude/qa/form-video.js` is an `initScript` that adds `__makeVideo()` (a canvas animation recorded with MediaRecorder as WebM), `__open(...files)` (puts files into the page's file input with a DataTransfer), and `__tap(svg, fx, fy)` (pointer events). Recorded WebM has no stated duration (the player seeks to the end to find it) and irregular frame timing.
 - **Recording in tests (from #021):** a stand-in microphone built from an oscillator through `createMediaStreamDestination()` records only silence unless Brave starts with `browserArgs: ["--autoplay-policy=no-user-gesture-required"]`, because scripted clicks don't count as a user gesture and the AudioContext stays suspended. Don't `await ctx.resume()` in the stub; it never settles. Key lists in plans can now include numbers, which are pauses in milliseconds.
+- **Offline tests (Batch 03):** `.claude/qa/shot.mjs` plans take `exec` (a shell command run before a shot) and `offline` (CDP network emulation for the page only; a service worker's own fetches still reach the network, so real offline tests stop the server instead). The scratchpad `serve.sh start|stop` served a copy of `dist/` on port 4175 for this.
 - **zsh gotcha:** never name a shell loop variable `path`; zsh ties it to `PATH`, so commands like curl stop being found.
 - Storage keys must be `labs:<slug>` (Constitution, amended 2026-10-09 with owner authorization).
 

@@ -16,6 +16,12 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-09 · #016 Fluency Check update
+
+- **What:** The scoring guide now follows the published DIBELS 8 oral reading rules more closely. Mispronounced words, words read out of order, and words sounded out but not blended count as errors. A skipped line counts each of its words. Differences in pronunciation due to accent, dialect, or articulation don't count. The accuracy levels are now labeled as a common guideline, and the guide says one check is a snapshot of speed and accuracy, not of understanding. A check in progress now survives a reload: after a quick reload the clock carries on, and after a longer break it's paused at the moment the page was left. Saved checks can be loaded back from a downloaded CSV, which restores the log after a browser clears its data, or moves it to another device.
+- **Why:** The Batch 03 audit compared the guide with Amplify's DIBELS 8 scoring summary and found gaps. A reload in the middle of a check lost the marks, so the student would have had to read the passage again, and a second reading of the same passage scores higher. Safari can delete a site's saved data after seven days of browser use without a visit, which could wipe a school year's log over a holiday. The CSV was a copy but couldn't bring the log back.
+- **Notes:** Loading matches columns by name and accepts files a spreadsheet has re-saved with semicolons or tabs. It skips checks already in the log, says how many rows it couldn't read, and can be undone. The CSV keeps times to the minute, so a loaded check matches its original to the minute. Tested with round-trip, re-saved, and malformed files, and with reloads mid-check, after time ran out, and after saving.
+
 ## 2026-10-09 · Offline support
 
 - **What:** Labs now keeps a copy of each page and its files once you've opened them, so an experiment you've used before still loads without a connection: Stall Till at a market with no signal, Day Clock on a tablet whose Wi-Fi drops, Playing Time at the field. A page you've never opened says plainly that it hasn't been saved yet.

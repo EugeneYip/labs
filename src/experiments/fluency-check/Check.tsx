@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type Dispatch, type KeyboardEvent, type ReactNode, type SetStateAction } from 'react'
 import { clock, MINUTE, nextMark, type Marks, type Mode, type Passage } from './model.ts'
-import { beep, outline, primary, quiet, useNow, useWakeLock } from './ui.ts'
+import { beep, outline, primary, quiet, unlockSound, useNow, useWakeLock } from './ui.ts'
 
 /**
  * A check in progress. While reading, taps mark words; once time is up (or
@@ -21,6 +21,23 @@ export interface Run {
 }
 
 export const startRun = (): Run => ({ phase: 'running', startedAt: Date.now(), banked: 0, marks: {}, last: -1 })
+
+const PHASES: readonly Phase[] = ['running', 'paused', 'last', 'done']
+
+/** A run read back from storage, or null if it doesn't fit a passage of this many words. */
+export function restoreRun(value: unknown, words: number): Run | null {
+  if (!value || typeof value !== 'object') return null
+  const r = value as Record<string, unknown>
+  const { phase, startedAt, banked, last } = r
+  if (!PHASES.includes(phase as Phase) || !Number.isFinite(startedAt) || !Number.isFinite(banked) || (banked as number) < 0) return null
+  if (!Number.isInteger(last) || (last as number) < -1 || (last as number) >= words || !r.marks || typeof r.marks !== 'object') return null
+  const marks: Marks = {}
+  for (const [key, mark] of Object.entries(r.marks)) {
+    const i = Number(key)
+    if (Number.isInteger(i) && i >= 0 && i < words && (mark === 'error' || mark === 'sc')) marks[i] = mark
+  }
+  return { phase: phase as Phase, startedAt: startedAt as number, banked: banked as number, marks, last: last as number }
+}
 
 const elapsed = (run: Run, now: number) => run.banked + (run.phase === 'running' ? now - run.startedAt : 0)
 
@@ -47,15 +64,21 @@ export function CheckView({ passage, mode, run, setRun, onCancel, results }: { p
   }, [mode, phase, startedAt, banked, setRun])
 
   const pause = () => setRun((r) => (r.phase === 'running' ? { ...r, phase: 'paused', banked: cap(elapsed(r, Date.now())) } : r))
-  const resume = () => setRun((r) => (r.phase === 'paused' ? { ...r, phase: 'running', startedAt: Date.now() } : r))
+  const resume = () => {
+    unlockSound()
+    setRun((r) => (r.phase === 'paused' ? { ...r, phase: 'running', startedAt: Date.now() } : r))
+  }
   const stop = () => setRun((r) => ({ ...r, phase: 'last', banked: cap(elapsed(r, Date.now())) }))
   const finished = () => setRun((r) => ({ ...r, phase: 'done', banked: cap(elapsed(r, Date.now())), last: end }))
-  const tap = (i: number) =>
+  const tap = (i: number) => {
+    // After a reload, sound needs a fresh tap before the end-of-minute tone can play.
+    unlockSound()
     setRun((r) => {
       if (r.phase === 'last') return { ...r, phase: 'done', last: i }
       if (r.phase === 'done' && i > r.last) return r
       return { ...r, marks: { ...r.marks, [i]: nextMark(r.marks[i]) } }
     })
+  }
 
   const errors = Object.values(run.marks).filter((m) => m === 'error').length
 

@@ -1,14 +1,25 @@
 import { useCallback, useEffect, useMemo, useState, type Dispatch, type SetStateAction } from 'react'
-import { CheckView, startRun, type Run } from './Check.tsx'
+import { CheckView, restoreRun, startRun, type Run } from './Check.tsx'
 import { Log } from './Log.tsx'
-import { band, clock, MINUTE, parsePassage, passageName, percent, score, type Band, type Check, type Mode, type Result } from './model.ts'
+import { band, clock, MINUTE, newId, parsePassage, passageName, percent, score, type Band, type Check, type Mode, type Result } from './model.ts'
 import { PrintRecord, printStyles, StudentCopy } from './Print.tsx'
 import { SAMPLES } from './samples.ts'
 import { area, control, field, outline, primary, quiet, unlockSound, whenText } from './ui.ts'
 
 // The passage, settings, and saved checks, kept on this device only.
 const STORAGE_KEY = 'labs:fluency-check'
+// A check in progress, or finished and still on screen, so a reload doesn't lose it.
+const RUN_KEY = 'labs:fluency-check:run'
+/** A reload this quick doesn't stop the clock: the student kept reading. */
+const RELOAD_MS = 15_000
+const HOUR = 3_600_000
 const LIMITS = { text: 20_000, log: 2000, name: 80, goal: 400 }
+
+interface Pending {
+  run: Run
+  at: number
+  savedAs: { id: string; sig: string } | null
+}
 
 interface Saved {
   title: string
@@ -25,9 +36,10 @@ const NORMS = 'https://brtprojects.org/an-update-to-compiled-orf-norms-technical
 export default function FluencyCheck() {
   const [saved, setSaved] = useState(load)
   const passage = useMemo(() => parsePassage(saved.text), [saved.text])
-  const [run, setRun] = useState<Run | null>(null)
-  const [at, setAt] = useState(0)
-  const [savedAs, setSavedAs] = useState<{ id: string; sig: string } | null>(null)
+  const [pending] = useState(() => loadRun(saved))
+  const [run, setRun] = useState<Run | null>(pending?.run ?? null)
+  const [at, setAt] = useState(pending?.at ?? 0)
+  const [savedAs, setSavedAs] = useState(pending?.savedAs ?? null)
 
   useEffect(() => {
     try {
@@ -36,6 +48,22 @@ export default function FluencyCheck() {
       // Private browsing or full storage: nothing is remembered, but checks still work.
     }
   }, [saved])
+
+  useEffect(() => {
+    const keep = () => storeRun(run && { run, at, savedAs }, saved)
+    keep()
+    if (run?.phase !== 'running') return
+    // Note when the page goes away, so after a reload it can tell how long it was gone.
+    const hidden = () => {
+      if (document.visibilityState === 'hidden') keep()
+    }
+    document.addEventListener('visibilitychange', hidden)
+    window.addEventListener('pagehide', keep)
+    return () => {
+      document.removeEventListener('visibilitychange', hidden)
+      window.removeEventListener('pagehide', keep)
+    }
+  }, [run, at, savedAs, saved])
 
   const change = (patch: Partial<Saved>) => setSaved((s) => ({ ...s, ...patch }))
   // The check view only ever updates a run in progress.
@@ -186,10 +214,11 @@ export default function FluencyCheck() {
           <summary className="cursor-pointer font-medium">How to give and score the check</summary>
           <ul className="mt-3 grid list-disc gap-2 pl-5 text-sm text-pretty text-dim">
             <li>Give the student a copy of the passage (print one above) and start the clock as they read the first word.</li>
-            <li>Tap each word read incorrectly: a wrong word, a skipped word, or one you had to say after about three seconds. If the student fixes it on their own, tap it again to mark a self-correction, which counts as correct.</li>
-            <li>Added words, repeated words, and differences of accent or dialect aren&rsquo;t errors.</li>
+            <li>Tap each word read incorrectly: a wrong or mispronounced word, a skipped word, a word read out of order, a word sounded out but not blended, or one you had to say after three seconds. If a whole line is skipped, tap each word in it.</li>
+            <li>If the student corrects a word on their own, tap it again to mark a self-correction, which counts as correct. Added words, repeated words, and differences in pronunciation due to accent, dialect, or articulation aren&rsquo;t errors.</li>
             <li>When the minute is up, a tone sounds: tap the last word the student read. If they finish early, tap &ldquo;Read to the end&rdquo; and the score is scaled to a minute.</li>
-            <li>Words correct per minute is the words read minus errors. Accuracy of 95% or more is generally comfortable, 90 to 94% is challenging, and below 90% the passage is probably too hard for now.</li>
+            <li>Words correct per minute is the words read minus errors. A common guideline for accuracy: 95% or more is comfortable, 90 to 94% is challenging, and below 90% the passage is probably too hard for now.</li>
+            <li>These rules follow common practice, as in DIBELS 8. If your school uses different ones, follow those. One check is a snapshot of speed and accuracy, not of understanding, so look at several over time.</li>
             <li>
               For grade-level expectations, use your program&rsquo;s benchmarks or the{' '}
               <a href={NORMS} target="_blank" rel="noreferrer" className="underline underline-offset-4 hover:text-ink">
@@ -207,9 +236,9 @@ export default function FluencyCheck() {
 }
 
 const BAND_TEXT: Record<Band, string> = {
-  comfortable: 'At 95% or more, this passage is at a comfortable level for this reader.',
-  challenging: 'At 90 to 94%, this passage is challenging for this reader.',
-  hard: 'Below 90%, this passage is probably too hard for now, so the score may understate their fluency on easier text.',
+  comfortable: 'By a common guideline, 95% or more means this passage is at a comfortable level for this reader.',
+  challenging: 'By a common guideline, 90 to 94% means this passage is challenging for this reader.',
+  hard: 'By a common guideline, below 90% means this passage is probably too hard for now, so the score may understate their fluency on easier text.',
 }
 
 function Results({
@@ -352,8 +381,6 @@ function summaryText(result: Result, student: string, passage: string, at: numbe
   return `${student.trim() || 'Reader'}, ${whenText(at)}, ${passage}: ${result.wcpm} words correct per minute${accuracy}, ${plural(result.errors, 'error')}, ${plural(result.selfCorrections, 'self-correction')}, time ${clock(result.ms)}.${missed}`
 }
 
-const newId = () => (typeof crypto.randomUUID === 'function' ? crypto.randomUUID() : `${Date.now().toString(36)}${Math.random().toString(36).slice(2)}`)
-
 function load(): Saved {
   const fallback: Saved = { title: '', text: '', student: '', mode: 'minute', goal: null, log: [] }
   try {
@@ -395,4 +422,42 @@ function validCheck(c: unknown): c is Check {
     Array.isArray(x.missed) &&
     x.missed.every((w) => typeof w === 'string')
   )
+}
+
+/** Tells a saved run's passage and timing apart from another's without storing the text twice. */
+function fingerprint({ text, mode }: Saved): string {
+  let h = 0x811c9dc5
+  for (let i = 0; i < text.length; i++) h = Math.imul(h ^ text.charCodeAt(i), 0x01000193)
+  return `${mode}:${text.length}:${(h >>> 0).toString(36)}`
+}
+
+function storeRun(pending: Pending | null, saved: Saved) {
+  try {
+    if (pending) localStorage.setItem(RUN_KEY, JSON.stringify({ version: 1, ...pending, check: fingerprint(saved), aliveAt: Date.now() }))
+    else localStorage.removeItem(RUN_KEY)
+  } catch {
+    // Not remembered: the check still works, but a reload would lose it.
+  }
+}
+
+function loadRun(saved: Saved): Pending | null {
+  try {
+    const data = JSON.parse(localStorage.getItem(RUN_KEY) ?? 'null')
+    if (!data || data.version !== 1 || data.check !== fingerprint(saved) || !Number.isFinite(data.at) || !Number.isFinite(data.aliveAt)) return null
+    let run = restoreRun(data.run, parsePassage(saved.text).words.length)
+    if (!run) return null
+    const savedAs = typeof data.savedAs?.id === 'string' && typeof data.savedAs?.sig === 'string' ? { id: data.savedAs.id, sig: data.savedAs.sig } : null
+    const away = Date.now() - data.aliveAt
+    // A finished check that was saved has nothing left to lose, so after a while the page starts fresh.
+    if (run.phase === 'done' && savedAs && away > HOUR) return null
+    if (run.phase === 'running' && !(away >= 0 && away <= RELOAD_MS)) {
+      // Gone too long to carry on: stop the clock when the page was left.
+      const ms = Math.max(0, run.banked + data.aliveAt - run.startedAt)
+      const timeUp = saved.mode === 'minute' && ms >= MINUTE
+      run = { ...run, phase: timeUp ? 'last' : 'paused', banked: timeUp ? MINUTE : ms }
+    }
+    return { run, at: data.at, savedAs }
+  } catch {
+    return null
+  }
 }

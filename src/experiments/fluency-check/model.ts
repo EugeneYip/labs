@@ -133,7 +133,7 @@ export interface Check {
   at: number
   student: string
   passage: string
-  /** Words in the whole passage. */
+  /** Words in the whole passage, or 0 for a check loaded from a CSV, which doesn't record it. */
   length: number
   mode: Mode
   read: number
@@ -188,3 +188,113 @@ export function toCSV(checks: readonly Check[]): string {
   })
   return [header, ...rows].map((row) => row.map(csvCell).join(',')).join('\r\n') + '\r\n'
 }
+
+/** The same check in the log and in a CSV, which keeps times only to the minute. */
+export function checkKey(c: Check): string {
+  const { date, time } = localStamp(c.at)
+  return [date, time, c.student.trim().toLocaleLowerCase(), c.passage, c.read, c.errors, c.wcpm].join('|')
+}
+
+const COLUMNS = ['date', 'time', 'student', 'passage', 'timing', 'seconds', 'words read', 'errors', 'self-corrections', 'wcpm', 'goal wcpm', 'missed words']
+const REQUIRED = ['date', 'student', 'passage', 'words read', 'errors', 'wcpm']
+
+/**
+ * Reads checks back from a CSV made by toCSV, including one a spreadsheet has
+ * re-saved with semicolons or tabs. Returns null for any other kind of file,
+ * and counts the rows that couldn't be read.
+ */
+export function fromCSV(text: string, newId: () => string): { checks: Check[]; unreadable: number } | null {
+  const clean = text.replace(/^\uFEFF/, '')
+  const firstLine = clean.slice(0, clean.search(/[\r\n]|$/))
+  let sep = ','
+  let found = 0
+  for (const candidate of [',', ';', '\t']) {
+    const n = (csvRows(firstLine, candidate)[0] ?? []).filter((h) => COLUMNS.includes(h.trim().toLowerCase())).length
+    if (n > found) [sep, found] = [candidate, n]
+  }
+  const rows = csvRows(clean, sep)
+  const header = (rows.shift() ?? []).map((h) => h.trim().toLowerCase())
+  if (!REQUIRED.every((name) => header.includes(name))) return null
+  // Undo the quote mark toCSV adds to text a spreadsheet would run as a formula.
+  const cell = (row: string[], name: string) => (row[header.indexOf(name)] ?? '').replace(/^'(?=[=+\-@\t\r])/, '').trim()
+  const count = (v: string) => (/^\d{1,6}$/.test(v) ? Number(v) : null)
+
+  const checks: Check[] = []
+  let unreadable = 0
+  for (const row of rows) {
+    const at = csvTime(cell(row, 'date'), cell(row, 'time'))
+    const read = count(cell(row, 'words read'))
+    const errors = count(cell(row, 'errors'))
+    const selfCorrections = cell(row, 'self-corrections') === '' ? 0 : count(cell(row, 'self-corrections'))
+    const wcpm = count(cell(row, 'wcpm'))
+    if (at === null || read === null || errors === null || selfCorrections === null || wcpm === null || errors + selfCorrections > read) {
+      unreadable++
+      continue
+    }
+    const seconds = cell(row, 'seconds').replace(',', '.')
+    const goal = count(cell(row, 'goal wcpm'))
+    checks.push({
+      id: newId(),
+      at,
+      student: cell(row, 'student').slice(0, 200),
+      passage: cell(row, 'passage').slice(0, 200),
+      length: 0,
+      mode: /whole/i.test(cell(row, 'timing')) ? 'whole' : 'minute',
+      read,
+      errors,
+      selfCorrections,
+      ms: /^\d+(\.\d+)?$/.test(seconds) ? Math.round(Number(seconds) * 1000) : MINUTE,
+      wcpm,
+      accuracy: read ? ((read - errors) / read) * 100 : null,
+      goal: goal ? goal : null,
+      missed: cell(row, 'missed words').split(/\s+/).filter(Boolean),
+    })
+  }
+  return { checks, unreadable }
+}
+
+/** Rows of cells, with quoted cells holding separators, quotes, and line breaks. Blank rows are dropped. */
+function csvRows(text: string, sep: string): string[][] {
+  const rows: string[][] = []
+  let row: string[] = []
+  let cell = ''
+  let quoted = false
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i]
+    if (quoted) {
+      if (ch !== '"') cell += ch
+      else if (text[i + 1] === '"') cell += text[i++]
+      else quoted = false
+    } else if (ch === '"' && cell === '') quoted = true
+    else if (ch === sep) {
+      row.push(cell)
+      cell = ''
+    } else if (ch === '\n' || ch === '\r') {
+      if (ch === '\r' && text[i + 1] === '\n') i++
+      row.push(cell)
+      rows.push(row)
+      row = []
+      cell = ''
+    } else cell += ch
+  }
+  row.push(cell)
+  rows.push(row)
+  return rows.filter((r) => r.some((c) => c.trim() !== ''))
+}
+
+/** A local date like 2026-10-09 and a time like 14:05 or 2:05 PM, as a timestamp. */
+function csvTime(date: string, time: string): number | null {
+  const d = /^(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})$/.exec(date)
+  const t = time === '' ? ['', '0', '0', undefined] : /^(\d{1,2})[:.](\d{2})(?:[:.]\d{2})?\s*([ap])?\.?\s*(?:m\.?)?$/i.exec(time)
+  if (!d || !t) return null
+  const [year, month, day, minute] = [Number(d[1]), Number(d[2]) - 1, Number(d[3]), Number(t[2])]
+  let hour = Number(t[1])
+  if (t[3]) {
+    if (hour < 1 || hour > 12) return null
+    hour = (hour % 12) + (t[3].toLowerCase() === 'p' ? 12 : 0)
+  }
+  const at = new Date(year, month, day, hour, minute)
+  return hour < 24 && minute < 60 && at.getFullYear() === year && at.getMonth() === month && at.getDate() === day ? at.getTime() : null
+}
+
+export const newId = () => (typeof crypto.randomUUID === 'function' ? crypto.randomUUID() : `${Date.now().toString(36)}${Math.random().toString(36).slice(2)}`)
