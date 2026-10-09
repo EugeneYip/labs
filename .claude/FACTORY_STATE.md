@@ -11,11 +11,11 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 
 ## Position
 
-- **Last shipped:** #007 Numbers by Ear (`numbers-by-ear`), 2026-10-09, verified in production (commit b33e724)
-- **Current experiment:** #008 Serve Time (`serve-time`): plan a meal backward from serving time. Dishes have ordered steps (what, duration, optional oven temperature); it computes when to start each step, adds preheat cues, warns when the oven is needed at different temperatures at once (1 or 2 ovens), and has a cook mode with a live now/next countdown, beeps, screen wake lock, and "push dinner back" that only moves steps not yet started. Printable schedule. Plan kept in localStorage `labs:serve-time`.
-- **Why this one:** new domain (cooking/home), audience (home cooks hosting), and interaction model (plan backward from a deadline, then a live countdown). Research: backward multi-dish planners are mostly iPad/iPhone apps (Chef's Multi-Dish Timer, Cooking Time Planner with paid Pro), a Paperform template, and one new web tool (Mise, Sept 2026, recipe parsing); oven capacity is the noted gap. Rejected: printable paper (Gridzzly is excellent and free), pickleball round-robin generators (many free ones), tape-measure calculator (common).
-- **Stage:** built and tested (model 10/10; planner edits, clash, units, undo in the pane; cook mode with a simulated clock: cues, push back, waiting, serve; screenshots phone/desktop, light/dark, print; keyboard via real keys); shipping
-- **Next action:** commit "Add Experiment #008: Serve Time", push, watch the Actions run, smoke-test production, then mark verified and choose #009.
+- **Last shipped:** #008 Serve Time (`serve-time`), 2026-10-09, verified in production (commit ca99902)
+- **Current experiment:** #009 Tear-Off Flyer (`tear-off-flyer`): a printable noticeboard flyer with tear-off contact tabs along the bottom. Headline, optional photo, details, tab text, 6–12 tabs, Letter or A4, plain or bold style, sans or serif; text auto-fits the page; live preview; print (or save as PDF). Fields in localStorage `labs:tear-off-flyer`, downscaled photo in `labs:tear-off-flyer:photo`.
+- **Why this one:** new output (paper), domain (local community notices), and interaction (form to live print layout). Research: tear-off flyers are made with template editors that need accounts (Edit.org, Canva, PosterMyWall), and searches are full of spam template pages. Rejected this round: passport photos (UK rules forbid cropped or edited photos for paper applications, and several free in-browser makers exist), weighted decision matrix (free web tools with sensitivity analysis already exist), timeline maker (too close to #008's timeline right after it; keep for later).
+- **Stage:** built and tested (model checks; real PDF prints: one page, right sizes, black band prints without background graphics; pane flows: example, tabs, paper, bad and good photo, clear; screenshots phone/desktop, light/dark; keyboard order via real keys); shipping
+- **Next action:** commit "Add Experiment #009: Tear-Off Flyer", push, watch the Actions run, smoke-test production, then mark verified and choose #010 (by #010 at least 6 distinct domains: already met with 9).
 
 ## Shipped
 
@@ -29,6 +29,7 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 | 006 | Secret Santa | secret-santa | Social / events (gift exchange) | Private per-person links, tap to reveal | Families, offices, friend groups | 2026-10-09 |
 | 007 | Numbers by Ear | numbers-by-ear | Language learning | Listen, type, check loop (speech synthesis) | Language learners, travelers, expats | 2026-10-09 |
 | 008 | Serve Time | serve-time | Cooking / home | Plan backward from a deadline, then a live countdown | Home cooks hosting meals | 2026-10-09 |
+| 009 | Tear-Off Flyer | tear-off-flyer | Community / print | Form to live print layout (paper output) | Neighbors, tutors, people posting notices | 2026-10-09 |
 
 ## Category distribution
 
@@ -42,6 +43,7 @@ Limits across #001–#015: at most 3 per product category, at most 2 primarily t
 - Social / events: 1
 - Language learning: 1 (shares the language family with #004, which counts as 2 if grouped)
 - Cooking / home: 1
+- Community / print: 1
 
 ## Dropped ideas
 
@@ -53,6 +55,10 @@ Ideas only, not commitments. Pick each experiment based on what has shipped. Rem
 
 - Teleprompter with script timing (creators, speakers)
 - Round-robin doubles scheduler for clubs: everyone partners with someone new (sports)
+- Tent cards / desk name plates from a pasted list of names (events, classrooms, print)
+- Camera exposure simulator for beginners: aperture, shutter, ISO on a drawn scene (education, photography)
+- Analog clock reading practice for kids, drag the hands (kids education)
+- Caffeine-at-bedtime estimator with an adjustable half-life (wellness)
 - Tape-measure calculator: feet, inches, and fractions (DIY)
 - Wedding/event seating planner with constraints (events, drag and drop)
 - Grocery unit-price comparer for phones (shopping)
@@ -89,6 +95,8 @@ Where applicable: core flow; persistence or file handling; several edge cases; i
 ## Tools and environment notes
 
 - **Screenshots:** `node .claude/qa/shot.mjs plan.json` drives headless Brave with a throwaway profile (gitignored helper; see its header for the plan format). The in-app browser pane can be tiny, so use this for visual checks. First launch can take about a minute. Plans can stub browser APIs before page scripts run (`initScript`) and send real key presses (`keys`) for keyboard and focus checks. Tab presses in the in-app pane don't reliably move focus, so test keyboard use with `keys`.
+- **Helper option added in #009:** `pdf: true` saves a real print (`Page.printToPDF`, CSS page size, no background graphics) next to the screenshot; the Read tool can open the PDF to check pages and layout.
+- **Lesson from #009:** `img.decode()` can wait forever while a tab is in the background (seen in the in-app pane). Use `onload`/`onerror` for images the user picks.
 - **Helper options added in #008:** `print: true` emulates print media; `preScript` sets up state before `keys`. For time-dependent pages, an `initScript` that replaces `Date.now` with a fixed clock (and writes localStorage) gives stable screenshots.
 - **In-app pane quirk:** `Math.random` appears seeded the same on each load there (the first number repeated across reloads). Not a product bug; headless Brave varies normally.
 - **Pure-logic tests:** write a throwaway script in `.claude/qa/` and run it with `node --experimental-strip-types --no-warnings <file>.ts` (imports `src/.../model.ts` directly; no test dependencies).

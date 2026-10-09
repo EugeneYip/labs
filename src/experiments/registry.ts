@@ -90,6 +90,14 @@ export const experiments: readonly Experiment[] = [
     shipped: '2026-10-09',
     status: 'live',
   },
+  {
+    number: 9,
+    slug: 'tear-off-flyer',
+    title: 'Tear-Off Flyer',
+    summary: 'Makes a printable noticeboard flyer with tear-off contact tabs along the bottom, for lost pets, lessons, rooms, or anything else.',
+    shipped: '2026-10-09',
+    status: 'live',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */
