@@ -47,7 +47,7 @@ async function read(file: Blob, encoding: Checkup['encoding'], onProgress: (frac
   for (;;) {
     const { done, value } = await reader.read()
     if (done) break
-    parser.push(first ? value.replace(/^﻿/, '') : value)
+    parser.push(first ? value.replace(/^\uFEFF/, '') : value)
     first = false
     if (performance.now() - lastYield > 40) {
       onProgress(file.size ? read / file.size : 1)
@@ -64,7 +64,7 @@ async function read(file: Blob, encoding: Checkup['encoding'], onProgress: (frac
 export function looksLikeHeader(sample: string, delimiter: string): boolean {
   let head: string[] | undefined
   const parser = new CsvParser(delimiter, (row) => (head ??= row))
-  parser.push(sample.replace(/^﻿/, '').split(/\r\n|\n|\r/)[0])
+  parser.push(sample.replace(/^\uFEFF/, '').split(/\r\n|\n|\r/)[0])
   parser.end()
   if (!head) return true
   const names = head.map((v) => v.trim())
