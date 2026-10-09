@@ -82,6 +82,14 @@ export const experiments: readonly Experiment[] = [
     shipped: '2026-10-09',
     status: 'live',
   },
+  {
+    number: 8,
+    slug: 'serve-time',
+    title: 'Serve Time',
+    summary: 'Plans a meal backward from when you want to eat, so every dish is ready together, warns about oven clashes, and counts down while you cook.',
+    shipped: '2026-10-09',
+    status: 'live',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */

@@ -11,11 +11,11 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 
 ## Position
 
-- **Last shipped:** #006 Secret Santa (`secret-santa`), 2026-10-09, verified in production (commit 55fd111)
-- **Current experiment:** #007 Numbers by Ear (`numbers-by-ear`): listening practice for numbers in a language you're learning. The browser's own speech voices (speechSynthesis, no service or key) read a number, year, or price, and you type what you heard. Missed numbers come back for review; settings and best streaks are kept in localStorage `labs:numbers-by-ear`.
-- **Why this one:** a new domain (language learning), audience (learners, travelers, expats), and interaction model (listen, type, check loop) after a social link tool. Research: number-listening drills exist almost only as iPhone apps with paid tiers (Numeranto, Numfred, ReflexNum); there's no strong free web version. Rejected this round: unit-price comparer (decent free web calculators exist, and shelf tags already show unit prices), tournament scheduler (events right after #006), teleprompter (free web ones exist).
-- **Stage:** built and tested (model 10/10; real-voice flow in the pane; keyboard via real key presses; phone and desktop, light and dark; no-voice and no-speech states); shipping
-- **Next action:** commit "Add Experiment #007: Numbers by Ear", push, watch the Actions run, smoke-test production, then mark verified and choose #008.
+- **Last shipped:** #007 Numbers by Ear (`numbers-by-ear`), 2026-10-09, verified in production (commit b33e724)
+- **Current experiment:** #008 Serve Time (`serve-time`): plan a meal backward from serving time. Dishes have ordered steps (what, duration, optional oven temperature); it computes when to start each step, adds preheat cues, warns when the oven is needed at different temperatures at once (1 or 2 ovens), and has a cook mode with a live now/next countdown, beeps, screen wake lock, and "push dinner back" that only moves steps not yet started. Printable schedule. Plan kept in localStorage `labs:serve-time`.
+- **Why this one:** new domain (cooking/home), audience (home cooks hosting), and interaction model (plan backward from a deadline, then a live countdown). Research: backward multi-dish planners are mostly iPad/iPhone apps (Chef's Multi-Dish Timer, Cooking Time Planner with paid Pro), a Paperform template, and one new web tool (Mise, Sept 2026, recipe parsing); oven capacity is the noted gap. Rejected: printable paper (Gridzzly is excellent and free), pickleball round-robin generators (many free ones), tape-measure calculator (common).
+- **Stage:** built and tested (model 10/10; planner edits, clash, units, undo in the pane; cook mode with a simulated clock: cues, push back, waiting, serve; screenshots phone/desktop, light/dark, print; keyboard via real keys); shipping
+- **Next action:** commit "Add Experiment #008: Serve Time", push, watch the Actions run, smoke-test production, then mark verified and choose #009.
 
 ## Shipped
 
@@ -28,6 +28,7 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 | 005 | CSV Checkup | csv-checkup | Data tools | Drop a file, read a report | Analysts, ops and small-business staff | 2026-10-09 |
 | 006 | Secret Santa | secret-santa | Social / events (gift exchange) | Private per-person links, tap to reveal | Families, offices, friend groups | 2026-10-09 |
 | 007 | Numbers by Ear | numbers-by-ear | Language learning | Listen, type, check loop (speech synthesis) | Language learners, travelers, expats | 2026-10-09 |
+| 008 | Serve Time | serve-time | Cooking / home | Plan backward from a deadline, then a live countdown | Home cooks hosting meals | 2026-10-09 |
 
 ## Category distribution
 
@@ -40,6 +41,7 @@ Limits across #001–#015: at most 3 per product category, at most 2 primarily t
 - Data tools: 1
 - Social / events: 1
 - Language learning: 1 (shares the language family with #004, which counts as 2 if grouped)
+- Cooking / home: 1
 
 ## Dropped ideas
 
@@ -87,6 +89,7 @@ Where applicable: core flow; persistence or file handling; several edge cases; i
 ## Tools and environment notes
 
 - **Screenshots:** `node .claude/qa/shot.mjs plan.json` drives headless Brave with a throwaway profile (gitignored helper; see its header for the plan format). The in-app browser pane can be tiny, so use this for visual checks. First launch can take about a minute. Plans can stub browser APIs before page scripts run (`initScript`) and send real key presses (`keys`) for keyboard and focus checks. Tab presses in the in-app pane don't reliably move focus, so test keyboard use with `keys`.
+- **Helper options added in #008:** `print: true` emulates print media; `preScript` sets up state before `keys`. For time-dependent pages, an `initScript` that replaces `Date.now` with a fixed clock (and writes localStorage) gives stable screenshots.
 - **In-app pane quirk:** `Math.random` appears seeded the same on each load there (the first number repeated across reloads). Not a product bug; headless Brave varies normally.
 - **Pure-logic tests:** write a throwaway script in `.claude/qa/` and run it with `node --experimental-strip-types --no-warnings <file>.ts` (imports `src/.../model.ts` directly; no test dependencies).
 - **Dev server:** `preview_start` with the `dev` config (port 5173). Production check: `npm run build`, then the `pages` config (port 4174).
