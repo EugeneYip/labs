@@ -11,6 +11,8 @@ Labs is a public software laboratory. Each experiment is a small, self-contained
 - A static site built with Vite, React, TypeScript, and Tailwind CSS. No backend, accounts, database, or paid services.
 - Every push to `main` builds the site and publishes it to GitHub Pages ([deploy.yml](.github/workflows/deploy.yml)).
 - The build gives every experiment its own page at `/<slug>/`, so direct links work and link previews show the experiment's own title and summary.
+- Pages already opened keep working offline, through a small service worker ([public/sw.js](public/sw.js)).
+- Feedback and ideas are welcome as [issues](https://github.com/EugeneYip/labs/issues). They're public, so please leave out personal details.
 
 ## Project layout
 

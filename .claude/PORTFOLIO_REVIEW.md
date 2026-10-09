@@ -100,3 +100,15 @@ Tiers: **A** 50 and up, **B** 45 to 49, **C** 40 to 44, **D** below 40.
 ## Selection for deep audits
 
 The five highest totals, all in tier A: **Fluency Check, Custody Calendar, Day Clock, Secret Santa, and Playing Time.** The next three (Photo Scrub, Frost Dates, Ranked Choice Count, all 48) were not chosen by default. Frost Dates and Ranked Choice Count still get the batch-wide sensitive-wording pass, along with Family Stories and Stall Till, because they make climate, electoral, recording, and cash claims.
+
+## After the Batch 03 audits
+
+The scores above are the evidence the selection was made on, so they stay as they were. What the audits changed:
+
+- **#016 Fluency Check:** data-loss risk is lower. A check in progress survives a reload, and the log can be loaded back from its CSV. The scoring guide now follows DIBELS 8.
+- **#020 Custody Calendar:** correctness risk is lower. Broken links say so, calendar files keep stays whole across New Year, event IDs no longer collide, and link and calendar copies are explained as snapshots.
+- **#022 Day Clock:** screen readers no longer hear the time every minute, the limits of reminders are stated, and settings self-heal after a browser clears an untouched site's data.
+- **#006 Secret Santa:** one tap can no longer discard drawn links, and full-length links in any script now work.
+- **#014 Playing Time:** a child can no longer drop out of the plan silently (repeated names, or too few places), and 1-minute shifts are gone.
+- Every one of the five had real defects, which suggests the untested tiers B to D have similar ones. That is the case for Batch 04 being more hardening, not more breadth.
+

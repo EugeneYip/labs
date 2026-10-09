@@ -19,8 +19,8 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 - [x] Offline: `public/sw.js` shipped (commit 821134e). Tested locally by stopping and restarting the server: saved pages load offline, an unvisited page gets an offline notice, a URL without its trailing slash maps to the saved page, and a changed page arrives as soon as the server returns. In production, pages are controlled and saved, the no-slash redirect works, and no outside-service responses or hash/query URLs are cached.
 - [x] Discovery: a category filter row on the homepage (six kinds plus All, newest first, `?for=` in the address); no Featured list, since nothing has real use yet. Each registry entry now has a `category`.
 - [x] Feedback: GitHub Issues is on, Discussions off, and the project has no public email. Added a "Feedback" link (`src/components/feedback.ts`) to every experiment header and the homepage footer. It opens a new issue with the experiment in the title and a body that says feedback is public, so leave out personal details. It needs a GitHub account (accepted; revisit if the owner adds a public email or form). Also fixed overflow at 320 px in Custody Calendar and Ranked Choice Count, found by checking all 26 pages at 320 px.
-- [ ] New experiments (optional, at most three): decided.
-- [ ] Production verified, this file updated, Batch 03 report given.
+- [x] New experiments (optional, at most three): decided none. Every one of the five deep audits found real defects (lost work, misleading summaries, broken links), and a 320 px sweep found two more, so another hour on the existing 25 is worth more than a #026. New experiments would also add upkeep to a portfolio that has no user signal yet. Revisit once feedback or real use arrives.
+- [x] Production verified (2026-10-09, deploy of bddf947): every Batch 03 change checked live. That covers filters, Fluency Check reload recovery and CSV loading, the broken-link notice, the Day Clock live region and hint, the Secret Santa confirmation, the Playing Time messages, the bylaws note, Stall Till's advice, feedback links, and the service worker caches (no outside responses). A sweep of all 26 pages at 320 px and at 1280 px in dark mode found no overflow and no console errors. This file is updated, and the Batch 03 report has been given.
 
 ## Batch 03 selection
 
@@ -28,8 +28,8 @@ The five highest totals in the portfolio review, all tier A: **#016 Fluency Chec
 
 ## Position
 
-- **Current:** Batch 03, Phase 3 and offline support. Order: (1) offline service worker, since it helps Day Clock, Playing Time, Stall Till, and the other local tools, (2) deep audits of the five, (3) the sensitive-wording pass, (4) homepage discovery, (5) feedback, (6) decide on new experiments (default: none), (7) final production check and report.
-- **Next action:** decide on new experiments (default none), then the final production check of every change, update this file, and give the Batch 03 report.
+- **Current:** Batch 03 complete (2026-10-09). Was: Phase 3 and offline support. Order: (1) offline service worker, since it helps Day Clock, Playing Time, Stall Till, and the other local tools, (2) deep audits of the five, (3) the sensitive-wording pass, (4) homepage discovery, (5) feedback, (6) decide on new experiments (default: none), (7) final production check and report.
+- **Next action:** none. Batch 03 is complete and its report has been given. Don't start Batch 04 without new authorization from the owner, and give a review before any push of a new experiment (see memory: review-before-public-push).
 
 ## Batch 03 audits
 
