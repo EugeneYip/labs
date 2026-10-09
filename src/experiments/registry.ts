@@ -218,6 +218,14 @@ export const experiments: readonly Experiment[] = [
     shipped: '2026-10-09',
     status: 'live',
   },
+  {
+    number: 25,
+    slug: 'stall-till',
+    title: 'Stall Till',
+    summary: 'A simple till for a market stall, bake sale, or craft fair: tap what you sell, see the change to give, and count up the cash box at the end of the day.',
+    shipped: '2026-10-09',
+    status: 'live',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */
