@@ -11,11 +11,10 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 
 ## Position
 
-- **Last shipped:** #014 Playing Time (`playing-time`), 2026-10-09, verified in production (commit a0e57d7)
-- **Current experiment:** #015 Back Row (`back-row`), the last of the batch: see a slide, poster, or sign as the back row would. Image from a file, paste, drop, or a generated sample slide; screen or poster width; viewing distance; eyesight (20/20, 20/40, 20/70). It blurs the image by the detail the viewer can resolve (minimum angle of resolution times distance, mapped into image pixels), can show it at its true apparent size, and gives readable and comfortable letter heights plus the matching slide font size in points. Settings only in localStorage `labs:back-row`; the image is never stored or sent.
-- **Why this one:** new domain (accessibility and presenting), audience (presenters, teachers, sign makers), and interaction (perceptual simulation of an image). Research: no general web simulator; the closest is Eclipse ACTF's ODF-only desktop preview, plus a screen maker's physical eye-test chart. Rejected this round: hike turnaround, caffeine cutoff, tempo-ramp metronome (all have free web tools).
-- **Stage:** built and tested (model 5/5 against eye-chart and slide-size references; pane flows: bad file, paste, eyesight, units, distance, saving; screenshots phone/desktop, light/dark, poster and true size); shipping
-- **Next action:** commit "Add Experiment #015: Back Row", push, watch the Actions run, smoke-test production, mark verified, then write the batch report and stop (no #016 without the owner).
+- **Last shipped:** #015 Back Row (`back-row`), 2026-10-09, verified in production (commit 90e8384). All 15 addresses return 200, the homepage shows 15 shipped, and an unknown path gets the 404 page.
+- **Current experiment:** none. **Batch 01 is complete.**
+- **Stage:** done. The batch report was given to the owner on 2026-10-09.
+- **Next action:** none without the owner. Do not start #016 or a second batch without explicit owner authorization; outside a batch, every public push needs the owner's review and a clear yes again.
 
 ## Shipped
 
@@ -58,7 +57,9 @@ Limits across #001–#015: at most 3 per product category, at most 2 primarily t
 
 ## Dropped ideas
 
-None yet. A dropped idea does not use up a number.
+None dropped after building: every experiment started was shipped. A dropped idea does not use up a number.
+
+Rejected at the idea stage (no code written), mostly because a good free tool already exists: passport photos (UK rules forbid cropped or edited photos; free in-browser makers exist), weighted decision matrix, timeline maker, camera exposure simulator, classroom seating chart, unit-price comparer, printable paper, pickleball round robin, tape-measure calculator, hike turnaround time, caffeine cutoff, tempo-ramp metronome.
 
 ## Candidate pool
 
