@@ -29,6 +29,7 @@ If an idea doesn't fit these limits, change the idea, not the limits.
 - **Honest.** The index lists only real, working experiments: no placeholders, mock-ups, or "coming soon" entries. A summary says plainly what the experiment does.
 - **Archived, not deleted.** When an experiment is no longer maintained, set its status to `archived`. It stays online, so links keep working.
 - **Data stays with the visitor.** If an experiment needs to remember anything, it stores it in the visitor's own browser, for example in `localStorage`.
+- **Namespaced storage.** All experiments share labs.eugeneyip.net, so any browser storage an experiment uses (localStorage keys, IndexedDB databases, and the like) is named after its permanent slug: `labs:<slug>`, or `labs:<slug>:<name>` for more than one.
 
 ## 4. Shipping an experiment
 

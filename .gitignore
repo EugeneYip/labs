@@ -17,5 +17,6 @@ npm-debug.log*
 .vscode
 *.swp
 
-# Claude Code personal settings
+# Claude Code personal settings and local QA helpers
 .claude/settings.local.json
+.claude/qa/

@@ -4,6 +4,8 @@ A public lab of small static web experiments, live at https://labs.eugeneyip.net
 
 @FACTORY_CONSTITUTION.md
 
+If `.claude/FACTORY_STATE.md` exists, an autonomous batch may be in progress: read it, check `git status`, and continue from its recorded next action before doing anything else.
+
 ## Quick reference
 
 - `npm run dev`: local server on port 5173 (the "dev" entry in `.claude/launch.json`).
