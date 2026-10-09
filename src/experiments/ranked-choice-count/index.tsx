@@ -337,6 +337,7 @@ function Results({ result, candidates, ballots }: { result: Result; candidates: 
           <RoundCard key={i} round={r} index={i} stv={stv} before={new Set(result.rounds.slice(0, i).flatMap((x) => x.elected))} />
         ))}
       </ol>
+      <p className="mt-8 max-w-prose text-sm text-pretty text-dim print:hidden">Rules for ties, transfers, and incomplete ballots differ between organizations, so check your bylaws before announcing a result. This isn’t meant for public elections, which follow their own laws.</p>
       <style>{`@media print { .print-exact { print-color-adjust: exact; -webkit-print-color-adjust: exact; } li { break-inside: avoid; } }`}</style>
     </section>
   )

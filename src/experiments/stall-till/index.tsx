@@ -566,7 +566,7 @@ function Items({ saved, fmt, change }: { saved: Saved; fmt: (m: number) => strin
       </section>
 
       <p className="max-w-prose text-sm text-pretty text-dim">
-        Open this page before you set up: once it’s open, it keeps working without a signal, and sales are saved on this phone as you go. Keep the tab open, since reopening the page needs a connection. Nothing is sent anywhere.
+        Open this page once with a connection before the market. After that it opens and works without a signal, and sales are saved on this phone as you go. Nothing is sent anywhere.
       </p>
     </div>
   )

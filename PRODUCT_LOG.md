@@ -16,6 +16,11 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-09 · Wording review of sensitive tools
+
+- **What:** Ranked Choice Count now says, under the rounds, that rules for ties, transfers, and incomplete ballots differ between organizations, so check your bylaws before announcing a result, and that it isn't meant for public elections, which follow their own laws. Stall Till's advice about connections now matches offline support: open it once with a connection, and after that it opens and works without a signal. Before, it said reopening needed a connection. Frost Dates and Family Stories were reviewed and needed no change. Frost Dates already gives odds rather than promises, uses the standard 36, 32, and 28 °F thresholds, and explains its 10 km grid and local exceptions. Family Stories already warns that browsers can clear recordings and asks for downloads after each interview.
+- **Why:** Batch 03 checked each tool that touches elections, cash, climate, or personal recordings for claims beyond what it can back up.
+
 ## 2026-10-09 · #014 Playing Time update
 
 - **What:** When changes are so far apart that there are fewer places over the game than players, the summary now says a player doesn't get on at all and suggests changing more often. Before, it read "Everyone plays 0–30 of 60 minutes". A name typed twice, such as two players called Sam, now gets a note asking for an initial, because the repeat was dropped from the plan without a word. A tail of exactly a third of a shift at the end of a period is now folded into the shift before it, so 10-minute quarters changed every 3 minutes run 3, 3, 4 instead of 3, 3, 3, 1.
