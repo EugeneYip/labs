@@ -11,11 +11,11 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 
 ## Position
 
-- **Last shipped:** #008 Serve Time (`serve-time`), 2026-10-09, verified in production (commit ca99902)
-- **Current experiment:** #009 Tear-Off Flyer (`tear-off-flyer`): a printable noticeboard flyer with tear-off contact tabs along the bottom. Headline, optional photo, details, tab text, 6–12 tabs, Letter or A4, plain or bold style, sans or serif; text auto-fits the page; live preview; print (or save as PDF). Fields in localStorage `labs:tear-off-flyer`, downscaled photo in `labs:tear-off-flyer:photo`.
-- **Why this one:** new output (paper), domain (local community notices), and interaction (form to live print layout). Research: tear-off flyers are made with template editors that need accounts (Edit.org, Canva, PosterMyWall), and searches are full of spam template pages. Rejected this round: passport photos (UK rules forbid cropped or edited photos for paper applications, and several free in-browser makers exist), weighted decision matrix (free web tools with sensitivity analysis already exist), timeline maker (too close to #008's timeline right after it; keep for later).
-- **Stage:** built and tested (model checks; real PDF prints: one page, right sizes, black band prints without background graphics; pane flows: example, tabs, paper, bad and good photo, clear; screenshots phone/desktop, light/dark; keyboard order via real keys); shipping
-- **Next action:** commit "Add Experiment #009: Tear-Off Flyer", push, watch the Actions run, smoke-test production, then mark verified and choose #010 (by #010 at least 6 distinct domains: already met with 9).
+- **Last shipped:** #009 Tear-Off Flyer (`tear-off-flyer`), 2026-10-09, verified in production (commit 1c0cf18)
+- **Current experiment:** #010 Gallery Wall (`gallery-wall`): where to put the nails for a row or grid of picture frames. Frames with size and hanger (wire or sawtooth with a drop, or two hooks with a spread), row or grid, gap, alignment, group center or bottom-edge height (57 in / 145 cm default), measured from the wall's left edge or from a center mark. To-scale SVG drawing, nail list in fractions of an inch or millimeters, printable. Settings in localStorage `labs:gallery-wall`.
+- **Why this one:** new interaction (physical layout calculator with a to-scale drawing), audience (renters and homeowners decorating), and a clear gap: searches turn up blog math and spam pages, not a working multi-frame planner. Rejected this round: timeline maker (kissmyskills already does paste, any date format, across or down, PNG/SVG, no account), camera exposure simulator (CameraSim, Canon's, and a roundup of nine), classroom seating charts (Seating Randomizer and uplup cover keep-apart rules for free).
+- **Stage:** built and tested (model 9/9; pane flows: invalid input, add, mark mode, grid, unit round trip; screenshots phone/desktop, light/dark; real PDF print on one page); shipping
+- **Next action:** commit "Add Experiment #010: Gallery Wall", push, watch the Actions run, smoke-test production, then mark verified and choose #011.
 
 ## Shipped
 
@@ -30,6 +30,7 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 | 007 | Numbers by Ear | numbers-by-ear | Language learning | Listen, type, check loop (speech synthesis) | Language learners, travelers, expats | 2026-10-09 |
 | 008 | Serve Time | serve-time | Cooking / home | Plan backward from a deadline, then a live countdown | Home cooks hosting meals | 2026-10-09 |
 | 009 | Tear-Off Flyer | tear-off-flyer | Community / print | Form to live print layout (paper output) | Neighbors, tutors, people posting notices | 2026-10-09 |
+| 010 | Gallery Wall | gallery-wall | Home / decorating (counts with Cooking / home: 2) | Physical layout calculator with a to-scale drawing | Renters and homeowners hanging art | 2026-10-09 |
 
 ## Category distribution
 
@@ -42,7 +43,7 @@ Limits across #001–#015: at most 3 per product category, at most 2 primarily t
 - Data tools: 1
 - Social / events: 1
 - Language learning: 1 (shares the language family with #004, which counts as 2 if grouped)
-- Cooking / home: 1
+- Cooking / home: 1, plus Home / decorating: 1 (2 if grouped as "home"; cap 3)
 - Community / print: 1
 
 ## Dropped ideas

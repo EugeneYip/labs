@@ -98,6 +98,14 @@ export const experiments: readonly Experiment[] = [
     shipped: '2026-10-09',
     status: 'live',
   },
+  {
+    number: 10,
+    slug: 'gallery-wall',
+    title: 'Gallery Wall',
+    summary: 'Works out exactly where to put the nails for a row or grid of picture frames, with a to-scale drawing of the wall.',
+    shipped: '2026-10-09',
+    status: 'live',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */
