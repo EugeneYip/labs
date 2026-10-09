@@ -16,6 +16,12 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-09 · Offline support
+
+- **What:** Labs now keeps a copy of each page and its files once you've opened them, so an experiment you've used before still loads without a connection: Stall Till at a market with no signal, Day Clock on a tablet whose Wi-Fi drops, Playing Time at the field. A page you've never opened says plainly that it hasn't been saved yet.
+- **Why:** Several experiments are used away from good connections, and before this they failed if the browser reloaded them offline.
+- **Notes:** Pages always come fresh from the network when online, so updates arrive on the next visit, and a saved copy is used only offline or after four seconds on a very slow connection. Built files are kept by their content-hashed names, with old ones trimmed. Only the site's own files are kept: requests to outside services, such as weather data for Line Dry and Frost Dates, are never stored, and nothing a visitor types is part of a request. Tested by opening pages, stopping the server, reloading, and then restarting the server with a changed page.
+
 ## 2026-10-09 · #025 Stall Till
 
 - **What:** [labs.eugeneyip.net/stall-till](https://labs.eugeneyip.net/stall-till/). A till for a market stall, a bake sale, a craft fair, or a garage sale. Add what you sell with prices (or try sample bake-sale items), choose the currency, and set the cash float you start with. To sell, tap items to build the sale, adjust quantities, or add a one-off price. Then take cash, card, or other payment. For cash, pick what the customer handed over (exact, or the round amounts they're likely to give) or type it, and the change shows in large type. The Today tab shows takings by payment method and by item, and lists every sale, which can be deleted and undone. Cash-up has a box for each note and coin of the currency, compares the count with the float plus cash sales (over, short, or exactly right), and works out which notes and coins to keep as next time's float and how much to bank. Download the day's sales as a CSV, print the summary, and start a new day. 18 currencies are set up for counting, and everything stays on the phone.
