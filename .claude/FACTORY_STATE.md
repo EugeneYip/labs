@@ -11,10 +11,10 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 
 ## Position
 
-- **Last shipped:** #005 CSV Checkup (`csv-checkup`), 2026-10-09 (pushing now; verify production if a session resumes here)
-- **Current experiment:** none (choose #006)
-- **Stage:** #005 committed and pushed; production check pending
-- **Next action:** confirm the Actions run for #005 succeeded and labs.eugeneyip.net/csv-checkup/ works, then choose #006. Avoid files and analysis right after #005; consider a creator/speaker tool, education/print, a playful useful idea, events or social, or shopping on phones.
+- **Last shipped:** #005 CSV Checkup (`csv-checkup`), 2026-10-09, verified in production (commit 78be2fa)
+- **Current experiment:** #006 Secret Santa (`secret-santa`): gift-exchange draw with "can't draw" rules. Each person gets a private link (obfuscated hash) that reveals only their match after a tap, so the organizer can play too. The organizer's setup and links are saved in localStorage `labs:secret-santa`. No emails or accounts.
+- **Stage:** built and tested (model 9/9, browser flow, screenshots at phone and desktop, light and dark); shipping
+- **Next action:** commit "Add Experiment #006: Secret Santa", push, watch the Actions run, smoke-test production, then mark verified and choose #007.
 
 ## Shipped
 
@@ -25,6 +25,7 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 | 003 | Fair Share | fair-share | Group money / expense splitting | Ledger form; the link is the document | Friend groups, roommates | 2026-10-09 |
 | 004 | Clean Paste | clean-paste | Language / text repair | Paste in, live clean text out | Students, researchers, office workers | 2026-10-09 |
 | 005 | CSV Checkup | csv-checkup | Data tools | Drop a file, read a report | Analysts, ops and small-business staff | 2026-10-09 |
+| 006 | Secret Santa | secret-santa | Social / events (gift exchange) | Private per-person links, tap to reveal | Families, offices, friend groups | 2026-10-09 |
 
 ## Category distribution
 
@@ -35,6 +36,7 @@ Limits across #001–#015: at most 3 per product category, at most 2 primarily t
 - Group money: 1
 - Language / text: 1
 - Data tools: 1
+- Social / events: 1
 
 ## Dropped ideas
 
@@ -46,7 +48,6 @@ Ideas only, not commitments. Pick each experiment based on what has shipped. Rem
 
 - Teleprompter with script timing (creators, speakers)
 - Wedding/event seating planner with constraints (events, drag and drop)
-- Secret Santa draw with a private link per person (social, seasonal)
 - Grocery unit-price comparer for phones (shopping)
 - Printable paper generator: dot grid, isometric, music staff (print, education)
 - Golden hour / sun times for photographers (outdoors, visualization)

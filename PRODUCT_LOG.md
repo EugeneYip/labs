@@ -16,6 +16,14 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-09 · #006 Secret Santa
+
+- **What:** [labs.eugeneyip.net/secret-santa](https://labs.eugeneyip.net/secret-santa/). The organizer enters the names, an optional budget, swap date, and note, and any "can't draw" rules (couples, last year's pairs, one way or both). "Draw names" then gives everyone a private link to copy or share. Opening a link greets the person by name and shows who they're buying for only after they tap "Show who I'm buying for", so a link opened by the wrong person can still be closed in time. The organizer's list stays on their device so they can come back to resend a link, draw again, or change the people.
+- **Problem it tests:** Every office and family exchange needs a draw, and the popular sites ask for everyone's email address, show ads, or make the organizer the one person who knows every match. Can a draw that lives entirely in links, with no emails or accounts, let the organizer take part like anyone else?
+- **Scope decisions:** Each link carries only its own match, scrambled so the name can't be read from the link text. The draw picks evenly among all valid outcomes, falling back to a search when the rules are tight, and says plainly when the rules make a draw impossible. No wish lists, reminders, or messaging between people. Up to 100 people.
+- **Limitations:** The scrambling stops accidental peeking, not a determined person decoding the link, and the organizer can still open any link. Drawing again makes all earlier links stale, and there's no way to tell whether someone opened theirs. Names must be different from one another; two people both called "Sam" need distinguishing names such as "Sam K." and "Sam L.".
+- **Revisit if:** it gets used for a real exchange this season. Likely asks are wish lists in the link, a printable set of slips for groups without phones, and a way to see who has opened their link, which a static site can't do.
+
 ## 2026-10-09 · #005 CSV Checkup
 
 - **What:** [labs.eugeneyip.net/csv-checkup](https://labs.eugeneyip.net/csv-checkup/). Drop in a CSV, TSV, or other delimited export to get a health report. It works out the separator, encoding, and header row, then shows row and column counts and the share of empty values. Each column gets its kind of data (numbers, dates, emails, yes/no, text), how full it is, distinct values, range or most common values, and its longest value. A plain-language issue list covers repeated rows, rows with the wrong number of fields, blank lines, duplicate or missing column names, stray text in number or date columns, codes with leading zeros that spreadsheets drop, mixed date formats, and stray spaces. There's also a preview of the first 50 rows and a report to copy as Markdown. Files are streamed in pieces, about 12 MB in half a second, and are never uploaded or stored.

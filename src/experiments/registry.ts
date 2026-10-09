@@ -66,6 +66,14 @@ export const experiments: readonly Experiment[] = [
     shipped: '2026-10-09',
     status: 'live',
   },
+  {
+    number: 6,
+    slug: 'secret-santa',
+    title: 'Secret Santa',
+    summary: "Draws names for a gift exchange and gives each person a private link that shows only who they're buying for, so even the organizer can take part.",
+    shipped: '2026-10-09',
+    status: 'live',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */
