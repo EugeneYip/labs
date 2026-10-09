@@ -74,6 +74,14 @@ export const experiments: readonly Experiment[] = [
     shipped: '2026-10-09',
     status: 'live',
   },
+  {
+    number: 7,
+    slug: 'numbers-by-ear',
+    title: 'Numbers by Ear',
+    summary: "Listening practice for numbers in a language you're learning: your device reads out a number, year, or price, and you type what you heard.",
+    shipped: '2026-10-09',
+    status: 'live',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */
