@@ -175,7 +175,7 @@ export default function CustodyCalendar() {
                 </label>
                 <fieldset>
                   <legend className="mb-1.5 text-sm font-medium">Repeats every</legend>
-                  <div className="flex gap-1.5">
+                  <div className="flex flex-wrap gap-1.5">
                     {[1, 2, 3, 4].map((n) => (
                       <button key={n} type="button" aria-pressed={weeks === n} onClick={() => setWeeks(n)} className={`${toggle(weeks === n)} px-3`}>
                         {n} {n === 1 ? 'week' : 'weeks'}

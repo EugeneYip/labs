@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { ExperimentCard } from './components/ExperimentCard.tsx'
+import { feedbackUrl } from './components/feedback.ts'
 import { CATEGORIES, experiments, type Category } from './experiments/registry.ts'
 
 /** The kind shown, from an address like /?for=school, so a filtered list can be shared. */
@@ -66,9 +67,14 @@ export function Home() {
 
       <footer className="mt-24 flex items-center justify-between border-t border-rule py-6 font-mono text-xs text-dim">
         <p>labs.eugeneyip.net</p>
-        <a href="https://github.com/EugeneYip/labs" className="hover:text-ink">
-          Source ↗
-        </a>
+        <span className="flex gap-5">
+          <a href={feedbackUrl()} target="_blank" rel="noreferrer" className="hover:text-ink">
+            Feedback ↗
+          </a>
+          <a href="https://github.com/EugeneYip/labs" className="hover:text-ink">
+            Source ↗
+          </a>
+        </span>
       </footer>
     </div>
   )

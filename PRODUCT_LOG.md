@@ -16,6 +16,12 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-09 · Feedback link, and the narrowest phones
+
+- **What:** Every experiment's header, and the homepage footer, has a quiet "Feedback" link that opens a new GitHub issue, titled with the experiment when there is one. The issue form says feedback is public and asks people to leave out names and other personal details. Custody Calendar and Ranked Choice Count also no longer run off the side of 320-pixel-wide phones: a row of buttons in each now wraps.
+- **Why:** Labs had no way to hear from visitors. It can't run a form or a database, has no public email address, and shouldn't track anyone, so a GitHub issue is the one channel that needs nothing new. The overflow showed up when every page was checked at 320 pixels, the width of small phones and of larger phones with display zoom.
+- **Notes:** Leaving feedback needs a GitHub account, which many visitors won't have. Revisit if the owner wants a public email address or a hosted form. Labs collects nothing itself: the link only opens GitHub, without a referrer. All 25 experiments and the homepage now fit at 320 pixels.
+
 ## 2026-10-09 · Homepage: show one kind at a time
 
 - **What:** The homepage has a quiet row of filters under the Experiments heading: All, Home & garden, Family & care, School & work, Groups & community, Practice & play, and Files & text. Choosing one shows only those experiments, still newest first, and the address changes (for example labs.eugeneyip.net/?for=school), so a filtered list can be shared. Each experiment's registry entry now names its one category.

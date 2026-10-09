@@ -88,7 +88,7 @@ export default function RankedChoiceCount() {
               <h2 id="ballots-heading" className="text-lg font-semibold tracking-tight">
                 Ballots <span className="font-normal text-dim tabular-nums">({saved.ballots.length.toLocaleString()})</span>
               </h2>
-              <div className="flex gap-2" role="group" aria-label="How to enter ballots">
+              <div className="flex flex-wrap gap-2" role="group" aria-label="How to enter ballots">
                 <button type="button" aria-pressed={saved.mode === 'tap'} onClick={() => change({ mode: 'tap' })} className={toggle(saved.mode === 'tap')}>
                   Tap in paper ballots
                 </button>

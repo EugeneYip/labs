@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { formatNumber, type Experiment } from '../experiments/registry.ts'
+import { feedbackUrl } from './feedback.ts'
 
 /**
  * The frame around every experiment page: a slim header that links back to
@@ -21,6 +22,9 @@ export function ExperimentShell({ experiment, children }: { experiment: Experime
         {experiment.status === 'archived' && (
           <span className="ml-auto shrink-0 font-mono text-xs text-dim">Archived</span>
         )}
+        <a href={feedbackUrl(experiment)} target="_blank" rel="noreferrer" className={`${experiment.status === 'archived' ? '' : 'ml-auto'} shrink-0 font-mono text-xs text-dim hover:text-ink print:hidden`}>
+          Feedback
+        </a>
       </header>
       <main className="flex flex-1 flex-col">{children}</main>
     </div>
