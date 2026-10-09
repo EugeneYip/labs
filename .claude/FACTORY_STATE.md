@@ -4,17 +4,35 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 
 ## Batch
 
-- **Batch:** 01
-- **Goal:** ship experiments #002 through #015, one at a time, each verified in production. Then stop and give the owner one batch report (format below). Do not start #016 without explicit owner authorization.
-- **Authority:** the owner authorized committing, pushing to `main`, deploying, and verifying #002–#015 without asking, as long as each experiment meets the Constitution and the QA checklist below. Don't ask the owner to choose, approve, or test anything. Escalate only if the whole batch is blocked. Reject ideas that would need credentials, payment, a rule exception, or new infrastructure.
+- **Batch:** 02 (Batch 01, #002–#015, finished 2026-10-09; its report was given to the owner).
+- **Goal:** ship experiments #016 through #025, one at a time, each verified in production. Then stop and give the owner one Batch 02 report (format at the end of this file). Do not start #026 without a new batch authorization.
+- **Authority:** the owner authorized researching, choosing, building, testing, committing, pushing to `main`, deploying, and verifying #016–#025 without routine approval, as long as each experiment meets the Constitution. Lack of analytics or user feedback on earlier experiments is not a blocker: don't pause for it and don't ask the owner to test anything. Reject ideas that would need credentials, payment, a rule exception, or new infrastructure.
+- **Earlier experiments (#001–#015):** shipped products. Don't redesign them, add speculative features, or rewrite them. Fix one only if current work exposes a real regression or serious defect.
 - **Started:** 2026-10-09
+- **If interrupted:** a fresh session reads this file, checks `git status` and `git log`, and continues from "Next action" without waiting for the owner. Unfinished experiment files are either finished or deleted, never pushed half-done.
+
+## Batch 02 selection standard
+
+More selective than Batch 01. For each experiment: generate several candidates, check briefly whether strong free alternatives already solve the problem, reject crowded, trivial, repetitive, or poorly differentiated ideas, and pick the strongest. Prefer problems where a static, local-first browser tool has a real advantage (privacy, no account, works offline, browser-native processing, direct manipulation, replacing an awkward manual workflow) for a narrow audience with a concrete recurring problem. Explore new problem spaces: don't repeat the core concept of any of #001–#015. A similar audience is fine only when the problem and the interaction model are clearly different. No two consecutive experiments solve the same type of problem. Don't polish past what users would notice: ship the next strong experiment instead.
 
 ## Position
 
-- **Last shipped:** #015 Back Row (`back-row`), 2026-10-09, verified in production (commit 90e8384). All 15 addresses return 200, the homepage shows 15 shipped, and an unknown path gets the 404 page.
-- **Current experiment:** none. **Batch 01 is complete.**
-- **Stage:** done. The batch report was given to the owner on 2026-10-09.
-- **Next action:** none without the owner. Do not start #016 or a second batch without explicit owner authorization; outside a batch, every public push needs the owner's review and a clear yes again.
+- **Last shipped:** #015 Back Row (`back-row`), 2026-10-09.
+- **Current experiment:** #016 Fluency Check (`fluency-check`), education: a one-minute oral reading fluency check for teachers. Paste a passage, start the minute, tap words the student misreads, tap the last word read, and get words correct per minute and accuracy, with a marked record to print and an on-device log with CSV export.
+- **Stage:** built and tested; committing and pushing.
+- **Next action:** push, watch the Actions run, verify https://labs.eugeneyip.net/fluency-check/ in production, then pick #017 (not education, not another "paste a text" tool right after this one).
+
+## Batch 02 research notes
+
+Checked 2026-10-09. Keep these so later picks don't repeat the research.
+
+- **Fluency check (chosen for #016):** no free browser tool combines a timer, tap-to-mark errors, and automatic WCPM. Reader Meter is a $4 iPad app, Readingfluency.app is paid beyond a free tier, publisher tools need a school license, and the free Sheets add-on only does the arithmetic. Teachers still use a stopwatch and a paper copy.
+- **Ranked-choice vote counter (strong, later):** RankedVote's free tier needs an account and allows one contest and 100 voters. Google Forms can't count ranked ballots, and the guides tell people to do it by hand or with formulas.
+- **Line rehearsal for actors (strong, later):** the options are iPhone and iPad apps, mostly freemium (HitCue, MyLines, Cue-to-Cue, Acting Pal). The one web tool found handles only audition snippets.
+- **Worldwide frost dates (strong, later):** every frost-date lookup found covers only the US and Canada (NOAA normals). Open-Meteo's historical archive is free and keyless, so last-frost odds could be computed for any place. Check the reanalysis against NOAA dates for a few US towns first.
+- **Video technique analysis (candidate):** Coach's Eye shut down. Kinovea is Windows-only. The rest are apps, often golf-only or paid.
+- **Market stall till (candidate):** the offline options are iPhone apps. Web registers exist but don't promise offline use or no account.
+- **Rotating shift calendar (rejected):** ToolGrit and Teambridge already offer free, no-account pattern calendars, and ToolGrit exports .ics.
 
 ## Shipped
 
@@ -35,6 +53,7 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 | 013 | In Tune | in-tune | Music | Real-time microphone pitch feedback | Choir singers, voice students | 2026-10-09 |
 | 014 | Playing Time | playing-time | Sports / coaching | Roster to a generated fair schedule with sideline calls; print | Volunteer youth coaches | 2026-10-09 |
 | 015 | Back Row | back-row | Accessibility / presenting | Perceptual simulation of an image, with sizing advice | Presenters, teachers, sign makers | 2026-10-09 |
+| 016 | Fluency Check | fluency-check | Education / reading assessment | Live tap-to-mark while listening, on a timer; print and on-device log | Teachers, tutors, reading specialists | 2026-10-09 |
 
 ## Category distribution
 
@@ -117,8 +136,10 @@ Where applicable: core flow; persistence or file handling; several edge cases; i
 - **Pure-logic tests:** write a throwaway script in `.claude/qa/` and run it with `node --experimental-strip-types --no-warnings <file>.ts` (imports `src/.../model.ts` directly; no test dependencies).
 - **Dev server:** `preview_start` with the `dev` config (port 5173). Production check: `npm run build`, then the `pages` config (port 4174).
 - **GitHub:** `gh` is logged in as EugeneYip. Pages deploys from Actions; the custom domain is in the Pages settings.
+- **Lesson from #016:** typing a `\u` escape (like `\u00AD`) in a tool call's text writes the literal invisible character into the file. Write such escapes from Python with `chr(92)` and always run the invisible-character scan over `src/` before committing.
 - Storage keys must be `labs:<slug>` (Constitution, amended 2026-10-09 with owner authorization).
 
-## Batch report format (after #015)
+## Batch report formats
 
-Experiments shipped; experiments dropped; categories explored; most promising; weakest; infrastructure improvements; recurring product patterns; any experiment worth promoting outside Labs; recommendation on a second batch.
+- **Batch 01 (given 2026-10-09):** experiments shipped; experiments dropped; categories explored; most promising; weakest; infrastructure improvements; recurring product patterns; any experiment worth promoting outside Labs; recommendation on a second batch.
+- **Batch 02 (after #025):** a concise report covering #016–#025; rejected ideas; category coverage; strongest experiments; weakest experiments; recurring opportunities; any products now worth promoting; what the first 25 Labs experiments collectively suggest; recommendation for Batch 03.

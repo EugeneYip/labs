@@ -146,6 +146,14 @@ export const experiments: readonly Experiment[] = [
     shipped: '2026-10-09',
     status: 'live',
   },
+  {
+    number: 16,
+    slug: 'fluency-check',
+    title: 'Fluency Check',
+    summary: 'Times a student reading aloud while you tap the words they miss, then gives words correct per minute and accuracy, with a marked record to print.',
+    shipped: '2026-10-09',
+    status: 'live',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */
