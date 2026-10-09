@@ -154,6 +154,14 @@ export const experiments: readonly Experiment[] = [
     shipped: '2026-10-09',
     status: 'live',
   },
+  {
+    number: 17,
+    slug: 'frost-dates',
+    title: 'Frost Dates',
+    summary: 'Shows when the last spring frost and first autumn frost usually come for any place in the world, from 30 years of overnight lows, with a planting calendar to match.',
+    shipped: '2026-10-09',
+    status: 'live',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */

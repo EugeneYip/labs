@@ -17,19 +17,19 @@ More selective than Batch 01. For each experiment: generate several candidates, 
 
 ## Position
 
-- **Last shipped:** #015 Back Row (`back-row`), 2026-10-09.
-- **Current experiment:** #016 Fluency Check (`fluency-check`), education: a one-minute oral reading fluency check for teachers. Paste a passage, start the minute, tap words the student misreads, tap the last word read, and get words correct per minute and accuracy, with a marked record to print and an on-device log with CSV export.
+- **Last shipped:** #016 Fluency Check (`fluency-check`), 2026-10-09, verified in production (commit 96a9048): 200 with the right title, check, save, and log work live, console clean, homepage shows 16 shipped.
+- **Current experiment:** #017 Frost Dates (`frost-dates`), gardening: last spring and first autumn frost odds for any place in the world, from 30 years of daily lows in Open-Meteo's historical archive (free, no key, CC BY 4.0). Shows typical (1 in 2) and cautious (1 in 10) dates, the frost-free season, a 30-year chart of every frost night, and a planting calendar for common crops.
 - **Stage:** built and tested; committing and pushing.
-- **Next action:** push, watch the Actions run, verify https://labs.eugeneyip.net/fluency-check/ in production, then pick #017 (not education, not another "paste a text" tool right after this one).
+- **Next action:** push, watch the Actions run, verify https://labs.eugeneyip.net/frost-dates/ in production with one live archive request (each 30-year request counts as roughly 800 of the free tier's 10,000 daily calls per connection, so keep live tests few). Then pick #018: not weather or climate, and not place search.
 
 ## Batch 02 research notes
 
 Checked 2026-10-09. Keep these so later picks don't repeat the research.
 
 - **Fluency check (chosen for #016):** no free browser tool combines a timer, tap-to-mark errors, and automatic WCPM. Reader Meter is a $4 iPad app, Readingfluency.app is paid beyond a free tier, publisher tools need a school license, and the free Sheets add-on only does the arithmetic. Teachers still use a stopwatch and a paper copy.
-- **Ranked-choice vote counter (strong, later):** RankedVote's free tier needs an account and allows one contest and 100 voters. Google Forms can't count ranked ballots, and the guides tell people to do it by hand or with formulas.
+- **Ranked-choice vote counter (medium):** RankedVote's free tier needs an account and allows one contest and 100 voters. Its CSV importer runs locally but needs its template. OpenTally is free and local but wants BLT files, pyrcv.org reads Google Forms CSVs, and OpaVote's free count is capped at 25 voters. Differentiate only with tap-to-enter paper ballots and forgiving CSV import, or skip it.
 - **Line rehearsal for actors (strong, later):** the options are iPhone and iPad apps, mostly freemium (HitCue, MyLines, Cue-to-Cue, Acting Pal). The one web tool found handles only audition snippets.
-- **Worldwide frost dates (strong, later):** every frost-date lookup found covers only the US and Canada (NOAA normals). Open-Meteo's historical archive is free and keyless, so last-frost odds could be computed for any place. Check the reanalysis against NOAA dates for a few US towns first.
+- **Worldwide frost dates (chosen for #017):** every lookup found covers only the US and Canada. A 30-year daily request to Open-Meteo's archive takes under a second (about 195 KB). Checked against NOAA-based dates (30% risk, 32°F, 1991–2020) for Boston, Denver, Minneapolis, Atlanta, and Portland, the reanalysis at 0°C lands within 0–8 days, except downtown Portland: 19 days later in spring and 12 earlier in autumn, the cautious direction. ERA5-Land and the default model gave the same dates.
 - **Video technique analysis (candidate):** Coach's Eye shut down. Kinovea is Windows-only. The rest are apps, often golf-only or paid.
 - **Market stall till (candidate):** the offline options are iPhone apps. Web registers exist but don't promise offline use or no account.
 - **Rotating shift calendar (rejected):** ToolGrit and Teambridge already offer free, no-account pattern calendars, and ToolGrit exports .ics.
@@ -54,6 +54,7 @@ Checked 2026-10-09. Keep these so later picks don't repeat the research.
 | 014 | Playing Time | playing-time | Sports / coaching | Roster to a generated fair schedule with sideline calls; print | Volunteer youth coaches | 2026-10-09 |
 | 015 | Back Row | back-row | Accessibility / presenting | Perceptual simulation of an image, with sizing advice | Presenters, teachers, sign makers | 2026-10-09 |
 | 016 | Fluency Check | fluency-check | Education / reading assessment | Live tap-to-mark while listening, on a timer; print and on-device log | Teachers, tutors, reading specialists | 2026-10-09 |
+| 017 | Frost Dates | frost-dates | Gardening / climate | Place to 30-year climate odds, a season-by-season chart, and a planting calendar | Gardeners worldwide, especially outside North America | 2026-10-09 |
 
 ## Category distribution
 
@@ -137,6 +138,8 @@ Where applicable: core flow; persistence or file handling; several edge cases; i
 - **Dev server:** `preview_start` with the `dev` config (port 5173). Production check: `npm run build`, then the `pages` config (port 4174).
 - **GitHub:** `gh` is logged in as EugeneYip. Pages deploys from Actions; the custom domain is in the Pages settings.
 - **Lesson from #016:** typing a `\u` escape (like `\u00AD`) in a tool call's text writes the literal invisible character into the file. Write such escapes from Python with `chr(92)` and always run the invisible-character scan over `src/` before committing.
+- **Fixtures added in #017:** `frost-boston.json`, `frost-canberra.json`, `frost-seville.json` (1995-01-01 to 2026-10-07 daily lows), plus 1991–2020 copies for Boston, Denver, and Portland. Seed settings before page scripts with an `initScript` guarded by a sessionStorage flag: the helper's `storage` option races a lazily loaded experiment that saves its defaults on mount.
+- **zsh gotcha:** never name a shell loop variable `path`; zsh ties it to `PATH`, so commands like curl stop being found.
 - Storage keys must be `labs:<slug>` (Constitution, amended 2026-10-09 with owner authorization).
 
 ## Batch report formats
