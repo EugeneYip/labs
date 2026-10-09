@@ -186,6 +186,14 @@ export const experiments: readonly Experiment[] = [
     shipped: '2026-10-09',
     status: 'live',
   },
+  {
+    number: 21,
+    slug: 'family-stories',
+    title: 'Family Stories',
+    summary: 'A guided recorder for interviewing grandparents and other relatives: one good question at a time, each answer recorded and kept on your device until you download it.',
+    shipped: '2026-10-09',
+    status: 'live',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */

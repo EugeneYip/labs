@@ -17,10 +17,11 @@ More selective than Batch 01. For each experiment: generate several candidates, 
 
 ## Position
 
-- **Last shipped:** #019 Form Check (`form-check`), 2026-10-09, verified in production (commit 4432285): 200 with the right title, a generated video opens, the angle tool and linked steps work live, console clean, homepage shows 19 shipped.
-- **Current experiment:** #020 Custody Calendar (`custody-calendar`), family / co-parenting: a repeating overnight pattern (presets 2-2-3, 2-2-5-5, 3-4-4-3, alternating weeks, every other weekend with or without a weeknight, or tap to make your own over 1–4 weeks), a start week, and the two parents' names, giving a year calendar colored by who has each night. It shows overnight totals and percentages for the year, the next exchanges, tap-to-swap days for holidays, an .ics export, a share link (everything in the part after #), and a one-page print.
+- **Last shipped:** #020 Custody Calendar (`custody-calendar`), 2026-10-09, verified in production (commit 71d22f0): 200 with the right title, a share link opens live with the right names and totals, console clean, homepage shows 20 shipped.
+- **Current experiment:** #021 Family Stories (`family-stories`), family history: a guided interview recorder for talking with grandparents and other relatives. Pick topics from about 60 original questions (or write your own), show one big question at a time, and record an answer per question with a level meter, timer, and screen kept on. Recordings stay in this browser (IndexedDB `labs:family-stories`) until you download them, one at a time or all in a ZIP with an index of the questions. Several interviews, one per person.
 - **Stage:** built and tested; committing and pushing.
-- **Next action:** push, verify https://labs.eugeneyip.net/custody-calendar/ in production, then pick #021: not a calendar.
+- **Next action:** push, verify https://labs.eugeneyip.net/family-stories/ in production (microphone stand-in plus `--autoplay-policy=no-user-gesture-required`), then build #022 Day Clock.
+- **Plan for the rest of the batch:** #022 Day Clock (dementia orientation display for any tablet), #023 Discussion Map (tap who speaks in a seminar or meeting: turns, talk time, lines between speakers), #024 ranked-choice vote counter (paper ballots by tapping plus forgiving CSV import), #025 the market-stall till or a stronger idea found by then. No two consecutive experiments may solve the same type of problem.
 
 ## Batch 02 research notes
 
@@ -35,6 +36,11 @@ Checked 2026-10-09. Keep these so later picks don't repeat the research.
 - **Custody calendar (strong, later):** no free, no-account tool found that turns a co-parenting pattern (2-2-3, 2-2-5-5, alternating weeks, every other weekend) into a calendar with overnight percentages and an .ics file. MyKidsCal uploads custody documents to AI, and OurFamilyWizard, qustody, and Custody X Change need accounts or payment.
 - **Day clock for dementia care (strong, later):** the free options are iPad apps (Day Clock, Clarity, DayDateClock, RecallCue, Calendar Clock), and the hardware clocks cost $40–190. A web page would run full-screen on any old tablet, Android or Fire included, with a wake lock.
 - **Event seating with keep-apart rules (rejected):** crowded. TableTact, kissmyskills, planning.wedding, Seatbee, and The Table Plan offer free or no-account planners, several with automatic rules.
+- **Stage plot maker for bands (rejected):** crowded. Stage Plot Designer, Hive Mind Stageplot, StageOn, and Tecrider are browser tools, and LiveTechPack and PatchBoy are apps.
+- **Swiss tournament pairings (rejected):** crowded. swiss-chess, Chess Caddy, and ChessPairings.org are free browser tools with no account.
+- **Fair rotation of meeting times across time zones (rejected):** TimeDate (free, no account, tracks a "fairness debt") and itime.day (fair scores) cover it.
+- **Family story recorder (chosen for #021):** StoryCorps' free app uploads to its archive, Remento and Storyworth are paid, and the rest are phone apps. Nothing found records locally in a browser with question prompts.
+- **Discussion map / speaking time (strong, later):** no free web tool combines tap-to-log speakers, talk time, and a discussion map. Equity Maps and Speaker Tracker are paid or Apple-only, and the Zoom and Google add-ons are trials that work only in online meetings.
 - **Rotating shift calendar (rejected):** ToolGrit and Teambridge already offer free, no-account pattern calendars, and ToolGrit exports .ics.
 
 ## Shipped
@@ -61,6 +67,7 @@ Checked 2026-10-09. Keep these so later picks don't repeat the research.
 | 018 | Off Book | off-book | Theater / performing arts | Paste a script, then self-tested cue cards and a read-through with your lines masked | Actors in school, community, and professional shows | 2026-10-09 |
 | 019 | Form Check | form-check | Sports technique / video | Local video with frame stepping, slow motion, drawn lines and angles, and a linked side-by-side | Athletes, coaches, hobbyists (golf, running, lifting) | 2026-10-09 |
 | 020 | Custody Calendar | custody-calendar | Family / co-parenting | Pattern to year calendar, tap to swap nights, .ics export, share link, print | Separated parents sharing custody | 2026-10-09 |
+| 021 | Family Stories | family-stories | Family history / oral history | Guided question cards with per-question audio recording, stored in IndexedDB, ZIP download | Families interviewing elders | 2026-10-09 |
 
 ## Category distribution
 
@@ -146,6 +153,7 @@ Where applicable: core flow; persistence or file handling; several edge cases; i
 - **Lesson from #016:** typing a `\u` escape (like `\u00AD`) in a tool call's text writes the literal invisible character into the file. Write such escapes from Python with `chr(92)` and always run the invisible-character scan over `src/` before committing.
 - **Fixtures added in #017:** `frost-boston.json`, `frost-canberra.json`, `frost-seville.json` (1995-01-01 to 2026-10-07 daily lows), plus 1991–2020 copies for Boston, Denver, and Portland. Seed settings before page scripts with an `initScript` guarded by a sessionStorage flag: the helper's `storage` option races a lazily loaded experiment that saves its defaults on mount.
 - **Video in tests (from #019):** `.claude/qa/form-video.js` is an `initScript` that adds `__makeVideo()` (a canvas animation recorded with MediaRecorder as WebM), `__open(...files)` (puts files into the page's file input with a DataTransfer), and `__tap(svg, fx, fy)` (pointer events). Recorded WebM has no stated duration (the player seeks to the end to find it) and irregular frame timing.
+- **Recording in tests (from #021):** a stand-in microphone built from an oscillator through `createMediaStreamDestination()` records only silence unless Brave starts with `browserArgs: ["--autoplay-policy=no-user-gesture-required"]`, because scripted clicks don't count as a user gesture and the AudioContext stays suspended. Don't `await ctx.resume()` in the stub; it never settles. Key lists in plans can now include numbers, which are pauses in milliseconds.
 - **zsh gotcha:** never name a shell loop variable `path`; zsh ties it to `PATH`, so commands like curl stop being found.
 - Storage keys must be `labs:<slug>` (Constitution, amended 2026-10-09 with owner authorization).
 
