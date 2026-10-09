@@ -17,9 +17,12 @@ export default function Glance() {
   const [history, setHistory] = useState(load)
   const [mode, setMode] = useState<'daily' | 'practice'>('daily')
   const guesses = history[date] ?? []
-  const finished = guesses.length >= rounds.length
+  // The round on screen. It moves on only when asked, so a guess is saved (and can't be redone) while its answer shows.
+  const [current, setCurrent] = useState(() => guesses.length)
+  const finished = current >= rounds.length
 
-  const record = (guess: number) => {
+  const record = (index: number, guess: number) => {
+    if (index !== guesses.length) return
     const next = { ...history, [date]: [...guesses, guess] }
     setHistory(next)
     try {
@@ -39,11 +42,18 @@ export default function Glance() {
         ) : (
           <>
             <p className="text-pretty text-dim">
-              {guesses.length === 0
+              {current === 0
                 ? 'Five fields of dots, each shown for about a second. Guess how many you saw. Everyone gets the same five each day.'
-                : `Picking up where you left off: round ${guesses.length + 1} of ${rounds.length}.`}
+                : `Round ${current + 1} of ${rounds.length}. Your earlier guesses are saved.`}
             </p>
-            <Game key={guesses.length} round={rounds[guesses.length]} label={`Round ${guesses.length + 1} of ${rounds.length}`} onGuess={record} last={guesses.length === rounds.length - 1} />
+            <Game
+              key={current}
+              round={rounds[current]}
+              label={`Round ${current + 1} of ${rounds.length}`}
+              onGuess={(guess) => record(current, guess)}
+              onNext={() => setCurrent((c) => c + 1)}
+              last={current === rounds.length - 1}
+            />
           </>
         )}
       </div>
@@ -52,7 +62,7 @@ export default function Glance() {
 }
 
 /** One round: get ready, see the field, guess, see how close you were. */
-function Game({ round, label, onGuess, last, practiceMode }: { round: Round; label: string; onGuess: (guess: number) => void; last?: boolean; practiceMode?: boolean }) {
+function Game({ round, label, onGuess, onNext, last, practiceMode }: { round: Round; label: string; onGuess: (guess: number) => void; onNext: () => void; last?: boolean; practiceMode?: boolean }) {
   const [phase, setPhase] = useState<Phase>('ready')
   const [text, setText] = useState('')
   const [guess, setGuess] = useState<number | null>(null)
@@ -78,6 +88,7 @@ function Game({ round, label, onGuess, last, practiceMode }: { round: Round; lab
     if (!(n > 0)) return
     setGuess(n)
     setPhase('revealed')
+    onGuess(n)
   }
 
   const points = guess === null ? 0 : score(guess, round.answer)
@@ -132,7 +143,7 @@ function Game({ round, label, onGuess, last, practiceMode }: { round: Round; lab
               <span aria-hidden="true">{square(points)}</span>
               <span className="text-dim"> · {verdict(guess, round.answer)}</span>
             </p>
-            <button ref={next} type="button" onClick={() => onGuess(guess)} className={`${primary} mt-4`}>
+            <button ref={next} type="button" onClick={onNext} className={`${primary} mt-4`}>
               {practiceMode ? 'Another one' : last ? 'See your score' : 'Next round'}
             </button>
           </div>
@@ -237,6 +248,7 @@ function Results({ date, rounds, guesses, history, onPractice }: { date: string;
 
 function Practice({ onBack }: { onBack: () => void }) {
   const [round, setRound] = useState(() => practice())
+  const [played, setPlayed] = useState(0)
   const [scores, setScores] = useState<number[]>([])
   const average = scores.length ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : null
   return (
@@ -248,13 +260,14 @@ function Practice({ onBack }: { onBack: () => void }) {
         <p className="text-sm text-dim tabular-nums">{average !== null ? `${scores.length} played · average ${average}` : 'Practice rounds aren’t saved.'}</p>
       </div>
       <Game
-        key={scores.length}
+        key={played}
         round={round}
         label="Practice"
         practiceMode
-        onGuess={(guess) => {
-          setScores((s) => [...s, score(guess, round.answer)])
+        onGuess={(guess) => setScores((s) => [...s, score(guess, round.answer)])}
+        onNext={() => {
           setRound(practice())
+          setPlayed((n) => n + 1)
         }}
       />
     </>
