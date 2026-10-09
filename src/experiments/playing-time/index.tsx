@@ -76,7 +76,10 @@ export default function PlayingTime() {
                     Try an example team
                   </button>
                 ) : (
-                  `${roster.length} ${roster.length === 1 ? 'player' : 'players'}, up to ${LIMITS.players}`
+                  <>
+                    {roster.length} {roster.length === 1 ? 'player' : 'players'}, up to {LIMITS.players}
+                    {roster.length < LIMITS.players && typedNames(saved.roster) > roster.length && '. A name typed twice counts once, so add an initial to tell two players apart.'}
+                  </>
                 )}
               </p>
             </div>
@@ -136,6 +139,9 @@ export default function PlayingTime() {
   )
 }
 
+/** How many names were typed, counting repeats, to spot names that `parseRoster` merged. */
+const typedNames = (text: string) => text.split(/[\n,;]/).filter((name) => name.trim()).length
+
 function periodName(p: number, periods: number): string {
   if (periods === 2) return p === 0 ? '1st half' : '2nd half'
   if (periods === 4) return `Q${p + 1}`
@@ -147,6 +153,8 @@ function Result({ names, plan, format, onShuffle }: { names: string[]; plan: Pla
   const total = format.periods * format.periodMinutes
   const low = Math.min(...plan.minutes)
   const high = Math.max(...plan.minutes)
+  // With few changes, there can be fewer places over the game than players.
+  const left = plan.minutes.filter((m) => m === 0).length
   const calls = changes(plan)
   const short = names.length < format.onField
   const within = (minute: number) => {
@@ -173,7 +181,9 @@ function Result({ names, plan, format, onShuffle }: { names: string[]; plan: Pla
       <p className="mt-1 text-pretty text-dim">
         {short
           ? `Only ${names.length} here for ${format.onField} places, so everyone plays the whole game.`
-          : low === total
+          : left > 0
+            ? `${left === 1 ? 'One player doesn’t' : `${left} players don’t`} get on at all with changes this far apart, so change more often.`
+            : low === total
             ? 'Everyone plays the whole game.'
             : low === high
               ? `Everyone plays ${low} of ${total} minutes (${pct(low)}%).`

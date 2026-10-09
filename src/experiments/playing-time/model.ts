@@ -41,8 +41,8 @@ export function shifts(format: Format): Shift[] {
     let t = 0
     while (t < format.periodMinutes) {
       let length = Math.min(every, format.periodMinutes - t)
-      // Fold a sliver at the end of a period into the shift before it.
-      if (format.periodMinutes - (t + length) > 0 && format.periodMinutes - (t + length) < every / 3) length = format.periodMinutes - t
+      // Fold a sliver at the end of a period, a third of a shift or less, into the shift before it.
+      if (format.periodMinutes - (t + length) > 0 && format.periodMinutes - (t + length) <= every / 3) length = format.periodMinutes - t
       list.push({ period: p, start: p * format.periodMinutes + t, end: p * format.periodMinutes + t + length })
       t += length
     }

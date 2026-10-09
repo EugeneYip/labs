@@ -16,6 +16,12 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-09 · #014 Playing Time update
+
+- **What:** When changes are so far apart that there are fewer places over the game than players, the summary now says a player doesn't get on at all and suggests changing more often. Before, it read "Everyone plays 0–30 of 60 minutes". A name typed twice, such as two players called Sam, now gets a note asking for an initial, because the repeat was dropped from the plan without a word. A tail of exactly a third of a shift at the end of a period is now folded into the shift before it, so 10-minute quarters changed every 3 minutes run 3, 3, 4 instead of 3, 3, 3, 1.
+- **Why:** The Batch 03 audit generated 17,820 plans across roster sizes, formats, and keeper settings. Minutes stayed within one shift of each other in every case, but these three cases could mislead a coach or leave a child out.
+- **Notes:** In some formats with uneven shift lengths, a player can sit a couple more shifts in a row than an even rotation would need, while their total minutes stay fair. This was left as it is. Tested with the new messages, a phone-width plan, and print.
+
 ## 2026-10-09 · #006 Secret Santa update
 
 - **What:** "Change people or rules" now asks first, like "Draw again", because going back to the setup throws away the drawn links. Before, one tap lost them. Links also work when every field is filled to its limit in a script like Chinese, where a link used to come out too long and show "This link doesn't work".
