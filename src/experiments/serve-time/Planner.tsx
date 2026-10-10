@@ -223,7 +223,7 @@ export function Planner({ plan, onChange, onCook }: { plan: Plan; onChange: (pla
                 Print
               </button>
             </div>
-            <p className="mt-3 text-sm text-dim print:hidden">Cooking mode counts down to each step and chimes when it’s time.</p>
+            <p className="mt-3 max-w-prose text-sm text-pretty text-dim print:hidden">Cooking mode counts down to each step and chimes when it’s time. The times are a plan, not a test of doneness: check meat and poultry with a food thermometer before serving.</p>
           </>
         )}
       </section>

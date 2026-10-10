@@ -119,6 +119,24 @@ export function cues(plan: Plan, slots = schedule(plan)): Cue[] {
   return all.sort((a, b) => a.at - b.at || (a.kind === 'preheat' ? -1 : b.kind === 'preheat' ? 1 : 0))
 }
 
+/**
+ * How many ovens these temperatures need at once, when one oven serves
+ * settings within the tolerance of each other (like 200° and 210°). Counting
+ * from the lowest keeps each oven's spread within it: 180°, 190°, and 200°
+ * need two ovens, not one, even though each is close to the next.
+ */
+export function ovensNeeded(temps: readonly number[], unit: Unit): number {
+  let ovens = 0
+  let lowest = -Infinity
+  for (const t of [...temps].sort((a, b) => a - b)) {
+    if (t - lowest > tolerance(unit)) {
+      ovens++
+      lowest = t
+    }
+  }
+  return ovens
+}
+
 /** Times when more oven temperatures are needed at once than there are ovens. */
 export function ovenClashes(slots: Slot[], ovens: number, unit: Unit): Clash[] {
   const oven = slots.filter((s) => s.step.oven !== null)
@@ -127,11 +145,7 @@ export function ovenClashes(slots: Slot[], ovens: number, unit: Unit): Clash[] {
   for (let i = 0; i + 1 < times.length; i++) {
     const [from, to] = [times[i], times[i + 1]]
     const active = oven.filter((s) => s.start < to && s.end > from)
-    // Group temperatures that one oven can serve together, like 200° and 210°.
-    const temps = active.map((s) => s.step.oven!).sort((a, b) => a - b)
-    let groups = 0
-    for (let k = 0; k < temps.length; k++) if (k === 0 || temps[k] - temps[k - 1] > tolerance(unit)) groups++
-    if (groups <= ovens) continue
+    if (ovensNeeded(active.map((s) => s.step.oven!), unit) <= ovens) continue
     // Back-to-back stretches read as one clash, even when the dishes involved change partway.
     const last = clashes[clashes.length - 1]
     if (last && last.to === from) {
@@ -257,7 +271,7 @@ export function exampleDishes(unit: Unit): Dish[] {
     steps: steps.map(([what, minutes, oven]) => ({ id: newId(), what, minutes, oven: oven === null ? null : t(oven) })),
   })
   return [
-    dish('Roast chicken', [['Season and stuff', 15, null], ['Roast', 80, 220], ['Rest under foil', 15, null]]),
+    dish('Roast chicken', [['Season', 15, null], ['Roast', 80, 220], ['Rest under foil', 15, null]]),
     dish('Roast potatoes', [['Peel and parboil', 20, null], ['Roast', 45, 220]]),
     dish('Green beans', [['Trim', 10, null], ['Boil', 6, null]]),
     dish('Gravy', [['Make from the pan juices', 10, null]]),

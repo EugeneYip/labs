@@ -164,7 +164,7 @@ export function Cook({ plan, onChange, onExit }: { plan: Plan; onChange: (plan: 
           : awake === null
             ? 'This browser can’t keep the screen on, so set your phone not to lock while you cook.'
             : 'The screen may turn off; tap the page to keep it awake.'}{' '}
-        Chimes only play while this page is open.
+        Chimes only play while this page is on screen, so keep it in front while you cook.
       </p>
     </div>
   )
