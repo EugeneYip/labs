@@ -70,11 +70,11 @@ export function Player({ file, tool, send, listen, active, onActivate, onRemove,
   useEffect(() => {
     const v = video.current
     if (!v || !url) return
+    const update = () => {
+      timeRef.current = v.currentTime
+      setTime(v.currentTime)
+    }
     if (typeof v.requestVideoFrameCallback !== 'function') {
-      const update = () => {
-        timeRef.current = v.currentTime
-        setTime(v.currentTime)
-      }
       v.addEventListener('timeupdate', update)
       v.addEventListener('seeked', update)
       return () => {
@@ -82,11 +82,26 @@ export function Player({ file, tool, send, listen, active, onActivate, onRemove,
         v.removeEventListener('seeked', update)
       }
     }
+    // After a step or a scrub while paused, the time is where the video went: Safari can report the frame
+    // shown a step late, or not at all, until it plays again.
+    let held = false
+    const seeked = () => {
+      if (!v.paused) return
+      held = true
+      update()
+    }
+    const play = () => {
+      held = false
+    }
+    v.addEventListener('seeked', seeked)
+    v.addEventListener('play', play)
     let last: VideoFrameCallbackMetadata | null = null
     let id = 0
     const tick: VideoFrameRequestCallback = (_, m) => {
-      timeRef.current = m.mediaTime
-      setTime(m.mediaTime)
+      if (!held) {
+        timeRef.current = m.mediaTime
+        setTime(m.mediaTime)
+      }
       if (last && !v.paused && v.playbackRate === 1 && m.presentedFrames === last.presentedFrames + 1) {
         gaps.current.push(m.mediaTime - last.mediaTime)
         if (gaps.current.length > 120) gaps.current.shift()
@@ -97,7 +112,11 @@ export function Player({ file, tool, send, listen, active, onActivate, onRemove,
       id = v.requestVideoFrameCallback(tick)
     }
     id = v.requestVideoFrameCallback(tick)
-    return () => v.cancelVideoFrameCallback(id)
+    return () => {
+      v.cancelVideoFrameCallback(id)
+      v.removeEventListener('seeked', seeked)
+      v.removeEventListener('play', play)
+    }
   }, [url])
 
   // The display size: as wide as there's room for, and no taller than `maxHeight`.
@@ -118,11 +137,14 @@ export function Player({ file, tool, send, listen, active, onActivate, onRemove,
     (c: Command) => {
       const v = video.current
       if (!v || !meta) return
-      if (c.kind === 'toggle') {
-        if (v.paused) void v.play().catch(() => {})
-        else v.pause()
-      } else if (c.kind === 'pause') v.pause()
-      else if (c.kind === 'rate') {
+      if (c.kind === 'toggle' && v.paused) void v.play().catch(() => {})
+      else if (c.kind === 'toggle' || c.kind === 'pause') {
+        // Safari can stop on a later frame than the last one it reported, so a pause settles on that one.
+        v.pause()
+        const here = stepTime(timeRef.current, 0, fps ?? FALLBACK_FPS, meta.duration)
+        position.current = here
+        v.currentTime = here
+      } else if (c.kind === 'rate') {
         v.playbackRate = c.rate
         setRate(c.rate)
       } else {
