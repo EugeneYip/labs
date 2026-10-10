@@ -28,14 +28,29 @@ export const readable = (distance: number, eyesight: Eyesight) => distance * Mat
 export const comfortable = (distance: number, eyesight: Eyesight) => readable(distance, eyesight) * COMFORT
 
 /**
- * The font size on a standard 16:9 slide (13.33 × 7.5 in, so 540 points
- * tall) whose capitals are `capHeight` meters tall on a screen this wide.
+ * How tall each app's standard 16:9 slide is in points, the unit of its font
+ * sizes: PowerPoint's 13.33 × 7.5 in, Google Slides' 10 × 5.625 in, and
+ * Keynote's 1920 × 1080. The same text needs a different number in each.
+ */
+export const SLIDE_POINTS = { powerpoint: 540, google: 405, keynote: 1080 } as const
+
+/**
+ * The font size on a 16:9 slide `slideHeight` points tall whose capitals are
+ * `capHeight` meters tall on a screen this wide, the slide filling its width.
  * Capitals are about 70% of the font size in common typefaces.
  */
-export function slidePoints(capHeight: number, screenWidth: number): number {
+export function slidePoints(capHeight: number, screenWidth: number, slideHeight: number = SLIDE_POINTS.powerpoint): number {
   const screenHeight = (screenWidth * 9) / 16
-  return (capHeight / (0.7 * screenHeight)) * 540
+  return (capHeight / (0.7 * screenHeight)) * slideHeight
 }
+
+/**
+ * The extra blur to add on top of the blur the observer's own eyes bring.
+ * Blurs combine like the sides of a right triangle (their squares add), so
+ * the extra is the square root of the difference of squares, not the
+ * difference.
+ */
+export const extraBlur = (wanted: number, already: number) => Math.sqrt(Math.max(0, wanted * wanted - already * already))
 
 /**
  * Blur, as a Gaussian radius in the image's own pixels, that removes the

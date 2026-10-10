@@ -4,11 +4,13 @@ import {
   comfortable,
   CSS_PX_PER_M,
   defaultUnits,
+  extraBlur,
   EYESIGHT,
   formatDistance,
   formatHeight,
   fromMeters,
   readable,
+  SLIDE_POINTS,
   slidePoints,
   toMeters,
   trueWidth,
@@ -228,14 +230,16 @@ function Guidance({ settings }: { settings: Settings }) {
       </p>
       {settings.kind === 'screen' ? (
         <p className="rounded-lg border border-rule bg-ink/[0.03] px-3 py-2">
-          On a {formatDistance(width, units)} wide screen, use slide text of at least <span className="font-semibold tabular-nums">{Math.ceil(slidePoints(comfy, width))} pt</span>.
-          Below <span className="tabular-nums">{Math.ceil(slidePoints(just, width))} pt</span> it can’t be read at all.
+          On a {formatDistance(width, units)} wide screen, use slide text of at least <span className="font-semibold tabular-nums">{Math.ceil(slidePoints(comfy, width))} pt</span> in PowerPoint
+          <span className="text-dim"> ({Math.ceil(slidePoints(comfy, width, SLIDE_POINTS.google))} pt in Google Slides, {Math.ceil(slidePoints(comfy, width, SLIDE_POINTS.keynote))} pt in Keynote at 1920 × 1080)</span>. Below{' '}
+          <span className="tabular-nums">{Math.ceil(slidePoints(just, width))} pt</span> in PowerPoint it’s too small to read from there.
         </p>
       ) : (
         <p className="rounded-lg border border-rule bg-ink/[0.03] px-3 py-2">
           Make the smallest letters on the poster at least <span className="font-semibold">{formatHeight(comfy, units)}</span> tall.
         </p>
       )}
+      <p className="text-sm text-dim">This models sharpness only. Low contrast, glare, a dim room, or a thin or decorative font make text harder to read than this shows.</p>
     </div>
   )
 }
@@ -256,7 +260,7 @@ function View({ picture, settings, change }: { picture: Picture; settings: Setti
   const shownWidth = trueSize ? trueWidth(settings.width, settings.distance, settings.yourDistance) * settings.pxPerM : frameWidth
   // At true size your own eyes already blur it like 20/20 would, so only weaker eyesight adds more.
   const sigmaShown = trueSize
-    ? Math.max(0, sigma - blurPixels(settings.distance, '20/20', settings.width, picture.width)) * (shownWidth / picture.width)
+    ? extraBlur(sigma, blurPixels(settings.distance, '20/20', settings.width, picture.width)) * (shownWidth / picture.width)
     : sigma * (shownWidth / picture.width)
 
   return (
@@ -280,8 +284,8 @@ function View({ picture, settings, change }: { picture: Picture; settings: Setti
         </>
       ) : (
         <p className="mt-2 text-sm text-dim">
-          Shown large so you can look closely; the blur takes away what can’t be made out from there. Anything you can’t read here, they
-          can’t read either.
+          Fitted to this window, with the detail they can’t make out from there blurred away. Your own eyes add some blur too, so the
+          smallest text can look harder to read here than it is for them; the sizes above are the better guide.
         </p>
       )}
     </div>
@@ -289,16 +293,17 @@ function View({ picture, settings, change }: { picture: Picture; settings: Setti
 }
 
 function TrueSizeHelp({ settings, change }: { settings: Settings; change: (patch: Partial<Settings>) => void }) {
-  const cardPx = 0.0856 * settings.pxPerM
+  // A bank card's short side, 54 mm, fits across a phone held upright; the long side is wider than the screen.
+  const cardPx = 0.05398 * settings.pxPerM
   return (
     <div className="mt-3 grid gap-3 text-sm text-dim">
       <p>
-        Drawn as big as it looks to them, for you sitting {formatDistance(settings.yourDistance, settings.units)} from this screen. For an accurate size, match the bar to a bank card held against the screen.
+        Drawn as big as it looks to them, for you sitting {formatDistance(settings.yourDistance, settings.units)} from this screen. For an accurate size, match the bar to the short side of a bank card held against the screen.
       </p>
       <div className="grid gap-1.5">
         <div className="h-6 rounded-md border-2 border-ink/70" style={{ width: cardPx }} aria-hidden="true" />
         <label className="grid gap-1">
-          <span>Bank card width</span>
+          <span>Bar length</span>
           <input
             type="range"
             min={CSS_PX_PER_M * 0.5}
