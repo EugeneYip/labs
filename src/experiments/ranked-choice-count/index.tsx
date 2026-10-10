@@ -300,7 +300,12 @@ function Results({ result, candidates, ballots }: { result: Result; candidates: 
     const header = ['Candidate', ...result.rounds.map((_, i) => `Round ${i + 1}`)]
     const rows = candidates.map((c) => [c, ...result.rounds.map((r) => (c in r.votes ? fmt(r.votes[c], stv) : ''))])
     rows.push(['No choices left', ...result.rounds.map((r) => fmt(r.exhausted, stv))])
-    return [header, ...rows].map((r) => r.map((v) => (/[",\n]/.test(v) ? `"${v.replace(/"/g, '""')}"` : /^[=+\-@]/.test(v) ? `'${v}` : v)).join(',')).join('\r\n') + '\r\n'
+    // Text a spreadsheet would run as a formula gets an apostrophe first, then quotes if it needs them.
+    const cell = (v: string) => {
+      const safe = /^[=+\-@\t\r]/.test(v) ? `'${v}` : v
+      return /[",\n\r]/.test(safe) ? `"${safe.replace(/"/g, '""')}"` : safe
+    }
+    return [header, ...rows].map((r) => r.map(cell).join(',')).join('\r\n') + '\r\n'
   }
 
   return (

@@ -77,18 +77,55 @@ export function moneyExact(minor: number, code: string, locale?: string): string
   }
 }
 
-/** Reads a typed price: "3", "3.50", "3,50", "€3.50", "1,234.50". Null when it isn't a price. */
-export function parseMoney(text: string, code: string): number | null {
+/** The decimal mark a locale writes: "." in 3.50, "," in 3,50. */
+export function decimalMark(locale?: string): string {
+  try {
+    return new Intl.NumberFormat(locale).formatToParts(1.5).find((p) => p.type === 'decimal')?.value ?? '.'
+  } catch {
+    return '.'
+  }
+}
+
+/**
+ * Reads a typed price: "3", "3.50", "3,50", "€3.50", "1,234.50", "1.234,50".
+ * With both "." and ",", the last one marks the decimals. A lone separator
+ * before one or two digits marks decimals; before three it groups thousands,
+ * unless it's this device's decimal mark ("3.505" is a typo in the US but
+ * 3,505 in Germany). More decimals than the currency has (cents on yen, three
+ * places on dollars) make it not a price: null, rather than a guess.
+ */
+export function parseMoney(text: string, code: string, locale?: string): number | null {
   const d = decimals(code)
-  let t = text.replace(/[^\d.,-]/g, '')
-  if (!t || /-/.test(t.slice(1))) return null
-  // The last separator followed by one or two digits is the decimal mark; others group thousands.
-  const m = /^(.*?)[.,](\d{1,2})$/.exec(t)
-  if (m && d > 0) t = `${m[1].replace(/[.,]/g, '')}.${m[2]}`
-  else t = t.replace(/[.,]/g, '')
-  const v = Number(t)
-  if (!Number.isFinite(v) || v < 0 || v > 1e7) return null
-  return Math.round(v * 10 ** d)
+  const t = text.replace(/[^\d.,-]/g, '')
+  if (!/\d/.test(t) || t.includes('-')) return null
+  let point = -1
+  const lastDot = t.lastIndexOf('.')
+  const lastComma = t.lastIndexOf(',')
+  if (lastDot >= 0 && lastComma >= 0) point = Math.max(lastDot, lastComma)
+  else if (lastDot >= 0 || lastComma >= 0) {
+    const sep = lastDot >= 0 ? '.' : ','
+    const groups = t.split(sep)
+    if (groups.length === 2 && (groups[1].length !== 3 || sep === decimalMark(locale))) point = t.indexOf(sep)
+    else if (groups.slice(1).some((g) => g.length !== 3)) return null
+  }
+  const whole = (point >= 0 ? t.slice(0, point) : t).replace(/[.,]/g, '')
+  const fraction = point >= 0 ? t.slice(point + 1) : ''
+  if (/[.,]/.test(fraction) || fraction.length > d) return null
+  const v = Number(whole || '0') * 10 ** d + Number(fraction.padEnd(d, '0') || '0')
+  return Number.isSafeInteger(v) && v <= 1e7 * 10 ** d ? v : null
+}
+
+/**
+ * An amount in minor units moved to a currency with a different number of
+ * decimals, keeping the number as it was typed ("300" stays 300 whether it
+ * was dollars or yen). Null when that can't be done exactly, as with cents
+ * moving to yen.
+ */
+export function rescale(minor: number, from: string, to: string): number | null {
+  const shift = decimals(to) - decimals(from)
+  if (shift >= 0) return minor * 10 ** shift
+  const unit = 10 ** -shift
+  return minor % unit === 0 ? minor / unit : null
 }
 
 /**

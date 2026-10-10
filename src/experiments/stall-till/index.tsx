@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { currency, CURRENCIES, decimals, floatToKeep, localCurrency, money, moneyExact, parseMoney, quickTenders } from './money.ts'
+import { currency, CURRENCIES, decimals, floatToKeep, localCurrency, money, moneyExact, parseMoney, quickTenders, rescale } from './money.ts'
 
 // Items, the day's sales, and the cash count, kept on this device only.
 const STORAGE_KEY = 'labs:stall-till'
+// What was stored, kept aside when it couldn't be read, so a day's sales are never simply overwritten.
+const BACKUP_KEY = 'labs:stall-till:unreadable'
 /** Sample items with prices in whole currency units (dollars, euros), so yen and the like get sensible numbers too. */
 const SAMPLE: [string, number][] = [
   ['Brownie', 2.5],
@@ -60,12 +62,16 @@ export default function StallTill() {
   const code = saved.currency
   const fmt = (m: number) => money(m, code)
   const exact = (m: number) => moneyExact(m, code)
+  const [notSaving, setNotSaving] = useState(false)
+  const [unreadable, setUnreadable] = useState(() => readBackup())
 
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 1, ...saved }))
+      setNotSaving(false)
     } catch {
-      // Private browsing or full storage: sales won't survive a reload, so the page says so on the Today tab.
+      // Private browsing or full storage: sales won't survive a reload, so the page says so.
+      setNotSaving(true)
     }
   }, [saved])
 
@@ -88,6 +94,33 @@ export default function StallTill() {
   return (
     <div className="flex-1">
       <div className="mx-auto w-full max-w-5xl px-4 pt-5 pb-28 sm:px-6 sm:pt-8 print:p-0">
+        {notSaving && (
+          <p className="mb-4 rounded-xl border border-red-600 px-4 py-3 text-sm text-pretty text-red-800 dark:border-red-400 dark:text-red-300 print:hidden" role="alert">
+            This browser isn’t saving sales (a private window, or storage is full), so they’ll be gone if the page reloads or closes. Keep it open, and download the CSV from the Today tab before you close it.
+          </p>
+        )}
+        {unreadable && (
+          <p className="mb-4 rounded-xl border border-rule px-4 py-3 text-sm text-pretty print:hidden" role="status">
+            The sales saved on this phone couldn’t be read, so the till started fresh, and a copy of what was saved was kept.{' '}
+            <button type="button" onClick={() => download(new Blob([unreadable], { type: 'text/plain;charset=utf-8' }), 'stall-till-saved-data.txt')} className="cursor-pointer underline underline-offset-4">
+              Download the copy
+            </button>{' '}
+            <button
+              type="button"
+              onClick={() => {
+                try {
+                  localStorage.removeItem(BACKUP_KEY)
+                } catch {
+                  // Nothing to tidy.
+                }
+                setUnreadable(null)
+              }}
+              className="cursor-pointer text-dim underline underline-offset-4"
+            >
+              Dismiss
+            </button>
+          </p>
+        )}
         <div className="flex flex-wrap items-center justify-between gap-3 print:hidden">
           {tabs}
           <p className="text-sm text-dim tabular-nums">Taken today: <span className="font-semibold text-ink">{exact(saved.sales.reduce((n, s) => n + s.total, 0))}</span></p>
@@ -317,9 +350,9 @@ function Today({ saved, fmt, exact, change }: { saved: Saved; fmt: (m: number) =
   const plan = pieces.length && keep > 0 && anyCount ? floatToKeep(saved.counts, keep) : null
 
   const csv = () => {
-    const rows = [['Time', 'Items', 'Total', 'Payment', 'Paid with', 'Change']]
-    for (const s of sales) rows.push([timeFormat.format(s.at), s.lines.map((l) => `${l.qty} × ${l.name}`).join('; '), exact(s.total), METHODS[s.method], s.tendered === null ? '' : exact(s.tendered), s.tendered === null ? '' : exact(s.tendered - s.total)])
-    return rows.map((r) => r.map((v) => (/[",\n]/.test(v) ? `"${v.replace(/"/g, '""')}"` : /^[=+\-@]/.test(v) ? `'${v}` : v)).join(',')).join('\r\n') + '\r\n'
+    const rows = [['Date', 'Time', 'Items', 'Total', 'Payment', 'Paid with', 'Change']]
+    for (const s of sales) rows.push([localDate(s.at), timeFormat.format(s.at), s.lines.map((l) => `${l.qty} × ${l.name}`).join('; '), exact(s.total), METHODS[s.method], s.tendered === null ? '' : exact(s.tendered), s.tendered === null ? '' : exact(s.tendered - s.total)])
+    return rows.map((r) => r.map(csvCell).join(',')).join('\r\n') + '\r\n'
   }
 
   return (
@@ -447,7 +480,7 @@ function Today({ saved, fmt, exact, change }: { saved: Saved; fmt: (m: number) =
             Sales
           </h2>
           <div className="flex flex-wrap gap-2 print:hidden">
-            <button type="button" onClick={() => download(new Blob(['\uFEFF', csv()], { type: 'text/csv;charset=utf-8' }), `sales-${new Date().toISOString().slice(0, 10)}.csv`)} disabled={!sales.length} className={outline}>
+            <button type="button" onClick={() => download(new Blob(['\uFEFF', csv()], { type: 'text/csv;charset=utf-8' }), `sales-${localDate(Date.now())}.csv`)} disabled={!sales.length} className={outline}>
               Download CSV
             </button>
             <button type="button" onClick={() => window.print()} className={quiet}>
@@ -506,6 +539,13 @@ function Today({ saved, fmt, exact, change }: { saved: Saved; fmt: (m: number) =
 }
 
 function Items({ saved, fmt, change }: { saved: Saved; fmt: (m: number) => string; change: (p: Partial<Saved>) => void }) {
+  // A currency with a different number of decimals, waiting for a yes because its amounts would be rounded.
+  const [rounding, setRounding] = useState<string | null>(null)
+  const switchTo = (next: string, round = false) => {
+    const patch = recurrency(saved, next, round)
+    if (patch) change(patch)
+    else setRounding(next)
+  }
   const names = useMemo(() => {
     try {
       return new Intl.DisplayNames(undefined, { type: 'currency' })
@@ -525,7 +565,7 @@ function Items({ saved, fmt, change }: { saved: Saved; fmt: (m: number) => strin
       <section className="flex flex-wrap items-end gap-4">
         <label className="grid gap-1.5">
           <span className="text-sm font-medium">Currency</span>
-          <select value={saved.currency} onChange={(e) => change({ currency: e.target.value, counts: {} })} className={`${control} h-11 cursor-pointer sm:h-10`}>
+          <select value={saved.currency} onChange={(e) => switchTo(e.target.value)} className={`${control} h-11 cursor-pointer sm:h-10`}>
             {CURRENCIES.map((c) => (
               <option key={c} value={c}>
                 {c} · {names?.of(c) ?? c}
@@ -533,7 +573,18 @@ function Items({ saved, fmt, change }: { saved: Saved; fmt: (m: number) => strin
             ))}
           </select>
         </label>
-        <MoneyField label="Starting float (cash in the box)" value={saved.float} code={saved.currency} onChange={(float) => change({ float })} />
+        <MoneyField key={`float-${saved.currency}`} label="Starting float (cash in the box)" value={saved.float} code={saved.currency} onChange={(float) => change({ float })} />
+        {rounding && (
+          <p className="flex flex-wrap items-center gap-2 text-sm text-pretty" role="alert">
+            {names?.of(rounding) ?? rounding} have no {decimals(saved.currency) > decimals(rounding) ? 'cents' : 'smaller units'}, so prices, the float, and today’s sales would be rounded to whole amounts.
+            <button type="button" onClick={() => (switchTo(rounding, true), setRounding(null))} className={outline}>
+              Round them
+            </button>
+            <button type="button" onClick={() => setRounding(null)} className={quiet}>
+              Keep {saved.currency}
+            </button>
+          </p>
+        )}
       </section>
 
       <section aria-labelledby="items-heading">
@@ -549,7 +600,7 @@ function Items({ saved, fmt, change }: { saved: Saved; fmt: (m: number) => strin
           {saved.items.map((item, i) => (
             <li key={item.id} className="flex flex-wrap items-center gap-2">
               <input value={item.name} maxLength={40} onChange={(e) => setItem(item.id, { name: e.target.value })} placeholder="Item" className={`${field} min-w-0 flex-1 basis-40`} dir="auto" aria-label="Item name" />
-              <MoneyField label="Price" hideLabel value={item.price} code={saved.currency} onChange={(price) => setItem(item.id, { price })} />
+              <MoneyField key={`${item.id}-${saved.currency}`} label="Price" hideLabel value={item.price} code={saved.currency} onChange={(price) => setItem(item.id, { price })} />
               <button type="button" onClick={() => move(i, -1)} disabled={i === 0} className={`${quiet} px-3`} aria-label={`Move ${item.name} up`}>
                 ↑
               </button>
@@ -608,15 +659,77 @@ function download(blob: Blob, name: string) {
 
 const newId = () => (typeof crypto.randomUUID === 'function' ? crypto.randomUUID() : `${Date.now().toString(36)}${Math.random().toString(36).slice(2)}`)
 
+const pad = (n: number) => String(n).padStart(2, '0')
+/** The local date as 2026-10-10, for the CSV. */
+const localDate = (at: number) => {
+  const d = new Date(at)
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`
+}
+
+/** A CSV cell: text a spreadsheet would run as a formula gets a leading apostrophe first, then quotes if needed. */
+const csvCell = (v: string) => {
+  const safe = /^[=+\-@\t\r]/.test(v) ? `'${v}` : v
+  return /[",\n\r]/.test(safe) ? `"${safe.replace(/"/g, '""')}"` : safe
+}
+
+/**
+ * Everything priced in another currency. Amounts keep the numbers as typed
+ * (300 dollars become 300 yen), since a wrong currency is a mistake in the
+ * label, not a price to convert. Null when that would round some amount,
+ * unless `round` says to go ahead.
+ */
+function recurrency(saved: Saved, next: string, round: boolean): Partial<Saved> | null {
+  let lossy = false
+  const move = (minor: number) => {
+    const exactly = rescale(minor, saved.currency, next)
+    if (exactly !== null) return exactly
+    lossy = true
+    return Math.round(minor * 10 ** (decimals(next) - decimals(saved.currency)))
+  }
+  const items = saved.items.map((i) => ({ ...i, price: move(i.price) }))
+  const sales = saved.sales.map((s) => {
+    const lines = s.lines.map((l) => ({ ...l, price: move(l.price) }))
+    return { ...s, lines, total: lines.reduce((n, l) => n + l.price * l.qty, 0), tendered: s.tendered === null ? null : move(s.tendered) }
+  })
+  const patch: Partial<Saved> = { currency: next, items, sales, float: move(saved.float), keep: move(saved.keep), counted: saved.counted === null ? null : move(saved.counted), counts: {} }
+  return lossy && !round ? null : patch
+}
+
+/** The copy of unreadable saved data, if one was kept. */
+function readBackup(): string | null {
+  try {
+    return localStorage.getItem(BACKUP_KEY)
+  } catch {
+    return null
+  }
+}
+
 function load(): Saved {
   const fallback: Saved = { currency: localCurrency(navigator.language), items: [], float: 0, sales: [], counts: {}, counted: null, keep: 0, tab: 'sell' }
+  let raw: string | null = null
   try {
-    const d = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? 'null')
+    raw = localStorage.getItem(STORAGE_KEY)
+    const d = JSON.parse(raw ?? 'null')
     if (!d || typeof d !== 'object') return fallback
-    const int = (v: unknown, max = 1e9) => (Number.isInteger(v) && (v as number) >= 0 && (v as number) <= max ? (v as number) : 0)
+    const int = (v: unknown, max = 1e12) => (Number.isInteger(v) && (v as number) >= 0 && (v as number) <= max ? (v as number) : 0)
     const items: Item[] = Array.isArray(d.items) ? d.items.filter((i: Item) => i && typeof i.id === 'string' && typeof i.name === 'string').slice(0, 40).map((i: Item) => ({ id: i.id, name: i.name.slice(0, 40), price: int(i.price) })) : []
+    // A sale is kept whenever its total can be read, even if its details can't, so the day's takings stay whole.
     const sales: Sale[] = Array.isArray(d.sales)
-      ? d.sales.filter((s: Sale) => s && typeof s.id === 'string' && Number.isFinite(s.at) && Array.isArray(s.lines) && Number.isInteger(s.total) && ['cash', 'card', 'other'].includes(s.method)).slice(0, 20_000)
+      ? d.sales
+          .filter((s: Sale) => s && Number.isInteger(s.total) && s.total >= 0)
+          .slice(0, 20_000)
+          .map((s: Sale, k: number) => {
+            const lines = Array.isArray(s.lines) ? s.lines.filter((l) => l && typeof l.name === 'string' && Number.isInteger(l.price) && l.price >= 0 && Number.isInteger(l.qty) && l.qty > 0) : []
+            const whole = lines.length && lines.reduce((n, l) => n + l.price * l.qty, 0) === s.total
+            return {
+              id: typeof s.id === 'string' ? s.id : `restored-${k}`,
+              at: Number.isFinite(s.at) ? s.at : 0,
+              lines: whole ? lines : [{ name: 'Sale (details unreadable)', price: s.total, qty: 1 }],
+              total: s.total,
+              method: (['cash', 'card', 'other'] as const).includes(s.method) ? s.method : 'other',
+              tendered: Number.isInteger(s.tendered) && (s.tendered as number) >= s.total ? s.tendered : null,
+            }
+          })
       : []
     const counts: Record<number, number> = {}
     if (d.counts && typeof d.counts === 'object') for (const [k, v] of Object.entries(d.counts)) if (/^\d+$/.test(k)) counts[Number(k)] = int(v, 100_000)
@@ -631,6 +744,12 @@ function load(): Saved {
       tab: d.tab === 'today' || d.tab === 'items' ? d.tab : 'sell',
     }
   } catch {
+    // Not readable at all: keep a copy aside before the fresh till saves over it.
+    try {
+      if (raw && !localStorage.getItem(BACKUP_KEY)) localStorage.setItem(BACKUP_KEY, raw)
+    } catch {
+      // Storage refused the copy too; nothing more can be done here.
+    }
     return fallback
   }
 }

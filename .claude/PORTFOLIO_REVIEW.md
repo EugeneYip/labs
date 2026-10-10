@@ -144,3 +144,16 @@ The Batch 03 scores above stay as they were. This table re-scores only the crite
 
 Photo Scrub reaches the tier A threshold (50) on this assessment. Its usefulness and recurring need are unchanged, though, and phones increasingly strip location when sharing, so it deserves tier A consideration rather than automatic promotion. Ranked Choice Count (49) is close, held back by inherent correctness risk and occasional use.
 
+## Batch 05 findings
+
+Audits of the eight remaining tier C experiments (2026-10-10). Earlier tables stay as they were. Where evidence changes a criterion, the post-Batch-05 assessment at the end records it separately.
+
+- **#025 Stall Till.** Arithmetic verified independently. A browser script rang up 30 random sales (cash, exact and quick tenders, card, other, delete plus undo, delete) and kept its own ledger. Takings, method totals, expected cash, per-item counts, and CSV rows all matched. `floatToKeep` matched a brute-force search (largest sum under the target, then the most pieces) in 3,000 of 3,000 random boxes. Defects fixed:
+  - `parseMoney` silently misread input (yen "12,5" → ¥125, "3.50" → ¥350, "1,234.567" USD → $1,234,567, "1.2.3" → 12.30 €). It now refuses more decimals than the currency has, and resolves the ambiguous "3.505" by the device's decimal mark.
+  - Switching between currencies with different decimals reinterpreted every stored amount 100-fold (300 typed as dollars became ¥30,000). Amounts now keep the typed numbers, exactly, or with a confirmation when cents would round.
+  - The storage-failure warning promised in a code comment didn't exist; now it does.
+  - A sale with unreadable lines was dropped from the day; it's now kept by its total. Wholly unreadable data was overwritten by the fresh state; it's now backed up under `labs:stall-till:unreadable` and offered as a download.
+  - The CSV had no dates (ambiguous after midnight) and a UTC file name; both are local now. Defusing came after quoting, so quoted formulas went through. In Stall Till the Items cell always starts with a digit, so it wasn't exploitable there; in Ranked Choice Count a candidate name starts the cell, so it was. Both are fixed.
+
+  Post-audit assessment: technical confidence 4 → 5, user-data-loss risk 4 → 3 (silent loss paths closed; one browser still holds the day).
+

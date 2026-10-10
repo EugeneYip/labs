@@ -4,6 +4,31 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 
 ## Batch
 
+- **Batch:** 05, Tier C Hardening, in progress (started 2026-10-10). Batches 01 to 04 are complete, with reports given. Earlier batches' notes stay below for reference.
+- **Goal:** no new experiments and no archiving. Deeply audit the eight remaining tier C experiments, risk first: #025 Stall Till, #008 Serve Time, #015 Back Row, #004 Clean Paste, #010 Gallery Wall, #013 In Tune, #009 Tear-Off Flyer, #012 Glance. (Form Check and Family Stories were audited in Batch 04; don't repeat them unless there's a regression.) Fix genuine defects, verify each material fix live, run a full-site regression sweep at the end, keep this file and `.claude/PORTFOLIO_REVIEW.md` current, then stop and report (format at the end of this file).
+- **Authority:** research, test, fix genuine defects, commit, push, deploy, and verify production without routine approval. Don't ask the owner to test or decide what research can settle. Don't publish or archive experiments.
+- **Limits:** no speculative features or general infrastructure redesign; shared code (service worker, filters, feedback links, deploys, QA kit) changes only for a real cross-experiment defect. Prefer independent verification: a test that repeats the production algorithm doesn't count. "No material defect" is fine with evidence. Earlier score tables stay; changes go in a separate post-Batch-05 assessment.
+- **If interrupted:** read this file, check `git status` and `git log`, and continue from "Next action" without waiting for the owner.
+
+## Batch 05 checklist
+
+- [x] GitHub Issues checked (2026-10-10): no issues or pull requests, open or closed, so no external feedback. Continued without waiting.
+- [x] #025 Stall Till (done, 2026-10-10): verified independently; fixed price misreads, the 100-fold currency switch, the missing storage warning, dropped and overwritten sales, CSV dates, and the CSV quoting order (also in RCC). Was: money in minor units (0/2/3 decimals), decimal comma and point input, tender and change, quick tenders, card and other sales, delete and undo, day and item totals, CSV, print, cash-up and float, midnight, locale, reload, offline, storage failure, accidental clearing, malformed saved data; recompute totals independently. No accounting, tax, or POS claims.
+- [ ] #008 Serve Time: scheduling math (one or many dishes, identical and different serve times, overnight prep, midnight, long rests, preheat, temperatures, oven overlap and conflicts, stovetop steps, edits, countdown, background tabs, reload, DST); planning is not doneness or food safety.
+- [ ] #015 Back Row: visual-angle math against acuity geometry, distance, screen size, aspect ratio, eyesight assumptions, units, points, true apparent size, uploads, resolution extremes, devices; a model, not a vision test.
+- [ ] #004 Clean Paste: silent corruption (PDF wraps, emails, web, lists, headings, signatures, quotes, text tables, hyphens, dashes, page numbers, headers and footers, URLs, emails, code, poetry, CJK, RTL, mixed, whitespace-sensitive text); leave ambiguous text alone; automatic vs opt-in fixes.
+- [ ] #010 Gallery Wall: inches and cm, conversion, one or many frames, rows and grids, mixed sizes and gaps, center height, hanger types (top, wire, two hooks), nail coordinates, tape fractions, wall size, impossible layouts, print and scale; recompute geometry independently.
+- [ ] #013 In Tune: pitch detector math, cents, octave errors, harmonics, noise, ranges, reference tone, microphone refusal and loss, headsets, backgrounding, returning from settings, repeated sessions, reload; generated signals aren't singing; no vocal-health claims.
+- [ ] #009 Tear-Off Flyer: real PDFs (Letter and A4, orientation, long and non-English, CJK, RTL text, photo or none, background graphics off, scaling, margins, tab count, clipping, the one-page claim); inspect page size and count independently.
+- [ ] #012 Glance: daily puzzle determinism across timezones, DST, and date change while open; completed-round persistence (closing right after guessing, reload); practice, history, scores, extreme guesses, rapid taps, background timers, sharing, accessibility of the brief flash.
+- [ ] Production verified (each fix live, plus a full-site regression sweep); this file and the portfolio review current; report given.
+
+## Batch 05 findings
+
+- **#025 Stall Till (done).** money.ts: `decimalMark(locale)` and a rewritten `parseMoney(text, code, locale?)` (the last of two separator kinds is the decimal; a lone separator before 1–2 digits is decimal, before 3 digits it's grouping unless it's the device's decimal mark; more digits than the currency's decimals means null), plus `rescale` (exact, or null). index.tsx: `recurrency` with a confirmation when rounding, MoneyField keyed by currency, a `notSaving` banner, `BACKUP_KEY` and an `unreadable` banner with download, load() keeps sales by total, and `csvCell` defuses then quotes, with a Date column. RCC index.tsx `cell` gets the same order. Tests: 9 in stall-till-test.ts, `.claude/qa/stall-till-float-brute.ts` (3,000 brute-force cases), plan till-5 (30 random sales, independent ledger, CSV), plan till-6 and 6b (currency switch, rounding prompt, storage failure, unreadable, midnight, garbled sale, print PDF one page), and plan rcc-5 (formula candidate defused).
+
+## Batch 04 (complete)
+
 - **Batch:** 04, Tier B Hardening, complete (2026-10-10). Batches 01, 02, and 03 are complete, with reports given. Batch 03's notes stay below for reference.
 - **Goal:** no new experiments. Deeply audit and harden the seven tier B experiments (#002 Photo Scrub, #017 Frost Dates, #024 Ranked Choice Count, #003 Fair Share, #018 Off Book, #005 CSV Checkup, #023 Discussion Map), plus targeted risk audits of #021 Family Stories (irreplaceable recordings) and #019 Form Check (real-world video compatibility). Fix genuine defects, verify production, keep this file and `.claude/PORTFOLIO_REVIEW.md` current, then stop and report (format at the end of this file).
 - **Authority:** inspect, research, test, fix genuine defects, commit, push to `main`, deploy, and verify production, without routine approval. Don't ask the owner to test, find users, or answer questions that research or conservative judgment can settle. Don't publish a new experiment or archive one.
@@ -62,8 +87,8 @@ The five highest totals in the portfolio review, all tier A: **#016 Fluency Chec
 
 ## Position
 
-- **Current:** Batch 04, Tier B Hardening (started 2026-10-10). Order: issues check, then the seven tier B audits in the listed order, then Family Stories and Form Check, then the production check and report. Batch 03 was complete on 2026-10-09; its order was Order: (1) offline service worker, since it helps Day Clock, Playing Time, Stall Till, and the other local tools, (2) deep audits of the five, (3) the sensitive-wording pass, (4) homepage discovery, (5) feedback, (6) decide on new experiments (default: none), (7) final production check and report.
-- **Next action:** none. Batch 04 is complete and its report has been given. Don't start Batch 05 without new authorization from the owner, and give a review before any push of a new experiment (see memory: review-before-public-push).
+- **Current:** Batch 05, audit 2 of 8: #008 Serve Time, stage: about to read the code. Completed: #025 Stall Till. Defects found and fixed so far: Stall Till (price parsing, currency switch, storage warning, unreadable sales, CSV dates and quoting) and RCC (CSV quoting order).
+- **Next action:** #008 Serve Time: read `src/experiments/serve-time/` (model and countdown), write an independent scheduler check (backward planning from serve times, preheat, oven clashes) from the rules, test midnight, DST, long rests, edits, background tabs, and reload, and check every food-safety or doneness statement against authoritative sources (USDA FSIS, FDA) or remove it.
 
 ## Batch 03 audits
 
@@ -220,6 +245,8 @@ Where applicable: core flow; persistence or file handling; several edge cases; i
 - Storage keys must be `labs:<slug>` (Constitution, amended 2026-10-09 with owner authorization).
 
 ## Batch report formats
+
+- **Batch 05 (Tier C Hardening):** 1. external feedback found, if any; 2. the most important finding per audited experiment; 3. material defects repaired; 4. experiments with no material defect; 5. post-audit score and confidence changes; 6. remaining risks; 7. which tier C products deserve tier B consideration; 8. the strongest five products across all 25 after five batches; 9. a recommendation for Batch 06. Don't start Batch 06 without authorization.
 
 - **Batch 04 (Tier B Hardening):** 1. GitHub feedback found, if any; 2. each audited experiment and its most important finding; 3. defects fixed; 4. experiments with no material defect; 5. ranking or confidence changes after audit; 6. remaining high-risk products; 7. whether any tier B product now deserves tier A consideration; 8. the three experiments across the portfolio strongest for eventual standalone promotion; 9. a recommendation for Batch 05. Don't start Batch 05 without authorization.
 
