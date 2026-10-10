@@ -20,6 +20,8 @@ export default function FairShare() {
   const [group, setGroup] = useState<Group | null>(null)
   const [status, setStatus] = useState<'loading' | 'ready' | 'invalid'>('loading')
   const [recent, setRecent] = useState(loadRecent)
+  // A different copy of the opened group, saved earlier on this device: editing this one would replace it there.
+  const [other, setOther] = useState<Recent | null>(null)
   const latest = useRef(0)
 
   // Open whatever group the address holds, now and whenever it changes (a pasted link, Back).
@@ -33,6 +35,7 @@ export default function FairShare() {
       }
       const decoded = await decodeGroup(hash)
       setGroup(decoded)
+      setOther(decoded ? (loadRecent().find((r) => r.id === decoded.id && r.hash !== hash) ?? null) : null)
       setStatus(decoded ? 'ready' : 'invalid')
     }
     void open()
@@ -60,6 +63,14 @@ export default function FairShare() {
   return (
     <div className="flex-1">
       <div className="mx-auto w-full max-w-3xl px-4 pt-6 pb-24 sm:px-6 sm:pt-10">
+        {group && other && (
+          <p role="status" className="mb-6 rounded-lg border border-rule px-4 py-3 text-sm text-pretty">
+            This device has a different copy of this group, last changed {new Date(other.updatedAt).toLocaleDateString(undefined, { dateStyle: 'medium' })} with {other.total} spent. Links are copies, so changes made on one phone don’t reach another: compare the two before adding more here, because editing this one replaces that copy on this device.{' '}
+            <a href={`#${other.hash}`} className="underline underline-offset-4 hover:text-dim">
+              Open that copy
+            </a>
+          </p>
+        )}
         {group ? (
           <GroupView group={group} onChange={update} />
         ) : (

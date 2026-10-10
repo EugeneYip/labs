@@ -124,10 +124,68 @@ export function balances(group: Group): number[] {
   return result
 }
 
-/** Payments that settle every balance: whoever owes most pays whoever is owed most, until nothing is left. */
+/** Up to this many people with something to settle, the fewest payments are found exactly. */
+const EXACT = 16
+
+/**
+ * The fewest payments that settle every balance. People whose balances cancel
+ * out among themselves settle within their own circle, which saves a payment
+ * per extra circle, and within each circle whoever owes most pays whoever is
+ * owed most. Finding the circles is a search, so past 16 people with something
+ * to settle, everyone settles as one circle, which can take a payment more.
+ */
 export function settle(balanceList: number[]): Transfer[] {
-  const owes = balanceList.map((b, i) => ({ i, b })).filter((x) => x.b < 0).sort((a, b) => a.b - b.b || a.i - b.i)
-  const owed = balanceList.map((b, i) => ({ i, b })).filter((x) => x.b > 0).sort((a, b) => b.b - a.b || a.i - b.i)
+  const open = balanceList.map((b, i) => ({ i, b })).filter((x) => x.b !== 0)
+  const circles = open.length <= EXACT ? zeroSumGroups(open.map((x) => x.b)).map((g) => g.map((k) => open[k])) : [open]
+  return circles.flatMap(settleCircle).sort((x, y) => y.amount - x.amount || x.from - y.from || x.to - y.to)
+}
+
+/**
+ * Splits values that sum to zero into as many zero-sum groups as possible.
+ * The most groups for a set is the most for the set minus one member, plus one
+ * when the set itself sums to zero; walking that back gives an order whose
+ * running total touches zero at each group's end.
+ */
+export function zeroSumGroups(values: number[]): number[][] {
+  const n = values.length
+  const full = (1 << n) - 1
+  const sum = new Float64Array(full + 1)
+  const most = new Int8Array(full + 1)
+  const bitIndex = (bit: number) => 31 - Math.clz32(bit)
+  for (let m = 1; m <= full; m++) {
+    const low = m & -m
+    sum[m] = sum[m ^ low] + values[bitIndex(low)]
+    let best = 0
+    for (let rest = m; rest; rest &= rest - 1) best = Math.max(best, most[m ^ (rest & -rest)])
+    most[m] = best + (sum[m] === 0 ? 1 : 0)
+  }
+  const order: number[] = []
+  for (let m = full; m; ) {
+    const target = most[m] - (sum[m] === 0 ? 1 : 0)
+    let rest = m
+    while (most[m ^ (rest & -rest)] !== target) rest &= rest - 1
+    const bit = rest & -rest
+    order.push(bitIndex(bit))
+    m ^= bit
+  }
+  const groups: number[][] = []
+  let current: number[] = []
+  let running = 0
+  for (const k of order.reverse()) {
+    current.push(k)
+    running += values[k]
+    if (running === 0) {
+      groups.push(current)
+      current = []
+    }
+  }
+  return groups
+}
+
+/** Within one circle: whoever owes most pays whoever is owed most, until nothing is left. */
+function settleCircle(circle: { i: number; b: number }[]): Transfer[] {
+  const owes = circle.filter((x) => x.b < 0).map((x) => ({ ...x })).sort((a, b) => a.b - b.b || a.i - b.i)
+  const owed = circle.filter((x) => x.b > 0).map((x) => ({ ...x })).sort((a, b) => b.b - a.b || a.i - b.i)
   const transfers: Transfer[] = []
   let d = 0
   let c = 0
