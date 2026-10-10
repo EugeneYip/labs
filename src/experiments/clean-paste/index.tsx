@@ -177,10 +177,14 @@ export default function CleanPaste() {
 }
 
 function summary(stats: Stats): string {
+  // Removed lines are named, so a number or a heading taken out by mistake can be spotted.
+  const removed = [...new Set(stats.removed)]
+  const named = removed.map((line) => `“${line.length > 40 ? `${line.slice(0, 39)}…` : line}”`).slice(0, 3).join(', ') + (removed.length > 3 ? ', …' : '')
   const parts = [
     stats.joinedLines && `rejoined ${stats.joinedLines} broken ${stats.joinedLines === 1 ? 'line' : 'lines'}`,
     stats.fixedHyphens && `${stats.fixedHyphens} split ${stats.fixedHyphens === 1 ? 'word' : 'words'}`,
-    stats.removedLines && `removed ${stats.removedLines} page ${stats.removedLines === 1 ? 'number or header' : 'numbers and headers'}`,
+    stats.removedLines && `removed ${stats.removedLines} page ${stats.removedLines === 1 ? 'number or header' : 'numbers and headers'} (${named})`,
+    stats.quoteMarks && `removed the “>” marks from ${stats.quoteMarks} ${stats.quoteMarks === 1 ? 'line' : 'lines'}`,
     stats.fixedCharacters && `fixed ${stats.fixedCharacters} odd ${stats.fixedCharacters === 1 ? 'character' : 'characters'}`,
   ].filter(Boolean)
   if (!parts.length) return 'Nothing needed fixing.'
