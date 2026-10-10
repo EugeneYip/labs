@@ -16,6 +16,12 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-10 · #009 Tear-Off Flyer update
+
+- **What:** Tab text too long for a tab now gets a warning. Before, it was silently cut off in print: "Dana Whitfield-Rasmussen, call or text 555-0134-2287" printed on every tab as "…call or text 5", without the phone number. Chinese and Japanese text on the tabs now runs the same way as English. Before, the characters printed upside down while the digits ran sideways.
+- **Why:** The Batch 05 audit printed real PDFs: Letter and A4, with and without a photo, background graphics off as browsers default, and long English, Chinese, and Arabic text. It checked each file's page count, page size, and text with an independent PDF reader, and looked at each page as macOS draws it. Every flyer was exactly one page of the right size, and the bold headline box and the photo printed with background graphics off.
+- **Notes:** Arabic tabs read from the top down, the reverse of English ones; both are readable. Printing from Safari and Firefox wasn't tested.
+
 ## 2026-10-10 · #013 In Tune update
 
 - **What:** A held note can no longer be counted while the browser has paused sound, as phones do during a call. Before, the paused microphone kept handing back its last moment of singing, so stopping mid-note could still score "In tune". Now listening stops, a note says why, and "Resume listening" starts it again. If the microphone stops for good, unplugged or taken by another app, the page says so instead of waiting silently. The message when the microphone can't start now names the likely cause: blocked, missing, or in use. A note above the range In Tune listens to (about 1,100 Hz) now gives no reading. Before, it read an octave low, so singing an octave above the top notes could count as in tune.

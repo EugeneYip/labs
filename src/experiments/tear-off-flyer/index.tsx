@@ -17,6 +17,7 @@ export default function TearOffFlyer() {
   const [photo, setPhoto] = useState<string | null>(() => read(PHOTO_KEY))
   const [photoNote, setPhotoNote] = useState('')
   const [overflow, setOverflow] = useState(false)
+  const [tabOverflow, setTabOverflow] = useState(false)
   const [clearing, setClearing] = useState(false)
 
   useEffect(() => {
@@ -160,6 +161,11 @@ export default function TearOffFlyer() {
               There’s more text than fits, even at the smallest size. Shorten the details or the headline, or remove the photo.
             </p>
           )}
+          {tabOverflow && (
+            <p role="status" className="rounded-lg border border-amber-600/40 bg-amber-500/10 px-3 py-2 text-sm text-amber-950 dark:border-amber-400/40 dark:text-amber-100">
+              The tab text is too long for a tab, even at the smallest size, so its end would be cut off. Shorten it, such as to just a name and a number.
+            </p>
+          )}
           <p className="text-sm text-dim">Printing tip: in the print dialog, keep the scale at 100% and turn off headers and footers.</p>
         </form>
 
@@ -167,7 +173,7 @@ export default function TearOffFlyer() {
           <p className="mb-2 text-sm text-dim">
             Preview · {PAPERS[flyer.paper].label}, {flyer.tabs} tabs
           </p>
-          <Preview flyer={flyer} photo={photo} onOverflow={setOverflow} />
+          <Preview flyer={flyer} photo={photo} onOverflow={setOverflow} onTabOverflow={setTabOverflow} />
         </div>
       </div>
     </div>
@@ -177,7 +183,7 @@ export default function TearOffFlyer() {
 const PX_PER_INCH = 96
 
 /** The page at true size, scaled down to fit the column. The same element is what prints. */
-function Preview({ flyer, photo, onOverflow }: { flyer: Flyer; photo: string | null; onOverflow: (overflow: boolean) => void }) {
+function Preview({ flyer, photo, onOverflow, onTabOverflow }: { flyer: Flyer; photo: string | null; onOverflow: (overflow: boolean) => void; onTabOverflow: (overflow: boolean) => void }) {
   const paper = PAPERS[flyer.paper]
   const frame = useRef<HTMLDivElement>(null)
   const [scale, setScale] = useState(0.5)
@@ -215,7 +221,8 @@ function Preview({ flyer, photo, onOverflow }: { flyer: Flyer; photo: string | n
     const t = sizeTo(tab.current, 7, 16, (el) => el.scrollHeight <= el.clientHeight + 1 && el.scrollWidth <= el.clientWidth + 1)
     setSizes({ headline: h.size, subhead: s.size, details: d.size, tab: t.size })
     onOverflow(!h.fits || !s.fits || !d.fits)
-  }, [flyer, photo, onOverflow])
+    onTabOverflow(!t.fits)
+  }, [flyer, photo, onOverflow, onTabOverflow])
 
   const width = paper.width - 2 * MARGIN
   const height = paper.height - 2 * MARGIN
@@ -260,7 +267,7 @@ function Preview({ flyer, photo, onOverflow }: { flyer: Flyer; photo: string | n
                 <div
                   ref={i === 0 ? tab : undefined}
                   dir="auto"
-                  className="flex h-full max-w-full rotate-180 flex-col items-start justify-center overflow-hidden text-left leading-tight [writing-mode:vertical-rl]"
+                  className="flex h-full max-w-full rotate-180 flex-col items-start justify-center overflow-hidden text-left leading-tight [text-orientation:sideways] [writing-mode:vertical-rl]"
                   style={{ fontSize: `${sizes.tab}pt` }}
                 >
                   <span className="font-bold whitespace-nowrap">{flyer.tab || 'Your name and number'}</span>
