@@ -7,6 +7,8 @@ const HOLD_MS = 1500
 
 const control = 'min-w-0 rounded-lg border border-rule bg-paper px-3 text-base text-ink placeholder:text-dim hover:border-dim/60 sm:text-sm'
 const field = `${control} h-11 w-full sm:h-10`
+// Safari on iPhones draws a time field wider than its box unless its native look is turned off.
+const timeField = 'cursor-pointer appearance-none text-left [&::-webkit-date-and-time-value]:text-left'
 const button = 'inline-flex h-11 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-lg px-4 text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-50 sm:h-10'
 const primary = `${button} bg-ink font-medium text-paper hover:bg-ink/80`
 const outline = `${button} border border-rule hover:bg-ink/5`
@@ -231,7 +233,7 @@ function SettingsPanel({ settings, onChange, onDone, awake }: { settings: Settin
                 </label>
                 <label className="grid gap-1.5">
                   <span className="text-sm text-dim">Begins</span>
-                  <input type="time" value={startText[p]} onChange={(e) => editStart(p, e.target.value)} aria-invalid={!startsOk || undefined} className={`${field} cursor-pointer aria-invalid:border-red-600`} />
+                  <input type="time" value={startText[p]} onChange={(e) => editStart(p, e.target.value)} aria-invalid={!startsOk || undefined} className={`${field} ${timeField} aria-invalid:border-red-600`} />
                 </label>
               </div>
             ))}
@@ -250,7 +252,7 @@ function SettingsPanel({ settings, onChange, onDone, awake }: { settings: Settin
                 <div className="flex flex-wrap items-end gap-2">
                   <label className="grid gap-1.5">
                     <span className="text-sm text-dim">At</span>
-                    <input type="time" value={timeValue(r.at)} onChange={(e) => parseTime(e.target.value) !== null && setReminder(r.id, { at: parseTime(e.target.value)! })} className={`${control} h-11 cursor-pointer sm:h-10`} />
+                    <input type="time" value={timeValue(r.at)} onChange={(e) => parseTime(e.target.value) !== null && setReminder(r.id, { at: parseTime(e.target.value)! })} className={`${control} ${timeField} h-11 sm:h-10`} />
                   </label>
                   <label className="grid min-w-0 flex-1 basis-48 gap-1.5">
                     <span className="text-sm text-dim">Say</span>

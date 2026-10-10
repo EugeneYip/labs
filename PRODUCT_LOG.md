@@ -16,6 +16,12 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-10 · #022 Day Clock update
+
+- **What:** On iPhones, the settings page no longer scrolls sideways. Safari drew the four "Begins" time fields wider than the space beside each word, so they ran off the right edge of the screen. The time fields now fit, with the time on the left like the other fields; tapping one still opens the time picker.
+- **Why:** The Batch 06 Apple-platform pass opened the settings in Safari on Apple's iPhone simulator. Safari gives time and date fields a minimum width of its own unless their native look is turned off; Chrome doesn't, which is why earlier checks at phone width missed it.
+- **Notes:** Serve Time's and Custody Calendar's time and date fields were checked the same way and already fit.
+
 ## 2026-10-10 · #019 Form Check update
 
 - **What:** Videos opened from the photo library on an iPhone or iPad now show their first frame and step frame by frame in Safari. Before, Safari loaded only a picked video's length and size, not its pictures, until it was played: the video stayed black, and the frame buttons and the slider did nothing until Play was pressed. Form Check now plays the video silently for a moment and stops on the first frame, which makes Safari load it. Where Safari doesn't allow even that, as in Low Power Mode, the video shows "Tap to show the video". The time and frame number under the video now match the picture in Safari too. After a step they could stay on the previous frame, because Safari reports the frame it shows a step late or not at all; after a pause they could be a frame behind. A step or a drag of the slider now shows where the video went, and a pause settles on the last frame Safari reported.
