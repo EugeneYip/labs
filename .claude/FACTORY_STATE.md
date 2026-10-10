@@ -21,7 +21,7 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 - [x] #005 CSV Checkup: deep audit done (2026-10-10). Fixed: UTF-16, slash-date order, mangled long IDs, and formula text; the output has no injection risk.
 - [x] #023 Discussion Map: deep audit done (2026-10-10). Fixed: renames, repeated names, and the 5,000-turn reload cap; the page now says what talk time measures.
 - [x] #021 Family Stories: targeted risk audit done (2026-10-10). Fixed: interrupted answers are now recovered, a full device at Stop offers a download, and a blocked upgrade has its own message.
-- [ ] #019 Form Check: targeted risk audit (orientation, variable frame rate, large and long clips, seeking, containers and codecs, unsupported files, two videos, memory, marked-frame export).
+- [x] #019 Form Check: targeted risk audit done (2026-10-10). No material defect: rotation, frame stepping, unknown durations, unreadable files, and two videos at 360 px all check out in Chromium. Safari is untested.
 - [ ] Production verified after all changes; this file and the portfolio review current; report given.
 
 ## Batch 04 findings
@@ -34,6 +34,7 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 - **#005 CSV Checkup (done).** check.ts peeks at 2 bytes for a UTF-16 BOM (`utf-16le` or `utf-16be` through TextDecoderStream), and `encoding` can now be 'UTF-16'. profile.ts keeps slash dates in two ranges (md, dm) with day-first and month-first evidence, picked at finish (evidence, else device order); `Profiler(…, dayFirst)` comes from index.tsx `DAY_FIRST` (Intl formatToParts). New column fields: scientific (`^\d\.\d{1,5}E\+(1[1-9]|2\d)$`) and formulas (text starting `[=+\-@]`). The probe is `.claude/qa/csv-probe.ts`; 21 tests; plan csv-2 (UTF-16 at 360 px dark).
 - **#023 Discussion Map (done).** `reseat` moved to model.ts (with an injected `newId`): a name still on the list keeps its person; an unmatched new name at index i takes the identity of the old person at index i if that person's name is gone; and a list with no names kept is a fresh group. The Names hint shows duplicates and explains renames. The load cap is 50,000 turns. 7 model tests; plan dmap-3 (duplicate hint, rename then reload, 320 px).
 - **#021 Family Stories (done).** store.ts: DB v2 (`drafts` keyed by id, `parts` keyed by [draft, n] with `at` and `blob`), onversionchange closes, onblocked rejects with 'blocked', `startDraft`, `savePart`, `endDraft`, and `recoverDrafts` (serialized; skips drafts with a part in the last 5 s). recorder.ts: `useRecorder(onPart)` passes each chunk on, `start` returns the mimeType, and visibility-hidden calls requestData(). index.tsx: the draft id becomes the clip id; recovery runs at start with a 6 s recheck and a cancel flag; there's a recovered-note banner; `unsaved` gives the download fallback; and a blocked message. Plans stories-4 (reload mid-answer, recovery, decode, normal stop), stories-5 (v1 to v2 upgrade), and stories-6 (quota fallback).
+- **#019 Form Check (done, no code change).** Plan form-rot makes an MP4 with MediaRecorder (`video/mp4;codecs=avc1.42E01E` is supported in headless Brave), then patches the tkhd matrix to 90°. Results: videoWidth×videoHeight 180×320, shown 314×558, and the saved frame 180×320 with the marker top-right. Plan form-3: random bytes as .mp4 show the error message; two videos at 360 px are both readyState 4 with no overflow.
 
 ## Batch 03 (complete)
 
@@ -62,7 +63,7 @@ The five highest totals in the portfolio review, all tier A: **#016 Fluency Chec
 ## Position
 
 - **Current:** Batch 04, Tier B Hardening (started 2026-10-10). Order: issues check, then the seven tier B audits in the listed order, then Family Stories and Form Check, then the production check and report. Batch 03 was complete on 2026-10-09; its order was Order: (1) offline service worker, since it helps Day Clock, Playing Time, Stall Till, and the other local tools, (2) deep audits of the five, (3) the sensitive-wording pass, (4) homepage discovery, (5) feedback, (6) decide on new experiments (default: none), (7) final production check and report.
-- **Next action:** #019 Form Check targeted risk audit: read `src/experiments/form-check/`, test with real phone-like video (rotation metadata, variable frame rate, large resolution, short and long clips), seeking accuracy, unsupported containers and codecs (clear message), two-video comparison, memory, and marked-frame export. Use `.claude/qa/form-video.js`. Don't redesign.
+- **Next action:** production verification of every Batch 04 change: wait for the last deploy (`gh run watch`), then run a live check of each fix (the photo canary through the UI, Frost Dates leap and timeout, the RCC simultaneous-quota example, Fair Share settle and notice, Off Book CJK and numbered names, CSV UTF-16, Discussion Map rename, Family Stories recovery) and a sweep of all 26 pages at 320 px and desktop dark. Then mark the last checklist item and give the Batch 04 report.
 
 ## Batch 03 audits
 
