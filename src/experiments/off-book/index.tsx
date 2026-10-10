@@ -145,7 +145,7 @@ export default function OffBook() {
                 </button>
               ))}
             </div>
-            <p className="mt-2 text-sm text-dim">{roles.length ? (roles.length > 1 ? 'You’re playing more than one part.' : 'Pick another as well if you’re doubling roles.') : 'Pick the character you’re playing. The numbers are how many speeches each has.'}</p>
+            <p className="mt-2 text-sm text-dim">{roles.length ? (roles.length > 1 ? 'You’re playing more than one part.' : 'Pick another as well if you’re doubling roles.') : 'Pick the character you’re playing. The numbers are how many speeches each has: if someone is missing or a number looks wrong, start each speech with the name and a colon, then check again.'}</p>
 
             {roles.length > 0 && (
               <div className="mt-6 flex flex-wrap items-end gap-x-6 gap-y-4">

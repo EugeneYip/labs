@@ -16,6 +16,12 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-10 · #018 Off Book update
+
+- **What:** Numbered characters (SERVANT #2, GUARD 2, Boy 1) are now recognized. Before, their lines were silently added to the speech above, so another actor would learn them. Scripts in Chinese, Japanese, Korean, and other scripts without capital letters now work in their usual name-and-colon layout (哈姆雷特：…). Before, no characters were found at all, and the page asked for the colons that were already there. "Scene: A park" and "Act 2: The trial" lines are headings, not text tacked onto the previous speech. Page numbers pasted from a PDF ("12", "Page 16 of 80", "- 17 -") and a play's title repeated as a running header no longer turn up inside speeches. Word counts for Chinese and Japanese count characters, as word processors do. The hint under "Your part" now says how to fix a missing character or a wrong count.
+- **Why:** The Batch 04 audit fed the parser messy scripts rather than clean samples. Most layouts held up, including NAME: and NAME. lines, names on their own lines, MRS. MALAPROP-style names, apostrophes, hyphens, accents, (V.O.) extensions, and directions in brackets. These cases failed, two of them by giving one character's line to another.
+- **Notes:** A running header is dropped only when the same capitalized line appears on its own three or more times, in scripts where names start the speech lines, so a shouted "HELP!" said three times stays. The bundled sample scene parses exactly as before, and a 6,000-speech script parses quickly.
+
 ## 2026-10-10 · #003 Fair Share update
 
 - **What:** Settling up now finds the fewest payments, as the page promises. People whose balances cancel out among themselves settle within their own circle. For example, balances of +6, +4, −3, −3, and −4 now take 3 payments, where the old method took 4. Opening a link for a group this device already holds a different copy of now says so, with a link to that copy. Before, adding anything to the opened copy silently replaced the saved one, including any expenses added on this phone that the other person never had.

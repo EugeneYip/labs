@@ -9,6 +9,8 @@
  *   To be, or not to be                the speech on the lines below)
  *
  * Text in [brackets] or (parentheses) is a direction, never a line to learn.
+ * Scripts without capital letters (Chinese, Japanese, Korean, Arabic, Hebrew,
+ * and others) are read in the colon layout, the usual one for them.
  */
 
 export type Item = { kind: 'speech'; speaker: string; text: string } | { kind: 'direction'; text: string } | { kind: 'heading'; text: string }
@@ -36,6 +38,12 @@ const NOT_SPEAKERS = new Set(['NOTE', 'NOTES', 'SETTING', 'TIME', 'PLACE', 'CHAR
 
 const upper = (s: string) => s.toLocaleUpperCase()
 const isCaps = (s: string) => /\p{Lu}/u.test(s) && !/\p{Ll}/u.test(s)
+/** Written in a script without capital letters, like 哈姆雷特 or 햄릿. */
+const caseless = (s: string) => /\p{Lo}/u.test(s) && !/\p{Lu}|\p{Ll}/u.test(s)
+/** A page number from a PDF: "12", "Page 12", "12 of 80", "- 12 -". */
+const PAGE_NUMBER = /^(?:page\s*)?\d{1,4}(?:\s*(?:of|\/)\s*\d{1,4})?$|^[-–—]\s*\d{1,4}\s*[-–—]$/i
+/** "Scene: A park" and "Act 2: The trial" describe the play; nobody is called Scene. */
+const ACT_OR_SCENE = /^(?:act|scene)\b/i
 const words = (s: string) => s.split(/\s+/).filter(Boolean)
 
 /** A speaker name: one to five words, mostly letters, no sentence punctuation inside. */
@@ -45,10 +53,11 @@ function nameLike(name: string, capsOnly: boolean): boolean {
   if (/[!?,;"“”]/.test(n)) return false
   const w = words(n)
   if (w.length > 5) return false
-  if (NOT_SPEAKERS.has(upper(n))) return false
+  if (NOT_SPEAKERS.has(upper(n)) || ACT_OR_SCENE.test(n)) return false
   if (capsOnly) return isCaps(n)
-  // Mixed case is allowed with a colon, as long as every word starts with a capital (or is a small joining word).
-  return w.every((word) => /^\p{Lu}/u.test(word) || /^(?:of|the|de|la|von|van|and)$/.test(word))
+  // With a colon, every word starts with a capital, a number (GUARD 2, SERVANT #2), or a letter from a script
+  // without capitals, or is a small joining word.
+  return w.every((word) => /^(?:\p{Lu}|\p{Lo}|#?\d)/u.test(word) || /^(?:of|the|de|la|von|van|and)$/.test(word))
 }
 
 /** Strips a screenplay extension like (V.O.) or (CONT'D) and trailing punctuation. */
@@ -89,12 +98,23 @@ export function normalize(text: string): string {
 }
 
 export function parseScript(input: string): Script {
-  const lines = normalize(input).split('\n').map((l) => l.trim())
+  // Page numbers pasted from a PDF aren't part of anyone's line.
+  const lines = normalize(input)
+    .split('\n')
+    .map((l) => l.trim())
+    .map((l) => (PAGE_NUMBER.test(l) ? '' : l))
   const items: Item[] = []
   // Whether names sit on their own lines (then a blank line ends a speech) or start the speech line.
   const ownLine = lines.filter((l, i) => nameLine(l) && lines[i + 1] && !nameLine(lines[i + 1]) && !HEADING.test(l)).length
   const inline = lines.filter((l) => inlineSpeech(l)).length
   const namesOnOwnLines = ownLine > inline
+  // With names on the speech lines, a line in capitals on its own that comes back on page after page is
+  // a running header (the play's title), not part of a speech.
+  const repeats = new Map<string, number>()
+  // A shouted line ("HELP!") has punctuation a header doesn't.
+  const header = (l: string) => isCaps(l) && !/[!?]/.test(l) && (l.match(/\p{L}/gu)?.length ?? 0) >= 4 && !inlineSpeech(l) && !HEADING.test(l)
+  for (const l of lines) if (l && header(l)) repeats.set(l, (repeats.get(l) ?? 0) + 1)
+  if (!namesOnOwnLines) for (let i = 0; i < lines.length; i++) if ((repeats.get(lines[i]) ?? 0) >= 3) lines[i] = ''
 
   let current: Extract<Item, { kind: 'speech' }> | null = null
   let blankSince = false
@@ -146,7 +166,7 @@ export function parseScript(input: string): Script {
   const kept: Item[] = []
   for (const item of items) {
     if (item.kind === 'speech' && !item.text.trim()) continue
-    if (item.kind === 'speech' && !isCaps(item.speaker) && counts.get(upper(item.speaker)) === 1) {
+    if (item.kind === 'speech' && !isCaps(item.speaker) && !caseless(item.speaker) && counts.get(upper(item.speaker)) === 1) {
       const line = `${item.speaker}: ${item.text}`
       const last = kept[kept.length - 1]
       if (last?.kind === 'speech') last.text += ` ${line}`
@@ -189,7 +209,10 @@ export const spoken = (text: string) =>
     .map((s) => s.text.trim())
     .join(' ')
 
-export const spokenWords = (text: string) => words(spoken(text)).filter((w) => /[\p{L}\p{N}]/u.test(w)).length
+/** Chinese and Japanese aren't written with spaces, so each of their characters counts as a word, as word processors count them. */
+const CJK = /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}]/gu
+
+export const spokenWords = (text: string) => words(spoken(text)).reduce((n, w) => n + (w.match(CJK)?.length || (/[\p{L}\p{N}]/u.test(w) ? 1 : 0)), 0)
 
 /** "To be, or not to be" becomes "T b, o n t b": the first letter of each word, punctuation kept. */
 export function firstLetters(text: string): string {
