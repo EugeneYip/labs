@@ -25,7 +25,7 @@ const quiet = `${button} text-dim hover:bg-ink/5 hover:text-ink`
 export default function InTune() {
   const [settings, setSettings] = useState(load)
   const [engine, setEngine] = useState<Engine | null>(null)
-  const [problem, setProblem] = useState<'denied' | 'unsupported' | null>(null)
+  const [problem, setProblem] = useState<Problem | null>(null)
   const [starting, setStarting] = useState(false)
 
   const change = (patch: Partial<Settings>) => {
@@ -44,8 +44,9 @@ export default function InTune() {
     setProblem(null)
     try {
       setEngine(await Engine.start())
-    } catch {
-      setProblem('denied')
+    } catch (error) {
+      const name = (error as { name?: string }).name
+      setProblem(name === 'NotFoundError' || name === 'OverconstrainedError' ? 'missing' : name === 'NotReadableError' || name === 'AbortError' ? 'busy' : 'denied')
     } finally {
       setStarting(false)
     }
@@ -74,7 +75,16 @@ export default function InTune() {
   )
 }
 
-function Setup({ settings, change, onStart, starting, problem }: { settings: Settings; change: (patch: Partial<Settings>) => void; onStart: () => void; starting: boolean; problem: 'denied' | 'unsupported' | null }) {
+type Problem = 'denied' | 'missing' | 'busy' | 'unsupported'
+
+const PROBLEMS: Record<Problem, string> = {
+  denied: 'The microphone is blocked for this site. Allow it in your browser’s settings, then try again.',
+  missing: 'No microphone was found. Connect one, then try again.',
+  busy: 'The microphone couldn’t start. Close other apps or tabs that might be using it, then try again.',
+  unsupported: 'This browser can’t use the microphone here. Try a recent Chrome, Safari, Edge, or Firefox.',
+}
+
+function Setup({ settings, change, onStart, starting, problem }: { settings: Settings; change: (patch: Partial<Settings>) => void; onStart: () => void; starting: boolean; problem: Problem | null }) {
   const toggle = (semitones: number) => {
     const has = settings.intervals.includes(semitones)
     const intervals = has ? settings.intervals.filter((s) => s !== semitones) : [...settings.intervals, semitones].sort((a, b) => a - b)
@@ -129,14 +139,9 @@ function Setup({ settings, change, onStart, starting, problem }: { settings: Set
         <button type="button" onClick={onStart} disabled={starting} className={`${primary} h-12 px-6 text-base disabled:opacity-60 sm:h-12`}>
           {starting ? 'Asking for the microphone…' : 'Start practicing'}
         </button>
-        {problem === 'denied' && (
+        {problem && (
           <p role="alert" className="mt-3 text-sm text-pretty text-red-700 dark:text-red-400">
-            The microphone wasn’t available. Allow it for this site in your browser’s settings, then try again.
-          </p>
-        )}
-        {problem === 'unsupported' && (
-          <p role="alert" className="mt-3 text-sm text-pretty text-red-700 dark:text-red-400">
-            This browser can’t use the microphone here. Try a recent Chrome, Safari, Edge, or Firefox.
+            {PROBLEMS[problem]}
           </p>
         )}
         <p className="mt-3 text-sm text-dim">Your voice is analyzed on this device as you sing. Nothing is recorded or sent anywhere.</p>
@@ -156,8 +161,17 @@ function Practice({ engine, settings, onStop }: { engine: Engine; settings: Sett
   const [held, setHeld] = useState(0)
   const [matched, setMatched] = useState(false)
   const [score, setScore] = useState({ matched: 0, skipped: 0 })
+  const [paused, setPaused] = useState(false)
+  const [lost, setLost] = useState(false)
   const recent = useRef<number[]>([])
   const next = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    engine.onLost = () => setLost(true)
+    return () => {
+      engine.onLost = undefined
+    }
+  }, [engine])
 
   // Each new exercise starts by playing its reference note.
   useEffect(() => {
@@ -177,6 +191,7 @@ function Practice({ engine, settings, onStop }: { engine: Engine; settings: Sett
       const now = performance.now()
       const dt = now - last
       last = now
+      setPaused(!engine.running)
       const found = engine.read()
       if (!found || found.clarity < 0.75) {
         recent.current = []
@@ -241,6 +256,20 @@ function Practice({ engine, settings, onStop }: { engine: Engine; settings: Sett
         </div>
 
         <Meter reading={reading} tolerance={settings.tolerance} held={held} matched={matched} />
+        {lost ? (
+          <p role="alert" className="mt-3 text-sm text-pretty text-red-700 dark:text-red-400">
+            The microphone stopped, perhaps unplugged or taken by another app. Go back to Settings and start again.
+          </p>
+        ) : (
+          paused && (
+            <p role="status" className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-pretty text-dim">
+              The browser paused listening, as phones do during a call.
+              <button type="button" onClick={() => void engine.resume()} className={outline}>
+                Resume listening
+              </button>
+            </p>
+          )
+        )}
 
         <div className="mt-6 flex flex-wrap gap-2">
           {matched ? (

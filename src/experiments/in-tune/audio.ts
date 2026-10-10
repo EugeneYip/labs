@@ -11,6 +11,8 @@ export class Engine {
   /** While a reference note plays, the microphone would hear it too, so readings pause. */
   private quietUntil = 0
   readonly ctx: AudioContext
+  /** Called if the microphone stops for good: unplugged, taken by another app, or permission withdrawn. */
+  onLost?: () => void
 
   private constructor(ctx: AudioContext, stream: MediaStream) {
     this.ctx = ctx
@@ -20,6 +22,7 @@ export class Engine {
     this.analyser.fftSize = 2048
     source.connect(this.analyser)
     this.samples = new Float32Array(this.analyser.fftSize)
+    for (const track of stream.getAudioTracks()) track.addEventListener('ended', () => !this.stopped && this.onLost?.())
   }
 
   /** Must run from a tap: browsers allow sound and ask for the microphone only then. */
@@ -63,9 +66,19 @@ export class Engine {
     return this.ctx.currentTime < this.quietUntil
   }
 
+  /** False while the browser has paused sound, as a phone does for a call. */
+  get running() {
+    return this.ctx.state === 'running'
+  }
+
+  resume() {
+    return this.ctx.resume().catch(() => {})
+  }
+
   /** The pitch being sung right now, if any. */
   read(): { hz: number; clarity: number } | null {
-    if (this.playing) return null
+    // Paused, the analyser keeps handing back its last samples, which would look like a note still being sung.
+    if (this.playing || !this.running) return null
     this.analyser.getFloatTimeDomainData(this.samples)
     return detectPitch(this.samples, this.ctx.sampleRate)
   }

@@ -102,11 +102,13 @@ export function detectPitch(samples: Float32Array, sampleRate: number, minHz = 7
     cmnd[tau] = running ? (d[tau] * tau) / running : 1
   }
 
-  // The first dip under the threshold, followed to its bottom.
+  // The first dip under the threshold, followed to its bottom. A dip bottoming out at a shorter lag than the range
+  // allows is a note above the range, which would otherwise read an octave low.
   let tau = -1
-  for (let t = tauMin; t <= tauMax; t++) {
+  for (let t = 2; t <= tauMax; t++) {
     if (cmnd[t] < threshold) {
       while (t + 1 <= tauMax && cmnd[t + 1] < cmnd[t]) t++
+      if (t < tauMin) return null
       tau = t
       break
     }

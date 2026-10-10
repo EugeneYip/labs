@@ -16,6 +16,12 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-10 · #013 In Tune update
+
+- **What:** A held note can no longer be counted while the browser has paused sound, as phones do during a call. Before, the paused microphone kept handing back its last moment of singing, so stopping mid-note could still score "In tune". Now listening stops, a note says why, and "Resume listening" starts it again. If the microphone stops for good, unplugged or taken by another app, the page says so instead of waiting silently. The message when the microphone can't start now names the likely cause: blocked, missing, or in use. A note above the range In Tune listens to (about 1,100 Hz) now gives no reading. Before, it read an octave low, so singing an octave above the top notes could count as in tune.
+- **Why:** The Batch 05 audit tested the pitch detector with generated tones at known frequencies: pure tones, voice-like tones with strong and weak lowest harmonics, vibrato, noise, and the range limits. Readings were within half a cent, with no octave errors even with the lowest harmonic removed. It also ran the real page with a stand-in microphone: singers with natural vibrato of up to ±75 cents are accepted on Normal.
+- **Notes:** Generated tones are not a person singing. Real voices, phone microphones, and a real call interrupting the page were not tested.
+
 ## 2026-10-10 · #010 Gallery Wall update
 
 - **What:** Grids with a shorter last row now place the rows above it correctly. Before, a wide frame in the last row widened the columns above it. With three small frames over one wide frame, the top row was pushed 10 inches off center, with a 23-inch gap between its first two frames instead of 3. The page no longer promises "exactly" where each nail goes. It now says each mark is where the wire or hook rests, so with a picture hook the bottom of the hook goes on the mark, not its nail, and that the marks are only as good as the measurements.
