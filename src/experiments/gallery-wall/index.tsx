@@ -63,7 +63,7 @@ export default function GalleryWall() {
           </h2>
           <p className="text-pretty text-dim">
             Plan a gallery wall without extra holes. Enter your frames and how you want them arranged, and get a drawing of the
-            wall and exactly where each nail goes, measured from the floor and across.
+            wall and where each nail goes, measured from the floor and across.
           </p>
 
           <Segmented label="Measure in" value={u} options={[['in', 'Inches'], ['cm', 'Centimeters']]} onChange={(unit: Unit) => setPlan((p) => convertPlan(p, unit))} />
@@ -180,8 +180,9 @@ export default function GalleryWall() {
               <Drawing plan={plan} result={result} />
               <p className="mt-3 text-sm text-dim">
                 The group is {format(result.right - result.left, u)} wide and {format(result.top - result.bottom, u)} tall, from{' '}
-                {format(result.bottom, u)} to {format(result.top, u)} above the floor. Mark every nail with a pencil and check the
-                marks with a level before you hammer.
+                {format(result.bottom, u)} to {format(result.top, u)} above the floor. Each nail is where the wire or hook rests, so
+                with a picture hook, put the bottom of the hook on the mark, not its nail. The marks are only as good as your
+                measurements: pencil them all and check them with a level before you hammer.
               </p>
               <ol className="mt-4 divide-y divide-rule border-y border-rule">
                 {result.placed.map((p) => (

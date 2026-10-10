@@ -78,15 +78,18 @@ export function layout(plan: Plan): Layout {
     const columns = Math.max(1, Math.min(plan.columns, frames.length))
     const rows: Frame[][] = []
     for (let i = 0; i < frames.length; i += columns) rows.push(frames.slice(i, i + columns))
-    const columnWidths = Array.from({ length: columns }, (_, c) => Math.max(...rows.map((r) => r[c]?.width ?? 0)))
-    width = columnWidths.reduce((a, b) => a + b, 0) + gap * (columns - 1)
+    // Columns are as wide as their widest frame in the full rows. A shorter last row doesn't follow them, so it doesn't widen them.
+    const fullRows = rows.filter((r) => r.length === columns)
+    const columnWidths = Array.from({ length: columns }, (_, c) => Math.max(...fullRows.map((r) => r[c].width)))
+    const gridWidth = columnWidths.reduce((a, b) => a + b, 0) + gap * (columns - 1)
+    const rowWidth = (row: Frame[]) => (row.length === columns ? gridWidth : row.reduce((a, f) => a + f.width, 0) + gap * (row.length - 1))
+    width = Math.max(...rows.map(rowWidth))
     let top = 0
     for (const row of rows) {
       const rowHeight = Math.max(...row.map((f) => f.height))
-      // A full row follows the columns; a shorter last row is centered under them.
+      // A full row follows the columns; a shorter last row is centered under them. Both are centered in the group.
       const full = row.length === columns
-      const rowWidth = full ? width : row.reduce((a, f) => a + f.width, 0) + gap * (row.length - 1)
-      let x = full ? 0 : (width - rowWidth) / 2
+      let x = (width - rowWidth(row)) / 2
       row.forEach((frame, c) => {
         const cell = full ? columnWidths[c] : frame.width
         const down = plan.align === 'top' ? 0 : plan.align === 'bottom' ? rowHeight - frame.height : (rowHeight - frame.height) / 2
