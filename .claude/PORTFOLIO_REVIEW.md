@@ -189,4 +189,10 @@ Audits of the eight remaining tier C experiments (2026-10-10). Earlier tables st
   - Vertical tabs are turned 180° for Latin text, but CJK glyphs stay upright in vertical-rl, so Chinese names printed upside down beside sideways digits. `text-orientation: sideways` makes every script run the same way.
 
   Accepted: Arabic tabs read top to bottom (the RTL inline direction under the turn), which is readable but opposite to Latin. Untested: Safari's and Firefox's print, and printers whose paper differs from the flyer's. Post-audit assessment: technical confidence 4 → 5; correctness risk stays 2.
+- **#012 Glance.** Daily integrity was checked against ordinary use, without anti-cheat machinery. The rounds depend only on the local date string and were identical in all 9 zones tested: New York, Santiago and Asunción (midnight DST changes), Beirut, London, Lord Howe, Chatham, Kolkata, and UTC. streak() and today() were checked for every day of 2026–2027 in each. Saves are synchronous, so an answer survives an immediate close or reload, and a double submit writes one guess. Defects fixed:
+  - Two tabs: each saved the history it had loaded, so an older tab erased a newer one's answers, including whole days (a finished 2026-10-03 vanished in the test), and accepted a second answer for a round already answered. Saves now merge with storage, a round counts once, and the storage event moves a stale tab on.
+  - A reload, or a mobile page discard, after the dots were shown restarted the round with "Show the dots", giving a second look at the same field. A `seen` marker now opens that round at the guess, with a note.
+  - The field's aria-label read "A field of 13 shapes" during the flash, which was the answer, for screen-reader users and anyone inspecting the page. It no longer has a count.
+
+  Accepted: the puzzle changes at each visitor's local midnight; a tab left open past midnight keeps its day until reloaded; clearing storage resets everything; the game is visual by nature. Post-audit assessment: user-data-loss risk 2 → 1.
 

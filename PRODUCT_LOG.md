@@ -16,6 +16,12 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-10 · #012 Glance update
+
+- **What:** Playing in two tabs no longer loses results. Before, each tab saved the whole history it had loaded. An older tab could wipe out answers given in a newer one, even whole earlier days and the streak with them, and could take a second answer for a round already answered elsewhere. Now every save starts from what's stored, a round counts once, and a tab moves past rounds answered in another. Once a round's dots have been shown, coming back to it after a reload, or after a phone reopens the page, goes straight to the guess instead of showing the same dots again. The field's label for screen readers no longer gives the number of dots.
+- **Why:** The Batch 05 audit checked that the daily result can't be accidentally replayed or spoiled, without building anti-cheat machinery. The puzzle is the same for a given date in every time zone tested. The streak counts correctly across daylight-saving changes, including ones at midnight, and an answer survives closing the page right after it.
+- **Notes:** The puzzle follows each visitor's own date, so people in different time zones switch at different moments. Clearing the browser's storage starts over, by design.
+
 ## 2026-10-10 · #009 Tear-Off Flyer update
 
 - **What:** Tab text too long for a tab now gets a warning. Before, it was silently cut off in print: "Dana Whitfield-Rasmussen, call or text 555-0134-2287" printed on every tab as "…call or text 5", without the phone number. Chinese and Japanese text on the tabs now runs the same way as English. Before, the characters printed upside down while the digits ran sideways.

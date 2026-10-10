@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
 import { daily, HEIGHT, NAMES, practice, PROMPTS, puzzleNumber, score, shareText, square, streak, today, type Round } from './model.ts'
 
-// Each day's guesses, so results and streaks survive a reload. Nothing else is kept.
+// Each day's guesses, so results and streaks survive a reload, and which round's dots were last shown. Nothing else is kept.
 const STORAGE_KEY = 'labs:glance'
 
 type Phase = 'ready' | 'steady' | 'showing' | 'guessing' | 'revealed'
@@ -14,22 +14,43 @@ const outline = `${button} border border-rule hover:bg-ink/5`
 export default function Glance() {
   const date = useMemo(() => today(), [])
   const rounds = useMemo(() => daily(date), [date])
-  const [history, setHistory] = useState(load)
+  const [history, setHistory] = useState(() => load().days)
+  const [seen, setSeen] = useState(() => load().seen)
   const [mode, setMode] = useState<'daily' | 'practice'>('daily')
   const guesses = history[date] ?? []
   // The round on screen. It moves on only when asked, so a guess is saved (and can't be redone) while its answer shows.
   const [current, setCurrent] = useState(() => guesses.length)
   const finished = current >= rounds.length
 
-  const record = (index: number, guess: number) => {
-    if (index !== guesses.length) return
-    const next = { ...history, [date]: [...guesses, guess] }
-    setHistory(next)
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 1, days: next }))
-    } catch {
-      // Private browsing or full storage: today's result just won't be remembered.
+  // Another tab's saves show up here as they happen, so this one moves past rounds answered there.
+  useEffect(() => {
+    const sync = (event: StorageEvent) => {
+      if (event.key !== STORAGE_KEY) return
+      const saved = load()
+      setHistory((mine) => merge(mine, saved.days))
+      setSeen(saved.seen)
+      setCurrent((c) => Math.max(c, (saved.days[date] ?? []).length))
     }
+    window.addEventListener('storage', sync)
+    return () => window.removeEventListener('storage', sync)
+  }, [date])
+
+  const record = (index: number, guess: number) => {
+    // Start from what's saved, which another tab may have added to since this one loaded, so nothing it saved is lost.
+    const all = merge(history, load().days)
+    const done = all[date] ?? []
+    setHistory(all)
+    // Already answered, in another tab: a round counts once.
+    if (index !== done.length) return setCurrent(done.length)
+    const next = { ...all, [date]: [...done, guess] }
+    setHistory(next)
+    save({ days: next })
+  }
+
+  // Once a round's dots have been shown, coming back to it (a reload, or a phone reopening the page) goes straight to the guess.
+  const markShown = (index: number) => {
+    setSeen({ date, round: index })
+    save({ seen: { date, round: index } })
   }
 
   return (
@@ -52,6 +73,8 @@ export default function Glance() {
               label={`Round ${current + 1} of ${rounds.length}`}
               onGuess={(guess) => record(current, guess)}
               onNext={() => setCurrent((c) => c + 1)}
+              onShow={() => markShown(current)}
+              shown={seen?.date === date && seen.round === current}
               last={current === rounds.length - 1}
             />
           </>
@@ -62,8 +85,10 @@ export default function Glance() {
 }
 
 /** One round: get ready, see the field, guess, see how close you were. */
-function Game({ round, label, onGuess, onNext, last, practiceMode }: { round: Round; label: string; onGuess: (guess: number) => void; onNext: () => void; last?: boolean; practiceMode?: boolean }) {
-  const [phase, setPhase] = useState<Phase>('ready')
+function Game({ round, label, onGuess, onNext, onShow, shown, last, practiceMode }: { round: Round; label: string; onGuess: (guess: number) => void; onNext: () => void; onShow?: () => void; shown?: boolean; last?: boolean; practiceMode?: boolean }) {
+  // A round whose dots were already shown starts at the guess: no second look.
+  const [phase, setPhase] = useState<Phase>(shown ? 'guessing' : 'ready')
+  const [again] = useState(shown)
   const [text, setText] = useState('')
   const [guess, setGuess] = useState<number | null>(null)
   const input = useRef<HTMLInputElement>(null)
@@ -73,8 +98,12 @@ function Game({ round, label, onGuess, onNext, last, practiceMode }: { round: Ro
   // which stop altogether in background tabs and would leave the dots up.)
   useEffect(() => {
     if (phase !== 'steady' && phase !== 'showing') return
-    const t = window.setTimeout(() => setPhase(phase === 'steady' ? 'showing' : 'guessing'), phase === 'steady' ? 700 : round.showMs)
+    const t = window.setTimeout(() => {
+      if (phase === 'steady') onShow?.()
+      setPhase(phase === 'steady' ? 'showing' : 'guessing')
+    }, phase === 'steady' ? 700 : round.showMs)
     return () => clearTimeout(t)
+    // onShow stays the same for the whole round.
   }, [phase, round.showMs])
 
   useEffect(() => {
@@ -106,6 +135,7 @@ function Game({ round, label, onGuess, onNext, last, practiceMode }: { round: Ro
       <p aria-live="polite" className="mt-2 text-lg font-medium text-balance">
         {status}
       </p>
+      {again && phase === 'guessing' && <p className="mt-1 text-sm text-dim">You’ve had your look at this one already.</p>}
 
       <Board round={round} visible={phase === 'showing' || phase === 'revealed'} steady={phase === 'steady'} />
 
@@ -163,7 +193,8 @@ function verdict(guess: number, answer: number): string {
 function Board({ round, visible, steady }: { round: Round; visible: boolean; steady: boolean }) {
   return (
     <div className="mt-4 overflow-hidden rounded-2xl border border-rule bg-paper">
-      <svg viewBox={`0 0 1 ${HEIGHT}`} className="block w-full" role="img" aria-label={visible ? `A field of ${round.marks.length} shapes` : 'An empty board'}>
+      {/* No count in the label: it would give the answer away. */}
+      <svg viewBox={`0 0 1 ${HEIGHT}`} className="block w-full" role="img" aria-label={visible ? 'A field of shapes' : 'An empty board'}>
         {visible &&
           round.marks.map((m, i) =>
             m.square ? (
@@ -274,15 +305,37 @@ function Practice({ onBack }: { onBack: () => void }) {
   )
 }
 
-function load(): Record<string, number[]> {
+type Days = Record<string, number[]>
+type Seen = { date: string; round: number } | null
+
+function load(): { days: Days; seen: Seen } {
   try {
     const data = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? 'null')
-    const days: Record<string, number[]> = {}
+    const days: Days = {}
     if (data?.days && typeof data.days === 'object')
       for (const [d, g] of Object.entries(data.days))
         if (/^\d{4}-\d{2}-\d{2}$/.test(d) && Array.isArray(g)) days[d] = g.filter((n): n is number => Number.isInteger(n) && n > 0 && n < 100_000).slice(0, 5)
-    return days
+    const s = data?.seen
+    const seen = s && typeof s.date === 'string' && Number.isInteger(s.round) ? { date: s.date, round: s.round } : null
+    return { days, seen }
   } catch {
-    return {}
+    return { days: {}, seen: null }
+  }
+}
+
+/** Both copies of the history, keeping the longer list of guesses for each day. */
+function merge(a: Days, b: Days): Days {
+  const out = { ...a }
+  for (const [d, g] of Object.entries(b)) if (!out[d] || g.length > out[d].length) out[d] = g
+  return out
+}
+
+/** Saves the days or the shown round, keeping the other as stored. */
+function save(patch: { days?: Days; seen?: Seen }) {
+  try {
+    const stored = load()
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 1, days: patch.days ?? stored.days, seen: patch.seen ?? stored.seen }))
+  } catch {
+    // Private browsing or full storage: today's result just won't be remembered.
   }
 }
