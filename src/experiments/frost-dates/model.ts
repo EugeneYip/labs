@@ -31,6 +31,20 @@ export function dayOfYear(day: number): number {
   return leap(y) && (m > 2 || (m === 2 && d === 29)) ? n - 1 : n
 }
 
+/**
+ * Days from a season's start to a day on a 365-day calendar: February 29
+ * counts as the 28th, so dates in leap years line up with the rest when
+ * they're compared and shown as calendar dates.
+ */
+export function calendarOffset(start: number, day: number): number {
+  let offset = day - start
+  for (let y = parts(start).y; y <= parts(day).y; y++) {
+    const feb29 = dayNumber(y, 2, 29)
+    if (leap(y) && feb29 > start && feb29 <= day) offset--
+  }
+  return offset
+}
+
 /** Reads an Open-Meteo archive answer, dropping missing days at the end (the most recent days aren't in yet). */
 export function readArchive(json: unknown): Series | null {
   const daily = (json as { daily?: { time?: unknown; temperature_2m_min?: unknown } } | null)?.daily
@@ -152,8 +166,8 @@ export function analyze(series: Series, threshold: number): Analysis | null {
   const n = recent.length
   const frostSeasons = recent.filter((s) => s.first !== null).length
   // Seasons without frost count as a last frost before any date and a first frost after any date.
-  const lasts = recent.map((s) => (s.last === null ? -1 : s.last - s.start)).sort((a, b) => a - b)
-  const firsts = recent.map((s) => (s.first === null ? Infinity : s.first - s.start)).sort((a, b) => a - b)
+  const lasts = recent.map((s) => (s.last === null ? -1 : calendarOffset(s.start, s.last))).sort((a, b) => a - b)
+  const firsts = recent.map((s) => (s.first === null ? Infinity : calendarOffset(s.start, s.first))).sort((a, b) => a - b)
   /** The spring date by which the last frost has passed in a share `p` of seasons. */
   const springBy = (p: number) => {
     const v = lasts[Math.ceil(p * n) - 1]

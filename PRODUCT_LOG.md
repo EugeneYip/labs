@@ -16,6 +16,12 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-10 · #017 Frost Dates update
+
+- **What:** Frost dates in leap years now line up with other years. Before, a frost after February 29 counted a day later than the same date in another year, which moved the 9-in-10 date by a day in some places (Boston's spring date went from April 16 to April 15). A weather request that stalls on a weak connection now gives up after 45 seconds and offers Try again, instead of showing "Reading…" forever. When the place search can't reach the server, it now says so rather than "No places found", which matters now that the page itself opens offline.
+- **Why:** The Batch 04 audit checked the method against how NOAA's climate center publishes frost and freeze odds: 36, 32, and 28 °F thresholds, spring and autumn split at midsummer, and the dates with 10%, 50%, and 90% chances. The method matched: medians and the 9-in-10 dates are counted directly from the last 30 whole seasons, and both hemispheres work, with the year split at its warmest point. The leap-day shift, the stalled request, and the misleading search message were the defects found.
+- **Notes:** The planting rules of thumb agree with common extension-service guidance (for example, tomatoes started indoors 6 to 8 weeks before the last frost and planted out 1 to 2 weeks after). Missing days inside the record are skipped rather than counted as frost-free or frosty. Tested with Boston and Canberra records, a stalled request, a failed search, and phone width in dark mode.
+
 ## 2026-10-10 · #002 Photo Scrub update
 
 - **What:** Clean copies of turned PNGs now stay upright: they keep just their orientation, as clean JPEGs already did, because browsers turn PNGs by it too. Photos whose file names carry the date, which phones and screenshot tools add (IMG_20261009_143210, Screenshot 2026-10-09 at 14.32.10), now list the name as a hidden detail, and the clean copy gets a plain name (photo-clean.jpg) instead of keeping the date. The page now says exactly what clean copies keep: the image itself, its color profile, and which way up it goes. AVIF files get the same clear message as HEIC.

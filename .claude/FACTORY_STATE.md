@@ -14,7 +14,7 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 
 - [x] GitHub Issues checked (2026-10-10): no issues or pull requests, open or closed, so no real feedback yet. Continued without waiting.
 - [x] #002 Photo Scrub: deep audit done (2026-10-10). Fixed: PNG orientation lost, dated file names leaking into clean names, AVIF wording, and what is kept is now stated. Details in Batch 04 findings.
-- [ ] #017 Frost Dates: deep audit (method against meteorological references, hemispheres, leap years, the 30-year window, gaps, API failure, geocoding, date boundaries, wording of typical and cautious).
+- [x] #017 Frost Dates: deep audit done (2026-10-10). Fixed: leap-year offsets, no request timeout, and a failed search shown as "No places found". The method checks out against NOAA's framing.
 - [ ] #024 Ranked Choice Count: deep audit (IRV, STV, Droop, surplus transfer, exhaustion, ties, malformed rankings, export shapes, precision, stating the exact variant).
 - [ ] #003 Fair Share: deep audit (precision, currency decimals, the link as storage: corruption, size, divergence, privacy; settlement).
 - [ ] #018 Off Book: deep audit (messy scripts; fail understandably rather than misassign lines).
@@ -26,7 +26,8 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 
 ## Batch 04 findings
 
-- **#002 Photo Scrub (done).** Independent check: `scratchpad/photo/make.py` builds JPEG (baseline and progressive), PNG, and WebP (lossy and lossless) files with a canary string in every metadata field. `run.ts` cleans them with `metadata.ts`, and `verify.py` (Pillow) checks that no canary survives, pixels are identical, and only orientation is left in EXIF. All passed. A browser probe (plan photo-orient) showed Chromium turns PNG by eXIf orientation but ignores it in WebP, so PNG clean copies now get a minimal eXIf (orientation only) right after IHDR, with a valid CRC (test). `dateInName` (YMD with or without a consistent separator, or DD-MM-YYYY) adds a "File name" finding, and the clean copy is named photo-clean.<ext>. 21 model tests; plan photo-2 (four files including 6000×4000, 360 px dark). A 28 MB JPEG takes 345 ms and a 76 MB PNG 41 ms.
+- **#002 Photo Scrub (done).** Independent check (scripts kept in `.claude/qa/photo-canary/`; run `python3 make.py in`, then `node --experimental-strip-types run.ts in out`, then `python3 verify.py in out`): `make.py` builds JPEG (baseline and progressive), PNG, and WebP (lossy and lossless) files with a canary string in every metadata field. `run.ts` cleans them with `metadata.ts`, and `verify.py` (Pillow) checks that no canary survives, pixels are identical, and only orientation is left in EXIF. All passed. A browser probe (plan photo-orient) showed Chromium turns PNG by eXIf orientation but ignores it in WebP, so PNG clean copies now get a minimal eXIf (orientation only) right after IHDR, with a valid CRC (test). `dateInName` (YMD with or without a consistent separator, or DD-MM-YYYY) adds a "File name" finding, and the clean copy is named photo-clean.<ext>. 21 model tests; plan photo-2 (four files including 6000×4000, 360 px dark). A 28 MB JPEG takes 345 ms and a 76 MB PNG 41 ms.
+- **#017 Frost Dates (done).** `calendarOffset(start, day)` puts season offsets on a 365-day calendar (Feb 29 = Feb 28) for the quantiles. frostFree still uses real days. A new test makes every season's frosts Apr 10 and Oct 20 (the old code gave Apr 11 for the cautious date). Interior gaps are skipped (test). Archive fetch has `AbortSignal.timeout(45 s)` (guarded for old Safari) and geocoding 15 s; a geocoding failure now shows its own message. Plan frost-4 stubs a stalled archive with a shortened timeout (an error, then Try again works), a failed geocoder, and Canberra at 360 px dark. 13 model tests. CROPS checked against common extension guidance: fine.
 
 ## Batch 03 (complete)
 
@@ -55,7 +56,7 @@ The five highest totals in the portfolio review, all tier A: **#016 Fluency Chec
 ## Position
 
 - **Current:** Batch 04, Tier B Hardening (started 2026-10-10). Order: issues check, then the seven tier B audits in the listed order, then Family Stories and Form Check, then the production check and report. Batch 03 was complete on 2026-10-09; its order was Order: (1) offline service worker, since it helps Day Clock, Playing Time, Stall Till, and the other local tools, (2) deep audits of the five, (3) the sensitive-wording pass, (4) homepage discovery, (5) feedback, (6) decide on new experiments (default: none), (7) final production check and report.
-- **Next action:** #017 Frost Dates deep audit: read `src/experiments/frost-dates/model.ts` and the Open-Meteo request, compare the method (season definition, typical = median, cautious = 10%/90%) with NOAA/NCEI frost-freeze method notes, test southern hemisphere, leap years, gaps, API errors, and geocoding.
+- **Next action:** #024 Ranked Choice Count deep audit: read `src/experiments/ranked-choice-count/`, verify IRV and STV (Droop, fractional surplus transfer truncated to 5 decimals, exhausted ballots, ties) against published worked examples and rule texts, test malformed rankings and export shapes, and make sure the page states the exact variant.
 
 ## Batch 03 audits
 

@@ -7,6 +7,9 @@ const STORAGE_KEY = 'labs:frost-dates'
 const DATA_KEY = 'labs:frost-dates:data'
 /** Records are fetched again after this long, to keep "this season so far" current. */
 const STALE_DAYS = 3
+/** A request that stalls (a weak signal, a captive Wi-Fi page) gives up after this long, so Try again appears. */
+const TIMEOUT_MS = 45_000
+const timeout = (ms: number) => (typeof AbortSignal.timeout === 'function' ? AbortSignal.timeout(ms) : undefined)
 const DAY = 86_400_000
 const FIRST_YEAR = 1995
 
@@ -67,7 +70,7 @@ export default function FrostDates() {
         daily: 'temperature_2m_min',
         timezone: 'auto',
       })
-      const response = await fetch(`https://archive-api.open-meteo.com/v1/archive?${params}`)
+      const response = await fetch(`https://archive-api.open-meteo.com/v1/archive?${params}`, { signal: timeout(TIMEOUT_MS) })
       if (id !== request.current) return
       if (response.status === 429) return setStatus('busy')
       if (!response.ok) throw new Error(String(response.status))
@@ -367,7 +370,7 @@ function Planting({ analysis, anchor, onAnchor }: { analysis: Analysis; anchor: 
 
 function PlacePicker({ place, onChoose }: { place: Place | null; onChoose: (place: Place) => void }) {
   const [query, setQuery] = useState('')
-  const [results, setResults] = useState<Place[] | null>(null)
+  const [results, setResults] = useState<Place[] | 'failed' | null>(null)
   const [note, setNote] = useState('')
   const [locating, setLocating] = useState(false)
 
@@ -381,14 +384,16 @@ function PlacePicker({ place, onChoose }: { place: Place | null; onChoose: (plac
     const timer = window.setTimeout(async () => {
       try {
         const params = new URLSearchParams({ name: q, count: '6', language: 'en', format: 'json' })
-        const data = await fetch(`https://geocoding-api.open-meteo.com/v1/search?${params}`).then((r) => r.json())
+        const response = await fetch(`https://geocoding-api.open-meteo.com/v1/search?${params}`, { signal: timeout(15_000) })
+        if (!response.ok) throw new Error(String(response.status))
+        const data = await response.json()
         if (cancelled) return
         const list: Place[] = (Array.isArray(data?.results) ? data.results : [])
           .filter((r: Record<string, unknown>) => typeof r.latitude === 'number' && typeof r.longitude === 'number' && typeof r.name === 'string')
           .map((r: Record<string, string | number>) => ({ name: String(r.name), detail: [r.admin1, r.country].filter(Boolean).join(', '), lat: Number(r.latitude), lon: Number(r.longitude) }))
         setResults(list)
       } catch {
-        if (!cancelled) setResults([])
+        if (!cancelled) setResults('failed')
       }
     }, 300)
     return () => {
@@ -434,7 +439,9 @@ function PlacePicker({ place, onChoose }: { place: Place | null; onChoose: (plac
       </div>
       {results && (
         <ul className="mt-2 divide-y divide-rule rounded-lg border border-rule" aria-label="Places">
-          {results.length === 0 ? (
+          {results === 'failed' ? (
+            <li className="px-3 py-2.5 text-sm text-dim">Couldn’t search for places. Check your connection, or use your location.</li>
+          ) : results.length === 0 ? (
             <li className="px-3 py-2.5 text-sm text-dim">No places found.</li>
           ) : (
             results.map((r) => (
