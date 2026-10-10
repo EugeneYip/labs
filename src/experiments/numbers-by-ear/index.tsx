@@ -118,6 +118,8 @@ function Practice({ languages }: { languages: Language[] }) {
   const [stats, setStats] = useState({ right: 0, total: 0, streak: 0 })
   const [review, setReview] = useState<Question[]>([])
   const [speaking, setSpeaking] = useState(false)
+  // The last number wasn't heard: the voice failed, as a voice that needs the internet does offline.
+  const [silent, setSilent] = useState(false)
   const sinceReview = useRef(0)
   const advance = useRef(0)
   const utterance = useRef<SpeechSynthesisUtterance | null>(null)
@@ -147,9 +149,18 @@ function Practice({ languages }: { languages: Language[] }) {
     if (chosen) u.voice = chosen
     u.lang = chosen?.lang ?? q.lang
     u.rate = slower ? 0.6 : settings.slow ? 0.75 : 1
-    u.onstart = () => setSpeaking(true)
-    u.onend = u.onerror = () => {
+    u.onstart = () => {
+      setSpeaking(true)
+      setSilent(false)
+    }
+    u.onend = () => {
       if (utterance.current === u) setSpeaking(false)
+    }
+    u.onerror = (event) => {
+      if (utterance.current !== u) return
+      setSpeaking(false)
+      // Cutting one number short to say the next is normal; anything else means nothing was heard.
+      if (event.error !== 'interrupted' && event.error !== 'canceled') setSilent(true)
     }
     // Keep a reference: some browsers drop events for utterances that get garbage-collected.
     utterance.current = u
@@ -241,6 +252,7 @@ function Practice({ languages }: { languages: Language[] }) {
             value={language.lang}
             onChange={(e) => {
               change({ lang: e.target.value, voice: null })
+              setSilent(false)
               reset()
             }}
             className={field}
@@ -254,7 +266,15 @@ function Practice({ languages }: { languages: Language[] }) {
         </label>
         <label className="grid gap-1.5">
           <span className="text-sm font-medium">Voice</span>
-          <select value={voice.voiceURI} onChange={(e) => change({ voice: e.target.value })} disabled={language.voices.length < 2} className={`${field} disabled:cursor-default disabled:opacity-60`}>
+          <select
+            value={voice.voiceURI}
+            onChange={(e) => {
+              change({ voice: e.target.value })
+              setSilent(false)
+            }}
+            disabled={language.voices.length < 2}
+            className={`${field} disabled:cursor-default disabled:opacity-60`}
+          >
             {language.voices.map((v) => (
               <option key={v.voiceURI} value={v.voiceURI}>
                 {voiceLabel(v.name)}
@@ -382,6 +402,11 @@ function Practice({ languages }: { languages: Language[] }) {
             </button>
           )}
         </div>
+        {silent && (
+          <p role="status" className="mt-4 text-center text-sm text-pretty text-red-700 dark:text-red-400">
+            The voice didn’t speak. Try again, or choose another voice: some voices need an internet connection.
+          </p>
+        )}
       </section>
 
       <p className="mt-4 text-center text-sm text-dim tabular-nums">
@@ -395,9 +420,10 @@ function Practice({ languages }: { languages: Language[] }) {
       )}
 
       <p className="mt-10 text-sm text-pretty text-dim">
-        The voices come with your device or browser, so the languages on offer and how natural they sound depend on it. More can
-        usually be added in the system’s speech or accessibility settings. No sound? Check the volume, and on an iPhone, that
-        silent mode is off.
+        The voices come with your device or browser, so the languages on offer and how natural they sound depend on it. A voice
+        can still misread a price or a year; the written answer after each number is always right. More voices can usually be
+        added in the system’s speech or accessibility settings. No sound? Check the volume, and on an iPhone, that silent mode is
+        off.
       </p>
     </>
   )

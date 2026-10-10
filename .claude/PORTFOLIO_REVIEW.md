@@ -214,3 +214,15 @@ The earlier score tables stay as they were. This table re-scores only the criter
 Ranked Choice Count's CSV quoting fix, found during the Stall Till audit, changes no score.
 
 Clean Paste (46), Serve Time (45), and Glance (45) reach the tier B range on this assessment. Clean Paste deserves tier B consideration: the need is frequent, and it now removes nothing without evidence and names what it removes. Serve Time sits on the line: the planner is sound, but use is occasional. Glance gets its 45 only from a lower data-loss risk, and its usefulness is unchanged, so it doesn't merit promotion in substance. Stall Till (44) is one point short; its remaining weakness is that a day's sales live in one browser.
+
+## Batch 06 findings
+
+The tier D audits and the Apple-platform pass (2026-10-10). The earlier tables stay as they were; the final lifecycle decisions are in `.claude/PORTFOLIO_RESOLUTION.md`.
+
+- **#007 Numbers by Ear.** The real unknown was what device voices actually say. With no speech recognizer on this Mac (installing one would mean an unapproved download), the check used the voices themselves. Each voice rendered the page's exact text, and the same voice rendered candidate wordings; log-mel spectrograms were compared by dynamic time warping (`.claude/qa/speech/match.py`). Synthesis is deterministic, so the voice's own words match almost exactly: on English calibration, Samantha's "1984" and "nineteen eighty-four" are audio-identical, with the next candidate at a distance of 0.29. 92 cases across 37 voices in 37 languages and regions:
+  - Correct already: cardinals up to 999,999 everywhere tested (Hindi lakh, CJK 万), zero, "quatre-vingt-dix-sept", and most prices ("douze euros et quatre-vingt-dix-neuf centimes", "zwölf Euro und neunundneunzig Cent", "twelve pounds and ninety-nine pence", "dwanaście złotych dziewięćdziesiąt dziewięć groszy", "千二百八十円", "十二点九九元", ringgit, kroner, lira, baht, rupiah).
+  - Misread, now fixed with words keyed by language and currency (`PRICE_WORDS`): es-MX "$" as dólares (also applied to ARS, COP, CLP, same mechanism); zh-TW "$" as 美元; pt-BR "R$" as "erre cifrão"; hu "Ft" spelled out; en-ZA "R" as a letter; ru "₽" skipped (now ruble forms by `Intl.PluralRules`). Each replacement was confirmed by the same voices (for example "12 reais e 50 centavos" is exact, "121 рубль" and "452 рубля" take the right forms).
+  - Years (`YEAR_WORDS`): Tingting reads "1984" as 一千九百八十四 but "1984年" as 一九八四年 (exact), how Chinese says years; Milena and Lesya give the ordinal year form with год and рік. Polish stayed unclear, so it's unchanged.
+  - The page was silent when an utterance failed (a Chrome online voice offline, for example). There's now a message, and interruptions are ignored. Checked with stubbed failures in Brave.
+
+  Accepted: only Apple voices tested; Italian and Spanish (Spain) read prices literally ("virgola", "coma"), which is correct if not colloquial; novelty voices are still listed, last. Post-audit assessment: technical confidence 2 → 3 (pronunciation measured, not assumed); correctness risk stays 3 for untested platforms.

@@ -16,6 +16,12 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-10 · #007 Numbers by Ear update
+
+- **What:** Prices in several currencies are now read in the right currency. On Apple devices, the Mexican Spanish voice read peso prices as dollars and the Taiwanese Mandarin voice read Taiwan dollars as US dollars. The Brazilian Portuguese voice read "R$" out letter by letter, the Hungarian and South African voices spelled out "Ft" and "R", and the Russian voice left out the ruble sign. Those prices are now spoken in words: pesos, reais, 元, forint, rand, and rubles in the right grammatical form. Years now sound the way each language says them: digit by digit in Chinese (一九八四年), and as ordinals in Russian and Ukrainian. If a voice fails to speak, as a voice that needs the internet does offline, the page now says so instead of staying silent.
+- **Why:** The Batch 06 audit checked what the voices actually say without needing ears. Each of 37 of the Mac's own voices, in 37 languages and regions, read the page's exact text, and the recording was compared with the same voice reading candidate wordings. The two match closely only when the voice said those words. Most languages were already right, from "douze euros et quatre-vingt-dix-neuf centimes" to lakh in Hindi and 十二万 in Chinese and Japanese.
+- **Notes:** Only Apple's voices were checked; Windows, Android, and Chrome's online voices weren't. The page now says a voice can still misread a price or a year, and that the written answer is always right. Polish years stayed as they were, because the check couldn't tell what the Polish voice said.
+
 ## 2026-10-10 · #012 Glance update
 
 - **What:** Playing in two tabs no longer loses results. Before, each tab saved the whole history it had loaded. An older tab could wipe out answers given in a newer one, even whole earlier days and the streak with them, and could take a second answer for a round already answered elsewhere. Now every save starts from what's stored, a round counts once, and a tab moves past rounds answered in another. Once a round's dots have been shown, coming back to it after a reload, or after a phone reopens the page, goes straight to the guess instead of showing the same dots again. The field's label for screen readers no longer gives the number of dots.

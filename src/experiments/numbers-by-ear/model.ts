@@ -108,9 +108,42 @@ function locale(lang: string): string {
   }
 }
 
+const primary = (lang: string) => lang.split('-')[0].toLowerCase()
+
+/**
+ * Years as each language says them, where plain digits would be read as an ordinary number: Chinese
+ * reads a year digit by digit before 年, and Russian and Ukrainian use the ordinal before год or рік.
+ * Checked against macOS voices' own audio.
+ */
+const YEAR_WORDS: Record<string, string> = { zh: '年', ru: ' год', uk: ' рік' }
+
+const RUBLES: Record<string, string> = { one: 'рубль', few: 'рубля', many: 'рублей', other: 'рубля' }
+const pesos = (whole: number, cents: number) => `${whole} pesos${cents ? ` con ${cents} centavos` : ''}`
+
+/**
+ * Prices whose currency sign the system voices misread, given in words instead, keyed by language
+ * and currency so the words match the voice. Checked against macOS voices' own audio: the Mexican
+ * and Taiwanese voices read "$" as US dollars, the Brazilian one reads "R$" letter by letter, the
+ * Hungarian and South African ones spell out "Ft" and "R", and the Russian one skips "₽".
+ */
+const PRICE_WORDS: Record<string, (whole: number, cents: number) => string> = {
+  'es:MXN': pesos,
+  'es:ARS': pesos,
+  'es:COP': pesos,
+  'es:CLP': pesos,
+  'pt:BRL': (whole, cents) => `${whole} reais${cents ? ` e ${cents} centavos` : ''}`,
+  'zh:TWD': (whole) => `${whole}元`,
+  'ru:RUB': (whole) => `${whole} ${RUBLES[new Intl.PluralRules('ru').select(whole)]}`,
+  'hu:HUF': (whole) => `${whole} forint`,
+  'en:ZAR': (whole, cents) => `${whole} rand${cents ? ` and ${cents} cents` : ''}`,
+}
+
 /** The text handed to the voice: plain digits, so no voice mistakes grouping for two numbers. */
 export function spokenText(q: Question): string {
+  if (q.mode === 'years') return `${q.value}${YEAR_WORDS[primary(q.lang)] ?? ''}`
   if (q.mode !== 'prices') return String(q.value)
+  const words = q.currency ? PRICE_WORDS[`${primary(q.lang)}:${q.currency}`] : undefined
+  if (words) return words(Math.floor(q.value / 10 ** q.decimals), q.value % 10 ** q.decimals)
   const whole = q.value % 10 ** q.decimals === 0
   return new Intl.NumberFormat(locale(q.lang), {
     ...(q.currency && { style: 'currency', currency: q.currency }),
