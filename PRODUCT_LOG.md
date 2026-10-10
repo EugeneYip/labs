@@ -16,6 +16,12 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-10 · Safari fixes: Tear-Off Flyer printing, Family Stories warning
+
+- **What:** Tear-Off Flyer now prints on one page in Safari. The flyer was drawn to fill the page exactly, so when Safari's printer added margins of its own, the bottom edge spilled onto a second page, cutting the first letters off every tab ("umpkin" for "Pumpkin"). It now prints at 90% of the page, with room to spare. Family Stories' warning about stored recordings now says Safari on iPhones, iPads, and Macs can clear them after about a week without a visit; it said "after weeks".
+- **Why:** The Batch 06 Apple-platform pass printed flyers with WebKit, the engine Safari uses, across a range of printer margins, and read the PDFs back. Chrome had always printed one page, so this only showed up in Safari. The seven days come from WebKit's published storage policy: Safari deletes a site's stored data after seven days of Safari use without a visit, unless the site is added to the Home Screen.
+- **Notes:** The flyer is slightly smaller on paper in every browser now. The printing tip still asks for 100% scale and no headers and footers.
+
 ## 2026-10-10 · #011 Line Dry update
 
 - **What:** Line Dry no longer gives a clock time for when washing will be dry. "It should be dry by about 1:15 PM" is now "it should be dry by early afternoon", and the time to hang it out is rounded down to the half hour. The note now says what the estimate assumes: washing hung in the sun and the breeze, which thick fabric, a crowded line, or shade slow down. A forecast request that stalls now gives up after 20 seconds and offers Try again, instead of "Getting the forecast…" forever. A place search that fails now says so, instead of "No places found."

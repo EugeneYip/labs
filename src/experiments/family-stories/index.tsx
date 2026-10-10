@@ -165,7 +165,7 @@ function Home({ interviews, onOpen, onCreated, onDeleted }: { interviews: Interv
           </section>
         )}
         <p className="mt-10 max-w-prose text-sm text-pretty text-dim">
-          Recordings are kept in this browser until you delete them, but browsers can clear stored data, especially on iPhones after weeks without a visit. Download your recordings when you finish an interview.
+          Recordings are kept in this browser until you delete them, but browsers can clear stored data: Safari on iPhones, iPads, and Macs can clear it after about a week without a visit. Download your recordings when you finish an interview.
         </p>
       </div>
     </div>

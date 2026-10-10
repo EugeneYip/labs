@@ -312,17 +312,20 @@ function Segmented<T extends string>({ label, value, options, onChange }: { labe
 }
 
 /**
- * When printing, only the flyer shows, at true size, on a page of the chosen
- * paper. Everything else on the page, including its frame, is hidden.
+ * When printing, only the flyer shows, on a page of the chosen paper.
+ * Everything else on the page, including its frame, is hidden. The flyer
+ * prints at 90%: drawn to fill the page exactly, it spilled its bottom edge,
+ * with the start of every tab, onto a second page in Safari whenever the
+ * printer added margins of its own.
  */
 function printStyles(flyer: Flyer): string {
   const paper = PAPERS[flyer.paper]
   return `@media print {
   @page { size: ${paper.width}in ${paper.height}in; margin: ${MARGIN}in; }
-  html, body { background: white !important; }
+  html, body { background: white !important; height: auto !important; min-height: 0 !important; margin: 0 !important; }
   body *:not(:has(#flyer-sheet)):not(#flyer-sheet):not(#flyer-sheet *) { display: none !important; }
   body *:has(#flyer-sheet) { display: block !important; margin: 0 !important; padding: 0 !important; border: 0 !important; box-shadow: none !important; max-width: none !important; width: auto !important; height: auto !important; min-height: 0 !important; transform: none !important; position: static !important; background: none !important; }
-  #flyer-sheet { display: flex !important; break-inside: avoid; }
+  #flyer-sheet { display: flex !important; break-inside: avoid; zoom: 0.9; margin: 0 auto !important; }
 }`
 }
 
