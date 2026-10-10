@@ -13,7 +13,10 @@ const TYPES = ['audio/webm;codecs=opus', 'audio/mp4', 'audio/ogg;codecs=opus', '
  * open between answers, so the browser asks only once, and closes when the
  * interview does. A level meter shows the voice is being picked up.
  */
-export function useRecorder() {
+export function useRecorder(onPart?: (blob: Blob, n: number) => void) {
+  // Each second of audio is handed on as it arrives, so it can be saved before the answer ends.
+  const partHandler = useRef(onPart)
+  partHandler.current = onPart
   const stream = useRef<MediaStream | null>(null)
   const audio = useRef<{ ctx: AudioContext; analyser: AnalyserNode } | null>(null)
   const recorder = useRef<MediaRecorder | null>(null)
@@ -57,15 +60,18 @@ export function useRecorder() {
       const type = TYPES.find((t) => MediaRecorder.isTypeSupported(t))
       const r = new MediaRecorder(stream.current, type ? { mimeType: type } : undefined)
       chunks.current = []
+      let n = 0
       r.ondataavailable = (e) => {
-        if (e.data.size) chunks.current.push(e.data)
+        if (!e.data.size) return
+        chunks.current.push(e.data)
+        partHandler.current?.(e.data, n++)
       }
       r.start(1000)
       recorder.current = r
       startedAt.current = Date.now()
       setElapsed(0)
       setState('recording')
-      return true
+      return r.mimeType || type || 'audio/webm'
     } catch (e) {
       const name = (e as { name?: string }).name
       setError(name === 'NotAllowedError' ? 'The microphone is blocked for this page. Allow it in the browser’s site settings, then try again.' : name === 'NotFoundError' ? 'No microphone was found on this device.' : 'Recording couldn’t start. Check that no other app is using the microphone.')
@@ -90,6 +96,16 @@ export function useRecorder() {
       }),
     [],
   )
+
+  // Leaving the page (switching apps, locking the phone) hands over the last part second, in case the page doesn't come back.
+  useEffect(() => {
+    if (state !== 'recording') return
+    const flush = () => {
+      if (document.visibilityState === 'hidden' && recorder.current?.state === 'recording') recorder.current.requestData()
+    }
+    document.addEventListener('visibilitychange', flush)
+    return () => document.removeEventListener('visibilitychange', flush)
+  }, [state])
 
   useEffect(() => {
     if (state !== 'recording') return

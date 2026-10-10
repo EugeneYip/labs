@@ -16,6 +16,12 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-10 · #021 Family Stories update
+
+- **What:** An answer being recorded is now saved to the device a second at a time. If the page reloads, the tab is closed, the phone discards the page in the background, or the browser crashes before Stop, the answer is saved from what was recorded the next time the page opens, with a note saying which question it belongs to. Before, everything up to Stop lived only in memory, and an interruption lost the whole answer. If the device is too full to keep an answer, the page now offers "Download this answer" right away instead of losing it. Opening the page while an older copy of it is open in another tab now explains what to do, instead of saying the browser can't store recordings.
+- **Why:** The Batch 04 risk audit looked for ways to lose recordings that can't be made again. Saving, listing, deleting, the ZIP of all answers, the microphone and storage-error messages, and the advice to download after each interview were already in place. The gaps were an interrupted answer and a full device at the moment of Stop.
+- **Notes:** Tested by recording three seconds and reloading before Stop: the recovered answer plays back at 2.9 seconds. Also tested a normal Stop, which leaves no saved pieces behind, and a simulated full device. Recordings made before this update carry over: the storage upgrade keeps them. A piece written in the last few seconds might still be recording in another tab, so recovery waits for it, then checks again. Safari records in a different format; it wasn't tested here.
+
 ## 2026-10-10 · #023 Discussion Map update
 
 - **What:** Correcting a name during a discussion ("Jhon" to "John" on the same line) keeps that person's turns and seat. Before, it created a new person, and the turns so far vanished from the list. Someone removed and someone new added in one edit stay separate people, so nobody inherits another's turns. A name typed twice, such as two students called Sam, now gets a note asking for an initial, because the repeat was dropped without a word. The page now says what talk time measures: the time from one tap to the next, so a silence counts toward whoever spoke last unless you tap Pause. It records who held the floor, as you logged it, not what was said. A discussion of more than 5,000 turns no longer loses the rest on a reload; the limit is now 50,000.

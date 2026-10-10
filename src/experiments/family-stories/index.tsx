@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { FOLLOW_UPS, questionList, TOPICS } from './questions.ts'
 import { useRecorder, useWakeLock } from './recorder.ts'
-import { deleteClip, deleteInterview, duration, extension, keepStored, listClips, listInterviews, newId, saveClip, saveInterview, type Clip, type Interview } from './store.ts'
+import { deleteClip, deleteInterview, duration, endDraft, extension, keepStored, listClips, listInterviews, newId, recoverDrafts, saveClip, saveInterview, savePart, startDraft, type Clip, type Interview } from './store.ts'
 import { makeZip, safeName } from './zip.ts'
 
 const control = 'min-w-0 rounded-lg border border-rule bg-paper px-3 text-base text-ink placeholder:text-dim hover:border-dim/60 sm:text-sm'
@@ -17,23 +17,66 @@ const dateFormat = new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' })
 export default function FamilyStories() {
   const [open, setOpen] = useState<string | null>(null)
   const [interviews, setInterviews] = useState<Interview[] | null>(null)
-  const [failed, setFailed] = useState(false)
+  const [failed, setFailed] = useState<'storage' | 'blocked' | null>(null)
+  const [recovered, setRecovered] = useState<Clip[]>([])
 
   const refresh = useCallback(() => {
-    listInterviews().then(setInterviews, () => setFailed(true))
+    listInterviews().then(setInterviews, (e) => setFailed((e as Error)?.message === 'blocked' ? 'blocked' : 'storage'))
   }, [])
-  useEffect(refresh, [refresh])
+  // Answers cut off before Stop are saved from the seconds that reached storage, then listed with the rest.
+  useEffect(() => {
+    let timer: number | undefined
+    let cancelled = false
+    const recover = () =>
+      recoverDrafts().then(
+        ({ recovered: found, waiting }) => {
+          if (cancelled) return
+          if (found.length) {
+            setRecovered((r) => [...r, ...found.filter((c) => !r.some((x) => x.id === c.id))])
+            refresh()
+          }
+          if (waiting) timer = window.setTimeout(recover, 6000)
+        },
+        () => {},
+      )
+    void recover()
+    refresh()
+    return () => {
+      cancelled = true
+      clearTimeout(timer)
+    }
+  }, [refresh])
 
   if (failed)
     return (
       <div className="mx-auto w-full max-w-3xl flex-1 px-4 pt-10 sm:px-6">
-        <p className="font-medium">This browser can’t store recordings here.</p>
-        <p className="mt-1 text-sm text-dim">Private or incognito windows often block it. Open the page in a normal window to record.</p>
+        {failed === 'blocked' ? (
+          <>
+            <p className="font-medium">Family Stories is open in another tab.</p>
+            <p className="mt-1 text-sm text-dim">Close the other tab, then reload this page. Your recordings are safe.</p>
+          </>
+        ) : (
+          <>
+            <p className="font-medium">This browser can’t store recordings here.</p>
+            <p className="mt-1 text-sm text-dim">Private or incognito windows often block it. Open the page in a normal window to record.</p>
+          </>
+        )}
       </div>
     )
   const current = open && interviews?.find((i) => i.id === open)
   if (current) return <InterviewView interview={current} onChange={(i) => setInterviews((list) => list && list.map((x) => (x.id === i.id ? i : x)))} onClose={() => (setOpen(null), refresh())} />
-  return <Home interviews={interviews} onOpen={setOpen} onCreated={(i) => (setInterviews((list) => [i, ...(list ?? [])]), setOpen(i.id))} onDeleted={refresh} />
+  return (
+    <>
+      {recovered.length > 0 && (
+        <div className="mx-auto w-full max-w-3xl px-4 pt-6 sm:px-6" role="status">
+          <p className="rounded-xl border border-rule px-4 py-3 text-sm text-pretty">
+            {recovered.length === 1 ? 'An answer was' : `${recovered.length} answers were`} cut off before Stop, so {recovered.length === 1 ? 'it was' : 'they were'} saved from what was recorded: {recovered.map((c) => `“${c.question}”`).join(', ')}. Open the interview to listen.
+          </p>
+        </div>
+      )}
+      <Home interviews={interviews} onOpen={setOpen} onCreated={(i) => (setInterviews((list) => [i, ...(list ?? [])]), setOpen(i.id))} onDeleted={refresh} />
+    </>
+  )
 }
 
 function Home({ interviews, onOpen, onCreated, onDeleted }: { interviews: Interview[] | null; onOpen: (id: string) => void; onCreated: (i: Interview) => void; onDeleted: () => void }) {
@@ -135,7 +178,13 @@ function InterviewView({ interview, onChange, onClose }: { interview: Interview;
   const [adding, setAdding] = useState(false)
   const [saving, setSaving] = useState(false)
   const [note, setNote] = useState('')
-  const rec = useRecorder()
+  // An answer that couldn't be stored (a full device), still downloadable so it isn't lost.
+  const [unsaved, setUnsaved] = useState<{ blob: Blob; name: string } | null>(null)
+  // The answer being recorded is saved a second at a time under this id, which the finished clip then takes.
+  const draft = useRef<string | null>(null)
+  const rec = useRecorder((blob, n) => {
+    if (draft.current) void savePart(draft.current, n, blob).catch(() => {})
+  })
   const recording = rec.state === 'recording'
   useWakeLock(recording)
 
@@ -156,18 +205,32 @@ function InterviewView({ interview, onChange, onClose }: { interview: Interview;
   const toggleRecord = async () => {
     if (!question) return
     if (!recording) {
-      if (await rec.start()) void keepStored()
+      const type = await rec.start()
+      if (type) {
+        void keepStored()
+        const id = newId()
+        draft.current = id
+        void startDraft({ id, interview: interview.id, question: question.text, created: Date.now(), type }).catch(() => {})
+      }
       return
     }
     const take = await rec.stop()
-    if (!take || take.blob.size === 0) return setNote('Nothing was recorded. Check the microphone and try again.')
-    const clip: Clip = { id: newId(), interview: interview.id, question: question.text, created: Date.now(), ms: take.ms, type: take.type, blob: take.blob }
+    const id = draft.current ?? newId()
+    draft.current = null
+    if (!take || take.blob.size === 0) {
+      void endDraft(id).catch(() => {})
+      return setNote('Nothing was recorded. Check the microphone and try again.')
+    }
+    const clip: Clip = { id, interview: interview.id, question: question.text, created: Date.now(), ms: take.ms, type: take.type, blob: take.blob }
     try {
       await saveClip(clip)
+      void endDraft(id).catch(() => {})
       setClips((c) => [...c, clip])
       setNote('')
+      setUnsaved(null)
     } catch {
-      setNote('This device is out of storage space, so the last answer couldn’t be saved. Download and delete some recordings, then try again.')
+      setNote('This device is out of storage space, so the last answer couldn’t be kept here. Download it now, then download and delete some recordings before recording more.')
+      setUnsaved({ blob: take.blob, name: `${safeName(question.text)}.${extension(take.type)}` })
     }
   }
 
@@ -270,6 +333,11 @@ function InterviewView({ interview, onChange, onClose }: { interview: Interview;
             <p className="mt-3 text-sm text-red-700 dark:text-red-400" role="alert">
               {rec.error || note}
             </p>
+          )}
+          {unsaved && (
+            <button type="button" onClick={() => save(unsaved.blob, unsaved.name)} className={`${primary} mt-3`}>
+              Download this answer
+            </button>
           )}
           {here.length > 0 && (
             <ul className="mt-5 grid gap-2">
