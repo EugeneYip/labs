@@ -293,7 +293,7 @@ export default function TripBoard() {
 
         <footer className="mt-14 flex flex-col gap-3 border-t border-rule pt-4 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-sm text-dim">
-            Saved only in this browser. Nothing is uploaded. Export a file to back up your board or move it to another device.
+            Saved only in this browser. Nothing is uploaded. Browsers can clear saved data, and Safari on iPhones, iPads, and Macs can do it after about a week without a visit, so export a file to back up your board or move it to another device.
           </p>
           <div className="-ml-3 flex shrink-0 sm:ml-0">
             <Button onClick={exportBoard} disabled={isEmpty}>

@@ -93,7 +93,7 @@ export function Log({ log, onChange }: { log: Check[]; onChange: (log: Check[]) 
           <h2 id="log-heading" className="text-lg font-semibold tracking-tight">
             Saved on this device
           </h2>
-          <p className="mt-1 max-w-prose text-sm text-pretty text-dim">Only in this browser, and nothing is sent anywhere. Browsers can clear saved data, so download a CSV now and then: you can load it back here or on another device.</p>
+          <p className="mt-1 max-w-prose text-sm text-pretty text-dim">Only in this browser, and nothing is sent anywhere. Browsers can clear saved data, and Safari on iPads, iPhones, and Macs can do it after about a week without a visit, so download a CSV after a session of checks: you can load it back here or on another device.</p>
         </div>
         <div className="flex flex-wrap items-end gap-2">
           {students.length > 1 && (

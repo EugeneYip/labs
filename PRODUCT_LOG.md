@@ -16,6 +16,12 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-10 · Safari storage notes: Fluency Check and Trip Board
+
+- **What:** Fluency Check's saved-checks log and Trip Board now say that Safari on iPhones, iPads, and Macs can clear saved data after about a week without a visit. Fluency Check asks for a CSV download after a session of checks, instead of "now and then"; Trip Board's backup note gained the warning it lacked.
+- **Why:** The Batch 06 Apple-platform pass confirmed WebKit's published storage policy: Safari deletes a site's stored data after seven days of Safari use without a visit, unless the site was added to the Home Screen. A teacher on an iPad could lose a term's progress checks over a two-week break, and a trip board planned over several weeks could vanish between visits. Family Stories got the same warning earlier today.
+- **Notes:** Day Clock already guards its settings by saving them again through the day while it's open. Custody Calendar and Fair Share keep their data in the links they share. The other experiments store nothing that takes long to rebuild.
+
 ## 2026-10-10 · #022 Day Clock update
 
 - **What:** On iPhones, the settings page no longer scrolls sideways. Safari drew the four "Begins" time fields wider than the space beside each word, so they ran off the right edge of the screen. The time fields now fit, with the time on the left like the other fields; tapping one still opens the time picker.
