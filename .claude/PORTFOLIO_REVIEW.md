@@ -112,3 +112,9 @@ The scores above are the evidence the selection was made on, so they stay as the
 - **#014 Playing Time:** a child can no longer drop out of the plan silently (repeated names, or too few places), and 1-minute shifts are gone.
 - Every one of the five had real defects, which suggests the untested tiers B to D have similar ones. That is the case for Batch 04 being more hardening, not more breadth.
 
+## Batch 04 findings
+
+Audits of the tier B experiments, plus targeted risk audits of Family Stories and Form Check (2026-10-10). The scores above stay as the record. Where an audit materially changes confidence or risk, a post-audit assessment is given separately.
+
+- **#002 Photo Scrub.** The core claim holds. Test photos carried a unique marker in every claimed metadata class: EXIF (GPS, serials, maker notes, owner, comments), XMP, IPTC, JPEG comments, MPF with an image appended after the end, PNG tEXt, zTXt, iTXt, eXIf, and tIME, data after IEND, and WebP EXIF and XMP. Checked with Pillow, independently of the page's reader, no marker survived in any JPEG, PNG, or WebP, and decoded pixels were identical. Defects fixed: a turned PNG's clean copy displayed sideways in Chromium, because browsers honor PNG eXIf orientation and the cleaner dropped it. Dates in file names (IMG_20261009_143210, Screenshot 2026-10-09 at 14.32.10) carried into the clean copy's name, so the "none of these" check missed them. Wording: what clean copies keep (image, color profile, orientation) is now stated. Accepted: ICC profiles are kept, and WebP orientation is dropped (Chromium ignores it). Post-audit assessment: technical confidence 4 → 5 (independent verification); correctness risk 3 → 2.
+

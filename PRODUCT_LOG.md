@@ -16,6 +16,12 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-10 · #002 Photo Scrub update
+
+- **What:** Clean copies of turned PNGs now stay upright: they keep just their orientation, as clean JPEGs already did, because browsers turn PNGs by it too. Photos whose file names carry the date, which phones and screenshot tools add (IMG_20261009_143210, Screenshot 2026-10-09 at 14.32.10), now list the name as a hidden detail, and the clean copy gets a plain name (photo-clean.jpg) instead of keeping the date. The page now says exactly what clean copies keep: the image itself, its color profile, and which way up it goes. AVIF files get the same clear message as HEIC.
+- **Why:** The Batch 04 audit built test photos with a unique marker in every metadata field the page claims to remove. That covered EXIF with GPS, serial numbers, and maker notes, XMP, IPTC, comments, extra embedded images, PNG text, time, and EXIF chunks, data after the end of a PNG, and WebP EXIF and XMP. It then checked the clean copies with a separate tool (Pillow), not the page's own reader. No marker survived, and the pixels were byte-for-byte unchanged. But a turned PNG's clean copy displayed sideways in Chromium, and a date in the file name went straight into the clean copy's name.
+- **Notes:** Chromium ignores EXIF orientation in WebP, so WebP copies don't need it. The color profile is kept on purpose, so colors don't shift. A 28 MB JPEG cleans in about a third of a second.
+
 ## 2026-10-09 · Feedback link, and the narrowest phones
 
 - **What:** Every experiment's header, and the homepage footer, has a quiet "Feedback" link that opens a new GitHub issue, titled with the experiment when there is one. The issue form says feedback is public and asks people to leave out names and other personal details. Custody Calendar and Ranked Choice Count also no longer run off the side of 320-pixel-wide phones: a row of buttons in each now wraps.

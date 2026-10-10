@@ -5,6 +5,8 @@
  * picture. Nothing here touches the network, storage, or the page.
  */
 
+import { crc32 } from './zip.ts'
+
 export type Format = 'jpeg' | 'png' | 'webp'
 
 export type FindingKind = 'location' | 'device' | 'time' | 'person' | 'software' | 'other'
@@ -20,7 +22,7 @@ export interface Report {
   findings: Finding[]
   /** Where the photo was taken, in decimal degrees, when it says. */
   location?: { latitude: number; longitude: number }
-  /** EXIF orientation, 1–8. Clean copies keep it so photos stay upright. */
+  /** EXIF orientation, 1–8. Clean JPEG and PNG copies keep it so photos stay upright (browsers ignore it in WebP). */
   orientation: number
 }
 
@@ -39,11 +41,11 @@ export const MIME_TYPES: Record<Format, string> = { jpeg: 'image/jpeg', png: 'im
 export function scrub(bytes: Uint8Array): ScrubResult {
   const format = detectFormat(bytes)
   if (format === 'heic') {
-    throw new ScrubError('HEIC photos aren’t supported. On iPhone, choose photos from this page (they arrive as JPEG), or export them as JPEG first.')
+    throw new ScrubError('HEIC and AVIF photos aren’t supported. On iPhone, choose photos from this page (they arrive as JPEG), or export them as JPEG first.')
   }
   if (!format) throw new ScrubError('This isn’t a JPEG, PNG, or WebP image.')
   const before = readReport(bytes, format)
-  const clean = format === 'jpeg' ? cleanJpeg(bytes, before.orientation) : format === 'png' ? cleanPng(bytes) : cleanWebp(bytes)
+  const clean = format === 'jpeg' ? cleanJpeg(bytes, before.orientation) : format === 'png' ? cleanPng(bytes, before.orientation) : cleanWebp(bytes)
   return { before, clean, after: readReport(clean, format) }
 }
 
@@ -201,11 +203,12 @@ function jpegSegment(marker: number, payload: number[]): Uint8Array {
   return new Uint8Array([0xff, marker, length >> 8, length & 0xff, ...payload])
 }
 
-/** A minimal EXIF block holding only the orientation, so viewers still turn the photo upright. */
+/** A minimal EXIF structure holding only the orientation, so viewers still turn the photo upright. */
+const orientationTiff = (orientation: number) => [0x4d, 0x4d, 0, 42, 0, 0, 0, 8, 0, 1, 0x01, 0x12, 0, 3, 0, 0, 0, 1, 0, orientation, 0, 0, 0, 0, 0, 0]
+
 function orientationExif(orientation: number): Uint8Array {
   const exif = [...'Exif\0\0'].map((c) => c.charCodeAt(0))
-  const tiff = [0x4d, 0x4d, 0, 42, 0, 0, 0, 8, 0, 1, 0x01, 0x12, 0, 3, 0, 0, 0, 1, 0, orientation, 0, 0, 0, 0, 0, 0]
-  return jpegSegment(APP1, [...exif, ...tiff])
+  return jpegSegment(APP1, [...exif, ...orientationTiff(orientation)])
 }
 
 // EXIF (a small TIFF structure inside JPEG, PNG, and WebP files)
@@ -375,6 +378,17 @@ export function formatPosition(latitude: number, longitude: number): string {
   return `${Math.abs(latitude).toFixed(5)}° ${latitude < 0 ? 'S' : 'N'}, ${Math.abs(longitude).toFixed(5)}° ${longitude < 0 ? 'W' : 'E'}`
 }
 
+/**
+ * The date in a file name, as phones and screenshot tools write it
+ * (IMG_20261009_143210, Screenshot 2026-10-09 at 14.32.10, 09-10-2026), or
+ * null. Clean copies don't keep such a name.
+ */
+export function dateInName(name: string): string | null {
+  const base = name.replace(/\.[^.]*$/, '')
+  const match = /(?<!\d)(?:19|20)\d\d([-_.]?)(?:0[1-9]|1[0-2])\1(?:0[1-9]|[12]\d|3[01])/.exec(base) ?? /(?<!\d)\d\d([-_.])\d\d\1(?:19|20)\d\d(?!\d)/.exec(base)
+  return match ? match[0] : null
+}
+
 export function formatSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} bytes`
   if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} KB`
@@ -492,10 +506,26 @@ function readPng(b: Uint8Array, report: Report) {
   }
 }
 
-function cleanPng(b: Uint8Array): Uint8Array<ArrayBuffer> {
+function cleanPng(b: Uint8Array, orientation: number): Uint8Array<ArrayBuffer> {
   // Unknown critical chunks (capitalized) are kept, because the image may not show without them.
   const kept = pngChunks(b).filter((c) => PNG_KEEP.has(c.type) || /^[A-Z]/.test(c.type))
-  return concat([b.subarray(0, 8), ...kept.map((c) => b.subarray(c.start, c.end))])
+  const parts = [b.subarray(0, 8)]
+  for (const c of kept) {
+    parts.push(b.subarray(c.start, c.end))
+    // Browsers turn PNGs by their EXIF orientation too, so a turned photo keeps just that, before the image data.
+    if (c.type === 'IHDR' && orientation > 1) parts.push(pngChunk('eXIf', orientationTiff(orientation)))
+  }
+  return concat(parts)
+}
+
+function pngChunk(type: string, payload: number[]): Uint8Array {
+  const body = Uint8Array.from([...type].map((c) => c.charCodeAt(0)).concat(payload))
+  const out = new Uint8Array(body.length + 8)
+  const view = new DataView(out.buffer)
+  view.setUint32(0, payload.length)
+  out.set(body, 4)
+  view.setUint32(body.length + 4, crc32(body))
+  return out
 }
 
 // WebP

@@ -4,7 +4,33 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 
 ## Batch
 
-- **Batch:** 03, Portfolio Hardening, in progress (started 2026-10-09). Batch 01 (#002–#015) and Batch 02 (#016–#025) are complete, with reports given.
+- **Batch:** 04, Tier B Hardening, in progress (started 2026-10-10). Batches 01, 02, and 03 are complete, with reports given. Batch 03's notes stay below for reference.
+- **Goal:** no new experiments. Deeply audit and harden the seven tier B experiments (#002 Photo Scrub, #017 Frost Dates, #024 Ranked Choice Count, #003 Fair Share, #018 Off Book, #005 CSV Checkup, #023 Discussion Map), plus targeted risk audits of #021 Family Stories (irreplaceable recordings) and #019 Form Check (real-world video compatibility). Fix genuine defects, verify production, keep this file and `.claude/PORTFOLIO_REVIEW.md` current, then stop and report (format at the end of this file).
+- **Authority:** inspect, research, test, fix genuine defects, commit, push to `main`, deploy, and verify production, without routine approval. Don't ask the owner to test, find users, or answer questions that research or conservative judgment can settle. Don't publish a new experiment or archive one.
+- **Limits:** find real defects and misleading assumptions, not speculative features. "No change required" is fine with evidence. No redesigns or new functionality. Shared code changes only for a real defect affecting several experiments; the service worker, category filter, and feedback link are established. After each audit, append Batch 04 findings to `.claude/PORTFOLIO_REVIEW.md` without erasing the Batch 03 scores (post-audit assessments go in separately).
+- **If interrupted:** read this file, check `git status` and `git log`, and continue from "Next action" without waiting for the owner.
+
+## Batch 04 checklist
+
+- [x] GitHub Issues checked (2026-10-10): no issues or pull requests, open or closed, so no real feedback yet. Continued without waiting.
+- [x] #002 Photo Scrub: deep audit done (2026-10-10). Fixed: PNG orientation lost, dated file names leaking into clean names, AVIF wording, and what is kept is now stated. Details in Batch 04 findings.
+- [ ] #017 Frost Dates: deep audit (method against meteorological references, hemispheres, leap years, the 30-year window, gaps, API failure, geocoding, date boundaries, wording of typical and cautious).
+- [ ] #024 Ranked Choice Count: deep audit (IRV, STV, Droop, surplus transfer, exhaustion, ties, malformed rankings, export shapes, precision, stating the exact variant).
+- [ ] #003 Fair Share: deep audit (precision, currency decimals, the link as storage: corruption, size, divergence, privacy; settlement).
+- [ ] #018 Off Book: deep audit (messy scripts; fail understandably rather than misassign lines).
+- [ ] #005 CSV Checkup: deep audit (delimiters, BOM, quoting, encodings, ragged rows, big files, types, formula text in any output).
+- [ ] #023 Discussion Map: deep audit (timing and state integrity, reload, backgrounding, undo, export arithmetic, midnight, what it measures).
+- [ ] #021 Family Stories: targeted risk audit (IndexedDB persistence, download and ZIP integrity, interruption, refusal, quota, long recordings, iOS storage, understanding that downloads are essential).
+- [ ] #019 Form Check: targeted risk audit (orientation, variable frame rate, large and long clips, seeking, containers and codecs, unsupported files, two videos, memory, marked-frame export).
+- [ ] Production verified after all changes; this file and the portfolio review current; report given.
+
+## Batch 04 findings
+
+- **#002 Photo Scrub (done).** Independent check: `scratchpad/photo/make.py` builds JPEG (baseline and progressive), PNG, and WebP (lossy and lossless) files with a canary string in every metadata field. `run.ts` cleans them with `metadata.ts`, and `verify.py` (Pillow) checks that no canary survives, pixels are identical, and only orientation is left in EXIF. All passed. A browser probe (plan photo-orient) showed Chromium turns PNG by eXIf orientation but ignores it in WebP, so PNG clean copies now get a minimal eXIf (orientation only) right after IHDR, with a valid CRC (test). `dateInName` (YMD with or without a consistent separator, or DD-MM-YYYY) adds a "File name" finding, and the clean copy is named photo-clean.<ext>. 21 model tests; plan photo-2 (four files including 6000×4000, 360 px dark). A 28 MB JPEG takes 345 ms and a 76 MB PNG 41 ms.
+
+## Batch 03 (complete)
+
+- **Batch:** 03, Portfolio Hardening, complete (2026-10-09). Batch 01 (#002–#015) and Batch 02 (#016–#025) are complete, with reports given.
 - **Goal:** not a run of new experiments. Score all 25 experiments in `.claude/PORTFOLIO_REVIEW.md`, pick about five of the strongest by that evidence, audit them deeply, and fix real defects. Evaluate offline support (a service worker) and ship it only if safe. Review homepage discovery, explore a feedback mechanism that fits the Constitution, and build at most three new experiments (#026–#028), only if clearly worth more than hardening. Verify production, then stop and give the owner the Batch 03 report (format at the end of this file).
 - **Authority:** the owner authorized inspecting and testing experiments, researching competitors and authoritative references, fixing genuine defects, improving accessibility and compatibility, making high-value shared infrastructure improvements, committing, pushing, deploying, and verifying, without routine approval, as long as the Constitution holds. Don't ask the owner to test ordinary features.
 - **Limits:** no redesigns for visual consistency, no refactoring of working code for neatness, no rewrites. Fix what matters. Sensitive tools (custody, dementia care, student assessment, ranked voting, climate estimates, recordings, cash) must not imply legal, medical, educational, electoral, or professional authority they don't have, and limitations stay short rather than becoming walls of disclaimers. Never cache sensitive user content globally, and don't break GitHub Pages. Don't publish a personal email address unless one already exists in the project and is clearly meant for public contact.
@@ -28,8 +54,8 @@ The five highest totals in the portfolio review, all tier A: **#016 Fluency Chec
 
 ## Position
 
-- **Current:** Batch 03 complete (2026-10-09). Was: Phase 3 and offline support. Order: (1) offline service worker, since it helps Day Clock, Playing Time, Stall Till, and the other local tools, (2) deep audits of the five, (3) the sensitive-wording pass, (4) homepage discovery, (5) feedback, (6) decide on new experiments (default: none), (7) final production check and report.
-- **Next action:** none. Batch 03 is complete and its report has been given. Don't start Batch 04 without new authorization from the owner, and give a review before any push of a new experiment (see memory: review-before-public-push).
+- **Current:** Batch 04, Tier B Hardening (started 2026-10-10). Order: issues check, then the seven tier B audits in the listed order, then Family Stories and Form Check, then the production check and report. Batch 03 was complete on 2026-10-09; its order was Order: (1) offline service worker, since it helps Day Clock, Playing Time, Stall Till, and the other local tools, (2) deep audits of the five, (3) the sensitive-wording pass, (4) homepage discovery, (5) feedback, (6) decide on new experiments (default: none), (7) final production check and report.
+- **Next action:** #017 Frost Dates deep audit: read `src/experiments/frost-dates/model.ts` and the Open-Meteo request, compare the method (season definition, typical = median, cautious = 10%/90%) with NOAA/NCEI frost-freeze method notes, test southern hemisphere, leap years, gaps, API errors, and geocoding.
 
 ## Batch 03 audits
 
@@ -186,6 +212,8 @@ Where applicable: core flow; persistence or file handling; several edge cases; i
 - Storage keys must be `labs:<slug>` (Constitution, amended 2026-10-09 with owner authorization).
 
 ## Batch report formats
+
+- **Batch 04 (Tier B Hardening):** 1. GitHub feedback found, if any; 2. each audited experiment and its most important finding; 3. defects fixed; 4. experiments with no material defect; 5. ranking or confidence changes after audit; 6. remaining high-risk products; 7. whether any tier B product now deserves tier A consideration; 8. the three experiments across the portfolio strongest for eventual standalone promotion; 9. a recommendation for Batch 05. Don't start Batch 05 without authorization.
 
 - **Batch 03 (Portfolio Hardening):** 1. portfolio ranking or tiers; 2. the five strongest and why; 3. the weakest and why; 4. defects found and repaired; 5. shared infrastructure improvements; 6. the offline-support outcome; 7. any new experiments; 8. which experiments justify becoming standalone products; 9. a recommendation for Batch 04.
 

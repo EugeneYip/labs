@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type DragEvent } from 'react'
-import { formatSize, MIME_TYPES, scrub, ScrubError, type Finding, type Format, type Report } from './metadata.ts'
+import { dateInName, formatSize, MIME_TYPES, scrub, ScrubError, type Finding, type Format, type Report } from './metadata.ts'
 import { zip } from './zip.ts'
 
 interface Entry {
@@ -46,11 +46,14 @@ export default function PhotoScrub() {
     for (const [k, file] of list.entries()) {
       let update: Partial<Entry>
       try {
-        const { before, after, clean } = scrub(new Uint8Array(await file.arrayBuffer()))
+        const { before: report, after, clean } = scrub(new Uint8Array(await file.arrayBuffer()))
+        // Phones and screenshot tools put the date in the file name, so the clean copy gets a plain one.
+        const dated = dateInName(file.name)
+        const before = dated ? { ...report, findings: [...report.findings, { kind: 'time' as const, label: 'File name', value: `Includes the date (${dated}), so the clean copy has a plain name` }] } : report
         const blob = new Blob([clean], { type: MIME_TYPES[before.format] })
         const url = URL.createObjectURL(blob)
         urls.current.add(url)
-        update = { status: 'done', before, after, clean: { name: cleanName(file.name, before.format), blob, url } }
+        update = { status: 'done', before, after, clean: { name: cleanName(dated ? 'photo' : file.name, before.format), blob, url } }
         cleaned++
         if (before.location) withLocation++
       } catch (error) {
@@ -140,7 +143,7 @@ export default function PhotoScrub() {
             className="hidden"
           />
         </div>
-        <p className="mt-3 text-sm text-dim">Your photos never leave this device. Everything happens in this page, and nothing is uploaded.</p>
+        <p className="mt-3 text-sm text-pretty text-dim">Your photos never leave this device. Everything happens in this page, and nothing is uploaded. Clean copies keep only what shows the picture as it was: the image itself, its color profile, and which way up it goes.</p>
 
         <p role="status" className="sr-only">
           {notice}
