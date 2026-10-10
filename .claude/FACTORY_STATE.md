@@ -4,7 +4,7 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 
 ## Batch
 
-- **Batch:** 04, Tier B Hardening, in progress (started 2026-10-10). Batches 01, 02, and 03 are complete, with reports given. Batch 03's notes stay below for reference.
+- **Batch:** 04, Tier B Hardening, complete (2026-10-10). Batches 01, 02, and 03 are complete, with reports given. Batch 03's notes stay below for reference.
 - **Goal:** no new experiments. Deeply audit and harden the seven tier B experiments (#002 Photo Scrub, #017 Frost Dates, #024 Ranked Choice Count, #003 Fair Share, #018 Off Book, #005 CSV Checkup, #023 Discussion Map), plus targeted risk audits of #021 Family Stories (irreplaceable recordings) and #019 Form Check (real-world video compatibility). Fix genuine defects, verify production, keep this file and `.claude/PORTFOLIO_REVIEW.md` current, then stop and report (format at the end of this file).
 - **Authority:** inspect, research, test, fix genuine defects, commit, push to `main`, deploy, and verify production, without routine approval. Don't ask the owner to test, find users, or answer questions that research or conservative judgment can settle. Don't publish a new experiment or archive one.
 - **Limits:** find real defects and misleading assumptions, not speculative features. "No change required" is fine with evidence. No redesigns or new functionality. Shared code changes only for a real defect affecting several experiments; the service worker, category filter, and feedback link are established. After each audit, append Batch 04 findings to `.claude/PORTFOLIO_REVIEW.md` without erasing the Batch 03 scores (post-audit assessments go in separately).
@@ -22,7 +22,7 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 - [x] #023 Discussion Map: deep audit done (2026-10-10). Fixed: renames, repeated names, and the 5,000-turn reload cap; the page now says what talk time measures.
 - [x] #021 Family Stories: targeted risk audit done (2026-10-10). Fixed: interrupted answers are now recovered, a full device at Stop offers a download, and a blocked upgrade has its own message.
 - [x] #019 Form Check: targeted risk audit done (2026-10-10). No material defect: rotation, frame stepping, unknown durations, unreadable files, and two videos at 360 px all check out in Chromium. Safari is untested.
-- [ ] Production verified after all changes; this file and the portfolio review current; report given.
+- [x] Production verified (2026-10-10, deploys through 4e36481, all succeeded): every Batch 04 browser plan rerun against labs.eugeneyip.net (`.claude/qa/prod04/`), and all passed with clean consoles. That covers Photo Scrub names and notes, Frost Dates stall, search, and Canberra, RCC euro CSV, simultaneous quota, and equal surplus, Fair Share notice, settle, and broken link, Off Book CJK and numbered names, CSV UTF-16, Discussion Map rename and reload, Family Stories reload recovery and normal stop, and Form Check rotation, unreadable file, and two videos. The sweep of 26 pages at 320 px and 1280 px dark found 0 problems. This file and the portfolio review are current, and the report has been given.
 
 ## Batch 04 findings
 
@@ -63,7 +63,7 @@ The five highest totals in the portfolio review, all tier A: **#016 Fluency Chec
 ## Position
 
 - **Current:** Batch 04, Tier B Hardening (started 2026-10-10). Order: issues check, then the seven tier B audits in the listed order, then Family Stories and Form Check, then the production check and report. Batch 03 was complete on 2026-10-09; its order was Order: (1) offline service worker, since it helps Day Clock, Playing Time, Stall Till, and the other local tools, (2) deep audits of the five, (3) the sensitive-wording pass, (4) homepage discovery, (5) feedback, (6) decide on new experiments (default: none), (7) final production check and report.
-- **Next action:** production verification of every Batch 04 change: wait for the last deploy (`gh run watch`), then run a live check of each fix (the photo canary through the UI, Frost Dates leap and timeout, the RCC simultaneous-quota example, Fair Share settle and notice, Off Book CJK and numbered names, CSV UTF-16, Discussion Map rename, Family Stories recovery) and a sweep of all 26 pages at 320 px and desktop dark. Then mark the last checklist item and give the Batch 04 report.
+- **Next action:** none. Batch 04 is complete and its report has been given. Don't start Batch 05 without new authorization from the owner, and give a review before any push of a new experiment (see memory: review-before-public-push).
 
 ## Batch 03 audits
 
