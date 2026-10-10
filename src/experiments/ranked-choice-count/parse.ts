@@ -20,10 +20,26 @@ export interface Parsed {
   overvotes: number
 }
 
-/** A small CSV reader: commas or tabs, quoted fields, and quotes doubled inside them. */
+/** How many times each separator appears in a line, outside quoted fields. */
+function separators(line: string): Record<string, number> {
+  const seen: Record<string, number> = { ',': 0, '\t': 0, ';': 0 }
+  let quoted = false
+  for (const ch of line) {
+    if (ch === '"') quoted = !quoted
+    else if (!quoted && ch in seen) seen[ch]++
+  }
+  return seen
+}
+
+/**
+ * A small CSV reader: commas, tabs, or semicolons (what Excel writes in many
+ * European languages), quoted fields, and quotes doubled inside them. The
+ * separator is the one the first line uses most.
+ */
 export function parseCSV(text: string): string[][] {
   const t = text.replace(/^\uFEFF/, '')
-  const sep = (t.split('\n')[0].match(/\t/g)?.length ?? 0) > (t.split('\n')[0].match(/,/g)?.length ?? 0) ? '\t' : ','
+  const counts = separators(t.split(/\r?\n/)[0])
+  const sep = ['\t', ',', ';'].reduce((best, ch) => (counts[ch] > counts[best] ? ch : best), ',')
   const rows: string[][] = []
   let row: string[] = []
   let cell = ''
@@ -89,6 +105,7 @@ export function clean(marks: { candidate: string; rank: number }[]): { prefs: st
 
 export function parseBallots(text: string, known: readonly string[] = []): Parsed {
   const names = new Map<string, string>(known.map((n) => [key(n), n.trim()]))
+  const entered = new Set(known.map(key))
   const name = (raw: string) => {
     const k = key(raw)
     if (!k) return null
@@ -154,7 +171,9 @@ export function parseBallots(text: string, known: readonly string[] = []): Parse
   for (const line of trimmed.split(/\r?\n/)) {
     if (!line.trim()) continue
     const m = /^\s*(\d+)\s*(?:[:x×*]|\s)\s*(.*)$/i.exec(line)
-    const times = m && m[2].trim() && !/^\d+$/.test(m[2].trim()) ? Math.min(100_000, Number(m[1])) : 1
+    // A candidate whose name starts with a number ("3 Musketeers") isn't a count of ballots.
+    const named = entered.has(key(line.split(/\s*(?:>|,|;|\t|\|)\s*/)[0]))
+    const times = m && !named && m[2].trim() && !/^\d+$/.test(m[2].trim()) ? Math.min(100_000, Number(m[1])) : 1
     const body = m && times > 1 ? m[2] : line
     const parts = body.split(/\s*(?:>|,|;|\t|\|)\s*/).filter((p) => p.trim())
     const ballot = clean(parts.flatMap((p, k) => {

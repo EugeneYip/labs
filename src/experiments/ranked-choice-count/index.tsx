@@ -286,7 +286,8 @@ function Results({ result, candidates, ballots }: { result: Result; candidates: 
   const stv = result.method === 'stv'
   const [copied, setCopied] = useState<'yes' | 'no' | null>(null)
   const plurality = firstChoiceWinners(candidates, ballots, result.seats)
-  const same = plurality.length === result.winners.length && plurality.every((c) => result.winners.includes(c))
+  // When first choices tie, there's no single first-choice result to compare with.
+  const same = !plurality || (plurality.length === result.winners.length && plurality.every((c) => result.winners.includes(c)))
   const last = result.rounds[result.rounds.length - 1]
   const summary = result.winners.length
     ? stv
@@ -309,7 +310,7 @@ function Results({ result, candidates, ballots }: { result: Result; candidates: 
       </h2>
       <p className="mt-1 text-sm text-dim">
         {result.valid.toLocaleString()} valid ballots · {stv ? `quota ${result.quota} (the Droop quota)` : 'more than half of the ballots still in play wins'}
-        {!same && result.winners.length > 0 && <span className="text-ink"> · On first choices alone, {plurality.join(', ')} would have {plurality.length === 1 ? 'won' : 'been elected'}.</span>}
+        {!same && plurality && result.winners.length > 0 && <span className="text-ink"> · On first choices alone, {plurality.join(', ')} would have {plurality.length === 1 ? 'won' : 'been elected'}.</span>}
       </p>
       <div className="mt-4 flex flex-wrap gap-2 print:hidden">
         <button
@@ -338,6 +339,17 @@ function Results({ result, candidates, ballots }: { result: Result; candidates: 
         ))}
       </ol>
       <p className="mt-8 max-w-prose text-sm text-pretty text-dim print:hidden">Rules for ties, transfers, and incomplete ballots differ between organizations, so check your bylaws before announcing a result. This isn’t meant for public elections, which follow their own laws.</p>
+      <details className="mt-4 max-w-prose text-sm text-pretty print:hidden">
+        <summary className="cursor-pointer font-medium">The exact rules this count uses</summary>
+        <ul className="mt-2 grid list-disc gap-1.5 pl-5 text-dim">
+          <li>One seat: instant runoff. A candidate wins with more than half of the ballots still in play. Otherwise the candidate with the fewest votes is out, one per round, and their ballots go to each voter’s next choice still standing.</li>
+          <li>Several seats: the single transferable vote, with the Droop quota (valid ballots divided by seats plus one, dropping any fraction, plus one). A candidate is elected on reaching it, one per round, the most votes first, and gets no further votes after that.</li>
+          <li>Surplus votes beyond the quota move on by the weighted inclusive Gregory method: every ballot the winner holds passes on the same fraction of its value, cut to five decimal places. An eliminated candidate’s ballots move on at their full current value, all at once. When the candidates left are as many as the seats left, they’re all elected.</li>
+          <li>Ties for last place go to the earlier rounds, most recent first: whoever had fewer votes there is out. Two equal surpluses go the same way, with the higher one first. If they tied in every round, a lot is drawn from the ballots, so the same ballots always give the same result.</li>
+          <li>Ballots: skipped ranks are skipped, a candidate ranked twice counts at the higher rank, and two candidates at the same rank end the ballot there.</li>
+          <li>These match the rules for Scottish local elections (2007), which also use five-decimal truncation. Other STV rules, such as Meek’s method or a random sample of ballots for surpluses, can give a different result in close counts.</li>
+        </ul>
+      </details>
       <style>{`@media print { .print-exact { print-color-adjust: exact; -webkit-print-color-adjust: exact; } li { break-inside: avoid; } }`}</style>
     </section>
   )
@@ -387,13 +399,15 @@ function RoundCard({ round, index, stv, before }: { round: Round; index: number;
 
 function describe(r: Round, stv: boolean): string {
   const parts: string[] = []
+  const tieText = (t: NonNullable<Round['tie']>) => (t.by === 'lot' ? 'broken by lot' : 'broken by the earlier rounds')
   if (r.elected.length) parts.push(`${r.elected.join(' and ')} ${r.elected.length === 1 ? 'is' : 'are'} elected.`)
-  if (r.eliminated) parts.push(`${r.eliminated} has the fewest votes and is out${r.tie ? ` (tied with ${r.tie.among.filter((c) => c !== r.eliminated).join(', ')}; ${r.tie.by === 'lot' ? 'broken by lot' : 'broken by the earlier rounds'})` : ''}.`)
+  if (r.eliminated) parts.push(`${r.eliminated} has the fewest votes and is out${r.tie ? ` (tied with ${r.tie.among.filter((c) => c !== r.eliminated).join(', ')}; ${tieText(r.tie)})` : ''}.`)
   if (r.transfer) {
     const moves = Object.entries(r.transfer.to).sort((a, b) => b[1] - a[1]).map(([c, v]) => `${fmt(v, stv)} to ${c}`)
     const lost = r.transfer.exhausted > 0 ? `${fmt(r.transfer.exhausted, stv)} had no further choice` : ''
     const all = [...moves, lost].filter(Boolean)
-    if (all.length) parts.push(`${r.transfer.kind === 'surplus' ? `${r.transfer.from}’s surplus moves on` : `${r.transfer.from}’s votes move on`}: ${all.join(', ')}.`)
+    const first = r.transfer.kind === 'surplus' && r.tie ? ` first (as large as ${r.tie.among.filter((c) => c !== r.transfer!.from).join(' and ')}’s; ${tieText(r.tie)})` : ''
+    if (all.length) parts.push(`${r.transfer.kind === 'surplus' ? `${r.transfer.from}’s surplus moves on${first}` : `${r.transfer.from}’s votes move on`}: ${all.join(', ')}.`)
   }
   return parts.join(' ') || 'No change.'
 }
