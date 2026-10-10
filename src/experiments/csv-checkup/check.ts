@@ -4,32 +4,37 @@ import { classify, Profiler, type Profile } from './profile.ts'
 export interface Checkup {
   profile: Profile
   delimiter: string
-  encoding: 'UTF-8' | 'Windows-1252'
+  encoding: 'UTF-8' | 'UTF-16' | 'Windows-1252'
   /** Whether the first row was read as column names. */
   hasHeader: boolean
   unclosedQuote: boolean
 }
 
 /**
- * Reads a whole CSV file in a stream and profiles it. Tries UTF-8 first and
- * falls back to Windows-1252, the usual encoding of older spreadsheet exports.
- * `hasHeader` overrides the guess about the first row.
+ * Reads a whole CSV file in a stream and profiles it. A file that starts with
+ * a UTF-16 byte order mark (Excel's "Unicode Text") is read as UTF-16;
+ * otherwise UTF-8 is tried first, falling back to Windows-1252, the usual
+ * encoding of older spreadsheet exports. `hasHeader` overrides the guess
+ * about the first row, and `dayFirst` is how this device writes dates.
  */
-export async function checkFile(file: Blob, onProgress: (fraction: number) => void, hasHeader?: boolean): Promise<Checkup> {
+export async function checkFile(file: Blob, onProgress: (fraction: number) => void, hasHeader?: boolean, dayFirst = false): Promise<Checkup> {
+  const bom = new Uint8Array(await file.slice(0, 2).arrayBuffer())
+  const utf16 = bom[0] === 0xff && bom[1] === 0xfe ? 'utf-16le' : bom[0] === 0xfe && bom[1] === 0xff ? 'utf-16be' : null
+  if (utf16) return read(file, 'UTF-16', onProgress, hasHeader, dayFirst, utf16)
   try {
-    return await read(file, 'UTF-8', onProgress, hasHeader)
+    return await read(file, 'UTF-8', onProgress, hasHeader, dayFirst)
   } catch (error) {
     if (!(error instanceof TypeError)) throw error // TextDecoder reports bad UTF-8 as a TypeError.
-    return read(file, 'Windows-1252', onProgress, hasHeader)
+    return read(file, 'Windows-1252', onProgress, hasHeader, dayFirst)
   }
 }
 
-async function read(file: Blob, encoding: Checkup['encoding'], onProgress: (fraction: number) => void, headerOverride?: boolean): Promise<Checkup> {
-  const label = encoding === 'UTF-8' ? 'utf-8' : 'windows-1252'
+async function read(file: Blob, encoding: Checkup['encoding'], onProgress: (fraction: number) => void, headerOverride: boolean | undefined, dayFirst: boolean, utf16?: string): Promise<Checkup> {
+  const label = utf16 ?? (encoding === 'UTF-8' ? 'utf-8' : 'windows-1252')
   const sample = new TextDecoder(label, { fatal: encoding === 'UTF-8' }).decode(await file.slice(0, 65536).arrayBuffer(), { stream: true })
   const delimiter = detectDelimiter(sample)
   const hasHeader = headerOverride ?? looksLikeHeader(sample, delimiter)
-  const profiler = new Profiler(hasHeader, delimiter === ';')
+  const profiler = new Profiler(hasHeader, delimiter === ';', dayFirst)
   const parser = new CsvParser(delimiter, (row) => profiler.add(row))
 
   let read = 0

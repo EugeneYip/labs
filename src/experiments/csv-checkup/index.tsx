@@ -4,6 +4,16 @@ import { DELIMITER_NAMES } from './csv.ts'
 import { formatCount, KIND_NAMES, percent, type Column } from './profile.ts'
 import { columnSummary, distinctText, formatNumber, quote, toMarkdown } from './report.ts'
 
+/** Whether this device writes dates day first (2 March as 02/03), for slash dates in a file that could be read either way. */
+const DAY_FIRST = (() => {
+  try {
+    const parts = new Intl.DateTimeFormat(navigator.language, { day: '2-digit', month: '2-digit', year: 'numeric' }).formatToParts(new Date(2026, 0, 2))
+    return parts.findIndex((p) => p.type === 'day') < parts.findIndex((p) => p.type === 'month')
+  } catch {
+    return false
+  }
+})()
+
 // One data hue (validated against both page backgrounds), with a quieter step of it for tracks.
 const BAR = 'bg-[#2a78d6] dark:bg-[#3987e5]'
 const TRACK = 'bg-[#cde2fb] dark:bg-[#104281]'
@@ -33,7 +43,7 @@ export default function CsvCheckup() {
       const head = new Uint8Array(await next.slice(0, 4).arrayBuffer())
       if (head[0] === 0x50 && head[1] === 0x4b) throw new Error('This looks like an Excel or zip file. Save it as CSV first, then check that.')
       if (next.size === 0) throw new Error('This file is empty.')
-      const result = await checkFile(next, (fraction) => id === run.current && setProgress(fraction), hasHeader)
+      const result = await checkFile(next, (fraction) => id === run.current && setProgress(fraction), hasHeader, DAY_FIRST)
       if (id !== run.current) return
       if (!result.profile.columns.length) throw new Error('No rows were found in this file.')
       setCheckup(result)

@@ -24,6 +24,12 @@ export interface Column {
   dateFormats: string[]
   leadingZeros: number
   leadingZeroExample?: string
+  /** Numbers in a spreadsheet's short scientific form (1.23457E+15), the mark of long IDs it rounded. */
+  scientific: number
+  scientificExample?: string
+  /** Text a spreadsheet would run as a formula: starting with =, +, - or @. */
+  formulas: number
+  formulaExample?: string
   strayWhitespace: number
   longest: number
   type: Kind | 'mixed' | 'empty'
@@ -68,11 +74,30 @@ interface Tally {
   earliestText: string
   latestText: string
   dateFormats: Map<string, string>
+  /** Dates with slashes, ranged both ways, since 02/03/2026 is March 2 or February 3 depending on the country. */
+  slashes: { dayFirst?: string; monthFirst?: string; md: DateRange; dm: DateRange }
   leadingZeros: number
   leadingZeroExample?: string
+  scientific: number
+  scientificExample?: string
+  formulas: number
+  formulaExample?: string
   strayWhitespace: number
   longest: number
   examples: Map<Kind, string[]>
+}
+
+interface DateRange {
+  earliest: number
+  latest: number
+  earliestText: string
+  latestText: string
+}
+
+const newRange = (): DateRange => ({ earliest: Infinity, latest: -Infinity, earliestText: '', latestText: '' })
+const widen = (r: DateRange, date: number, text: string) => {
+  if (date < r.earliest) [r.earliest, r.earliestText] = [date, text]
+  if (date > r.latest) [r.latest, r.latestText] = [date, text]
 }
 
 export class Profiler {
@@ -88,10 +113,13 @@ export class Profiler {
 
   private readonly hasHeader: boolean
   private readonly decimalComma: boolean
+  /** How this device writes dates, for slash dates that could be read either way (02/03/2026). */
+  private readonly dayFirst: boolean
 
-  constructor(hasHeader: boolean, decimalComma = false) {
+  constructor(hasHeader: boolean, decimalComma = false, dayFirst = false) {
     this.hasHeader = hasHeader
     this.decimalComma = decimalComma
+    this.dayFirst = dayFirst
   }
 
   add(row: string[]) {
@@ -150,17 +178,36 @@ export class Profiler {
         t.leadingZeros++
         t.leadingZeroExample ??= value
       }
+      // How a spreadsheet shows a long number in a General cell: 6 digits and a big exponent, the rest rounded away.
+      if (/^\d\.\d{1,5}E\+(?:1[1-9]|2\d)$/i.test(value)) {
+        t.scientific++
+        t.scientificExample ??= value
+      }
+    } else if (kind === 'text' && /^[=+\-@]/.test(value)) {
+      t.formulas++
+      t.formulaExample ??= value
     }
     if (date !== undefined && format) {
       if (!t.dateFormats.has(format)) t.dateFormats.set(format, value)
-      if (date < t.earliest) [t.earliest, t.earliestText] = [date, value]
-      if (date > t.latest) [t.latest, t.latestText] = [date, value]
+      const slash = format === SLASHES ? /^(\d{1,2})\/(\d{1,2})\/(\d{4}|\d{2})/.exec(value) : null
+      if (slash) {
+        const [a, b, y] = [+slash[1], +slash[2], slash[3].length === 2 ? 2000 + +slash[3] : +slash[3]]
+        if (a > 12) t.slashes.dayFirst ??= value
+        if (b > 12) t.slashes.monthFirst ??= value
+        const md = dateFrom(y, a, b, format)
+        const dm = dateFrom(y, b, a, format)
+        if (md) widen(t.slashes.md, md.date, value)
+        if (dm) widen(t.slashes.dm, dm.date, value)
+      } else {
+        if (date < t.earliest) [t.earliest, t.earliestText] = [date, value]
+        if (date > t.latest) [t.latest, t.latestText] = [date, value]
+      }
     }
   }
 
   result(): Profile {
     const names = this.names ?? []
-    const columns = names.map((name, i) => finishColumn(name, this.tallies[i], this.rows))
+    const columns = names.map((name, i) => finishColumn(name, this.tallies[i], this.rows, this.dayFirst))
     const seen = new Map<string, number>()
     for (const name of names) seen.set(name.toLowerCase(), (seen.get(name.toLowerCase()) ?? 0) + 1)
     const duplicateNames = [...new Set(names.filter((n) => n && (seen.get(n.toLowerCase()) ?? 0) > 1))]
@@ -200,7 +247,10 @@ function newTally(): Tally {
     earliestText: '',
     latestText: '',
     dateFormats: new Map(),
+    slashes: { md: newRange(), dm: newRange() },
     leadingZeros: 0,
+    scientific: 0,
+    formulas: 0,
     strayWhitespace: 0,
     longest: 0,
     examples: new Map(),
@@ -230,6 +280,8 @@ export function classify(value: string, decimalComma = false): { kind: Kind; num
   return { kind: 'text' }
 }
 
+const SLASHES = 'slashes (10/08/2026)'
+
 /** Recognizes 2026-10-08 (with optional time), 10/08/2026, and 08.10.2026, each as its own format. */
 function readDate(value: string): { date: number; format: string } | undefined {
   let match = /^(\d{4})-(\d{2})-(\d{2})(?:[T ](\d{2}):(\d{2})(?::(\d{2})(?:\.\d+)?)?(?:Z|[+-]\d{2}:?\d{2})?)?$/.exec(value)
@@ -239,7 +291,7 @@ function readDate(value: string): { date: number; format: string } | undefined {
     const year = match[3].length === 2 ? 2000 + +match[3] : +match[3]
     // Month first unless the first number can't be a month.
     const [month, day] = +match[1] > 12 ? [+match[2], +match[1]] : [+match[1], +match[2]]
-    return dateFrom(year, month, day, 'slashes (10/08/2026)')
+    return dateFrom(year, month, day, SLASHES)
   }
   match = /^(\d{1,2})\.(\d{1,2})\.(\d{4})$/.exec(value)
   if (match) return dateFrom(+match[3], +match[2], +match[1], 'dots (08.10.2026)')
@@ -251,7 +303,13 @@ function dateFrom(year: number, month: number, day: number, format: string): { d
   return { date: Date.UTC(year, month - 1, day), format }
 }
 
-function finishColumn(name: string, t: Tally, rows: number): Column {
+function finishColumn(name: string, t: Tally, rows: number, dayFirst: boolean): Column {
+  // Slash dates are read in the order their own values show (13/01 can only be day first), or else this device's order.
+  const { slashes } = t
+  const order = slashes.dayFirst && !slashes.monthFirst ? 'dm' : slashes.monthFirst && !slashes.dayFirst ? 'md' : dayFirst ? 'dm' : 'md'
+  const range = slashes[order]
+  if (range.earliest < t.earliest) [t.earliest, t.earliestText] = [range.earliest, range.earliestText]
+  if (range.latest > t.latest) [t.latest, t.latestText] = [range.latest, range.latestText]
   const present = t.filled
   const numeric = t.kinds.integer + t.kinds.decimal
   const main = (Object.entries(t.kinds) as [Kind, number][]).sort((a, b) => b[1] - a[1])[0]
@@ -277,6 +335,10 @@ function finishColumn(name: string, t: Tally, rows: number): Column {
     dateFormats: [...t.dateFormats.values()],
     leadingZeros: t.leadingZeros,
     leadingZeroExample: t.leadingZeroExample,
+    scientific: t.scientific,
+    scientificExample: t.scientificExample,
+    formulas: t.formulas,
+    formulaExample: t.formulaExample,
     strayWhitespace: t.strayWhitespace,
     longest: t.longest,
     type,
@@ -285,6 +347,7 @@ function finishColumn(name: string, t: Tally, rows: number): Column {
     ...(t.kinds.date && { earliest: t.earliestText, latest: t.latestText }),
   }
   column.issues = columnIssues(column, rows, mainKind)
+  if (slashes.dayFirst && slashes.monthFirst) column.issues.push(`Dates mix day-first and month-first order, such as “${slashes.dayFirst}” and “${slashes.monthFirst}”.`)
   return column
 }
 
@@ -303,6 +366,12 @@ function columnIssues(c: Column, rows: number, mainKind: Kind): string[] {
   }
   if (c.leadingZeros > 0) {
     issues.push(`${formatCount(c.leadingZeros)} ${c.leadingZeros === 1 ? 'number starts' : 'numbers start'} with 0, like “${c.leadingZeroExample}”. Spreadsheets often drop leading zeros, so open this column as text.`)
+  }
+  if (c.scientific > 0) {
+    issues.push(`${formatCount(c.scientific)} ${c.scientific === 1 ? 'number is' : 'numbers are'} in short scientific form, like “${c.scientificExample}”. If these were long ID numbers, a spreadsheet rounded them, so get them from the original data.`)
+  }
+  if (c.formulas > 0) {
+    issues.push(`${formatCount(c.formulas)} ${c.formulas === 1 ? 'value starts' : 'values start'} with =, +, - or @, like “${c.formulaExample!.length > 30 ? `${c.formulaExample!.slice(0, 30)}…` : c.formulaExample}”. A spreadsheet may run ${c.formulas === 1 ? 'it' : 'them'} as a formula when it opens the file.`)
   }
   if (c.dateFormats.length > 1) issues.push(`Dates are written in ${c.dateFormats.length} different ways, such as ${c.dateFormats.map((v) => `“${v}”`).join(' and ')}.`)
   if (c.strayWhitespace > 0) issues.push(`${formatCount(c.strayWhitespace)} ${c.strayWhitespace === 1 ? 'value has' : 'values have'} extra spaces at the start or end.`)
