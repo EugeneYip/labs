@@ -16,6 +16,12 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-10 · #011 Line Dry update
+
+- **What:** Line Dry no longer gives a clock time for when washing will be dry. "It should be dry by about 1:15 PM" is now "it should be dry by early afternoon", and the time to hang it out is rounded down to the half hour. The note now says what the estimate assumes: washing hung in the sun and the breeze, which thick fabric, a crowded line, or shade slow down. A forecast request that stalls now gives up after 20 seconds and offers Try again, instead of "Getting the forecast…" forever. A place search that fails now says so, instead of "No places found."
+- **Why:** The Batch 06 audit checked whether the drying model supports its wording. It rests on the FAO-56 reference evapotranspiration, the standard estimate of how fast the weather evaporates water, which is a sound guide to which hours and days dry fastest. MetService in New Zealand works out drying times the same way but gives them as ranges, like 1–3 hours, and Japan's weather association uses five categories. Fabric, spin, spacing, and shade can change a real drying time by hours, so quarter-hour finish times claimed more than the forecast knows. Forecasts for nine climates, from Phoenix and Dubai to Tromsø and Nuuk, came back complete for the week, and the rankings were believable: Arctic October never dries, and desert shirts take about an hour and a half.
+- **Notes:** The verdicts and the day rankings are unchanged. Places far from the device's time zone, offsets like UTC+5:45 and UTC−3:30, and clock-change days were checked.
+
 ## 2026-10-10 · #007 Numbers by Ear update
 
 - **What:** Prices in several currencies are now read in the right currency. On Apple devices, the Mexican Spanish voice read peso prices as dollars and the Taiwanese Mandarin voice read Taiwan dollars as US dollars. The Brazilian Portuguese voice read "R$" out letter by letter, the Hungarian and South African voices spelled out "Ft" and "R", and the Russian voice left out the ruble sign. Those prices are now spoken in words: pesos, reais, 元, forint, rand, and rubles in the right grammatical form. Years now sound the way each language says them: digit by digit in Chinese (一九八四年), and as ordinals in Russian and Ukrainian. If a voice fails to speak, as a voice that needs the internet does offline, the page now says so instead of staying silent.

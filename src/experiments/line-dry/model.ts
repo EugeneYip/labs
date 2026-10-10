@@ -105,6 +105,22 @@ export function bestPlan(day: Day, need: number, earliest = 0): Plan | null {
 
 const LIMITS: Record<Load, [great: number, good: number, slow: number]> = { light: [3, 5, 8], heavy: [4, 7, 10] }
 
+/**
+ * When the washing should be dry, as a part of the day. The evaporation sum is a sound guide to
+ * which hours and days dry fastest, but fabric, spin, spacing, and shade can change a real drying
+ * time by hours, so a clock time would claim more than the forecast knows. (MetService, which
+ * works drying times out the same way, gives them as ranges such as 1–3 hours.)
+ */
+export function dryBy(mins: number): string {
+  const hour = mins / 60
+  if (hour < 10.5) return 'by mid-morning'
+  if (hour < 12) return 'by late morning'
+  if (hour < 14) return 'by early afternoon'
+  if (hour < 16) return 'by mid-afternoon'
+  if (hour < 18) return 'by late afternoon'
+  return 'by evening'
+}
+
 export function judge(day: Day, load: Load, earliest = 0): DayResult {
   const plan = bestPlan(day, NEED[load], earliest)
   const sunrise = day.sunrise ? minutes(day.sunrise, day.date) : 6 * 60

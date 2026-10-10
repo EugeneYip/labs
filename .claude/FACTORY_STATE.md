@@ -14,7 +14,7 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 
 - [x] Phase 1 (2026-10-10): GitHub has no issues or pull requests, open or closed, and no stars, forks, or watchers, so no external feedback. Continued without waiting.
 - [x] Phase 2: #007 Numbers by Ear (done, 2026-10-10): 92 audio-matched cases across 37 macOS voices; fixed six misread currencies (es-MX, zh-TW, pt-BR, hu, en-ZA, ru), years for zh, ru, and uk, and the silent failure; honesty note added. Was: #007 Numbers by Ear: installed voices (real system voices, audio captured where possible), missing voices, language matching and locale fallback, number pronunciation (prices, years, decimal separators, large numbers, 0, negatives), RTL, reload, repeated sessions, keyboard, interruption, voice changes, Safari.
-- [ ] Phase 2: #011 Line Dry: weather API parsing, location ambiguity, rain, humidity, temperature, wind, sun and daylight, post-rain, forecast gaps, failures and stalls, climates, hemispheres, time zones, DST, week transitions; research the drying model's physical basis and cut precision the model can't support.
+- [x] Phase 2: #011 Line Dry (done, 2026-10-10): physical basis researched (FAO-56 ET0, MetService ranges, tenki.jp categories); finish times now parts of the day and starts rounded to the half hour; stalled requests time out; failed searches say so. Was: #011 Line Dry: weather API parsing, location ambiguity, rain, humidity, temperature, wind, sun and daylight, post-rain, forecast gaps, failures and stalls, climates, hemispheres, time zones, DST, week transitions; research the drying model's physical basis and cut precision the model can't support.
 - [ ] Phase 2: #001 Trip Board: persistence, import and export, malformed files, duplicate URLs and normalization, large boards, search, filters, multiple tabs, offline, storage failure, Unicode, phone, Safari; reassess differentiation.
 - [ ] Phase 3: Apple-platform pass in Safari/WebKit: audio and microphone (In Tune, Numbers by Ear, Family Stories), video (Form Check), printing (Tear-Off Flyer, Gallery Wall, Playing Time, Stall Till), storage (Family Stories IndexedDB, Stall Till, Fluency Check, Trip Board), offline (Day Clock, Stall Till, Trip Board), touch and narrow screens for promotion candidates. Document simulator limits honestly.
 - [ ] Phase 4: `.claude/PORTFOLIO_RESOLUTION.md`: all 25 classified, 3–5 PROMOTE dossiers with distribution assessments.
@@ -24,6 +24,7 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 ## Batch 06 findings
 
 - **#007 Numbers by Ear (done).** model.ts: `PRICE_WORDS` (es:MXN/ARS/COP/CLP, pt:BRL, zh:TWD, ru:RUB with plural forms, hu:HUF, en:ZAR) and `YEAR_WORDS` (zh 年, ru год, uk рік) in `spokenText`. index.tsx: a `silent` state from utterance errors other than interrupted or canceled, with a message, cleared on start and on a language or voice change; the honesty sentence in the bottom note. QA: `.claude/qa/speech/match.py` (say plus log-mel DTW), case files calibrate, languages, variants, currencies-2, and fixed (with `-result.txt` files); numbers-by-ear-test.ts (10, with new spoken-text cases); plan ear-6 (failure message, ok voice, interruption, zh years at 320 px dark). The scratchpad has the AVSpeech marker probe (no phonemes on this macOS).
+- **#011 Line Dry (done).** model.ts: `dryBy(mins)` (parts of the day). index.tsx: `timeout()` (AbortSignal.timeout) on the forecast (20 s) and geocoding (15 s), with `results` able to be 'failed' and its message; the Summary uses `Math.floor(plan.start / 30) * 30` and `dryBy(plan.end)`; `roughly` removed; the note rewritten. Tests: line-dry-test.ts (12: parts of the day, clock changes, odd offsets); plan linedry-6 with today's live forecasts saved in the scratchpad (`linedry/*.json`), stubbed into fetch: London, Sydney, Phoenix at 320 px dark, search ok and failed, stalled (error at 20.0 s).
 
 ## Batch 05 (complete)
 
@@ -117,8 +118,8 @@ The five highest totals in the portfolio review, all tier A: **#016 Fluency Chec
 
 ## Position
 
-- **Current:** Batch 06, Phase 2, audit 2 of 3: #011 Line Dry, stage: reading the code. Done: #007 Numbers by Ear.
-- **Next action:** commit and push Numbers by Ear if not yet pushed (check `git status`), verify live with `.claude/qa/prod06/plan-ear-6.json`, then #011 Line Dry: read `src/experiments/line-dry/`, research the drying model's physical basis (evaporation physics, published line-drying data), test the forecast parsing, failures, time zones, DST, and hemispheres, and cut any precision the model can't support.
+- **Current:** Batch 06, Phase 2, audit 3 of 3: #001 Trip Board, stage: reading the code. Done: #007 Numbers by Ear, #011 Line Dry.
+- **Next action:** commit and push Line Dry if not yet pushed (check `git status`), verify live with `.claude/qa/prod06/plan-linedry-6.json`, then #001 Trip Board: read `src/experiments/trip-board/`, test persistence, import and export (including malformed files), duplicate URLs and normalization, large boards, search, filters, multiple tabs, offline, storage failure, Unicode, and phone layout, and reassess its differentiation.
 
 ## Batch 03 audits
 

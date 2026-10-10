@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { defaultUnits, HOURLY, judge, localNow, minutes, readForecast, risky, wet, type Day, type DayResult, type Hour, type Load } from './model.ts'
+import { defaultUnits, dryBy, HOURLY, judge, localNow, minutes, readForecast, risky, wet, type Day, type DayResult, type Hour, type Load } from './model.ts'
 
 // The chosen place and load type. The forecast itself is fetched fresh.
 const STORAGE_KEY = 'labs:line-dry'
+/** A request that stalls (a weak signal, a captive Wi-Fi page) gives up after this long, so Try again appears. */
+const timeout = (ms: number) => (typeof AbortSignal.timeout === 'function' ? AbortSignal.timeout(ms) : undefined)
 
 interface Place {
   name: string
@@ -55,7 +57,7 @@ export default function LineDry() {
           params.set('temperature_unit', 'fahrenheit')
           params.set('wind_speed_unit', 'mph')
         }
-        const response = await fetch(`https://api.open-meteo.com/v1/forecast?${params}`)
+        const response = await fetch(`https://api.open-meteo.com/v1/forecast?${params}`, { signal: timeout(20_000) })
         if (!response.ok) throw new Error(String(response.status))
         const read = readForecast(await response.json())
         if (!read || !read.days.length) throw new Error('Unexpected forecast')
@@ -133,8 +135,9 @@ export default function LineDry() {
         </div>
 
         <p className="mt-12 text-sm text-pretty text-dim">
-          Drying times are estimates from the forecast’s evaporation, rain, and daylight, so check the sky too. The place you pick is
-          sent to Open-Meteo for the forecast, rounded to about a kilometer. Weather data by{' '}
+          Drying times are rough guides from the forecast’s evaporation, rain, and daylight. They assume washing hung in the sun and
+          the breeze; thick fabric, a crowded line, or shade make it slower. Check the sky too. The place you pick is sent to
+          Open-Meteo for the forecast, rounded to about a kilometer. Weather data by{' '}
           <a href="https://open-meteo.com/" className="underline underline-offset-4 hover:text-ink" rel="noreferrer">
             Open-Meteo.com
           </a>{' '}
@@ -151,7 +154,7 @@ export default function LineDry() {
 
 function PlacePicker({ place, onChoose }: { place: Place | null; onChoose: (place: Place) => void }) {
   const [query, setQuery] = useState('')
-  const [results, setResults] = useState<Place[] | null>(null)
+  const [results, setResults] = useState<Place[] | 'failed' | null>(null)
   const [note, setNote] = useState('')
   const [locating, setLocating] = useState(false)
 
@@ -165,14 +168,16 @@ function PlacePicker({ place, onChoose }: { place: Place | null; onChoose: (plac
     const timer = window.setTimeout(async () => {
       try {
         const params = new URLSearchParams({ name: q, count: '6', language: 'en', format: 'json' })
-        const data = await fetch(`https://geocoding-api.open-meteo.com/v1/search?${params}`).then((r) => r.json())
+        const response = await fetch(`https://geocoding-api.open-meteo.com/v1/search?${params}`, { signal: timeout(15_000) })
+        if (!response.ok) throw new Error(String(response.status))
+        const data = await response.json()
         if (cancelled) return
         const list: Place[] = (Array.isArray(data?.results) ? data.results : [])
           .filter((r: Record<string, unknown>) => typeof r.latitude === 'number' && typeof r.longitude === 'number' && typeof r.name === 'string')
           .map((r: Record<string, string | number>) => ({ name: String(r.name), detail: [r.admin1, r.country].filter(Boolean).join(', '), lat: Number(r.latitude), lon: Number(r.longitude) }))
         setResults(list)
       } catch {
-        if (!cancelled) setResults([])
+        if (!cancelled) setResults('failed')
       }
     }, 300)
     return () => {
@@ -218,7 +223,9 @@ function PlacePicker({ place, onChoose }: { place: Place | null; onChoose: (plac
       </div>
       {results && (
         <ul className="mt-2 divide-y divide-rule rounded-lg border border-rule" aria-label="Places">
-          {results.length === 0 ? (
+          {results === 'failed' ? (
+            <li className="px-3 py-2.5 text-sm text-dim">Couldn’t search for places. Check your connection, or use your location.</li>
+          ) : results.length === 0 ? (
             <li className="px-3 py-2.5 text-sm text-dim">No places found.</li>
           ) : (
             results.map((r) => (
@@ -250,8 +257,6 @@ const at = (date: string, mins: number) => Date.UTC(+date.slice(0, 4), +date.sli
 const twelveHour = hourFormat.resolvedOptions().hourCycle?.startsWith('h1') ?? false
 /** Times on the place's own clock, which may differ from this device's: "4 PM" or "4:15 PM", or "16:00" on a 24-hour clock. */
 const clock = (date: string, mins: number) => (twelveHour && Math.round(mins) % 60 === 0 ? hourFormat : timeFormat).format(at(date, mins))
-/** Rounded to a quarter hour, since the estimate isn't more precise than that. */
-const roughly = (date: string, mins: number) => clock(date, Math.round(mins / 15) * 15)
 
 function Week({ forecast, load, units }: { forecast: Forecast; load: Load; units: 'metric' | 'us' }) {
   const now = localNow(forecast.offset)
@@ -295,8 +300,8 @@ function Summary({ result, isToday, nowMinutes, large }: { result: DayResult; is
   let text: string
   if (plan) {
     const startsNow = isToday && nowMinutes !== undefined && plan.start - nowMinutes < 15
-    // "By" because going out earlier is fine; it just won't dry much sooner.
-    text = `${startsNow ? 'Hang it out now' : `Hang it out by ${clock(day.date, plan.start)}`} and it should be dry by about ${roughly(day.date, plan.end)}.`
+    // "By" because going out earlier is fine; it just won't dry much sooner. Rounded down to the half hour, as the estimate isn't finer.
+    text = `${startsNow ? 'Hang it out now' : `Hang it out by ${clock(day.date, Math.floor(plan.start / 30) * 30)}`} and it should be dry ${dryBy(plan.end)}.`
     const shower = plan.showers[0]
     if (shower) text += ` There’s a ${shower.rainChance}% chance of a shower around ${clock(day.date, minutes(shower.time, day.date))}.`
   } else if (reason === 'past') text = 'There isn’t enough daylight left to dry a load today.'
