@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
-import { addTurn, circle, clock, exchanges, MAP, parseNames, stats, turnsCSV, type Person, type Turn } from './model.ts'
+import { addTurn, clock, exchanges, MAP, parseNames, reseat, stats, turnsCSV, type Person, type Turn } from './model.ts'
 
 // The people, their seats, and the discussion under way, kept on this device.
 const STORAGE_KEY = 'labs:discussion-map'
@@ -58,7 +58,7 @@ export default function DiscussionMap() {
         hasTurns={saved.turns.length > 0}
         onCancel={saved.people.length ? () => setEditing(false) : undefined}
         onSave={(names) => {
-          setSaved((s) => ({ ...s, people: reseat(s.people, names) }))
+          setSaved((s) => ({ ...s, people: reseat(s.people, names, newId) }))
           setEditing(false)
         }}
       />
@@ -184,7 +184,7 @@ export default function DiscussionMap() {
             </div>
           </section>
         </div>
-        <p className="mt-10 max-w-prose text-sm text-pretty text-dim print:hidden">Lines join people who spoke one after the other, and thicker lines mean the floor passed between them more often. Everything stays on this device.</p>
+        <p className="mt-10 max-w-prose text-sm text-pretty text-dim print:hidden">Lines join people who spoke one after the other, and thicker lines mean the floor passed between them more often. Talk time runs from one tap to the next, so a silence counts toward whoever spoke last unless you tap Pause. It shows who held the floor and for how long, as you logged it, not what was said. Everything stays on this device.</p>
       </div>
       <style>{`@media print { .print-exact { print-color-adjust: exact; -webkit-print-color-adjust: exact; } @page { margin: 0.5in; } }`}</style>
     </div>
@@ -265,7 +265,8 @@ function Names({ people, hasTurns, onSave, onCancel }: { people: Person[]; hasTu
         </label>
         <p className="mt-2 text-sm text-dim">
           {names.length ? `${names.length} ${names.length === 1 ? 'person' : 'people'}, up to 40.` : 'Type or paste names, one per line or separated by commas.'}
-          {hasTurns && ' Removing someone keeps their turns in the record.'}
+          {names.length < 40 && text.split(/[\n,;\t]+/).filter((n) => n.trim()).length > names.length && ' A name typed twice counts once, so add an initial to tell two people apart.'}
+          {hasTurns && ' Correcting a name on its line keeps that person’s turns, and removing someone keeps their turns in the record.'}
         </p>
         <div className="mt-5 flex flex-wrap gap-2">
           <button type="button" onClick={() => onSave(names)} disabled={!names.length} className={primary}>
@@ -285,16 +286,6 @@ function Names({ people, hasTurns, onSave, onCancel }: { people: Person[]; hasTu
       </div>
     </div>
   )
-}
-
-/** Keeps the seats of people still in the list, and seats newcomers around the table. */
-function reseat(people: Person[], names: string[]): Person[] {
-  const byName = new Map(people.map((p) => [p.name.toLocaleLowerCase(), p]))
-  const kept = names.map((n) => byName.get(n.toLocaleLowerCase())).filter((p): p is Person => !!p)
-  // A fresh table, or only renames: seat everyone evenly.
-  if (!kept.length) return names.map((name, i) => ({ id: newId(), name, ...circle(names.length)[i] }))
-  const seats = circle(names.length)
-  return names.map((name, i) => byName.get(name.toLocaleLowerCase()) ?? { id: newId(), name, ...seats[i] })
 }
 
 function useNow(active: boolean): number {
@@ -387,7 +378,7 @@ function load(): Saved {
       .filter((p: Person) => p && typeof p.id === 'string' && typeof p.name === 'string' && Number.isFinite(p.x) && Number.isFinite(p.y))
       .slice(0, 40)
       .map((p: Person) => ({ id: p.id, name: p.name.slice(0, 40), x: Math.min(MAP.w, Math.max(0, p.x)), y: Math.min(MAP.h, Math.max(0, p.y)) }))
-    const turns: Turn[] = Array.isArray(d.turns) ? d.turns.filter((t: Turn) => t && (t.who === null || typeof t.who === 'string') && Number.isFinite(t.at) && t.at >= 0).slice(0, 5000) : []
+    const turns: Turn[] = Array.isArray(d.turns) ? d.turns.filter((t: Turn) => t && (t.who === null || typeof t.who === 'string') && Number.isFinite(t.at) && t.at >= 0).slice(0, 50_000) : []
     return { people, turns, startedAt: Number.isFinite(d.startedAt) ? d.startedAt : null, endedAt: Number.isFinite(d.endedAt) ? d.endedAt : null }
   } catch {
     return fallback

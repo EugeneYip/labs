@@ -46,6 +46,27 @@ export function circle(n: number): { x: number; y: number }[] {
   })
 }
 
+/**
+ * The people after the names are edited. A name still on the list keeps its
+ * seat and its turns. A name changed on the same line of the list, like a
+ * corrected spelling, is the same person renamed. A whole new list is a new
+ * group, seated evenly around the table.
+ */
+export function reseat(people: readonly Person[], names: readonly string[], newId: () => string): Person[] {
+  const key = (name: string) => name.toLocaleLowerCase()
+  const byName = new Map(people.map((p) => [key(p.name), p]))
+  const staying = new Set(names.map(key).filter((k) => byName.has(k)))
+  if (!staying.size) return names.map((name, i) => ({ id: newId(), name, ...circle(names.length)[i] }))
+  const seats = circle(names.length)
+  return names.map((name, i) => {
+    const same = byName.get(key(name))
+    if (same) return { ...same, name }
+    const before = people[i]
+    if (before && !staying.has(key(before.name))) return { ...before, name }
+    return { id: newId(), name, ...seats[i] }
+  })
+}
+
 export interface Stat {
   turns: number
   ms: number

@@ -16,6 +16,12 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-10 · #023 Discussion Map update
+
+- **What:** Correcting a name during a discussion ("Jhon" to "John" on the same line) keeps that person's turns and seat. Before, it created a new person, and the turns so far vanished from the list. Someone removed and someone new added in one edit stay separate people, so nobody inherits another's turns. A name typed twice, such as two students called Sam, now gets a note asking for an initial, because the repeat was dropped without a word. The page now says what talk time measures: the time from one tap to the next, so a silence counts toward whoever spoke last unless you tap Pause. It records who held the floor, as you logged it, not what was said. A discussion of more than 5,000 turns no longer loses the rest on a reload; the limit is now 50,000.
+- **Why:** The Batch 04 audit checked timing and state integrity. The clock runs on the device's real time, so switching apps, locking the screen, reloading, midnight, and clock changes don't skew it. Tapping the person already speaking doesn't start a new turn, Undo hands the time back to the previous speaker, and talk time plus pauses always adds up to the whole discussion (tested). Renaming, repeated names, and the turn limit were the defects found.
+- **Notes:** A whole new list of names is still a new group, seated evenly. Tested at 320 pixels, with a reload during a live discussion.
+
 ## 2026-10-10 · #005 CSV Checkup update
 
 - **What:** UTF-16 files, which Excel writes when you save as "Unicode Text", are now read properly. Before, they came out as garbled column names, false repeated rows, and nonsense counts. Dates written with slashes are now read in the order the column's own values show: 13/02/2026 can only be day first. Columns that could be read either way follow this device's date order. Before, a UK file with 12/01/2026 and 13/02/2026 showed a range that ran backwards. A column that mixes day-first and month-first dates is now flagged. Two new checks: long ID numbers that a spreadsheet has turned into short scientific form (1.23457E+15, with the rest of the digits lost), and text a spreadsheet would run as a formula when it opens the file (values starting with =, +, - or @, a known way to slip commands into CSV files).
