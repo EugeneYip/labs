@@ -46,11 +46,24 @@ export function Player({ file, tool, send, listen, active, onActivate, onRemove,
   const [drag, setDrag] = useState<{ id: number; key: 'a' | 'b' | 'c' } | null>(null)
   const [width, setWidth] = useState(0)
   const [saving, setSaving] = useState(false)
+  // Safari on iPhones and iPads loads only a picked video's details, not its picture, until it plays: the frame
+  // stays black and steps do nothing. A muted play that stops on the first frame loads it. Where even that's
+  // blocked, as in Low Power Mode, a tap does it.
+  const nudge = useRef(0)
+  const [needsTap, setNeedsTap] = useState(false)
+  const showFirstFrame = (v: HTMLVideoElement) =>
+    v.play().then(() => {
+      v.pause()
+      if (Number.isFinite(v.duration)) v.currentTime = 0
+    })
 
   useEffect(() => {
     const u = URL.createObjectURL(file)
     setUrl(u)
-    return () => URL.revokeObjectURL(u)
+    return () => {
+      URL.revokeObjectURL(u)
+      clearTimeout(nudge.current)
+    }
   }, [file])
 
   // The frame on screen and, while playing at normal speed, the gaps between frames, to learn the frame rate.
@@ -256,6 +269,13 @@ export function Player({ file, tool, send, listen, active, onActivate, onRemove,
           className="absolute inset-0 h-full w-full"
           onLoadedMetadata={(e) => {
             const v = e.currentTarget
+            clearTimeout(nudge.current)
+            nudge.current = window.setTimeout(() => {
+              if (v.readyState >= v.HAVE_CURRENT_DATA) return
+              showFirstFrame(v).catch((err: unknown) => {
+                if (err instanceof DOMException && err.name === 'NotAllowedError') setNeedsTap(true)
+              })
+            }, 500)
             const ready = () => setMeta({ w: v.videoWidth || 640, h: v.videoHeight || 360, duration: v.duration })
             if (Number.isFinite(v.duration)) return ready()
             // Recordings from some apps (and browsers' own recorders) don't state their length; seeking to the end finds it.
@@ -273,6 +293,7 @@ export function Player({ file, tool, send, listen, active, onActivate, onRemove,
             setPlaying(true)
           }}
           onPause={() => setPlaying(false)}
+          onLoadedData={() => setNeedsTap(false)}
           onError={() => setError('This browser can’t play this video. Try Safari or Chrome, or save the video as an MP4 (H.264) first.')}
         />
         {meta && (
@@ -291,6 +312,18 @@ export function Player({ file, tool, send, listen, active, onActivate, onRemove,
             ))}
             {preview.length > 0 && <Partial points={preview} tool={tool} scale={scale} />}
           </svg>
+        )}
+        {needsTap && !error && (
+          <button
+            type="button"
+            onClick={() => {
+              setNeedsTap(false)
+              if (video.current) showFirstFrame(video.current).catch(() => {})
+            }}
+            className="absolute inset-0 flex cursor-pointer items-center justify-center p-6 text-sm text-white"
+          >
+            <span className="rounded-full bg-black/70 px-4 py-2 font-medium ring-1 ring-white/40">Tap to show the video</span>
+          </button>
         )}
         {error && <p className="absolute inset-0 flex items-center justify-center p-6 text-center text-sm text-white">{error}</p>}
       </div>

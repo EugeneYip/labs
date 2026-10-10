@@ -16,6 +16,12 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-10 · #019 Form Check update
+
+- **What:** Videos opened from the photo library on an iPhone or iPad now show their first frame and step frame by frame in Safari. Before, Safari loaded only a picked video's length and size, not its pictures, until it was played: the video stayed black, and the frame buttons and the slider did nothing until Play was pressed. Form Check now plays the video silently for a moment and stops on the first frame, which makes Safari load it. Where Safari doesn't allow even that, as in Low Power Mode, the video shows "Tap to show the video".
+- **Why:** The Batch 06 Apple-platform pass opened phone-style videos, an upright H.264 clip and a 60 fps HEVC clip, in Safari on Apple's iPhone simulator, through the photo picker, the way a visitor does. The same clips opened from a web address showed straight away, which pointed to how Safari treats picked videos.
+- **Notes:** Checked on the iPhone simulator, not a physical iPhone; the behavior comes from Safari's own loading rules, which the simulator shares. Low Power Mode can't be switched on in the simulator, so the tap prompt was checked by imitating its refusal in a desktop browser. The fix only acts when a video is still blank half a second after opening, so browsers that load picked videos normally, such as Chrome, are unaffected.
+
 ## 2026-10-10 · Safari fixes: Tear-Off Flyer printing, Family Stories warning
 
 - **What:** Tear-Off Flyer now prints on one page in Safari. The flyer was drawn to fill the page exactly, so when Safari's printer added margins of its own, the bottom edge spilled onto a second page, cutting the first letters off every tab ("umpkin" for "Pumpkin"). It now prints at 90% of the page, with room to spare. Family Stories' warning about stored recordings now says Safari on iPhones, iPads, and Macs can clear them after about a week without a visit; it said "after weeks".
