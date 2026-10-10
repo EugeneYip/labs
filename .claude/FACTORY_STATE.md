@@ -4,13 +4,13 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 
 ## Batch
 
-- **Batch:** 05, Tier C Hardening, in progress (started 2026-10-10). Batches 01 to 04 are complete, with reports given. Earlier batches' notes stay below for reference.
+- **Batch:** 05, Tier C Hardening, complete (2026-10-10), report given. Batches 01 to 04 are complete, with reports given. Earlier batches' notes stay below for reference.
 - **Goal:** no new experiments and no archiving. Deeply audit the eight remaining tier C experiments, risk first: #025 Stall Till, #008 Serve Time, #015 Back Row, #004 Clean Paste, #010 Gallery Wall, #013 In Tune, #009 Tear-Off Flyer, #012 Glance. (Form Check and Family Stories were audited in Batch 04; don't repeat them unless there's a regression.) Fix genuine defects, verify each material fix live, run a full-site regression sweep at the end, keep this file and `.claude/PORTFOLIO_REVIEW.md` current, then stop and report (format at the end of this file).
 - **Authority:** research, test, fix genuine defects, commit, push, deploy, and verify production without routine approval. Don't ask the owner to test or decide what research can settle. Don't publish or archive experiments.
 - **Limits:** no speculative features or general infrastructure redesign; shared code (service worker, filters, feedback links, deploys, QA kit) changes only for a real cross-experiment defect. Prefer independent verification: a test that repeats the production algorithm doesn't count. "No material defect" is fine with evidence. Earlier score tables stay; changes go in a separate post-Batch-05 assessment.
 - **If interrupted:** read this file, check `git status` and `git log`, and continue from "Next action" without waiting for the owner.
 
-## Batch 05 checklist
+## Batch 05 checklist (complete)
 
 - [x] GitHub Issues checked (2026-10-10): no issues or pull requests, open or closed, so no external feedback. Continued without waiting.
 - [x] #025 Stall Till (done, 2026-10-10): verified independently; fixed price misreads, the 100-fold currency switch, the missing storage warning, dropped and overwritten sales, CSV dates, and the CSV quoting order (also in RCC). Was: money in minor units (0/2/3 decimals), decimal comma and point input, tender and change, quick tenders, card and other sales, delete and undo, day and item totals, CSV, print, cash-up and float, midnight, locale, reload, offline, storage failure, accidental clearing, malformed saved data; recompute totals independently. No accounting, tax, or POS claims.
@@ -21,7 +21,7 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 - [x] #013 In Tune (done, 2026-10-10): detector verified with generated signals (within 0.3 cents, no octave errors with weak fundamentals, vibrato handled end to end); fixed the stale-sample false match while audio is paused, the silent lost microphone, start-up messages, and octave-low readings above the range. Was: pitch detector math, cents, octave errors, harmonics, noise, ranges, reference tone, microphone refusal and loss, headsets, backgrounding, returning from settings, repeated sessions, reload; generated signals aren't singing; no vocal-health claims.
 - [x] #009 Tear-Off Flyer (done, 2026-10-10): five real PDFs read back with pypdf (1 page each, exact Letter and A4) and rendered with PDFKit; fixed the silent tab-text cutoff (no warning) and upside-down CJK tabs. Was: real PDFs (Letter and A4, orientation, long and non-English, CJK, RTL text, photo or none, background graphics off, scaling, margins, tab count, clipping, the one-page claim); inspect page size and count independently.
 - [x] #012 Glance (done, 2026-10-10): dates checked in 9 time zones; fixed the stale-tab overwrite (lost days, second answers), the second look after a reload, and the aria-label that gave the count. Was: daily puzzle determinism across timezones, DST, and date change while open; completed-round persistence (closing right after guessing, reload); practice, history, scores, extreme guesses, rapid taps, background timers, sharing, accessibility of the brief flash.
-- [ ] Production verified (each fix live, plus a full-site regression sweep); this file and the portfolio review current; report given.
+- [x] Production verified (2026-10-10, deploys through the Glance commit, all succeeded): each fix checked live right after its deploy with the `.claude/qa/prod05/` plans (Stall Till, RCC, Serve Time, Back Row, Clean Paste, Gallery Wall, In Tune, Tear-Off Flyer with production PDFs read back by pypdf and drawn by PDFKit, Glance). At the end the Stall Till, RCC, and Serve Time production plans were re-run and still pass, and the sweep of 26 pages at 320 px and 1280 px dark found 0 problems and no console errors. GitHub still has no issues or pull requests. The portfolio review has the Batch 05 findings and the post-Batch-05 assessment, and the report has been given.
 
 ## Batch 05 findings
 
@@ -94,8 +94,8 @@ The five highest totals in the portfolio review, all tier A: **#016 Fluency Chec
 
 ## Position
 
-- **Current:** Batch 05 wrap-up: all 8 audits done (#025 Stall Till, #008 Serve Time, #015 Back Row, #004 Clean Paste, #010 Gallery Wall, #013 In Tune, #009 Tear-Off Flyer, #012 Glance). Defects fixed: Stall Till (parsing, currency switch, storage warning, unreadable sales, CSV), RCC (CSV quoting), Serve Time (chained clash grouping, doneness wording, example, chime note), Back Row (slide-point basis, true-size blur, phone calibration bar, close-up claim, limitation line), Clean Paste (evidence-based furniture removal, U+2010 hyphens, verse and tables, addresses, dashes, headings, indentation, summary), Gallery Wall (short-last-row grids, precision wording), In Tune (paused-audio false match, lost microphone, start-up messages, above-range octave), Tear-Off Flyer (silent tab cutoff, upside-down CJK tabs), and Glance (stale-tab overwrite, second look, label giveaway).
-- **Next action:** commit and push Glance if not yet pushed (check `git status`) and verify live with `.claude/qa/prod05/plan-glance-5b.json`. Then run the full-site sweep (`.claude/qa/plan-prod-03-sweep.json`: 26 pages at 320 px and at 1280 px dark, against production), add the post-Batch-05 assessment table to the portfolio review, tick the production line here, update memory, and give the 9-item report. Don't start Batch 06.
+- **Current:** idle. Batch 05 (Tier C Hardening) is complete, with its report given; all 22 experiments in tiers A to C have now had deep audits. Only tier D (#007 Numbers by Ear, #011 Line Dry, #001 Trip Board) has not.
+- **Next action:** none. Wait for the owner. Don't start Batch 06 without new authorization; until then, the review-before-push rule applies to any change.
 
 ## Batch 03 audits
 

@@ -196,3 +196,21 @@ Audits of the eight remaining tier C experiments (2026-10-10). Earlier tables st
 
   Accepted: the puzzle changes at each visitor's local midnight; a tab left open past midnight keeps its day until reloaded; clearing storage resets everything; the game is visual by nature. Post-audit assessment: user-data-loss risk 2 → 1.
 
+## Post-audit assessment (Batch 05)
+
+The earlier score tables stay as they were. This table re-scores only the criteria the Batch 05 audits changed, with the reason, giving post-audit totals (maximum 65).
+
+| # | Experiment | Changed | Batch 03 total | Post-audit total | Why |
+|---|---|---|---|---|---|
+| 004 | Clean Paste | Tech 3 → 4, Corr† 3 → 2 | 44 | **46** | Real PDFs read back by two engines come out word-perfect; nothing is removed without evidence, and removals are named |
+| 008 | Serve Time | Corr† 3 → 2 | 44 | **45** | Schedule properties hold on 3,000 random plans; chained oven clashes caught; doneness wording follows USDA |
+| 012 | Glance | Loss† 2 → 1 | 44 | **45** | An old tab can no longer erase days or re-answer rounds; no second look after a reload |
+| 010 | Gallery Wall | Tech 4 → 5, Corr† 3 → 2 | 42 | **44** | 5,000 random plans meet the layout requirements; the short-last-row grid fixed |
+| 015 | Back Row | Tech 3 → 4, Corr† 3 → 2 | 42 | **44** | Sizes match eye-chart geometry by hand; points named per app; true-size blur fixed |
+| 025 | Stall Till | Tech 4 → 5, Loss† 4 → 3 | 42 | **44** | Independent ledger and float checks; silent misreads and losses closed; one browser still holds the day |
+| 013 | In Tune | Tech 2 → 3 | 41 | **42** | Detector verified with generated signals; the paused-audio false match fixed. Real voices untested, so correctness risk stays |
+| 009 | Tear-Off Flyer | Tech 4 → 5 | 40 | **41** | Real PDFs inspected independently; tab cutoff now warned; CJK tabs fixed |
+
+Ranked Choice Count's CSV quoting fix, found during the Stall Till audit, changes no score.
+
+Clean Paste (46), Serve Time (45), and Glance (45) reach the tier B range on this assessment. Clean Paste deserves tier B consideration: the need is frequent, and it now removes nothing without evidence and names what it removes. Serve Time sits on the line: the planner is sound, but use is occasional. Glance gets its 45 only from a lower data-loss risk, and its usefulness is unchanged, so it doesn't merit promotion in substance. Stall Till (44) is one point short; its remaining weakness is that a day's sales live in one browser.
