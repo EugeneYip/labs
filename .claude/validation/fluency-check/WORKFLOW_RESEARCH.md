@@ -78,7 +78,7 @@ Details and sources: `notes/pain-notes.md` (65 items: 18 support the pain, 25 ar
 - It scores wrongly, or the teacher can't trust it: automatic scoring of young readers, a calculator about 4 WPM off another one [V].
 - It can't keep per-student records (the one review of a $9.99 local-only running-record app) [V].
 - Setup is confusing (FastBridge groups) or it's one more app among 10–15 (vendor-sponsored survey) [V/S].
-- Data disappears. Not observed in this evidence, but structural for any browser-only tool (Safari's seven-day rule; ephemeral Chromebook sessions) [V on the mechanisms].
+- Data disappears. Not observed in this evidence, but structural for any browser-only tool (Safari's tracking prevention may remove a site's storage after seven days of Safari use without interaction; ephemeral Chromebook sessions) [V on the mechanisms].
 
 ## 8. By role
 

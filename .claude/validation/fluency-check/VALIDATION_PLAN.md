@@ -52,7 +52,7 @@ Six weeks of use, then a single unprompted question at week 8. Six weeks lets a 
 
 ### Onboarding (about 15 minutes, mostly self-serve)
 
-- A one-page guide: running a check, saving it, downloading the CSV after each session, adding the page to an iPad's Home Screen (Safari's seven-day rule), using initials or a private code if a family prefers, and which passages to use: their own licensed passages or UFLI's openly licensed Fluency Checks, **not DIBELS passages** (their licence covers only schools and districts).
+- A one-page guide: running a check, saving it, downloading the CSV after each session, adding the page to an iPad's Home Screen (Home Screen web apps are exempt from Safari's seven-day cap on storage for sites not interacted with), using initials or a private code if a family prefers, and which passages to use: their own licensed passages or UFLI's openly licensed Fluency Checks, **not DIBELS passages** (their licence covers only schools and districts).
 - An optional 10-minute call.
 - A practice check on an adult before using it with a student.
 - The instruction is only: "Use it for the fluency checks you'd do anyway, whenever it suits you."

@@ -83,9 +83,9 @@ Planning only. Nothing below has been built, posted, or sent, and none of it sho
 - **User.** Reading teachers in the early and middle grades, interventionists, reading specialists, and tutors who monitor fluency; homeschooling parents second.
 - **Job.** Regular progress monitoring of oral reading fluency, now done with photocopies, a stopwatch, and a calculator, or inside a paid platform bundled with a district's assessment program.
 - **Why this.** It takes away the arithmetic and paperwork at the moment of testing, works with any passage, and keeps student data on the device (no account, nothing sent). Scoring follows DIBELS 8's rules (checked in Batch 03).
-- **Evidence.** Batch 03 audit: a check in progress survives a reload, the log loads back from its CSV, and the scoring guide matches DIBELS 8. Batch 06: a full check ran in Safari on iPhone (timer, error and self-correction taps, results, and a save that survived a Safari relaunch); no text field zooms the page on phones; the log's storage note names Safari's seven-day rule. Joint highest score (52). No user evidence.
+- **Evidence.** Batch 03 audit: a check in progress survives a reload, the log loads back from its CSV, and the scoring guide matches DIBELS 8. Batch 06: a full check ran in Safari on iPhone (timer, error and self-correction taps, results, and a save that survived a Safari relaunch); no text field zooms the page on phones; the log's storage note names Safari's seven-day cap on stored data. Joint highest score (52). No user evidence.
 - **Risks.**
-  - History lives in one browser. Safari on iPads, which many schools use, deletes it after about a week without a visit unless the page was added to the Home Screen, and shared or managed devices may wipe it. CSV export is the only safety net.
+  - History lives in one browser. On iPads, which many schools use, Safari's tracking prevention may remove it after seven days of Safari use without interaction with the page (Home Screen web apps are exempt from that cap, per WebKit), and shared or managed devices may wipe it. CSV export is the only safety net.
   - A single score can be taken as a diagnosis, and scores from passages a teacher chooses aren't comparable with published benchmarks.
   - Districts that vet every classroom tool may block it wherever the data lives.
   - On iPads, text fields are 14 px, which may make Safari zoom in when one is tapped (untested).
@@ -117,7 +117,7 @@ Planning only. Nothing below has been built, posted, or sent, and none of it sho
 - **Why this.** Worldwide coverage from 30 years of reanalysis at the chosen place; the method follows NOAA's frost-freeze framing and is counted, not fitted. US tools generally use a nearby station's normals by ZIP code, and few tools cover anywhere else.
 - **Evidence.** Batch 04 audit: the method matches NOAA's framing, the southern hemisphere works, and leap seasons, stalled requests, and failed searches were fixed. Batch 06: search, the 30-year archive, the chart, and the calendar all work in Safari on iPhone (Montreal: last frost typically April 27, and by May 9 in 9 springs out of 10). Score 48. No user evidence.
 - **Risks.**
-  - Data dependency. Open-Meteo's free API is for non-commercial use only, with under 10,000 calls a day (and 5,000 an hour), and a request covering more than two weeks counts as several calls. A 30-year lookup is therefore heavy: a visitor can make only a handful a day, assuming the limit applies per visitor, which Open-Meteo doesn't state. An outage means no answers. The data is CC BY 4.0, attributed on the page.
+  - Data dependency. Open-Meteo's free API is for non-commercial use only, with under 10,000 calls a day (and 5,000 an hour). Requests are weighted by variables/10 × days/14, so one lookup (one variable over about 31 years) costs about 83 calls (corrected 2026-10-11; an earlier estimate here overstated it about tenfold). The server enforces the limits per IP address, which allows about 120 lookups a day per visitor, but the project asks applications above 10,000 calls a day to get in touch, so heavy combined use relies on Open-Meteo's goodwill (`.claude/validation/frost-dates/`). An outage means no answers. The data is CC BY 4.0; the page credits Open-Meteo and the reanalyses, but not GeoNames, behind the place search.
   - The reanalysis grid (about 10 km) misses frost pockets in valleys and warmth in cities; the page explains this.
   - Seasonal use: two windows a year.
   - Planting rules of thumb vary by variety (stated on the page).
@@ -174,7 +174,7 @@ Each stays live as it is. What would settle it, either way:
 
 Not deleted, not changed, and still live, with status `live` in the registry. If the owner authorizes public archival, the only change is the registry status: the homepage card and the experiment's header then say "Archived", and the page keeps working at the same address.
 
-- **#001 Trip Board.** The first experiment, and historically important. An independent audit found no material defect: hostile imports are refused whole, links are matched behind tracking tags, and 5,000 items stay fast. But trip planning is done with other people, and free tools (Wanderlog, TripIt, Google's saved places, Notes, Trello and Notion templates) offer sync, collaboration, and maps; keeping research private, Trip Board's advantage, matters little here. Its data also lives in one browser, which Safari clears after a week without a visit. Technically sound, strategically weak.
+- **#001 Trip Board.** The first experiment, and historically important. An independent audit found no material defect: hostile imports are refused whole, links are matched behind tracking tags, and 5,000 items stay fast. But trip planning is done with other people, and free tools (Wanderlog, TripIt, Google's saved places, Notes, Trello and Notion templates) offer sync, collaboration, and maps; keeping research private, Trip Board's advantage, matters little here. Its data also lives in one browser, where Safari's tracking prevention may remove it after seven days of Safari use without interaction with the page. Technically sound, strategically weak.
 - **#009 Tear-Off Flyer.** It works, and prints on one page in Safari since this week's fix. But it's undistinctive (word-processor and design-tool templates do the same), occasional, and a feature rather than a product, and print layout is the most fragile thing in Labs: it broke silently in Safari while Chrome was fine. Archiving says honestly that it won't be watched.
 
 ## Labs structure review (2026-10-10)
@@ -200,3 +200,23 @@ Checked against production after the decisions above. No change was needed.
 ## Recommended next phase
 
 No new experiments. A validation phase for the four promoted experiments: decide on a feedback channel that needs no account, prepare the one-page guides, and run the small pilots described in the dossiers, recruited through the owner's own contacts. Expect weeks, not days, because classrooms, families, gardens, and caregiving move at their own pace. Spin out only what crosses its threshold. The experiments in the other groups need nothing beyond fixes in the meantime.
+
+## Validation outcomes (2026-10-11)
+
+Winner Validation ran as desk research only. Nobody was contacted and no product was changed.
+
+| Product | Decision | Where |
+|---|---|---|
+| #016 Fluency Check | **HOLD**, and the recommended primary candidate for human discovery (Stage 0 tutor interviews, awaiting the owner's authorization) | `.claude/validation/fluency-check/` |
+| #020 Custody Calendar | **STOP FOCUSED VALIDATION** | `.claude/validation/custody-calendar/` |
+| #022 Day Clock | **STOP FOCUSED VALIDATION** | `.claude/validation/day-clock/` |
+| #017 Frost Dates | **STOP FOCUSED VALIDATION** | `.claude/validation/frost-dates/` |
+
+**The comparison** and the ranking by the expected value of the owner's next hour are in `.claude/validation/COMPARATIVE_DECISION.md`. No backup candidate is named.
+
+**Regrouping.** Under this file's rule ("any promoted experiment whose validation fails moves to maintain"), Custody Calendar, Day Clock, and Frost Dates should move to Maintain once the owner has reviewed the decisions. This is internal grouping only, and the registry is unchanged.
+
+**Several judgements above didn't survive the research:**
+- **Fluency Check:** "teachers" as the audience.
+- **Custody Calendar:** search demand as an opening.
+- **Frost Dates:** worldwide coverage as the wedge. Its cautious dates are about 5 weeks early against Canberra station records, and its planting calendar is 1.5–2.5 months early in maritime climates (`.claude/validation/frost-dates/notes/accuracy-check.md`).
