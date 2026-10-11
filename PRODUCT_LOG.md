@@ -16,6 +16,29 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-11 · #017 Frost Dates update; GeoNames credit in Line Dry
+
+- **What:**
+  - **A plain caveat right under the frost dates.** They're estimates from a weather archive that averages over squares about 10 km across, not guarantees. On clear, still nights, valleys, hollows, and inland basins can get frost weeks later in spring and weeks earlier in autumn. Where frost matters, compare with a long-running weather station nearby or with experienced local growers.
+  - **No dates for tender crops where nights warm late.** This covers tomatoes, peppers, basil, beans, squash and cucumbers, and sweet corn. It applies where the page's own records show the average low reaching 10°C (50°F) more than three weeks after the frost date the calendar counts from, or never.
+    - Those crops say "Once nights are warm", or "Under cover" where nights never get that warm.
+    - Indoor starts become "6–8 weeks before planting out".
+    - A note says roughly when nights warm, such as "around late May".
+    - Elsewhere, a line says these crops also need warm nights and warm soil.
+  - **Wording.** The intro no longer asks "When is it safe to plant out?". The homepage summary says the page estimates rather than shows. The calendar's intro adds that soil temperature and local advice matter too.
+  - **GeoNames credit.** Frost Dates and Line Dry now credit GeoNames (CC BY 4.0), the place database behind Open-Meteo's place search, with a link.
+- **Why:**
+  - **Canberra check.** During Winner Validation, a desk check ran Frost Dates' own code against NOAA station records for Canberra. Its "9 springs out of 10" last-frost date came about five weeks earlier than at Canberra Airport (1995–2010) and Tuggeranong (1996–2026), with about half their frost nights. The archive misses cold air pooling on calm nights, a known limitation in ECMWF's own documentation.
+  - **Calendar check.** The same check found the calendar putting tomatoes outside in Dublin on March 12–19 and in London on April 11–18, months before local advice (late May or June). In mild, damp climates the last frost comes long before warm nights.
+  - **Credit.** GeoNames asks for credit when its data or services are used.
+- **Notes:**
+  - **No correction model.** The frost dates themselves are unchanged; correcting them against stations would need data infrastructure Labs doesn't have.
+  - **The warm-nights rule.** The check uses the same 30 years of lows and a common rule of thumb (the University of Minnesota Extension sets peppers out once night lows stay above 50°F). It may hold tender crops back longer than needed in dry climates with warm days, so it errs toward waiting.
+  - **Where tender crops now wait.** Counting from the typical frost date: London (nights average 10°C around late May), Dublin (early June), Canberra (mid-November), and Minneapolis (mid-May). Counting from the 9-in-10 date, Minneapolis keeps its dates, with tomatoes out May 14–21.
+  - **Credits already met their terms:** Open-Meteo's (a link next to the data, the CC BY 4.0 licence, and a note that the dates are worked out on the page) and the Copernicus acknowledgement.
+  - **Tests:** 3 new tests: the warm-nights date, the three-week rule, and six real places.
+  - **Layout:** checked at 320, 390, 640, 700, and 1280 px wide, in light and dark.
+
 ## 2026-10-10 · Safari storage notes: Fluency Check and Trip Board
 
 - **What:** Fluency Check's saved-checks log and Trip Board now say that Safari on iPhones, iPads, and Macs can clear saved data after about a week without a visit. Fluency Check asks for a CSV download after a session of checks, instead of "now and then"; Trip Board's backup note gained the warning it lacked.

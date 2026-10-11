@@ -138,3 +138,12 @@ export function SeasonTable({ analysis, units }: { analysis: Analysis; units: Un
 
 /** A season offset as "Apr 7". */
 export const offsetText = (month: number, offset: number) => dayMonth.format(offsetDate(month, offset))
+
+const monthLong = new Intl.DateTimeFormat('en', { month: 'long', timeZone: 'UTC' })
+/** A season offset as roughly as the evidence allows: "early May", "mid-May", or "late May". */
+export function aroundText(month: number, offset: number): string {
+  const date = offsetDate(month, offset)
+  const day = date.getUTCDate()
+  const name = monthLong.format(date)
+  return day <= 10 ? `early ${name}` : day <= 20 ? `mid-${name}` : `late ${name}`
+}

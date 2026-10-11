@@ -145,6 +145,14 @@ export default function LineDry() {
           <a href="https://creativecommons.org/licenses/by/4.0/" className="underline underline-offset-4 hover:text-ink" rel="noreferrer">
             CC BY 4.0
           </a>
+          ). Place search by Open-Meteo, with location data from{' '}
+          <a href="https://www.geonames.org/" className="underline underline-offset-4 hover:text-ink" rel="noreferrer">
+            GeoNames
+          </a>{' '}
+          (
+          <a href="https://creativecommons.org/licenses/by/4.0/" className="underline underline-offset-4 hover:text-ink" rel="noreferrer">
+            CC BY 4.0
+          </a>
           ).
         </p>
       </div>

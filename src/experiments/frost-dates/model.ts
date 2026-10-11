@@ -115,6 +115,8 @@ export interface Analysis {
   /** Median length of the frost-free stretch around midsummer, in days (365 or more means frost-free in most years). */
   frostFree: number | null
   nightsPerSeason: number
+  /** Offset of the spring day the average low (smoothed over a month) reaches WARM_NIGHT: 0 when it's that warm all year, null when it never is. */
+  warmNights: number | null
   coldest: { value: number; day: number } | null
   /** The last day with data. */
   dataEnd: number
@@ -190,6 +192,33 @@ export function analyze(series: Series, threshold: number): Analysis | null {
   const frostFree = stretches.length ? stretches[Math.floor((stretches.length - 1) / 2)] : null
   const nights = recent.reduce((sum, s) => sum + s.runs.reduce((k, r) => k + r.to - r.from + 1, 0), 0)
 
+  // The average low on each day of the season, smoothed over a month, and the spring day it reaches WARM_NIGHT.
+  const sum = new Array<number>(365).fill(0)
+  const count = new Array<number>(365).fill(0)
+  for (const s of recent) {
+    for (let day = s.start; day < s.end; day++) {
+      const v = at(day)
+      if (v === null) continue
+      const offset = Math.min(364, calendarOffset(s.start, day))
+      sum[offset] += v
+      count[offset]++
+    }
+  }
+  const mean = sum.map((_, i) => {
+    let s = 0
+    let c = 0
+    for (let k = -15; k <= 15; k++) {
+      const j = (i + k + 365) % 365
+      s += sum[j]
+      c += count[j]
+    }
+    return c ? s / c : Infinity
+  })
+  let low = 0
+  for (let i = 1; i < 365; i++) if (mean[i] < mean[low]) low = i
+  let warmNights: number | null = mean[low] >= WARM_NIGHT ? 0 : null
+  for (let i = low + 1; warmNights === null && i < 365; i++) if (mean[i] >= WARM_NIGHT) warmNights = i
+
   return {
     month,
     seasons: recent,
@@ -199,6 +228,7 @@ export function analyze(series: Series, threshold: number): Analysis | null {
     firstAutumn: { typical: autumnBy(0.5), cautious: autumnBy(0.1) },
     frostFree,
     nightsPerSeason: nights / n,
+    warmNights,
     coldest,
     dataEnd,
   }
@@ -236,6 +266,8 @@ export interface Crop {
   sow?: [number, number]
   /** Plant out seedlings or sets. */
   plant?: [number, number]
+  /** A tender, warm-season crop: it needs warm nights and warm soil as well as no frost. */
+  tender?: true
 }
 
 export const CROPS: Crop[] = [
@@ -246,10 +278,26 @@ export const CROPS: Crop[] = [
   { name: 'Potatoes', plant: [-3, -1] },
   { name: 'Carrots', sow: [-3, -1] },
   { name: 'Broccoli and cabbage', indoors: [-9, -7], plant: [-3, -1] },
-  { name: 'Tomatoes', indoors: [-8, -6], plant: [1, 2] },
-  { name: 'Peppers', indoors: [-10, -8], plant: [2, 3] },
-  { name: 'Basil', indoors: [-6, -4], plant: [1, 2] },
-  { name: 'Beans', sow: [1, 2] },
-  { name: 'Squash and cucumbers', sow: [1, 2] },
-  { name: 'Sweet corn', sow: [1, 2] },
+  { name: 'Tomatoes', indoors: [-8, -6], plant: [1, 2], tender: true },
+  { name: 'Peppers', indoors: [-10, -8], plant: [2, 3], tender: true },
+  { name: 'Basil', indoors: [-6, -4], plant: [1, 2], tender: true },
+  { name: 'Beans', sow: [1, 2], tender: true },
+  { name: 'Squash and cucumbers', sow: [1, 2], tender: true },
+  { name: 'Sweet corn', sow: [1, 2], tender: true },
 ]
+
+/**
+ * Nights count as warm for tender crops once the average low reaches this
+ * (°C). Guides often set out peppers and tomatoes only once nights stay
+ * above about 10°C (50°F).
+ */
+export const WARM_NIGHT = 10
+
+/**
+ * Counting tender crops from the last frost only works where nights warm up
+ * soon after it. In mild, damp climates the last frost can come two or three
+ * months before warm nights, so where the average low reaches WARM_NIGHT
+ * more than three weeks after the frost date `base`, or never, tender crops
+ * wait for warm nights instead of getting a date.
+ */
+export const waitForWarmth = (warmNights: number | null, base: number) => warmNights === null || warmNights - base > 21

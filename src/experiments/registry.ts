@@ -188,7 +188,7 @@ export const experiments: readonly Experiment[] = [
     number: 17,
     slug: 'frost-dates',
     title: 'Frost Dates',
-    summary: 'Shows when the last spring frost and first autumn frost usually come for any place in the world, from 30 years of overnight lows, with a planting calendar to match.',
+    summary: 'Estimates when the last spring frost and first autumn frost usually come for any place in the world, from 30 years of overnight lows, with a planting calendar of rules of thumb.',
     shipped: '2026-10-09',
     status: 'live',
     category: 'home',

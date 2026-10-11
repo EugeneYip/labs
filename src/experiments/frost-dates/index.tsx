@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { dateText, offsetText, SeasonChart, SeasonTable } from './Chart.tsx'
-import { analyze, CROPS, defaultUnits, degrees, readArchive, THRESHOLDS, toISO, YEARS, type Analysis, type Crop, type Series, type Threshold, type Units } from './model.ts'
+import { aroundText, dateText, offsetText, SeasonChart, SeasonTable } from './Chart.tsx'
+import { analyze, CROPS, defaultUnits, degrees, readArchive, THRESHOLDS, toISO, waitForWarmth, WARM_NIGHT, YEARS, type Analysis, type Crop, type Series, type Threshold, type Units } from './model.ts'
 
 // The chosen place and settings, plus the last place's records so a return visit is instant.
 const STORAGE_KEY = 'labs:frost-dates'
@@ -104,7 +104,7 @@ export default function FrostDates() {
     <div className="flex-1">
       <div className="mx-auto w-full max-w-4xl px-4 pt-6 pb-24 sm:px-6 sm:pt-10">
         <p className="max-w-prose text-pretty text-dim">
-          When is it safe to plant out, and when does frost come back? Frost Dates looks at the last {YEARS} years of overnight lows for any place in the world and shows the odds of frost in spring and autumn, with a planting calendar built around them.
+          When does the last spring frost usually come, and when does frost come back? Frost Dates looks at the last {YEARS} years of overnight lows in a worldwide weather archive and estimates the odds of frost in spring and autumn for any place, with a planting calendar of rules of thumb built around them.
         </p>
 
         <PlacePicker place={place} onChoose={(p) => change({ place: p })} />
@@ -152,7 +152,7 @@ export default function FrostDates() {
         </div>
 
         <p className="mt-14 max-w-prose text-sm text-pretty text-dim">
-          Frost here means a night when the air two meters above the ground fell to the chosen temperature, in a weather archive that covers the world in squares about 10 km across. Hollows, valleys, and open country often get frost earlier and later than this; city gardens and sheltered walls less often. The place you pick is sent to Open-Meteo, rounded to about a kilometer. Weather records by{' '}
+          Frost here means a night when the air two meters above the ground fell to the chosen temperature, in a weather archive that covers the world in squares about 10 km across. City gardens and sheltered walls get frost less often than the archive shows. The place you pick is sent to Open-Meteo, rounded to about a kilometer. Weather records by{' '}
           <a href="https://open-meteo.com/" className="underline underline-offset-4 hover:text-ink" rel="noreferrer">
             Open-Meteo.com
           </a>{' '}
@@ -160,7 +160,15 @@ export default function FrostDates() {
           <a href="https://creativecommons.org/licenses/by/4.0/" className="underline underline-offset-4 hover:text-ink" rel="noreferrer">
             CC BY 4.0
           </a>
-          ), from the ERA5 and ERA5-Land reanalyses and ECMWF IFS; contains modified Copernicus Climate Change Service information. Dates are worked out on this page from the daily lows.
+          ), from the ERA5 and ERA5-Land reanalyses and ECMWF IFS; contains modified Copernicus Climate Change Service information. Place search by Open-Meteo, with location data from{' '}
+          <a href="https://www.geonames.org/" className="underline underline-offset-4 hover:text-ink" rel="noreferrer">
+            GeoNames
+          </a>{' '}
+          (
+          <a href="https://creativecommons.org/licenses/by/4.0/" className="underline underline-offset-4 hover:text-ink" rel="noreferrer">
+            CC BY 4.0
+          </a>
+          ). Dates are worked out on this page from the daily lows.
         </p>
       </div>
     </div>
@@ -182,7 +190,7 @@ function Results({ analysis, records, saved, onAnchor }: { analysis: Analysis; r
             No {word} in the last {n} years
           </h2>
           <p className="mt-2 text-dim">
-            The lowest overnight temperature was {analysis.coldest ? `${degrees(analysis.coldest.value, saved.units)} on ${dateText(analysis.coldest.day)}, ${toISO(analysis.coldest.day).slice(0, 4)}` : 'not recorded'}. Planting times here depend on heat and rain more than frost.
+            The lowest overnight temperature was {analysis.coldest ? `${degrees(analysis.coldest.value, saved.units)} on ${dateText(analysis.coldest.day)}, ${toISO(analysis.coldest.day).slice(0, 4)}` : 'not recorded'}. Planting times here depend on heat and rain more than frost. These records cover squares about 10 km across, so frost-prone hollows nearby can still get the odd frost.
           </p>
         </section>
       ) : (
@@ -206,6 +214,9 @@ function Results({ analysis, records, saved, onAnchor }: { analysis: Analysis; r
             />
           </div>
           <SoFar analysis={analysis} units={saved.units} word={word} />
+          <p className="mt-4 max-w-prose text-sm text-pretty">
+            <span className="font-medium">Estimates, not guarantees.</span> These dates come from a weather archive that averages over squares about 10 km across. On clear, still nights cold air collects in valleys, hollows, and inland basins, which can get frost weeks later in spring and weeks earlier in autumn than this. Where frost matters, compare with a long-running weather station nearby or with experienced local growers.
+          </p>
         </section>
       )}
 
@@ -227,7 +238,7 @@ function Results({ analysis, records, saved, onAnchor }: { analysis: Analysis; r
         </section>
       )}
 
-      <Planting analysis={analysis} anchor={saved.anchor} onAnchor={onAnchor} />
+      <Planting analysis={analysis} anchor={saved.anchor} units={saved.units} onAnchor={onAnchor} />
 
       <p className="mt-10 text-sm text-dim">
         Records to {dateText(analysis.dataEnd)}, {toISO(analysis.dataEnd).slice(0, 4)}
@@ -283,19 +294,30 @@ function nightsText(perSeason: number, word: string): string {
 }
 
 const WEEK = 7
-function Planting({ analysis, anchor, onAnchor }: { analysis: Analysis; anchor: Saved['anchor']; onAnchor: (anchor: Saved['anchor']) => void }) {
-  const { month, lastSpring } = analysis
+const TENDER = 'Tomatoes, peppers, basil, beans, squash, cucumbers, and sweet corn'
+function Planting({ analysis, anchor, units, onAnchor }: { analysis: Analysis; anchor: Saved['anchor']; units: Units; onAnchor: (anchor: Saved['anchor']) => void }) {
+  const { month, lastSpring, warmNights } = analysis
   const base = anchor === 'cautious' ? lastSpring.cautious : lastSpring.typical
   if (lastSpring.typical === null || base === null) return null
-  const range = ([a, b]: [number, number]) => `${offsetText(month, base + a * WEEK)} – ${offsetText(month, base + b * WEEK)}`
-  const cell = (crop: Crop, key: 'indoors' | 'sow' | 'plant') => (crop[key] ? range(crop[key]) : <span className="text-dim">–</span>)
+  // Where nights stay cool long after the last frost, tender crops get a condition rather than a date counted from it.
+  const wait = waitForWarmth(warmNights, base)
+  const warm = degrees(WARM_NIGHT, units)
+  const when = (crop: Crop, key: 'indoors' | 'sow' | 'plant') => {
+    const [a, b] = crop[key]!
+    if (crop.tender && wait) {
+      if (key === 'indoors') return `${-b}–${-a} weeks before planting out`
+      return warmNights === null ? 'Under cover' : 'Once nights are warm'
+    }
+    return `${offsetText(month, base + a * WEEK)} – ${offsetText(month, base + b * WEEK)}`
+  }
+  const cell = (crop: Crop, key: 'indoors' | 'sow' | 'plant') => (crop[key] ? when(crop, key) : <span className="text-dim">–</span>)
 
   return (
     <section aria-labelledby="planting-heading" className="mt-12">
       <h2 id="planting-heading" className="text-lg font-semibold tracking-tight">
         Planting calendar
       </h2>
-      <p className="mt-1 text-sm text-pretty text-dim">Rules of thumb from seed packets and garden guides, counted in weeks from the last spring frost. Seed packets for your varieties have the final word.</p>
+      <p className="mt-1 text-sm text-pretty text-dim">Rules of thumb from seed packets and garden guides, counted in weeks from the last spring frost. Frost is only part of it: soil temperature and local advice for each crop matter too, and seed packets for your varieties have the final word.</p>
       <div className="mt-4 flex flex-wrap gap-2" role="group" aria-label="Count from">
         {(
           [
@@ -324,7 +346,7 @@ function Planting({ analysis, anchor, onAnchor }: { analysis: Analysis; anchor: 
                 .map(([key, label]) => (
                   <div key={key} className="contents">
                     <dt className="text-dim">{label}</dt>
-                    <dd>{range(crop[key]!)}</dd>
+                    <dd>{when(crop, key)}</dd>
                   </div>
                 ))}
             </dl>
@@ -355,15 +377,28 @@ function Planting({ analysis, anchor, onAnchor }: { analysis: Analysis; anchor: 
                 <th scope="row" className="py-2 pr-4 font-medium">
                   {crop.name}
                 </th>
-                <td className="py-2 pr-4 whitespace-nowrap">{cell(crop, 'indoors')}</td>
-                <td className="py-2 pr-4 whitespace-nowrap">{cell(crop, 'sow')}</td>
-                <td className="py-2 whitespace-nowrap">{cell(crop, 'plant')}</td>
+                <td className={`py-2 pr-4 ${crop.tender && wait ? '' : 'whitespace-nowrap'}`}>{cell(crop, 'indoors')}</td>
+                <td className={`py-2 pr-4 ${crop.tender && wait ? '' : 'whitespace-nowrap'}`}>{cell(crop, 'sow')}</td>
+                <td className={`py-2 ${crop.tender && wait ? '' : 'whitespace-nowrap'}`}>{cell(crop, 'plant')}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      {analysis.frostFree !== null && analysis.frostFree < 100 && <p className="mt-3 text-sm text-pretty">The frost-free season here is short, so warm-season crops like tomatoes, peppers, and squash may need a greenhouse, cloches, or fleece.</p>}
+      {warmNights === null ? (
+        <p className="mt-3 text-sm text-pretty">
+          Nights here rarely get warm: in these records the average low never reaches {warm}. {TENDER} usually need a greenhouse, polytunnel, or cloches.
+        </p>
+      ) : warmNights > 0 && wait ? (
+        <p className="mt-3 text-sm text-pretty">
+          Nights here stay cool for weeks after the last frost: in these records the average low reaches {warm} around {aroundText(month, warmNights)}. {TENDER} need warm nights and warm soil as well as no frost, so plant or sow them once nights are reliably warm, going by local advice and the seed packet.
+        </p>
+      ) : warmNights > 0 ? (
+        <p className="mt-3 text-sm text-pretty">
+          {TENDER} also need warm nights and warm soil: in these records the average low reaches {warm} around {aroundText(month, warmNights)}.
+        </p>
+      ) : null}
+      {warmNights !== null && analysis.frostFree !== null && analysis.frostFree < 100 && <p className="mt-3 text-sm text-pretty">The frost-free season here is short, so warm-season crops like tomatoes, peppers, and squash may need a greenhouse, cloches, or fleece.</p>}
     </section>
   )
 }
