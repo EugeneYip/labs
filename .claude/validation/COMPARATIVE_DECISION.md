@@ -130,10 +130,11 @@ If yes, the first step is a short message from the owner to **one introducer the
 ## Product upkeep found along the way (owner decisions; separate from validation; nothing changed)
 
 - **Frost Dates:**
-  - **Accuracy wording:** frost-prone valleys can see frost weeks later than the archive's odds. Suggest the Light frost threshold or the cautious date for tender crops.
-  - **A qualified or hidden planting calendar** where frost ends long before warm nights.
-  - **A one-line GeoNames credit** for the place search, also missing in Line Dry.
-  - **An email to Open-Meteo** about the 10,000-a-day figure and donations.
+  - **Done** in the owner-authorized maintenance pass (2026-10-11, commit 291fac5):
+    - accuracy wording (an "Estimates, not guarantees" caveat under the dates);
+    - a planting calendar that waits for warm nights for tender crops where nights warm more than three weeks after the frost date;
+    - GeoNames credits in Frost Dates and Line Dry.
+  - **Still open:** an email to Open-Meteo about the 10,000-a-day figure and donations.
   - None of these was judged a "genuinely harmful factual claim": the stakes are seedlings, and the page already warns about hollows and valleys. They're the most material upkeep items found.
 - **Custody Calendar:**
   - a "forget this schedule" control;

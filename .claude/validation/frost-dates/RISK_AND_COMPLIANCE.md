@@ -22,7 +22,7 @@ Nothing was signed up for, requested or downloaded, and nobody was contacted.
 | Open-Meteo terms | Matches the terms' own example of non-commercial use: a free site with no ads or subscriptions [V] | Ads or subscriptions are commercial by explicit example. That needs a paid plan that includes the archive: Professional, $99 a month at least [V]. A paid key can't be hidden in a static page [U] |
 | Rate limits | Enforced per visitor IP address, so each visitor gets about 120 lookups a day [V/E] | The README asks any *application* above 10,000 calls a day to get in touch. That's about 120 lookups a day across all visitors [V/E] |
 | Availability | No uptime guarantee. Open-Meteo may block applications or IP addresses that misuse the service, without notice [V] | The same, unless on a paid plan (99.9% target) [V] |
-| Attribution | Open-Meteo, CC BY 4.0, ERA5, ERA5-Land, IFS and Copernicus are all credited [V, rechecked]. **GeoNames, behind the place search, is not** [V, rechecked] | The same, plus whatever any new data source needs |
+| Attribution | Open-Meteo, CC BY 4.0, ERA5, ERA5-Land, IFS and Copernicus are all credited [V, rechecked]. GeoNames, behind the place search, was not; **credited since the 2026-10-11 maintenance pass** (also in Line Dry) | The same, plus whatever any new data source needs |
 | Data quality and reliance | The page's caveats (2 m air, grid squares, hollows, cities) match ECMWF's documentation [V]. **But at Canberra, the cautious date is about 5 weeks too early against two station records**, and the planting calendar advises tender crops 1.5–2.5 months early in maritime climates (`notes/accuracy-check.md`) [V, own check] | Stakes rise if it's sold to growers |
 | Privacy | The chosen place, rounded to about 1 km, goes to Open-Meteo, and so does the search text. Settings and the last place's records stay in the browser [V, rechecked] | Ads or analytics would add third-party tracking |
 
@@ -232,7 +232,17 @@ Wording to consider:
 - "Odds from a weather archive; frost-prone valleys can see frost weeks later".
 - "In mild climates, wait for warm nights as well".
 
-## 10. Owner actions and decisions (none taken in this phase)
+## 10. Owner actions and decisions
+
+**Maintenance pass (2026-10-11, owner-authorized, commit 291fac5).** Items 1 and 3 are done:
+- GeoNames is credited in Frost Dates and Line Dry.
+- A visible "Estimates, not guarantees" caveat sits under the frost dates.
+- Tender crops wait for warm nights where the record's average low reaches 10°C more than three weeks after the frost date.
+- The intro, summary and calendar wording are softened.
+- The frost dates themselves are unchanged (no correction model).
+
+Items 2, 4 and 5 remain open. The original list follows.
+
 
 1. **Add a one-line GeoNames credit** to Frost Dates' place search, for example "Place search by Open-Meteo, using GeoNames data (CC BY 4.0)". **Line Dry has the same gap.**
    - This is a licence-attribution gap, not a harmful claim, so it was left unchanged under this phase's rules.

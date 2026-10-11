@@ -128,3 +128,30 @@ Open-Meteo's default `best_match` blends in ECMWF's IFS from 2017. I compared th
   - Suggesting the Light frost threshold, or the cautious date, for tender crops.
   - Hiding or qualifying the planting calendar where frost ends long before warmth arrives. For example, show it only when the typical last frost falls within about 4–6 weeks of the month nights warm past about 10 °C, or add "in mild climates, wait for warm nights as well".
   - A longer-term fix would be correcting the grid against stations, which is a different product.
+
+## Maintenance pass (2026-10-11)
+
+Authorized by the owner after this check; commit 291fac5.
+
+**What changed:**
+- **The visible caveat** under the frost dates now says three things:
+  - the dates are estimates for squares about 10 km across;
+  - valleys, hollows and inland basins can get frost weeks later in spring and earlier in autumn;
+  - where frost matters, compare with a long-running station or experienced local growers.
+- **The planting calendar.** It computes, from the same record, when the month-smoothed average low reaches 10°C. If that's more than three weeks after the frost date it counts from, or never, tender crops show "Once nights are warm" (or "Under cover"), and a note gives the rough time nights warm.
+
+**Results after the change** (production, 2026-10-11, live Open-Meteo lookups at phone width plus saved records at desktop width):
+
+| Place | Nights average 10°C | Tender crops, typical date | Tender crops, 9-in-10 date |
+|---|---|---|---|
+| Canberra | Mid-November | Wait | Wait |
+| London | Late May | Wait | Wait |
+| Dublin | Early June | Wait | Wait |
+| Minneapolis | Mid-May | Wait | Dates kept: tomatoes out May 14–21 |
+
+Boston and Denver (test fixtures): wait from the typical date. From the 9-in-10 date, Boston waits and Denver keeps its dates.
+
+**Not changed:**
+- The frost dates themselves. Correcting them against stations would need data infrastructure.
+- At Canberra, the cards still show the archive's dates (Sep 13, with Sep 30 as the 9-in-10 date). The caveat now tells people those dates can be weeks early in inland basins.
+

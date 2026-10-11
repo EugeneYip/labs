@@ -106,7 +106,14 @@ Is worldwide frost-date lookup underserved, searchable, and useful enough to jus
 
 ## Product status
 
-**Unchanged.** Nothing found counts as a "genuinely harmful factual claim":
+**Updated 2026-10-11 in an owner-authorized maintenance pass** (commit 291fac5; PRODUCT_LOG.md):
+- **Caveat:** a visible "Estimates, not guarantees" note under the frost dates. Valleys, hollows and inland basins can get frost weeks later or earlier; compare with a long-running station or experienced local growers.
+- **Tender crops:** they show "Once nights are warm" instead of a date where the record's average low reaches 10°C more than three weeks after the frost date (London, Dublin, Canberra; Minneapolis from the typical date).
+- **Wording:** the intro and summary are softened.
+- **Credits:** GeoNames is now credited in Frost Dates and Line Dry.
+- **Unchanged:** the frost dates themselves, and the decision (STOP FOCUSED VALIDATION). The Open-Meteo email remains open.
+
+**As found during the research.** Nothing counted as a "genuinely harmful factual claim":
 - the stakes are seedlings, not safety;
 - the page already warns that hollows, valleys and open country get frost earlier and later.
 

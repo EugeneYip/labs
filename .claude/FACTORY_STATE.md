@@ -2,6 +2,24 @@
 
 The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`, `FACTORY_CONSTITUTION.md`, and this file, then check `git status` and `git log`, before acting. Never redo completed work. Update this file after every milestone (idea chosen, built, tested, shipped, dropped).
 
+## Maintenance pass (complete)
+
+- **Scope:** authorized by the owner on 2026-10-11 after the comparative research, before any human interviews. Not a batch and not feature work. It covered Frost Dates correctness (honest limits, and tender crops in mild climates) and a GeoNames and Open-Meteo attribution audit for Frost Dates and Line Dry. Commit, push, and deploy were allowed for these fixes only. **Complete (2026-10-11); report given.**
+- **Shipped (commit 291fac5, deploy succeeded):**
+  - **Frost Dates:** an "Estimates, not guarantees" caveat under the dates (valleys, hollows, inland basins can be weeks off; compare with a long-running station or local growers); the intro and the registry summary say "estimates"; the calendar mentions soil temperature and local advice.
+  - **`model.ts`:** `warmNights` (when the month-smoothed average low reaches `WARM_NIGHT` = 10°C), `waitForWarmth` (more than 21 days after the frost date, or never), and `tender` on six crops. `Chart.tsx` gains `aroundText`.
+  - **The calendar:** tender crops show "Once nights are warm" or "Under cover", with indoor starts counted back from planting out.
+  - **Credits:** Frost Dates and Line Dry credit GeoNames (CC BY 4.0). Open-Meteo's and Copernicus' credits already met their terms.
+- **Verified:**
+  - Tests: `.claude/qa/frost-dates-test.ts` 16 passing (3 new; new fixtures for London, Dublin and Minneapolis); `line-dry-test.ts` 12; the build passes.
+  - Local plans `plan-frost-maint*.json`. Production plan `plan-frost-maint-prod.json`, 14 shots:
+    - live lookups for Canberra, London, Dublin and Minneapolis at 390 px;
+    - saved records at 1280 px dark, Minneapolis on the 9-in-10 date in °F, London at 640 and 700 px, and Canberra at 320 px dark;
+    - Line Dry's footer and the homepage summary.
+  - No overflow, no console errors or warnings.
+- **Not changed:** the frost dates themselves (no correction model; station calibration needs infrastructure). Still open: the Open-Meteo email.
+- **Next action:** none until the owner decides. Don't start the Fluency Check tutor interviews automatically. Don't start Batch 07 or create #026.
+
 ## Comparative validation (complete)
 
 - **Phase:** Winner Validation, Comparative Research, authorized by the owner on 2026-10-11 after Fluency Check's Phase 1 ended in HOLD. Research only: no user contact, no posting, no features, no spin-outs, no new experiments, no infrastructure changes, no public product changes unless a claim is genuinely harmful. **Complete (2026-10-11); report given.**
@@ -9,7 +27,7 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 - **Outputs:** `.claude/validation/custody-calendar/`, `day-clock/`, `frost-dates/` (seven documents each plus `notes/`; Frost Dates adds `notes/accuracy-check.md`), and `.claude/validation/COMPARATIVE_DECISION.md` (14-criterion matrix, expected value of the owner's next hour, ranking: Fluency Check, Custody Calendar, Frost Dates, Day Clock). `.claude/PORTFOLIO_RESOLUTION.md` gained "Validation outcomes (2026-10-11)". The accuracy check's scripts and output are local only in `.claude/qa/frost-accuracy/`.
 - **Findings carried into the report:** (1) Open-Meteo weighs requests by variables/10 × days/14, so a Frost Dates lookup costs about 83 calls, not ~830 as said earlier in chat; limits are enforced per IP (about 120 lookups a day per visitor; the ninth lookup inside a minute got HTTP 429); the README asks apps above 10,000 calls a day to get in touch. (2) Frost Dates and Line Dry don't credit GeoNames (licence gap, one-line fix, owner approval). (3) NASA POWER and Open-Meteo's `openmeteo` bucket both allow browser requests. (4) Frost Dates' accuracy and calendar issues are material but not "genuinely harmful" (seedlings at stake; the page warns about hollows and valleys), so no public change; flagged for the owner. (5) `models=era5_land` doesn't improve accuracy.
 - **Safari wording:** internal documents use the precise framing (WebKit's tracking prevention may remove script-writable storage after seven days of Safari use without interaction with the site; Home Screen web apps are exempt from that cap per WebKit). Public pages say "can" and "about a week without a visit", judged not materially misleading, unchanged.
-- **Next action:** none until the owner decides. Stage 0 interviews (the exact first step is in COMPARATIVE_DECISION.md), any wording fix, the Open-Meteo email, and regrouping the three STOP products to Maintain each need the owner's explicit yes. Don't start Batch 07 or create #026.
+- **Next action:** superseded by the maintenance pass above (Frost Dates wording, calendar and GeoNames credits done). Stage 0 interviews (the exact first step is in COMPARATIVE_DECISION.md), the other wording fixes (Custody Calendar, Day Clock, Fluency Check), the Open-Meteo email, and regrouping the three STOP products to Maintain each still need the owner's explicit yes.
 
 ## Validation phase (complete)
 
