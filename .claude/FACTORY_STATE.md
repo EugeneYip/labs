@@ -2,6 +2,15 @@
 
 The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`, `FACTORY_CONSTITUTION.md`, and this file, then check `git status` and `git log`, before acting. Never redo completed work. Update this file after every milestone (idea chosen, built, tested, shipped, dropped).
 
+## Validation phase (current)
+
+- **Phase:** Winner Validation, Phase 1, for #016 Fluency Check. Authorized by the owner on 2026-10-10, after Batch 06 closed the discovery cycle. Research and validation design only. **Complete (2026-10-11); report given.**
+- **Decision: HOLD.** The broad opportunity ("teachers") did not survive the research: official checks belong to district and state systems that already score on a device, McGraw Hill's Wonders has the same tap-and-score tool built in, free alternatives cover most of the value, and the pain is one-on-one time rather than scoring. A narrow opportunity may exist with independent reading tutors (outside licences and school systems, privacy-sensitive families), but evidence of their frequency and friction is thin, so the next step is 6–8 problem interviews (Stage 0), not a usage pilot. Resolution rules are in `.claude/validation/fluency-check/VALIDATION_PLAN.md` §2.
+- **Outputs:** `.claude/validation/fluency-check/`: VALIDATION_BRIEF.md (decision), WORKFLOW_RESEARCH.md, COMPETITIVE_LANDSCAPE.md, RISK_AND_COMPLIANCE.md, VALIDATION_PLAN.md, RECRUITMENT_CHANNELS.md, FEATURE_REQUEST_HYPOTHESES.md, and `notes/` (five research threads with sources). Internal; committed to the public repository, never published to the website.
+- **Product:** unchanged. No serious regression or harmful claim found. Wording to review later with the owner: the DIBELS sentence, the accuracy-band source, a line about keeping results in school records (RISK_AND_COMPLIANCE.md §6, §10).
+- **Limits found:** Reddit and the main teacher forums couldn't be read by any available tool (the built-in browser blocks Reddit too); the research threads' shared search allowance (200) ran out; LibKey isn't available, so scholarly sources are marked unresolved; three research threads stopped at a usage limit after writing their notes.
+- **Next action:** none until the owner decides. Stage 0 interviews, any pilot, the email feedback alias, and any wording change each need the owner's explicit yes. Don't start Batch 07 or create #026.
+
 ## Batch
 
 - **Batch:** 06, Portfolio Resolution, complete (2026-10-10), report given. It closed the 25-experiment discovery cycle; Batches 01 to 05 are complete, with reports given. There is no Batch 07 and no #026 without new owner authorization.
@@ -121,7 +130,7 @@ The five highest totals in the portfolio review, all tier A: **#016 Fluency Chec
 
 ## Position
 
-- **Current:** no batch in progress. Batch 06 is complete and the discovery cycle is closed: decisions in `.claude/PORTFOLIO_RESOLUTION.md`, evidence in `.claude/PORTFOLIO_REVIEW.md`.
+- **Current:** no batch in progress; the Validation phase section at the top is current. Batch 06 is complete and the discovery cycle is closed: decisions in `.claude/PORTFOLIO_RESOLUTION.md`, evidence in `.claude/PORTFOLIO_REVIEW.md`.
 - **Next action:** none until the owner gives new instructions. Do not start Batch 07 or create #026. The recommended next phase (validation of the four promoted experiments, starting with a feedback channel that needs no account) is in `.claude/PORTFOLIO_RESOLUTION.md` and needs the owner's go-ahead. Outside a batch, the review-before-push rule applies: a plain-language review and an explicit yes before pushing any experiment change.
 
 ## Batch 03 audits
