@@ -2,6 +2,22 @@
 
 The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`, `FACTORY_CONSTITUTION.md`, and this file, then check `git status` and `git log`, before acting. Never redo completed work. Update this file after every milestone (idea chosen, built, tested, shipped, dropped).
 
+## Stage 0 interview preparation (complete; interviewing not begun)
+
+- **Scope:** authorized by the owner on 2026-10-11. Prepare Fluency Check's Stage 0 problem interviews with independent reading tutors. Fluency Check stays on HOLD. Not authorized:
+  - contacting anyone, scheduling, posting, recruiting;
+  - a pilot, or product changes.
+- **Outputs** in `.claude/validation/fluency-check/interviews/`:
+  - **INTERVIEW_GUIDE.md:** 20 minutes; about 15 minutes of problem discovery; the product shown only in Part 4; non-leading questions; a written-answers fallback.
+  - **INTERVIEW_SCORECARD.md:** no student information. Three judgments are made before the reveal: frequency bar, unprompted relevant friction, already satisfied with a digital tool. It also has stop-signal checkboxes.
+  - **OUTREACH.md:** messages for an introducer, a tutor directly, after an introduction, scheduling, one follow-up, and a thank-you.
+  - **RECRUITMENT_SHORTLIST.md:** organizations and directories only, no individuals. Order: introducer, then the IDA Massachusetts branch or Carroll School's GIFTT, then Wilson's directory, then CERI or ALTA. It also covers Northeastern (Bouvé speech-language pathology; the Graduate School of Education's special-education master's) as plausible channels only.
+  - **DECISION_SHEET.md:** F ≥ 4, R ≥ 3, S ≤ 2 after 6–8 interviews, with Step 1 stop rules and narrow HOLD rules.
+  - **`completed/`:** for filled-in scorecards; ignored by git, except its README (rule in `.gitignore`).
+  - VALIDATION_PLAN.md §2 points to the kit.
+- **Research note:** nothing found changes the thesis. Northeastern has no reading-specialist program, so it's a weak route; Boston-area structured-literacy training programs and Wilson (based in Massachusetts) are the stronger local routes.
+- **Next action:** the owner decides whether to send OUTREACH.md message A to one introducer (a structured-literacy trainer or the owner of a small tutoring business). Claude doesn't contact anyone, start interviews, start a pilot, or change Fluency Check without a new explicit yes.
+
 ## Maintenance pass (complete)
 
 - **Scope:** authorized by the owner on 2026-10-11 after the comparative research, before any human interviews. Not a batch and not feature work. It covered Frost Dates correctness (honest limits, and tender crops in mild climates) and a GeoNames and Open-Meteo attribution audit for Frost Dates and Line Dry. Commit, push, and deploy were allowed for these fixes only. **Complete (2026-10-11); report given.**

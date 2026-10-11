@@ -20,3 +20,7 @@ npm-debug.log*
 # Claude Code personal settings and local QA helpers
 .claude/settings.local.json
 .claude/qa/
+
+# Completed Fluency Check interview scorecards stay private
+.claude/validation/fluency-check/interviews/completed/*
+!.claude/validation/fluency-check/interviews/completed/README.md

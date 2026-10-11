@@ -21,6 +21,12 @@ Each must be confirmable and falsifiable. "Cheap test" says what would settle it
 
 ## 2. Stage 0: problem interviews (the HOLD step)
 
+**The interview kit is ready** (2026-10-11) in `interviews/`:
+- the guide, the scorecard, the outreach messages, the recruitment shortlist, and the decision sheet;
+- a git-ignored `completed/` folder for filled-in scorecards.
+
+It refines the questions below without changing the resolution rule. No one has been contacted, and no interviews have started.
+
 - **Who:** 6–8 independent reading tutors, reached personally through the owner's network or one introducer (a structured-literacy trainer or tutoring-business owner). No posting, no surveys in communities.
 - **Format:** 20 minutes, by phone or video, or written answers by email if they prefer. The product is not shown or named until the last five minutes, so it can't shape the answers.
 - **Questions** (ask in order; don't lead):
