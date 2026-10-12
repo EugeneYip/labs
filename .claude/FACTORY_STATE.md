@@ -27,7 +27,8 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 - **Parked:** Fluency Check interviews (the kit is ready; HOLD), the Open-Meteo email, regrouping the STOP products, and a no-account feedback channel. All are BLOCKED — OWNER REQUIRED.
 - **Progress:**
   - P1 done (2026-10-11): trust wording in Fluency Check, Custody Calendar (plus a clear control), and Day Clock (a device-voice preference, an honest keep-awake caveat, supported browsers).
-  - **Next:** P2, the accessibility audit.
+  - P2 done (2026-10-11): the accessibility audit; fixes in `.claude/ACCESSIBILITY_AUDIT.md`.
+  - **Next:** P3, the cross-browser matrix.
 
 ## Stage 0 interview preparation (complete; interviewing not begun)
 

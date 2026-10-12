@@ -16,6 +16,33 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-11 · Accessibility fixes across the portfolio
+
+- **What:**
+  - **Fluency Check:**
+    - When the clock starts, keyboard focus lands on the first word, so marking can begin straight away with the arrow keys and Enter.
+    - Screen readers now hear the score when a check ends ("Done: 76 words correct per minute, 95% accuracy").
+    - Screen readers hear "left" or "so far" after the timer.
+  - **Day Clock:**
+    - A "Read aloud" button joins the corner controls when read-aloud is on, so it works by keyboard, not only by tapping the clock.
+    - The corner controls are easier to read: 70% rather than 40% strength. They're still quiet.
+  - **Back Row:** the slide-size note is readable in light mode; its grey text had too little contrast on a tinted box.
+  - **Discussion Map:** while arranging seats, a selected name can be moved with the arrow keys (Shift for bigger steps), as well as by dragging.
+  - **Reduced motion:** Numbers by Ear's pulsing button, Family Stories' recording dot, and Stall Till's scroll to the sale panel respect the "reduce motion" setting.
+- **Why:** P2 of the autonomous queue, a systematic accessibility audit. Each fix answers a WCAG 2.2 AA failure, or a keyboard or screen-reader barrier found in testing:
+  - contrast (1.4.3);
+  - keyboard operation (2.1.1);
+  - focus order (2.4.3);
+  - status messages (4.1.3);
+  - names (4.1.2);
+  - dragging (2.5.7).
+- **Notes:**
+  - After the fixes, axe-core finds no violations on any page, in light and dark, at desktop and phone widths, or in the interactive states checked.
+  - A keyboard pass of every page found no traps, no unnamed controls, and a visible focus ring everywhere.
+  - Text at 200% causes no overflow.
+  - No real screen-reader session was run.
+  - Details are in `.claude/ACCESSIBILITY_AUDIT.md`.
+
 ## 2026-10-11 · Trust wording: Fluency Check, Custody Calendar, Day Clock
 
 - **What:**

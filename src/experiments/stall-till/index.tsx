@@ -212,7 +212,7 @@ function Sell({ saved, fmt, exact, onSale, onSetUp }: { saved: Saved; fmt: (m: n
       {lines.length > 0 && !paying && (
         <div className="fixed inset-x-0 bottom-0 z-10 flex items-center justify-between gap-3 border-t border-rule bg-paper/95 px-4 py-3 backdrop-blur lg:hidden print:hidden">
           <span className="text-2xl font-semibold tracking-tight tabular-nums">{exact(total)}</span>
-          <button type="button" onClick={() => panel.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })} className={primary}>
+          <button type="button" onClick={() => panel.current?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' })} className={primary}>
             Take payment
           </button>
         </div>

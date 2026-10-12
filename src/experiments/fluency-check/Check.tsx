@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type Dispatch, type KeyboardEvent, type ReactNode, type SetStateAction } from 'react'
-import { clock, MINUTE, nextMark, type Marks, type Mode, type Passage } from './model.ts'
+import { clock, MINUTE, nextMark, percent, score, type Marks, type Mode, type Passage } from './model.ts'
 import { beep, outline, primary, quiet, unlockSound, useNow, useWakeLock } from './ui.ts'
 
 /**
@@ -40,6 +40,12 @@ export function restoreRun(value: unknown, words: number): Run | null {
 }
 
 const elapsed = (run: Run, now: number) => run.banked + (run.phase === 'running' ? now - run.startedAt : 0)
+
+/** The score in words, announced when the check ends, since the results appear further down the page. */
+function doneText(passage: Passage, run: Run): string {
+  const r = score(passage, run.marks, run.last, run.banked)
+  return `Done: ${r.wcpm} words correct per minute${r.accuracy === null ? '' : `, ${percent(r.accuracy)}% accuracy`}.`
+}
 
 export function CheckView({ passage, mode, run, setRun, onCancel, results }: { passage: Passage; mode: Mode; run: Run; setRun: Dispatch<SetStateAction<Run>>; onCancel: () => void; results: ReactNode }) {
   const reading = run.phase === 'running' || run.phase === 'paused'
@@ -95,7 +101,7 @@ export function CheckView({ passage, mode, run, setRun, onCancel, results }: { p
             )}
             {run.phase === 'paused' && 'Paused. The clock is stopped.'}
             {run.phase === 'last' && <strong className="font-semibold">{mode === 'minute' && run.banked >= MINUTE ? 'Time! ' : 'Stopped. '}Tap the last word the student read.</strong>}
-            {run.phase === 'done' && 'Tap a word to fix its mark.'}
+            {run.phase === 'done' && `${doneText(passage, run)} Tap a word to fix its mark.`}
           </p>
           <div className="flex flex-wrap gap-2">
             {run.phase === 'running' && (
@@ -156,8 +162,9 @@ function Timer({ run, mode }: { run: Run; mode: Mode }) {
   const ms = Math.min(elapsed(run, now), mode === 'minute' ? MINUTE : Infinity)
   return (
     <div className="flex items-center gap-3">
-      <p className="text-4xl font-semibold tracking-tight tabular-nums" aria-label={mode === 'minute' ? `${clock(MINUTE - ms, true)} left` : `${clock(ms)} so far`}>
+      <p className="text-4xl font-semibold tracking-tight tabular-nums">
         {mode === 'minute' ? clock(MINUTE - ms, true) : clock(ms)}
+        <span className="sr-only">{mode === 'minute' ? ' left' : ' so far'}</span>
       </p>
       {mode === 'minute' && (
         <div className="h-2 w-20 overflow-hidden rounded-full bg-ink/10 sm:w-28" aria-hidden="true">
@@ -178,6 +185,11 @@ function Words({ passage, run, onTap }: { passage: Passage; run: Run; onTap: (i:
   const refs = useRef<(HTMLButtonElement | null)[]>([])
   const [focus, setFocus] = useState(0)
   const count = passage.words.length
+  // Start removes the button that had focus; put it on the first word, so marking can begin straight away by keyboard.
+  useEffect(() => {
+    if (run.phase === 'running') refs.current[0]?.focus()
+    // Only when the check first appears.
+  }, [])
 
   const move = (to: number) => {
     const i = Math.max(0, Math.min(count - 1, to))

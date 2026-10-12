@@ -322,7 +322,7 @@ function Practice({ languages }: { languages: Language[] }) {
             onPointerDown={phase === 'idle' ? undefined : keepFocus}
             onClick={() => (phase === 'idle' || !question ? ask() : speak(question))}
             aria-busy={speaking}
-            className={`${primary} h-14 rounded-full px-7 text-base sm:h-14 ${speaking ? 'animate-pulse' : ''}`}
+            className={`${primary} h-14 rounded-full px-7 text-base sm:h-14 ${speaking ? 'motion-safe:animate-pulse' : ''}`}
           >
             <SpeakerIcon />
             {phase === 'idle' ? 'Start' : 'Hear it again'}

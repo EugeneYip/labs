@@ -126,7 +126,8 @@ export default function DayClock() {
         </div>
       </div>
 
-      <div className="absolute right-3 bottom-3 flex gap-2 opacity-40 transition-opacity focus-within:opacity-100 hover:opacity-100">
+      {/* Quiet enough not to draw the eye, but still readable for the person setting it up. */}
+      <div className="absolute right-3 bottom-3 flex gap-2 opacity-70 transition-opacity focus-within:opacity-100 hover:opacity-100">
         {canFull && (
           <button
             type="button"
@@ -134,6 +135,11 @@ export default function DayClock() {
             className={`h-10 cursor-pointer rounded-lg px-3 text-sm ${night ? 'bg-white/10' : 'bg-black/5'}`}
           >
             {full ? 'Exit full screen' : 'Full screen'}
+          </button>
+        )}
+        {settings.speak && (
+          <button type="button" onClick={speak} className={`h-10 cursor-pointer rounded-lg px-3 text-sm ${night ? 'bg-white/10' : 'bg-black/5'}`}>
+            Read aloud
           </button>
         )}
         <HoldButton night={night} onOpen={() => setEditing(true)} />

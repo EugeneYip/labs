@@ -30,8 +30,8 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ## Now
 
-- **Current:** P2, the accessibility audit, starting with Fluency Check.
-- **Next:** continue P2 in the brief's order (Custody Calendar, Day Clock, Photo Scrub, Ranked Choice Count, Clean Paste, then the rest).
+- **Current:** P3, the cross-browser matrix (Firefox needs installing first).
+- **Next:** P4, the security and privacy audit.
 
 ## Parked lanes (human-blocked)
 
@@ -62,7 +62,15 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ### P2: Accessibility audit (all 25)
 
-- `[~]` In the brief's order: Fluency Check, Custody Calendar, Day Clock, Photo Scrub, Ranked Choice Count, Clean Paste, then the rest. Record in `.claude/ACCESSIBILITY_AUDIT.md`.
+- `[x]` Done (2026-10-11); see `.claude/ACCESSIBILITY_AUDIT.md`. **Fixed:**
+  - Back Row contrast;
+  - Day Clock corner controls (contrast, plus a keyboard "Read aloud" button);
+  - Fluency Check (focus to the first word on start, the score announced, timer context);
+  - Discussion Map (arrow keys move seats);
+  - reduced motion in Numbers by Ear, Family Stories, and Stall Till.
+
+  **Results:** axe finds 0 violations on 104 page runs and 20 state runs; the keyboard pass on 26 pages is clean; text at 200% is clean.
+- `[ ]` **P13 candidate:** Custody Calendar's year view has about 400 tab stops. Use arrow keys within each month.
 
 ### P3: Cross-browser matrix
 
@@ -111,6 +119,8 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ## Log
 
+- **2026-10-11:** P2 done. Fixes verified locally (axe re-scan of 32 runs clean, plus keyboard flows); production check after deploy.
+
 - **2026-10-11:** queue created, and P1 done and verified.
   - **Local browser checks** (`.claude/qa/plan-p1.json`, `plan-p1b.json`):
     - every new sentence present;
@@ -118,3 +128,4 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
     - Day Clock picks "Device David (en-US)" over an online default, and "Device Hazel (en-GB)" for en-GB;
     - no overflow, no console errors.
   - **Tests:** Fluency Check 15, Custody Calendar 11, Day Clock 6 pass.
+  - **Production** (commit 75c8844, deploy succeeded): the same checks pass on labs.eugeneyip.net (`plan-p1-prod.json`, `plan-p1b-prod.json`).

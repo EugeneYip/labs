@@ -229,13 +229,13 @@ function Guidance({ settings }: { settings: Settings }) {
         just be read, and <span className="font-medium text-ink">{formatHeight(comfy, units)}</span> reads comfortably.
       </p>
       {settings.kind === 'screen' ? (
-        <p className="rounded-lg border border-rule bg-ink/[0.03] px-3 py-2">
+        <p className="rounded-lg border border-rule px-3 py-2">
           On a {formatDistance(width, units)} wide screen, use slide text of at least <span className="font-semibold tabular-nums">{Math.ceil(slidePoints(comfy, width))} pt</span> in PowerPoint
           <span className="text-dim"> ({Math.ceil(slidePoints(comfy, width, SLIDE_POINTS.google))} pt in Google Slides, {Math.ceil(slidePoints(comfy, width, SLIDE_POINTS.keynote))} pt in Keynote at 1920 × 1080)</span>. Below{' '}
           <span className="tabular-nums">{Math.ceil(slidePoints(just, width))} pt</span> in PowerPoint it’s too small to read from there.
         </p>
       ) : (
-        <p className="rounded-lg border border-rule bg-ink/[0.03] px-3 py-2">
+        <p className="rounded-lg border border-rule px-3 py-2">
           Make the smallest letters on the poster at least <span className="font-semibold">{formatHeight(comfy, units)}</span> tall.
         </p>
       )}

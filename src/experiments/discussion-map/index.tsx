@@ -125,7 +125,7 @@ export default function DiscussionMap() {
         </div>
         <p className="mt-2 text-sm text-dim print:hidden" aria-live="polite">
           {arranging
-            ? 'Drag each name to where that person sits. Tap Done arranging to go back to logging.'
+            ? 'Drag each name to where that person sits, or select it and use the arrow keys. Tap Done arranging to go back to logging.'
             : saved.endedAt !== null
               ? 'The discussion has ended. Start a new one to log again.'
               : current
@@ -234,10 +234,17 @@ function SeatMap({ people, pairs, maxPair, perPerson, current, arranging, onTap,
             onPointerUp={() => {
               drag.current = null
             }}
+            onKeyDown={(e) => {
+              const step: Record<string, [number, number]> = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }
+              if (!arranging || !step[e.key]) return
+              e.preventDefault()
+              const by = e.shiftKey ? 60 : 20
+              onMove(p.id, Math.min(MAP.w - 40, Math.max(40, p.x + step[e.key][0] * by)), Math.min(MAP.h - 30, Math.max(30, p.y + step[e.key][1] * by)))
+            }}
             className={`absolute flex max-w-[42%] min-w-16 -translate-x-1/2 -translate-y-1/2 flex-col items-center rounded-xl border-2 px-2.5 py-1.5 text-center leading-tight shadow-sm transition-colors sm:max-w-[24%] sm:px-3 ${arranging ? 'cursor-grab' : 'cursor-pointer'} ${speaking ? 'border-ink bg-ink text-paper' : s ? 'border-ink/60 bg-paper hover:bg-ink/5' : 'border-dashed border-dim/60 bg-paper hover:bg-ink/5'} print:shadow-none`}
             style={{ left: `${(p.x / MAP.w) * 100}%`, top: `${(p.y / MAP.h) * 100}%` }}
             aria-pressed={speaking}
-            aria-label={`${p.name}${s ? `, ${s.turns} ${s.turns === 1 ? 'turn' : 'turns'}, ${clock(s.ms)}` : ', not yet spoken'}${arranging ? '. Drag to move.' : '. Tap when they start speaking.'}`}
+            aria-label={`${p.name}${s ? `, ${s.turns} ${s.turns === 1 ? 'turn' : 'turns'}, ${clock(s.ms)}` : ', not yet spoken'}${arranging ? '. Drag, or use the arrow keys, to move.' : '. Tap when they start speaking.'}`}
           >
             <span className="max-w-full truncate text-sm font-semibold sm:text-base" dir="auto">
               {p.name}

@@ -317,7 +317,7 @@ function InterviewView({ interview, onChange, onClose }: { interview: Interview;
               disabled={!question || rec.state === 'starting'}
               className={`inline-flex h-14 cursor-pointer items-center gap-3 rounded-full px-6 text-base font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${recording ? 'bg-red-600 text-white hover:bg-red-700' : 'bg-ink text-paper hover:bg-ink/80'}`}
             >
-              <span className={`inline-block size-3 rounded-full ${recording ? 'animate-pulse bg-white' : 'bg-red-500'}`} aria-hidden="true" />
+              <span className={`inline-block size-3 rounded-full ${recording ? 'bg-white motion-safe:animate-pulse' : 'bg-red-500'}`} aria-hidden="true" />
               {recording ? 'Stop' : rec.state === 'starting' ? 'Starting…' : here.length ? 'Record another answer' : 'Record the answer'}
             </button>
             {recording && (
