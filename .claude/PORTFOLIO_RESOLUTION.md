@@ -25,21 +25,21 @@ The closing decision for the 25-experiment Labs discovery cycle (Batches 01 to 0
 | 004 | Clean Paste | Maintain | 46 | Word-perfect on real PDFs and often useful, but a solitary utility with little to set it apart from assistants and line-break sites |
 | 005 | CSV Checkup | Maintain | 47 | Solid and private, for a technical audience that spreadsheets already serve |
 | 006 | Secret Santa | Maintain | 50 | The best built-in spread in Labs, but used once a year in a crowded niche |
-| 007 | Numbers by Ear | Experimental | 39 | Right on Apple's voices after the fixes; Windows, Android, and Chrome voices are unknown |
+| 007 | Numbers by Ear | Experimental | 39 | Right on Apple's voices after the fixes; it picks sensible voices from Windows and Android voice lists, but what those voices say is unknown |
 | 008 | Serve Time | Maintain | 45 | A verified planner for an occasional job |
 | 009 | Tear-Off Flyer | Archive candidate | 41 | Prints correctly now, but undistinctive and occasional, and print layout breaks silently between browsers (Safari's did, this week) |
 | 010 | Gallery Wall | Maintain | 44 | Accurate geometry for a once-in-a-while job |
 | 011 | Line Dry | Experimental | 39 | Honest since the audit, but its drying estimates have never been checked against real washing |
 | 012 | Glance | Maintain | 45 | A sound daily game with a share loop that costs almost nothing to keep; entertainment, so no investment |
-| 013 | In Tune | Experimental | 42 | The detector is verified with generated signals; it has never heard a real voice through a phone microphone |
+| 013 | In Tune | Experimental | 42 | The detector is verified with generated signals and synthesized singing, which found octave errors (fixed in P8); it has never heard a real voice through a phone microphone |
 | 014 | Playing Time | Maintain | 50 | Sound and weekly in season, but many free coaching apps compete, and a standalone would be a different product (live game tracking) |
 | 015 | Back Row | Maintain | 44 | Correct and unusual, for an occasional job |
 | 016 | Fluency Check | **Promote** | 52 | Weekly professional use, a large and reachable audience, and nothing about students leaves the device |
 | 017 | Frost Dates | **Promote** | 48 | The only frost-date tool found that covers anywhere in the world, for a search people make every spring; depends on Open-Meteo |
 | 018 | Off Book | Maintain | 48 | Useful line practice; real script PDFs vary more than the tests, and polished apps compete |
-| 019 | Form Check | Experimental | 45 | Works in Safari now with Apple-encoded video; real phone footage (4K, slow motion) is untested |
+| 019 | Form Check | Experimental | 45 | Works in Safari and Chrome with phone-like clips (4K, 240 fps slow motion, HDR, Android-like), stepping one frame since P8; real phones' files are untested |
 | 020 | Custody Calendar | **Promote** | 52 | A high-stakes, recurring planning job dominated by paid, account-based platforms; the share link carries the schedule |
-| 021 | Family Stories | Experimental | 44 | Irreplaceable recordings live in browser storage, and recording is untested in Safari |
+| 021 | Family Stories | Experimental | 44 | Irreplaceable recordings live in browser storage; recording works in Safari's engine (P8), but is untested on a real iPhone |
 | 022 | Day Clock | **Promote** | 52 | Daily, always-on use for people with memory loss: a free alternative to dedicated clocks, on a tablet the family already has |
 | 023 | Discussion Map | Maintain | 46 | Verified timing for a niche classroom job |
 | 024 | Ranked Choice Count | Maintain | 49 | The best-verified logic in Labs, but occasional and consequential, and organizations' rules vary. Closest to promotion |
@@ -169,6 +169,15 @@ Each stays live as it is. What would settle it, either way:
 - **#013 In Tune.** Does it work with real singers on real phones? Test a few voices on an iPhone and an Android phone, including a call interrupting Safari. If it holds: maintain. If not: archive.
 - **#019 Form Check.** Does it handle real phone footage (4K, high frame rates, slow motion, Android video)? Try clips from several phones. If it holds: maintain.
 - **#021 Family Stories.** Does recording work on real iPhones (Safari's MP4 chunks), and do people actually download their recordings? Test on a real iPhone. The data-loss risk is inherent to a browser-only recorder, so if downloads don't happen in practice, archive it.
+
+**P8 (2026-10-12)** narrowed each question as far as it goes without people or other devices; details in `.claude/EXPERIMENTAL_CANDIDATES.md`:
+- **In Tune:** synthesized singing found octave errors when a vowel boosts the second harmonic; they're fixed, except a child's "ah" at C5 and C♯5.
+- **Form Check:** phone-like clips all work; 240 fps slow motion now steps one frame, not four or eight.
+- **Family Stories:** recording, reload, download, and recovery work in WebKit (WebM and MP4); a private window now gets an honest message.
+- **Numbers by Ear:** sensible starting voices on Windows and Android voice lists.
+- **Line Dry:** nothing more without real washing.
+
+The questions themselves still need real use.
 
 ## Archive candidates
 

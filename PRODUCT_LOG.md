@@ -16,6 +16,18 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-12 · In Tune, Form Check, and Family Stories: fixes from testing without people
+
+- **What:**
+  - **In Tune:** some sung notes read an octave too high, so they could never match. This happened with "ah" high in a man's range, and with other vowels that make the second harmonic the loudest. They now read right.
+  - **Form Check:** slow-motion video from a phone (240 frames a second) now steps one frame at a time, and the page says 240 fps. Before, each step skipped 4 or 8 frames: the page could only learn the frame rate from the frames the screen showed. It now reads the rate from the video file.
+  - **Family Stories:** in a private window, which keeps no recordings, the page used to say the device was out of space. Now it says during recording that this browser isn't keeping the answer. After Stop, it offers the download, with a message that names both possible causes.
+- **Why:** P8 of the autonomous queue: reduce what's uncertain about the five experimental experiments without people or other devices. These came from synthesized singing, phone-like video clips made with Apple's encoders, and a generated tone in place of a microphone.
+- **Notes:**
+  - A child singing "ah" at C5 or C♯5 can still read an octave high. The rule that fixed it made buzzy tones read an octave low, so it was left.
+  - Real singers, real phones' video files, and real iPhones are still untested. Numbers by Ear's voices on Windows and Android need those devices, and Line Dry needs real washing.
+  - Details are in `.claude/EXPERIMENTAL_CANDIDATES.md`.
+
 ## 2026-10-12 · Search engines get a map of the site
 
 - **What:**
