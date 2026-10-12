@@ -30,8 +30,8 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ## Now
 
-- **Current:** P9, import, export, and durability.
-- **Next:** P10, production observability without analytics.
+- **Current:** P10, production observability without analytics.
+- **Next:** P11, dependencies and maintenance.
 
 ## Parked lanes (human-blocked)
 
@@ -126,10 +126,12 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ### P9: Import, export, and durability
 
-- `[ ]` Portfolio-wide review of what's stored, export and import round trips, schema versions, quota, multiple tabs, and warnings. **Inputs from P4:**
-  - 15 of the 21 experiments that save do it silently when storage fails. The riskiest hold typed-in work: Ranked Choice Count, Discussion Map, Secret Santa, Custody Calendar;
-  - one damaged Trip Board item sets the whole board aside (kept under `labs:trip-board:unreadable`) and shows an empty board with no message;
-  - the whole site shares 5,242,880 characters of localStorage; a Tear-Off Flyer photo takes up to about 1.5 million of them (29%).
+- `[x]` Done (2026-10-12). Findings in `.claude/DURABILITY_AUDIT.md`. **Fixed:**
+  - two open tabs erased each other's work: in Stall Till, switching tabs in the older one erased the newer one's sales. A shared hook (`src/components/useOtherTabs.ts`) now takes up another tab's save, also when a background tab is shown again, in 13 experiments (commits 2a1e12c, 6f847f6);
+  - nine pages holding typed-in work saved silently when storage failed; they now say so, with a shared notice (`src/components/NotSaving.tsx`). Stall Till's and Fluency Check's notices no longer blame private windows (2a1e12c);
+  - one damaged Trip Board item hid the whole board; the readable items now show, with a notice and a download of what was saved (efd862d).
+
+  **Held up:** export and import round trips (Trip Board files, Fluency Check CSVs, Custody Calendar links) and the damaged-storage fuzz (4,863 cases, 0 failures in each engine). **Left:** one storage budget for the whole site, with no notice of which experiment fills it; settings-only pages save silently; a rule for the next saved-format change (a new key).
 
 ### P10: Production observability without analytics
 
@@ -148,6 +150,11 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 - `[ ]` Only fixes backed by the audits above.
 
 ## Log
+
+- **2026-10-12:** P9 done and verified in production (commits 2a1e12c, efd862d, 6f847f6, and e8e6066; deploy 38323719203 succeeded; production serves `index--w1y5gDG.js`).
+  - **On production, in Chromium and WebKit:** the two-tab checks (13 experiments x 9 cases), no echo between tabs, all 13 notices at 390 px, Stall Till's 3 sales of 3, Fluency Check during a check and its reload recovery, Trip Board's damaged board, the three round trips, and Day Clock saving its settings again after they're cleared: all pass.
+  - **Before the push:** the damaged-storage fuzz, 4,863 cases in each engine with 0 failures, and 929 more for the two experiments that changed last; offline copies still load (6 focus experiments and all 26 pages, both engines); typing with 10,000 checks saved costs the same CPU time as before.
+  - **Smoke test:** 104 page loads, 0 problems.
 
 - **2026-10-12:** P8 done and verified in production (commits d9753e4, 07cf644, 402370f, 5029b4a, and 8e542ca; deploy 38311285906 succeeded; production serves `index-WyDuM49i.js`).
   - **In Tune on production** (`p8-intune-browser.cjs`, a synthesized man's voice as Chromium's microphone): G4 "ah" matched in 2.8 s, where it had read "G5: about 12 semitones too high" and never matched; D4 "ah" matched in 2.8 s.

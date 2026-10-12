@@ -47,7 +47,12 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
     - Family Stories: a private window now gets an honest message, during recording and after Stop. Recording, reload, download, and recovery work in WebKit with WebM and MP4.
     - Numbers by Ear: sensible starting voices on Windows and Android voice lists. Line Dry needs real washing.
   - **P13 candidate from P8:** Chromium's MediaRecorder WebM has no stored length (Family Stories' players can't seek until played through). Fixing it means rewriting recordings, so only with great care.
-  - **Next:** P9, import, export, and durability. Start with the P4 inputs above: the silent save failures (Ranked Choice Count, Discussion Map, Secret Santa, and Custody Calendar first), Trip Board's hidden unreadable board, and the shared storage quota.
+  - P9 done (2026-10-12) and verified in production (commits 2a1e12c to e8e6066, deploy 38323719203 succeeded): import, export, and durability, in `.claude/DURABILITY_AUDIT.md`.
+    - Two open tabs erased each other's work (Stall Till's sales, verified in both engines). Fixed with a shared hook, `src/components/useOtherTabs.ts`, in 13 experiments. CLAUDE.md now says new experiments save through it.
+    - Nine pages that held typed-in work saved silently when storage failed; they now say so (`src/components/NotSaving.tsx`). Private windows were wrongly blamed in two notices.
+    - Trip Board's damaged board is no longer hidden.
+    - Rule for the next saved-format change: use a new key (old tabs would otherwise strip the new format at once).
+  - **Next:** P10, a scheduled GitHub Actions check of the live site and Open-Meteo, if free and safe. A draft (34 checks in 5 seconds, read-only) is in the session scratchpad: every sitemap page with its own address, every script and style file, robots.txt, sw.js, a 404, and Open-Meteo's place search, forecast, and archive read with the pages' own parsers.
 
 ## Stage 0 interview preparation (complete; interviewing not begun)
 
