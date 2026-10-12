@@ -62,9 +62,91 @@ export function frameRate(gaps: readonly number[]): number | null {
   if (good.length < 3) return null
   const sorted = [...good].sort((a, b) => a - b)
   const median = sorted[Math.floor(sorted.length / 2)]
-  const raw = 1 / median
+  return snap(1 / median)
+}
+
+/** A frame rate snapped to a standard one when that's within 3%. */
+function snap(raw: number): number {
   const near = RATES.reduce((best, r) => (Math.abs(r - raw) < Math.abs(best - raw) ? r : best), RATES[0])
   return Math.abs(near - raw) / raw <= 0.03 ? near : Math.round(raw)
+}
+
+/**
+ * The frame rate an MP4 or MOV file records for its video: the most common frame duration in the track's sample
+ * table ('stts'), in its own time scale. Playback can't learn a rate higher than the screen's, such as a phone's
+ * 240 fps slow motion on a 60 Hz screen, as only every fourth frame is shown. Null for anything else, or a damaged file.
+ */
+export async function fileFrameRate(file: Blob): Promise<number | null> {
+  try {
+    // 'moov', the index, comes before or after the media data; walk the top-level boxes to it.
+    for (let offset = 0; offset + 8 <= file.size; ) {
+      const head = new DataView(await file.slice(offset, offset + 16).arrayBuffer())
+      let size = head.getUint32(0)
+      let header = 8
+      if (size === 1 && head.byteLength >= 16) {
+        size = Number(head.getBigUint64(8))
+        header = 16
+      } else if (size === 0) size = file.size - offset
+      if (size < header) return null
+      if (boxType(head, 4) === 'moov') return size <= 64_000_000 ? videoFrameRate(new DataView(await file.slice(offset + header, offset + size).arrayBuffer())) : null
+      offset += size
+    }
+  } catch {
+    // Not a file this can read: playback learns the rate instead.
+  }
+  return null
+}
+
+const boxType = (view: DataView, at: number) => String.fromCharCode(view.getUint8(at), view.getUint8(at + 1), view.getUint8(at + 2), view.getUint8(at + 3))
+
+/** The boxes directly inside [start, end) of a view, each with where its content starts and ends. */
+function children(view: DataView, start: number, end: number): { type: string; start: number; end: number }[] {
+  const out = []
+  for (let at = start; at + 8 <= end; ) {
+    const size = view.getUint32(at)
+    if (size < 8 || at + size > end) break
+    out.push({ type: boxType(view, at + 4), start: at + 8, end: at + size })
+    at += size
+  }
+  return out
+}
+
+function videoFrameRate(moov: DataView): number | null {
+  const find = (box: { start: number; end: number }, type: string) => children(moov, box.start, box.end).find((b) => b.type === type)
+  for (const trak of children(moov, 0, moov.byteLength).filter((b) => b.type === 'trak')) {
+    const mdia = find(trak, 'mdia')
+    const hdlr = mdia && find(mdia, 'hdlr')
+    if (!mdia || !hdlr || hdlr.end - hdlr.start < 12 || boxType(moov, hdlr.start + 8) !== 'vide') continue
+    const mdhd = find(mdia, 'mdhd')
+    const minf = find(mdia, 'minf')
+    const stbl = minf && find(minf, 'stbl')
+    const stts = stbl && find(stbl, 'stts')
+    if (!mdhd || !stts || mdhd.end - mdhd.start < 24 || stts.end - stts.start < 8) return null
+    const timescale = moov.getUint32(mdhd.start + (moov.getUint8(mdhd.start) === 1 ? 20 : 12))
+    // Entries are (frames, duration) pairs. The frame length is the mean duration of the middle 80% of frames: a
+    // phone's frame rate varies, a long last frame or a dropped one shouldn't count, and 240 fps in a time scale of
+    // 600 is written as durations of 2 and 3 in turn.
+    const count = Math.min(moov.getUint32(stts.start + 4), Math.floor((stts.end - stts.start - 8) / 8))
+    const runs: [number, number][] = []
+    let total = 0
+    for (let i = 0; i < count; i++) {
+      const frames = moov.getUint32(stts.start + 8 + i * 8)
+      runs.push([moov.getUint32(stts.start + 12 + i * 8), frames])
+      total += frames
+    }
+    runs.sort((a, b) => a[0] - b[0])
+    const [from, to] = [total * 0.1, total * 0.9]
+    let sum = 0
+    let kept = 0
+    for (let i = 0, seen = 0; i < runs.length; seen += runs[i][1], i++) {
+      const inside = Math.min(seen + runs[i][1], to) - Math.max(seen, from)
+      if (inside > 0) [sum, kept] = [sum + runs[i][0] * inside, kept + inside]
+    }
+    if (!timescale || !kept || !sum) return null
+    const raw = (timescale * kept) / sum
+    return raw > 8 && raw < 400 ? snap(raw) : null
+  }
+  return null
 }
 
 /** "1.23 s", with the frame number at the given rate. */

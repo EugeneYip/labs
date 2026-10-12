@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
-import { angleAt, distance, frameRate, labelSpot, lean, stepTime, timeLabel, type Drawing, type Point } from './model.ts'
+import { angleAt, distance, fileFrameRate, frameRate, labelSpot, lean, stepTime, timeLabel, type Drawing, type Point } from './model.ts'
 
 export type Tool = 'move' | 'line' | 'angle'
 export type Command = { kind: 'toggle' } | { kind: 'pause' } | { kind: 'step'; n: number } | { kind: 'rate'; rate: number }
@@ -34,6 +34,8 @@ export function Player({ file, tool, send, listen, active, onActivate, onRemove,
   const [rate, setRate] = useState<number>(1)
   const [fps, setFps] = useState<number | null>(null)
   const gaps = useRef<number[]>([])
+  // A rate read from the file wins over one learned in playback, which can't see more frames than the screen shows.
+  const fpsFromFile = useRef(false)
   const [drawings, setDrawings] = useState<Drawing[]>([])
   const [pending, setPendingState] = useState<Point[]>([])
   // Kept in a ref too, so quick taps each see the points before them.
@@ -56,6 +58,18 @@ export function Player({ file, tool, send, listen, active, onActivate, onRemove,
       v.pause()
       if (Number.isFinite(v.duration)) v.currentTime = 0
     })
+
+  useEffect(() => {
+    let current = true
+    fileFrameRate(file).then((rate) => {
+      if (!current || !rate) return
+      fpsFromFile.current = true
+      setFps(rate)
+    })
+    return () => {
+      current = false
+    }
+  }, [file])
 
   useEffect(() => {
     const u = URL.createObjectURL(file)
@@ -106,7 +120,7 @@ export function Player({ file, tool, send, listen, active, onActivate, onRemove,
         gaps.current.push(m.mediaTime - last.mediaTime)
         if (gaps.current.length > 120) gaps.current.shift()
         const detected = frameRate(gaps.current)
-        if (detected) setFps((f) => (f === detected ? f : detected))
+        if (detected && !fpsFromFile.current) setFps((f) => (f === detected ? f : detected))
       }
       last = m
       id = v.requestVideoFrameCallback(tick)
