@@ -30,8 +30,8 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ## Now
 
-- **Current:** P7, discoverability metadata.
-- **Next:** P8, experimental candidates.
+- **Current:** P8, experimental candidates.
+- **Next:** P9, import, export, and durability.
 
 ## Parked lanes (human-blocked)
 
@@ -109,7 +109,11 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ### P7: Discoverability metadata
 
-- `[ ]` Titles, descriptions, canonical URLs, Open Graph, robots.txt, sitemap.xml, per-route HTML, link text.
+- `[x]` Done (2026-10-12). **Fixed** (commit ad9eed8):
+  - `robots.txt` and `sitemap.xml` answered 404; the build now writes both from the registry (26 addresses);
+  - pages were also served at `/<slug>/index.html` with no canonical address; every page now has `<link rel="canonical">` and `og:url` with its own address, from `public/CNAME`; 404.html claims none.
+
+  **Already in place:** a title, description, and Open Graph title and description per page; a page file per experiment; descriptive link text. **Option for the owner:** a preview image (link previews are text-only). **Cosmetic, left alone:** 5 summaries are over 160 characters, so search results shorten them.
 
 ### P8: Experimental candidates
 
@@ -139,6 +143,8 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 - `[ ]` Only fixes backed by the audits above.
 
 ## Log
+
+- **2026-10-12:** P7 done and verified in production (commit ad9eed8, deploy 38304012548 succeeded). `.claude/qa/p7-meta-prod.cjs`: `robots.txt` and `sitemap.xml` answer 200, with 26 addresses; each page answers 200 with its own canonical and og:url; `/stall-till/index.html` names `/stall-till/`; an unknown address answers 404 with none. The smoke test: 104 page loads, 0 problems.
 
 - **2026-10-12:** P6 done and verified in production (commit 3dad21c with the audit in 383533a, deploy 38303281596 succeeded; production serves `index-BIylSpZc.js`).
   - **Fluency Check on production, in Chromium and WebKit** (`p6-fluency-log.cjs`): 500 rows at first, "Show all" by click and keyboard, the CSV with all 1,200, "Delete all 1,200 checks?", one student's 400.

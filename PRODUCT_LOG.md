@@ -16,6 +16,15 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-12 · Search engines get a map of the site
+
+- **What:**
+  - Labs now has a `sitemap.xml`, listing the homepage and every experiment, and a `robots.txt` pointing to it. Before, both addresses answered "not found".
+  - Each page names its one address (`labs.eugeneyip.net/<slug>/`), for search results and link previews. Each page can also be opened as `…/<slug>/index.html`, which search engines could otherwise count as a second copy.
+- **Why:** P7 of the autonomous queue, discoverability metadata. Titles, descriptions, link-preview text, link text, and a page file for each experiment were already in place.
+- **Notes:**
+  - Link previews show text only; there's no preview image. That's a design choice for the owner, not a fault.
+
 ## 2026-10-12 · Fluency Check: long logs open quickly
 
 - **What:** the log of saved checks starts with the newest 500, with "Show all" below. A log of thousands of checks now opens in about half a second on a phone, instead of up to three seconds with the page freezing. Downloading a CSV, the student filter, the progress chart, and "Delete all" still use every check.
