@@ -11,6 +11,9 @@ import { useCallback, useEffect, useRef } from 'react'
  * Save through the returned function: it writes only a changed value (or one the browser has lost), and remembers
  * what this tab wrote, so its own saves aren't taken for another tab's. Like `localStorage.setItem`, it throws when the
  * browser won't save.
+ *
+ * A new saved format needs a new key. An older version of the page still open (a tab left across a deploy, an offline
+ * copy) would take up the new format, drop what it doesn't know, and save that back at once.
  */
 export function useOtherTabs(key: string, adopt: () => void): (value: string) => void {
   // What this tab last read or wrote. It's first read as the page loads its saved state (call this hook just after

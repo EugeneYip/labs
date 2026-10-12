@@ -16,6 +16,19 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-12 · Work stays safe in two tabs, and pages say when they can't save
+
+- **What:**
+  - With an experiment open in two tabs, the older tab could erase the newer one's work the next time anything changed in it. In Stall Till, just switching tabs in the older one erased sales made in the newer one. Now each tab takes up what the other saves, a phone's background tab included when it's shown again. This covers 13 experiments: Stall Till, Fluency Check, Custody Calendar, Discussion Map, Ranked Choice Count, Secret Santa, Playing Time, Serve Time, Gallery Wall, Off Book, Tear-Off Flyer, Day Clock, and Trip Board.
+  - Nine experiments that hold typed-in work now say when the browser isn't saving it, because its storage is full or blocked, and how to keep the work. Before, they failed silently. They are Ranked Choice Count, Discussion Map, Secret Santa, Custody Calendar, Playing Time, Serve Time, Gallery Wall, Tear-Off Flyer, and Day Clock (in its settings).
+  - **Trip Board:** one damaged item no longer hides the whole saved board. The rest shows, with a note of what was left out and a download of what was saved.
+  - Stall Till's and Fluency Check's notices no longer blame private windows, which do save in today's browsers. A save fails when storage is full or blocked.
+- **Why:** P9 of the autonomous queue: import, export, and durability.
+- **Notes:**
+  - Exports and imports come back exactly, with awkward text: Trip Board files, Fluency Check CSVs, and Custody Calendar links.
+  - All Labs experiments share one storage budget of about 5 million characters per browser. The notices say when it's full, but not which experiment is using the space.
+  - Details are in `.claude/DURABILITY_AUDIT.md`.
+
 ## 2026-10-12 · In Tune, Form Check, and Family Stories: fixes from testing without people
 
 - **What:**

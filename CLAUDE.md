@@ -12,4 +12,5 @@ If `.claude/FACTORY_STATE.md` exists, an autonomous batch may be in progress: re
 - `npm run build`: type-check and production build. Must pass before every push.
 - Pushing to `main` deploys automatically through GitHub Actions.
 - New experiment: `src/experiments/<slug>/index.tsx` plus an entry in `src/experiments/registry.ts` (including the homepage `category` it's listed under), then an entry in `PRODUCT_LOG.md`.
+- Saving: an experiment that keeps work in localStorage saves through `useOtherTabs` (`src/components/useOtherTabs.ts`), so two open tabs don't erase each other's work, and shows `NotSaving` (`src/components/NotSaving.tsx`) when the browser refuses to save. A changed saved format goes under a new key, as the hook's comment explains.
 - Offline support: `public/sw.js` keeps the site's own pages and files once opened, so experiments work without a connection. Pages are always fetched fresh when online, and outside services and personal data are never cached. It's registered only in the built site (`src/main.tsx`). To turn it off for everyone, publish a `sw.js` that deletes its caches and unregisters itself on activate.
