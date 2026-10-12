@@ -97,8 +97,9 @@ export function count(candidates: readonly string[], ballots: readonly (readonly
   const breakTie = (tied: string[], most: boolean): { pick: string; by: 'earlier rounds' | 'lot' } => {
     for (let r = rounds.length - 2; r >= 0 && tied.length > 1; r--) {
       const v = rounds[r].votes
-      const best = (most ? Math.max : Math.min)(...tied.map((c) => v[c] ?? 0))
-      tied = tied.filter((c) => Math.abs((v[c] ?? 0) - best) <= EPS)
+      const of = (c: string) => (Object.hasOwn(v, c) ? v[c] : 0)
+      const best = (most ? Math.max : Math.min)(...tied.map(of))
+      tied = tied.filter((c) => Math.abs(of(c) - best) <= EPS)
     }
     return tied.length > 1 ? { pick: tied[Math.floor(random() * tied.length)], by: 'lot' } : { pick: tied[0], by: 'earlier rounds' }
   }
@@ -107,8 +108,8 @@ export function count(candidates: readonly string[], ballots: readonly (readonly
 
   for (let guard = 0; guard < 500; guard++) {
     const inRace = standing()
-    const votes: Record<string, number> = {}
-    for (const c of candidates) if (status.get(c) !== 'out') votes[c] = total(c)
+    // Built from entries so any name, even "__proto__", is an ordinary key.
+    const votes: Record<string, number> = Object.fromEntries(candidates.filter((c) => status.get(c) !== 'out').map((c) => [c, total(c)]))
     const active = inRace.reduce((n, c) => n + votes[c], 0)
     const threshold = method === 'irv' ? active / 2 : quota!
     const round: Round = { votes, exhausted: round5(exhausted), threshold, elected: [], eliminated: null, transfer: null, tie: null }
@@ -189,16 +190,16 @@ export function count(candidates: readonly string[], ballots: readonly (readonly
   }
 
   function record(from: string, kind: 'surplus' | 'elimination', moving: { ballot: number; weight: number }[], factor: number): Round['transfer'] {
-    const to: Record<string, number> = {}
+    const to = new Map<string, number>()
     const before = exhausted
     for (const p of moving) {
       const weight = round5(p.weight * factor)
       if (weight <= 0) continue
       at[p.ballot]++
       const next = pass(p.ballot, weight)
-      if (next) to[next] = round5((to[next] ?? 0) + weight)
+      if (next) to.set(next, round5((to.get(next) ?? 0) + weight))
     }
-    return { from, kind, to, exhausted: round5(exhausted - before) }
+    return { from, kind, to: Object.fromEntries(to), exhausted: round5(exhausted - before) }
   }
 
   return { method, seats, valid, quota, winners, rounds }

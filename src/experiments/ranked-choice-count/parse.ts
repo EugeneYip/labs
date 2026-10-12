@@ -18,7 +18,12 @@ export interface Parsed {
   skipped: number
   /** Ballots cut short by two candidates at the same rank (a ballot with two first choices is skipped instead). */
   overvotes: number
+  /** More ballots than the limit asked for; reading stopped there, so the ballots are incomplete. */
+  tooMany: boolean
 }
+
+/** The longest candidate name kept; longer names are cut to this, on ballots and in the list alike. */
+export const NAME_MAX = 60
 
 /** How many times each separator appears in a line, outside quoted fields. */
 function separators(line: string): Record<string, number> {
@@ -103,22 +108,28 @@ export function clean(marks: { candidate: string; rank: number }[]): { prefs: st
   return { prefs, overvote: false }
 }
 
-export function parseBallots(text: string, known: readonly string[] = []): Parsed {
-  const names = new Map<string, string>(known.map((n) => [key(n), n.trim()]))
-  const entered = new Set(known.map(key))
+/**
+ * Reads ballots, stopping once there are more than `limit` of them, so a few
+ * lines with huge counts can't build millions of ballots before anyone sees
+ * the total.
+ */
+export function parseBallots(text: string, known: readonly string[] = [], limit = 100_000): Parsed {
+  const tidy = (raw: string) => raw.trim().replace(/\s+/g, ' ').slice(0, NAME_MAX)
+  const names = new Map<string, string>(known.map((n) => [key(tidy(n)), tidy(n)]))
+  const entered = new Set(names.keys())
   const name = (raw: string) => {
-    const k = key(raw)
+    const k = key(tidy(raw))
     if (!k) return null
-    if (!names.has(k)) names.set(k, raw.trim().replace(/\s+/g, ' '))
+    if (!names.has(k)) names.set(k, tidy(raw))
     return names.get(k)!
   }
   const result = (format: Parsed['format'], rows: { prefs: string[]; overvote: boolean }[], skipped: number): Parsed => {
     const ballots = rows.filter((r) => r.prefs.length).map((r) => r.prefs)
-    return { format, candidates: [...names.values()], ballots, skipped: skipped + rows.filter((r) => !r.prefs.length).length, overvotes: rows.filter((r) => r.overvote && r.prefs.length).length }
+    return { format, candidates: [...names.values()], ballots, skipped: skipped + rows.filter((r) => !r.prefs.length).length, overvotes: rows.filter((r) => r.overvote && r.prefs.length).length, tooMany: ballots.length > limit }
   }
 
   const trimmed = text.trim()
-  if (!trimmed) return { format: 'empty', candidates: [...names.values()], ballots: [], skipped: 0, overvotes: 0 }
+  if (!trimmed) return { format: 'empty', candidates: [...names.values()], ballots: [], skipped: 0, overvotes: 0, tooMany: false }
   const rows = parseCSV(trimmed)
   const header = rows[0] ?? []
 
@@ -171,11 +182,17 @@ export function parseBallots(text: string, known: readonly string[] = []): Parse
   for (const line of trimmed.split(/\r?\n/)) {
     if (!line.trim()) continue
     const m = /^\s*(\d+)\s*(?:[:x×*]|\s)\s*(.*)$/i.exec(line)
-    // A candidate whose name starts with a number ("3 Musketeers") isn't a count of ballots.
-    const named = entered.has(key(line.split(/\s*(?:>|,|;|\t|\|)\s*/)[0]))
-    const times = m && !named && m[2].trim() && !/^\d+$/.test(m[2].trim()) ? Math.min(100_000, Number(m[1])) : 1
-    const body = m && times > 1 ? m[2] : line
-    const parts = body.split(/\s*(?:>|,|;|\t|\|)\s*/).filter((p) => p.trim())
+    // A candidate whose name starts with a number ("3 Musketeers") isn't a count of ballots, and nor is a number ranked first ("2024 > Ava").
+    const named = entered.has(key(tidy(line.split(/\s*(?:>|,|;|\t|\|)\s*/)[0])))
+    const rest = m ? m[2].trim() : ''
+    const counted = m !== null && !named && rest !== '' && !/^\d+$/.test(rest) && !/^[>,;|]/.test(rest)
+    const times = counted ? Number(m[1]) : 1
+    // "0: Ava > Ben" is no ballots at all.
+    if (!times) {
+      skipped++
+      continue
+    }
+    const parts = (counted ? rest : line).split(/\s*(?:>|,|;|\t|\|)\s*/).filter((p) => p.trim())
     const ballot = clean(parts.flatMap((p, k) => {
       const n = name(p)
       return n ? [{ candidate: n, rank: k + 1 }] : []
@@ -184,7 +201,8 @@ export function parseBallots(text: string, known: readonly string[] = []): Parse
       skipped++
       continue
     }
-    for (let k = 0; k < times; k++) out.push(ballot)
+    for (let k = Math.min(times, limit + 1 - out.length); k > 0; k--) out.push(ballot)
+    if (out.length > limit) break
   }
   return result('lines', out, skipped)
 }

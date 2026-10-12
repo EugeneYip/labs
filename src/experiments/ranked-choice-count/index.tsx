@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { count, firstChoiceWinners, type Result, type Round } from './count.ts'
-import { parseBallots, type Parsed } from './parse.ts'
+import { NAME_MAX, parseBallots, type Parsed } from './parse.ts'
 
 // Candidates, ballots, and seats, kept on this device only.
 const STORAGE_KEY = 'labs:ranked-choice-count'
@@ -116,8 +116,9 @@ function TapEntry({ candidates, ballots, onSave, onDelete }: { candidates: strin
   const [current, setCurrent] = useState<string[]>([])
   const [flash, setFlash] = useState('')
   const pick = (c: string) => setCurrent((b) => (b.includes(c) ? b.filter((x) => x !== c) : [...b, c]))
+  const full = ballots.length >= LIMITS.ballots
   const save = () => {
-    if (!current.length) return
+    if (!current.length || full) return
     onSave(current)
     setFlash(`Ballot ${ballots.length + 1} saved.`)
     setCurrent([])
@@ -163,8 +164,8 @@ function TapEntry({ candidates, ballots, onSave, onDelete }: { candidates: strin
         })}
       </div>
       <div className="mt-4 flex flex-wrap items-center gap-2">
-        <button type="button" onClick={save} disabled={!current.length} className={primary}>
-          Save ballot {ballots.length + 1}
+        <button type="button" onClick={save} disabled={!current.length || full} className={primary}>
+          {full ? `${LIMITS.ballots.toLocaleString()} ballots is the most this page counts` : `Save ballot ${ballots.length + 1}`}
         </button>
         <button type="button" onClick={() => setCurrent((b) => b.slice(0, -1))} disabled={!current.length} className={outline}>
           Undo last pick
@@ -203,7 +204,7 @@ function PasteEntry({ candidates, existing, onUse }: { candidates: string[]; exi
   const [text, setText] = useState('')
   const [note, setNote] = useState('')
   const file = useRef<HTMLInputElement>(null)
-  const parsed = useMemo(() => (text.trim() ? parseBallots(text, candidates) : null), [text, candidates])
+  const parsed = useMemo(() => (text.trim() ? parseBallots(text, candidates, LIMITS.ballots) : null), [text, candidates])
   const formats: Record<Parsed['format'], string> = { grid: 'a Google Forms grid', columns: 'choice columns', semicolons: 'a Microsoft Forms ranking', lines: 'one ballot per line', empty: '' }
 
   const open = async (f: File | undefined) => {
@@ -226,7 +227,13 @@ function PasteEntry({ candidates, existing, onUse }: { candidates: string[]; exi
       {note && <p className="text-sm text-red-700 dark:text-red-400">{note}</p>}
       {parsed && (
         <div className="rounded-xl border border-rule p-4 text-sm" role="status">
-          {parsed.ballots.length ? (
+          {parsed.tooMany ? (
+            <p>That’s more than {LIMITS.ballots.toLocaleString()} ballots, the most this page can count. If the first column is a row number or an ID, it’s being read as a count of ballots: leave that column out.</p>
+          ) : parsed.candidates.length > LIMITS.candidates ? (
+            <p>
+              That gives {parsed.candidates.length} candidates, and this page counts up to {LIMITS.candidates}. Check that the paste holds only the rankings.
+            </p>
+          ) : parsed.ballots.length ? (
             <>
               <p>
                 Read <span className="font-semibold tabular-nums">{parsed.ballots.length.toLocaleString()}</span> {parsed.ballots.length === 1 ? 'ballot' : 'ballots'} from {formats[parsed.format]}, ranking {parsed.candidates.length} candidates: <span dir="auto">{parsed.candidates.join(', ')}</span>.
@@ -241,12 +248,13 @@ function PasteEntry({ candidates, existing, onUse }: { candidates: string[]; exi
                 <button type="button" onClick={() => (onUse(parsed, true), setText(''))} className={primary}>
                   Use these {parsed.ballots.length.toLocaleString()} ballots
                 </button>
-                {existing > 0 && (
+                {existing > 0 && existing + parsed.ballots.length <= LIMITS.ballots && (
                   <button type="button" onClick={() => (onUse(parsed, false), setText(''))} className={outline}>
                     Add them to the {existing.toLocaleString()} already here
                   </button>
                 )}
               </div>
+              {existing > 0 && existing + parsed.ballots.length > LIMITS.ballots && <p className="mt-2 text-dim">Together with the {existing.toLocaleString()} already here, that would be more than {LIMITS.ballots.toLocaleString()}, so they can only replace them.</p>}
             </>
           ) : (
             <p>No ballots found yet. Each ballot needs at least one candidate ranked.</p>
@@ -298,7 +306,7 @@ function Results({ result, candidates, ballots }: { result: Result; candidates: 
   const text = () => [summary, `${result.valid} valid ballots. ${stv ? `Quota: ${result.quota}.` : 'Instant runoff.'}`, '', ...result.rounds.map((r, i) => `Round ${i + 1}: ${Object.entries(r.votes).sort((a, b) => b[1] - a[1]).map(([c, v]) => `${c} ${fmt(v, stv)}`).join(', ')}. ${describe(r, stv)}`)].join('\n')
   const csv = () => {
     const header = ['Candidate', ...result.rounds.map((_, i) => `Round ${i + 1}`)]
-    const rows = candidates.map((c) => [c, ...result.rounds.map((r) => (c in r.votes ? fmt(r.votes[c], stv) : ''))])
+    const rows = candidates.map((c) => [c, ...result.rounds.map((r) => (Object.hasOwn(r.votes, c) ? fmt(r.votes[c], stv) : ''))])
     rows.push(['No choices left', ...result.rounds.map((r) => fmt(r.exhausted, stv))])
     // Text a spreadsheet would run as a formula gets an apostrophe first, then quotes if it needs them.
     const cell = (v: string) => {
@@ -425,7 +433,7 @@ const unique = (list: string[]) => {
     const k = n.toLocaleLowerCase()
     if (!n || seen.has(k)) continue
     seen.add(k)
-    out.push(n.slice(0, 60))
+    out.push(n.slice(0, NAME_MAX))
   }
   return out
 }
