@@ -238,6 +238,7 @@ function PasteEntry({ candidates, existing, onUse }: { candidates: string[]; exi
               <p>
                 Read <span className="font-semibold tabular-nums">{parsed.ballots.length.toLocaleString()}</span> {parsed.ballots.length === 1 ? 'ballot' : 'ballots'} from {formats[parsed.format]}, ranking {parsed.candidates.length} candidates: <span dir="auto">{parsed.candidates.join(', ')}</span>.
               </p>
+              {parsed.rowNumbers && <p className="mt-1">The numbers in front of the lines run 1, 2, 3…, and each is read as how many ballots that line stands for. If they’re row numbers, leave that column out.</p>}
               {(parsed.skipped > 0 || parsed.overvotes > 0) && (
                 <p className="mt-1 text-dim">
                   {parsed.skipped > 0 && `${parsed.skipped} ${parsed.skipped === 1 ? 'row had' : 'rows had'} no usable ranking and ${parsed.skipped === 1 ? 'was' : 'were'} left out. `}

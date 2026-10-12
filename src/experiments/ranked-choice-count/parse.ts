@@ -20,6 +20,8 @@ export interface Parsed {
   overvotes: number
   /** More ballots than the limit asked for; reading stopped there, so the ballots are incomplete. */
   tooMany: boolean
+  /** Plain lines whose counts run 1, 2, 3… in order, as row numbers do: they may not be counts at all. */
+  rowNumbers: boolean
 }
 
 /** The longest candidate name kept; longer names are cut to this, on ballots and in the list alike. */
@@ -125,11 +127,11 @@ export function parseBallots(text: string, known: readonly string[] = [], limit 
   }
   const result = (format: Parsed['format'], rows: { prefs: string[]; overvote: boolean }[], skipped: number): Parsed => {
     const ballots = rows.filter((r) => r.prefs.length).map((r) => r.prefs)
-    return { format, candidates: [...names.values()], ballots, skipped: skipped + rows.filter((r) => !r.prefs.length).length, overvotes: rows.filter((r) => r.overvote && r.prefs.length).length, tooMany: ballots.length > limit }
+    return { format, candidates: [...names.values()], ballots, skipped: skipped + rows.filter((r) => !r.prefs.length).length, overvotes: rows.filter((r) => r.overvote && r.prefs.length).length, tooMany: ballots.length > limit, rowNumbers: false }
   }
 
   const trimmed = text.trim()
-  if (!trimmed) return { format: 'empty', candidates: [...names.values()], ballots: [], skipped: 0, overvotes: 0, tooMany: false }
+  if (!trimmed) return { format: 'empty', candidates: [...names.values()], ballots: [], skipped: 0, overvotes: 0, tooMany: false, rowNumbers: false }
   const rows = parseCSV(trimmed)
   const header = rows[0] ?? []
 
@@ -179,6 +181,8 @@ export function parseBallots(text: string, known: readonly string[] = [], limit 
   // Plain lines: "Ava > Ben > Cleo", "Ava, Ben", or "12: Ava > Ben" for twelve identical ballots.
   const out: { prefs: string[]; overvote: boolean }[] = []
   let skipped = 0
+  // The count in front of each ballot line, or 0 for a line without one.
+  const counts: number[] = []
   for (const line of trimmed.split(/\r?\n/)) {
     if (!line.trim()) continue
     const m = /^\s*(\d+)\s*(?:[:x×*]|\s)\s*(.*)$/i.exec(line)
@@ -201,8 +205,10 @@ export function parseBallots(text: string, known: readonly string[] = [], limit 
       skipped++
       continue
     }
+    counts.push(counted ? times : 0)
     for (let k = Math.min(times, limit + 1 - out.length); k > 0; k--) out.push(ballot)
     if (out.length > limit) break
   }
-  return result('lines', out, skipped)
+  // A spreadsheet's row numbers copied in front of each ballot ("1⇥Ava⇥Ben", "2⇥…") read as counts of 1, 2, 3…
+  return { ...result('lines', out, skipped), rowNumbers: counts.length >= 3 && counts.every((n, i) => n === i + 1) }
 }
