@@ -30,8 +30,8 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ## Now
 
-- **Current:** P4, the security and privacy audit.
-- **Next:** P5, offline and service-worker resilience.
+- **Current:** P5, offline and service-worker resilience.
+- **Next:** P6, performance and cold start.
 
 ## Parked lanes (human-blocked)
 
@@ -81,7 +81,17 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ### P4: Security and privacy audit
 
-- `[ ]` Hostile fixtures and fuzzing for pasted and imported content, share links, storage, and URLs. Record in `.claude/SECURITY_PRIVACY_AUDIT.md`.
+- `[x]` Done (2026-10-12); see `.claude/SECURITY_PRIVACY_AUDIT.md`. **Fixed:**
+  - Ranked Choice Count: a candidate named `__proto__` broke the count on every visit; 300 pasted lines could build 30 million ballots; "2024 > Ava" became 2,024 ballots for Ava; spreadsheet row numbers read as counts now get a hint;
+  - Fluency Check, Stall Till, Fair Share, Serve Time: damaged saved data broke the page on every visit (13 fuzz cases, plus 2 edge cases in Serve Time);
+  - Fluency Check: an alert and an honest button when the browser isn't saving; no silent cap on the log;
+  - Custody Calendar: bare carriage returns and control characters from a crafted share link reached the `.ics` file;
+  - Clean Paste: quadratic time (a 250 KB PDF copy froze the page for 6.9 s, 1 MB for 1.7 minutes); now linear, with identical output;
+  - Photo Scrub: an out-of-range character reference in a photo's XMP stopped it being cleaned at all, and 40,000 unclosed tags froze the page for 14 to 22 s; now cleaned in about 0.1 s, with identical reports on 5,003 generated packets;
+  - Off Book: read-aloud could send the script to an online voice, despite "Everything stays on this device";
+  - Frost Dates, Line Dry: the place search is sent to Open-Meteo too, and the pages now say so.
+
+  **Results:** the storage fuzz (4,863 cases) has none of the 13 earlier failures and no failure caused by saved data in Chromium (local-server connection resets aside, all rerun clean), and 0 failures in WebKit; share links (174 per engine), Trip Board's link checks, and CSV formula defusal held up unchanged; 25 unit-test files pass. **Left for later:** Off Book on one enormous line (P13 candidate); a CSP or HSTS would be owner decisions.
 
 ### P5: Offline and service-worker resilience
 
@@ -101,7 +111,10 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ### P9: Import, export, and durability
 
-- `[ ]` Portfolio-wide review of what's stored, export and import round trips, schema versions, quota, multiple tabs, and warnings.
+- `[ ]` Portfolio-wide review of what's stored, export and import round trips, schema versions, quota, multiple tabs, and warnings. **Inputs from P4:**
+  - 15 of the 21 experiments that save do it silently when storage fails. The riskiest hold typed-in work: Ranked Choice Count, Discussion Map, Secret Santa, Custody Calendar;
+  - one damaged Trip Board item sets the whole board aside (kept under `labs:trip-board:unreadable`) and shows an empty board with no message;
+  - the whole site shares 5,242,880 characters of localStorage; a Tear-Off Flyer photo takes up to about 1.5 million of them (29%).
 
 ### P10: Production observability without analytics
 
@@ -109,7 +122,7 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ### P11: Dependencies and maintenance
 
-- `[ ]` Vulnerabilities, unnecessary packages, warnings, and reproducibility from a clean checkout.
+- `[ ]` Vulnerabilities, unnecessary packages, warnings, and reproducibility from a clean checkout. **Input from P4:** the deploy log warns that `ubuntu-latest` moves to Ubuntu 26 from 2026-10-19.
 
 ### P12: Documentation and handoff
 
@@ -121,7 +134,11 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ## Log
 
-- **2026-10-11:** P3 done. The load-failure fix was verified locally in both engines. Production verification follows the deploy.
+- **2026-10-12:** P4 done and verified in production (commits dc6eaa2 to 0a5c65a, deploy 38282159275 succeeded; production serves the new build, `index-CEBx8cji.js`, on every page checked).
+  - **Production checks in Chromium and WebKit** (`.claude/qa/out/p4-prod.txt`): Ranked Choice Count (`__proto__` by instant runoff and STV, the 30-million-ballot paste refused, the row-number hint), Fluency Check with writes failing, Fair Share's damaged recent group, Off Book's device voice, both crafted photos cleaned in under 0.1 s, the Open-Meteo wording at 320 and 1280 px, 62 edge times, Clean Paste's 1 MB paste, and 174 hostile share links: all pass.
+  - **Smoke test:** the 26-page smoke test, 104 page loads, 0 problems.
+
+- **2026-10-11:** P3 done and verified in production (commit 702bc7d, deploy succeeded): the four load cases behave correctly in both engines, and the 26-page smoke test re-run on production is clean.
 
 - **2026-10-11:** P2 done and verified in production (commit 6f13d1c, deploy succeeded): the keyboard flows, announcements, Day Clock read-aloud and night contrast, and an axe re-scan of 32 runs with 0 violations.
 

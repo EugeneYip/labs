@@ -29,7 +29,16 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
   - P1 done (2026-10-11): trust wording in Fluency Check, Custody Calendar (plus a clear control), and Day Clock (a device-voice preference, an honest keep-awake caveat, supported browsers).
   - P2 done (2026-10-11): the accessibility audit; fixes in `.claude/ACCESSIBILITY_AUDIT.md`.
   - P3 done (2026-10-11): the browser matrix (Chromium and WebKit; Firefox blocked by the sandbox). Fixed blank pages on load failure. See `.claude/BROWSER_MATRIX.md`.
-  - **Next:** P4, the security and privacy audit.
+  - P4 done (2026-10-12) and verified in production (commits dc6eaa2 to 0a5c65a, deploy 38282159275 succeeded): the security and privacy audit, in `.claude/SECURITY_PRIVACY_AUDIT.md`. Fifteen findings fixed in seven commits:
+    - Ranked Choice Count: `__proto__` candidates, ballot-count expansion, numbers in pasted lines, a row-number hint;
+    - damaged saved data in Fluency Check (plus an honest "not saving" alert), Stall Till, Fair Share, and Serve Time; control characters in Custody Calendar's `.ics`;
+    - Clean Paste's linear rewrite (identical output);
+    - Photo Scrub: an out-of-range character reference blocked cleaning, and unclosed XMP tags froze the page;
+    - Off Book's on-device voice; Frost Dates and Line Dry saying the place search goes to Open-Meteo.
+  - **P4 results:** storage fuzz 4,863 cases with no data-caused failure in Chromium and 0 failures in WebKit; 174 hostile share links per engine; 25 unit-test files pass.
+  - **P9 inputs from P4:** 15 of the 21 experiments that save do it silently when storage fails; one damaged Trip Board item hides the whole board without a message; a Tear-Off Flyer photo can take up to 29% of the site's shared 5.2-million-character storage.
+  - **P11 input:** GitHub Actions warns that `ubuntu-latest` moves to Ubuntu 26 from 2026-10-19.
+  - **Next:** P5, offline and service-worker resilience. Found so far (local, both engines): every page works offline once opened, across upgrades and in old tabs, and saved data survives a deploy; but `/<slug>/index.html` isn't matched offline, and once more than 150 files pile up the worker drops files that saved pages still need (Day Clock then can't start offline). A fix is in the working tree (`public/sw.js`, uncommitted) and passes in both engines. Harness: `.claude/qa/p5-offline.cjs`. Playwright's WebKit loses Cache Storage when a worker updates in its throwaway profiles; use a persistent profile for WebKit update tests.
 
 ## Stage 0 interview preparation (complete; interviewing not begun)
 
