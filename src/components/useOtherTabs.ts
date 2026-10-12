@@ -8,8 +8,9 @@ import { useCallback, useEffect, useRef } from 'react'
  * Browsers announce another tab's save with a storage event, but a phone's background tab or a page brought back by
  * the Back button can miss it, so the key is also read again whenever the page is shown.
  *
- * Save through the returned function: it writes only a changed value, and remembers what this tab wrote, so its own
- * saves aren't taken for another tab's. Like `localStorage.setItem`, it throws when the browser won't save.
+ * Save through the returned function: it writes only a changed value (or one the browser has lost), and remembers
+ * what this tab wrote, so its own saves aren't taken for another tab's. Like `localStorage.setItem`, it throws when the
+ * browser won't save.
  */
 export function useOtherTabs(key: string, adopt: () => void): (value: string) => void {
   // What this tab last read or wrote. It's first read as the page loads its saved state (call this hook just after
@@ -53,7 +54,9 @@ export function useOtherTabs(key: string, adopt: () => void): (value: string) =>
 
   return useCallback(
     (value: string) => {
-      if (read(key) !== value) localStorage.setItem(key, value)
+      // A changed value is written straight away. An unchanged one is written only if what's stored differs, as when
+      // the browser has cleared it: reading a large value back costs time, so it's read only then.
+      if (value !== last.current!.value || read(key) !== value) localStorage.setItem(key, value)
       last.current!.value = value
     },
     [key],
