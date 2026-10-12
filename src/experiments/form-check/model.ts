@@ -72,8 +72,8 @@ function snap(raw: number): number {
 }
 
 /**
- * The frame rate an MP4 or MOV file records for its video: the most common frame duration in the track's sample
- * table ('stts'), in its own time scale. Playback can't learn a rate higher than the screen's, such as a phone's
+ * The frame rate an MP4 or MOV file records for its video, from the frame durations in the track's sample table
+ * ('stts'), in its own time scale. Playback can't learn a rate higher than the screen's, such as a phone's
  * 240 fps slow motion on a 60 Hz screen, as only every fourth frame is shown. Null for anything else, or a damaged file.
  */
 export async function fileFrameRate(file: Blob): Promise<number | null> {
