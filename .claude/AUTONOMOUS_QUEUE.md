@@ -30,8 +30,8 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ## Now
 
-- **Current:** P5, offline and service-worker resilience.
-- **Next:** P6, performance and cold start.
+- **Current:** P6, performance and cold start.
+- **Next:** P7, discoverability metadata.
 
 ## Parked lanes (human-blocked)
 
@@ -95,7 +95,11 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ### P5: Offline and service-worker resilience
 
-- `[ ]` System-level offline tests: first visit then offline, direct routes, upgrades, stale caches, old tabs, user data during updates. Especially Day Clock, Stall Till, Trip Board, Fluency Check, Family Stories, and Custody Calendar.
+- `[x]` Done (2026-10-12); see `.claude/OFFLINE_RESILIENCE.md`. **Fixed** (`public/sw.js`, commit 7082b95):
+  - once more than 150 files had piled up, the worker dropped the oldest first, which were the files saved pages still needed: Day Clock, opened earlier and not since, couldn't start offline. It now drops only files no saved page uses;
+  - `/<slug>/index.html` now finds the saved copy offline.
+
+  **Held up:** first visits (saved about 2 s after loading), every form of address, all 26 pages, pages never opened (the offline page), upgrades, tabs left open through a deploy, and saved data across a deploy, in Chromium and WebKit. **Found on the way:** in Playwright's WebKit, leaving a page the instant it loads can leave the worker installing until the browser restarts (3 of 14 tries; not at 250 ms or later); not the new worker, not checked in Safari; recorded as a residual risk.
 
 ### P6: Performance and cold start
 
@@ -133,6 +137,11 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 - `[ ]` Only fixes backed by the audits above.
 
 ## Log
+
+- **2026-10-12:** P5 done and verified in production (commits 7082b95 and 14aaf98, deploy 38298379025 succeeded; production's worker is the new one).
+  - **The real upgrade on production:** profiles that opened Day Clock, Stall Till, and Fluency Check under the old worker came back after the deploy and took the new one. All three still load offline, and `/day-clock/index.html` too, in Chromium and WebKit.
+  - **Fresh visitors on production:** first visits offline in every address form (6 of 6), all 26 pages, and pages never opened; the smoke test, 104 page loads, 0 problems.
+  - **The harness hang:** the first full run hung 1 h 40 min on an unbounded `navigator.serviceWorker.ready`. The harness now bounds every wait, scenario, and run, and only the unfinished part was rerun.
 
 - **2026-10-12:** P4 done and verified in production (commits dc6eaa2 to 0a5c65a, deploy 38282159275 succeeded; production serves the new build, `index-CEBx8cji.js`, on every page checked).
   - **Production checks in Chromium and WebKit** (`.claude/qa/out/p4-prod.txt`): Ranked Choice Count (`__proto__` by instant runoff and STV, the 30-million-ballot paste refused, the row-number hint), Fluency Check with writes failing, Fair Share's damaged recent group, Off Book's device voice, both crafted photos cleaned in under 0.1 s, the Open-Meteo wording at 320 and 1280 px, 62 edge times, Clean Paste's 1 MB paste, and 174 hostile share links: all pass.

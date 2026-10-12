@@ -61,6 +61,13 @@ The P5 build, from both 702bc7d and the P4 build (the real update for visitors: 
 | Trimmed files, starting from the old worker | Day Clock still fails: the old worker does that trim, during the visit that brings the new one | The same |
 | Data across a deploy, from 702bc7d and from P4 | 5 of 5 each | 5 of 5 each |
 
+## On production
+
+After the deploy (commits 7082b95 and 14aaf98, deploy 38298379025 succeeded; production's `sw.js` is the new one):
+- **The real upgrade** (`p5-prod-upgrade.cjs`). Before the deploy, profiles in Chromium and WebKit opened Day Clock, Stall Till, and Fluency Check under the old worker, and all three loaded offline. After it, the same profiles came back (opening only Stall Till online) and took the new worker. All three still load offline, and so does `/day-clock/index.html`, which only the new worker can serve. So every saved copy survived the switch.
+- **Fresh visitors:** first visit, then offline, 6 of 6 in every address form; all 26 pages offline; the offline page for pages never opened. All in both engines (`out/p5-prod.txt`).
+- **The 26-page smoke test:** 104 page loads, 0 problems, light and dark.
+
 ## The harness hang, and what it turned up
 
 The first full run hung for 1 h 40 min in WebKit's last scenario. The harness waited on `navigator.serviceWorker.ready` inside `page.evaluate`, which has no timeout of its own, and the worker never activated. Nothing else was holding the process open. The harness now polls the registration instead, puts a limit on every wait in a page, limits each scenario to 8 minutes and a run to 50, closes whatever a scenario leaves open, writes its results after every check, and exits explicitly. Only the unfinished part was rerun.
