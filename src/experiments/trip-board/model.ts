@@ -268,6 +268,31 @@ export function parseBoardJson(text: string): ParsedBoard {
   return { board: { name: board.name, items } }
 }
 
+/**
+ * The board saved in this browser, with every item that can be read: one damaged item (a browser fault, a hand edit)
+ * shouldn't hide the rest, as a file being imported does. `skipped` counts the items left out. Null when there's no
+ * board to read at all, such as one saved by a newer version.
+ */
+export function readSavedBoard(text: string): { board: Board; skipped: number } | null {
+  let file: unknown
+  try {
+    file = JSON.parse(text)
+  } catch {
+    return null
+  }
+  if (!isRecord(file) || file.format !== FILE_FORMAT || file.version !== FILE_VERSION) return null
+  const board = file.board
+  if (!isRecord(board) || !Array.isArray(board.items)) return null
+  const ids = new Set<string>()
+  const items: Item[] = []
+  for (const value of board.items.slice(0, LIMITS.items)) {
+    const item = readItem(value, ids)
+    if (typeof item !== 'string') items.push(item)
+  }
+  const name = typeof board.name === 'string' ? board.name.slice(0, LIMITS.name) : ''
+  return { board: { name, items }, skipped: board.items.length - items.length }
+}
+
 /** One item from a file, or what's wrong with it. Only known fields are kept. */
 function readItem(value: unknown, ids: Set<string>): Item | string {
   if (!isRecord(value)) return "can't be read."

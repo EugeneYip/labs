@@ -39,7 +39,7 @@ const NO_FILTERS: Filters = { search: '', category: 'all', status: 'all' }
 
 /** Experiment #001: one private board for collecting and deciding on trip research. */
 export default function TripBoard() {
-  const [board, setBoard, saved] = useBoard()
+  const [board, setBoard, saved, aside, dismissAside] = useBoard()
   const [filters, setFilters] = useState(NO_FILTERS)
   const [notice, setNotice] = useState<Notice | null>(null)
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -114,13 +114,17 @@ export default function TripBoard() {
   function exportBoard() {
     const now = new Date()
     const fileName = exportFileName(board, now)
-    const href = URL.createObjectURL(new Blob([boardToJson(board, now)], { type: 'application/json' }))
+    saveFile(boardToJson(board, now), fileName)
+    setNotice({ message: `Exported ${fileName}` })
+  }
+
+  function saveFile(text: string, fileName: string) {
+    const href = URL.createObjectURL(new Blob([text], { type: 'application/json' }))
     const link = Object.assign(document.createElement('a'), { href, download: fileName })
     document.body.append(link)
     link.click()
     link.remove()
     setTimeout(() => URL.revokeObjectURL(href), 30_000)
-    setNotice({ message: `Exported ${fileName}` })
   }
 
   async function importBoard(event: ChangeEvent<HTMLInputElement>) {
@@ -169,6 +173,20 @@ export default function TripBoard() {
         {!saved && (
           <p role="alert" className="mb-6 rounded-lg bg-red-500/10 px-4 py-3 text-sm text-red-800 dark:text-red-300">
             This browser isn't saving your board, perhaps because storage is blocked or full. Export a file to keep your work.
+          </p>
+        )}
+        {aside && (
+          <p role="status" className="mb-6 rounded-lg border border-rule px-4 py-3 text-sm text-pretty">
+            {aside.skipped === null
+              ? "The board saved in this browser couldn't be read (a newer version of Trip Board may have saved it), so this board started empty."
+              : `${aside.skipped === 1 ? 'One item' : `${aside.skipped} items`} saved in this browser couldn't be read, so ${aside.skipped === 1 ? "it's" : "they're"} left out.`}{' '}
+            A copy of everything that was saved is kept.{' '}
+            <button type="button" onClick={() => saveFile(aside.text, 'trip-board-saved-data.json')} className="cursor-pointer underline underline-offset-4">
+              Download the copy
+            </button>{' '}
+            <button type="button" onClick={dismissAside} className="cursor-pointer text-dim underline underline-offset-4">
+              Dismiss
+            </button>
           </p>
         )}
 
