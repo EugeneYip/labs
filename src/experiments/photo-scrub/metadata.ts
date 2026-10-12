@@ -398,11 +398,14 @@ export function formatSize(bytes: number): string {
 // XMP (an XML description some apps add)
 
 function readXmp(xml: string, report: Report) {
+  // Every search stops at the next tag, so thousands of unclosed tags in a crafted file can't make it take minutes.
+  // In well-formed XML a tag or attribute value can't hold a raw "<", so this finds the same values.
   const get = (name: string) => {
-    const attribute = new RegExp(`${name}="([^"]*)"`).exec(xml)
-    const element = new RegExp(`<${name}(?:\\s[^>]*)?>([\\s\\S]*?)</${name}>`).exec(xml)
-    const raw = attribute?.[1] ?? element?.[1] ?? ''
-    return decodeEntities(raw.replace(/<[^>]+>/g, ' '))
+    const attribute = new RegExp(`${name}="([^"<]*)"`).exec(xml)
+    const open = new RegExp(`<${name}(?:\\s[^<>]*)?>`).exec(xml)
+    const end = open ? xml.indexOf(`</${name}>`, open.index + open[0].length) : -1
+    const raw = attribute?.[1] ?? (open && end >= 0 ? xml.slice(open.index + open[0].length, end) : '')
+    return decodeEntities(raw.replace(/<[^<>]+>/g, ' '))
   }
   const before = report.findings.length
   const latitude = xmpDegrees(get('exif:GPSLatitude'))
@@ -433,9 +436,11 @@ function xmpDegrees(value: string): number | undefined {
 }
 
 function decodeEntities(text: string): string {
+  // A number past the last Unicode character would make fromCodePoint throw, and the whole photo go uncleaned.
+  const char = (code: number) => (code <= 0x10ffff ? String.fromCodePoint(code) : '\ufffd')
   return text
-    .replace(/&#(\d+);/g, (_, code: string) => String.fromCodePoint(Number(code)))
-    .replace(/&#x([0-9a-f]+);/gi, (_, code: string) => String.fromCodePoint(parseInt(code, 16)))
+    .replace(/&#(\d+);/g, (_, code: string) => char(Number(code)))
+    .replace(/&#x([0-9a-f]+);/gi, (_, code: string) => char(parseInt(code, 16)))
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
     .replace(/&quot;/g, '"')
