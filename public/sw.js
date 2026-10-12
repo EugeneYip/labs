@@ -7,6 +7,8 @@
  *   visit), the saved copy when offline or when the network is very slow.
  * - Built files in /assets/ have content hashes in their names, so a saved
  *   copy never goes stale; other files are refreshed in the background.
+ * - Old built files are dropped once there are more than 150, except the ones
+ *   a saved page still uses, so every saved page keeps working offline.
  * - Only this site's own files are kept. Requests to outside services (such
  *   as weather data) pass straight through and are never stored, and nothing
  *   people type is ever part of a request, so no personal data is cached.
@@ -18,7 +20,7 @@
 const VERSION = 1
 const PAGES = `labs-pages-${VERSION}`
 const FILES = `labs-files-${VERSION}`
-/** Old built files pile up across deploys; this keeps the newest ones. */
+/** Old built files pile up across deploys; past this many, ones no saved page uses are dropped, oldest first. */
 const MAX_FILES = 150
 /** How long to wait for a page on a bad connection before using the saved copy. */
 const PATIENCE_MS = 4000
@@ -64,11 +66,12 @@ self.addEventListener('message', (event) => {
   )
 })
 
-/** One saved copy per page: the query and fragment don't matter, and /x matches /x/. */
+/** One saved copy per page: the query and fragment don't matter, and /x and /x/index.html match /x/. */
 function pageKey(href) {
   const url = new URL(href)
   url.search = ''
   url.hash = ''
+  url.pathname = url.pathname.replace(/\/index\.html$/, '/')
   if (!url.pathname.endsWith('/') && !url.pathname.split('/').pop().includes('.')) url.pathname += '/'
   return url.href
 }
@@ -107,7 +110,35 @@ async function file(event, hashed) {
 
 async function trim(cache) {
   const keys = await cache.keys()
-  for (const key of keys.slice(0, Math.max(0, keys.length - MAX_FILES))) await cache.delete(key)
+  if (keys.length <= MAX_FILES) return
+  const needed = await neededFiles(cache)
+  const spare = keys.filter((key) => !needed.has(key.url))
+  for (const key of spare.slice(0, keys.length - MAX_FILES)) await cache.delete(key)
+}
+
+/**
+ * The files saved pages still need: the scripts and styles each page names, and the files
+ * those scripts load in turn (an experiment's own code, named "./<name>-<hash>.js").
+ */
+async function neededFiles(files) {
+  const pages = await caches.open(PAGES)
+  const needed = new Set()
+  const scripts = []
+  const add = (href) => {
+    if (needed.has(href)) return
+    needed.add(href)
+    if (href.endsWith('.js')) scripts.push(href)
+  }
+  for (const request of await pages.keys()) {
+    const html = await (await pages.match(request)).text()
+    for (const [path] of html.matchAll(/\/assets\/[\w.-]+\.(?:js|css)/g)) add(new URL(path, self.location.origin).href)
+  }
+  while (scripts.length) {
+    const href = scripts.pop()
+    const script = await files.match(href)
+    if (script) for (const [, name] of (await script.text()).matchAll(/["'`]\.\/([\w.-]+\.(?:js|css))["'`]/g)) add(new URL(name, href).href)
+  }
+  return needed
 }
 
 function offline() {
