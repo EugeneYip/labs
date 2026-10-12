@@ -178,12 +178,15 @@ function InterviewView({ interview, onChange, onClose }: { interview: Interview;
   const [adding, setAdding] = useState(false)
   const [saving, setSaving] = useState(false)
   const [note, setNote] = useState('')
-  // An answer that couldn't be stored (a full device), still downloadable so it isn't lost.
+  // An answer that couldn't be stored (a full device, or a private window, which keeps no recordings), still
+  // downloadable so it isn't lost.
   const [unsaved, setUnsaved] = useState<{ blob: Blob; name: string } | null>(null)
   // The answer being recorded is saved a second at a time under this id, which the finished clip then takes.
   const draft = useRef<string | null>(null)
+  // A second that couldn't be saved means this answer won't be kept either: say so while it's still being recorded.
+  const [notKeeping, setNotKeeping] = useState(false)
   const rec = useRecorder((blob, n) => {
-    if (draft.current) void savePart(draft.current, n, blob).catch(() => {})
+    if (draft.current) void savePart(draft.current, n, blob).catch(() => setNotKeeping(true))
   })
   const recording = rec.state === 'recording'
   useWakeLock(recording)
@@ -205,6 +208,7 @@ function InterviewView({ interview, onChange, onClose }: { interview: Interview;
   const toggleRecord = async () => {
     if (!question) return
     if (!recording) {
+      setNotKeeping(false)
       const type = await rec.start()
       if (type) {
         void keepStored()
@@ -229,7 +233,7 @@ function InterviewView({ interview, onChange, onClose }: { interview: Interview;
       setNote('')
       setUnsaved(null)
     } catch {
-      setNote('This device is out of storage space, so the last answer couldn’t be kept here. Download it now, then download and delete some recordings before recording more.')
+      setNote('This browser couldn’t keep the last answer. It may be a private window, which keeps no recordings, or the device may be out of space. Download it now so it isn’t lost.')
       setUnsaved({ blob: take.blob, name: `${safeName(question.text)}.${extension(take.type)}` })
     }
   }
@@ -332,6 +336,11 @@ function InterviewView({ interview, onChange, onClose }: { interview: Interview;
           {(rec.error || note) && (
             <p className="mt-3 text-sm text-red-700 dark:text-red-400" role="alert">
               {rec.error || note}
+            </p>
+          )}
+          {recording && notKeeping && (
+            <p className="mt-3 text-sm text-red-700 dark:text-red-400" role="alert">
+              This browser isn’t keeping this answer as it’s recorded. It may be a private window, or the device may be out of space. When you stop, download it so it isn’t lost.
             </p>
           )}
           {unsaved && (
