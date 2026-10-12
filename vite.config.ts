@@ -1,4 +1,4 @@
-import { existsSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { defineConfig, type Plugin } from 'vite'
@@ -12,11 +12,16 @@ export default defineConfig({
 /**
  * GitHub Pages only serves files that exist, so for each registered experiment
  * this writes <slug>/index.html: a copy of the built index.html carrying that
- * experiment's title and summary. Direct links then load, and link previews
- * show the right text. It also writes 404.html so unknown addresses show the
- * app's "not found" page. Before building, it checks the registry for mistakes.
+ * experiment's title, summary, and address. Direct links then load, link
+ * previews show the right text, and search engines know /<slug>/ is the page's
+ * one address (it's also reachable as /<slug>/index.html). It also writes
+ * 404.html so unknown addresses show the app's "not found" page, and
+ * sitemap.xml and robots.txt listing every page. Before building, it checks
+ * the registry for mistakes.
  */
 function experimentPages(): Plugin {
+  // The site's address comes from the custom domain GitHub Pages serves it on.
+  const site = `https://${readFileSync('public/CNAME', 'utf8').trim()}`
   return {
     name: 'labs:experiment-pages',
     apply: 'build',
@@ -46,14 +51,24 @@ function experimentPages(): Plugin {
       if (index?.type !== 'asset' || typeof index.source !== 'string') {
         return this.error('index.html is missing from the build output.')
       }
+      const template = index.source
       for (const { slug, title, summary } of experiments) {
         this.emitFile({
           type: 'asset',
           fileName: `${slug}/index.html`,
-          source: withPageMeta(index.source, `${title} · Labs`, summary),
+          source: withAddress(withPageMeta(template, `${title} · Labs`, summary), `${site}/${slug}/`),
         })
       }
-      this.emitFile({ type: 'asset', fileName: '404.html', source: index.source })
+      index.source = withAddress(template, `${site}/`)
+      // A page that isn't there has no address of its own.
+      this.emitFile({ type: 'asset', fileName: '404.html', source: template })
+      const pages = [`${site}/`, ...experiments.map(({ slug }) => `${site}/${slug}/`)]
+      this.emitFile({
+        type: 'asset',
+        fileName: 'sitemap.xml',
+        source: `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${pages.map((url) => `  <url><loc>${url}</loc></url>`).join('\n')}\n</urlset>\n`,
+      })
+      this.emitFile({ type: 'asset', fileName: 'robots.txt', source: `User-agent: *\nAllow: /\n\nSitemap: ${site}/sitemap.xml\n` })
     },
   }
 }
@@ -71,6 +86,17 @@ function withPageMeta(html: string, title: string, description: string): string 
     html = html.replace(pattern, (_match, start: string, end: string) => start + escapeHtml(value) + end)
   }
   return html
+}
+
+/**
+ * Adds the page's canonical address and its link-preview address. They're added here, not written in
+ * index.html, because Vite would try to bundle a <link href> there as a file.
+ */
+function withAddress(html: string, url: string): string {
+  const at = html.indexOf('</title>')
+  if (at < 0) throw new Error('index.html needs a <title>')
+  const tags = `\n    <link rel="canonical" href="${escapeHtml(url)}" />\n    <meta property="og:url" content="${escapeHtml(url)}" />`
+  return html.slice(0, at + '</title>'.length) + tags + html.slice(at + '</title>'.length)
 }
 
 function escapeHtml(text: string): string {
