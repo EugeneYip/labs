@@ -30,8 +30,8 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ## Now
 
-- **Current:** P6, performance and cold start.
-- **Next:** P7, discoverability metadata.
+- **Current:** P7, discoverability metadata.
+- **Next:** P8, experimental candidates.
 
 ## Parked lanes (human-blocked)
 
@@ -103,7 +103,9 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ### P6: Performance and cold start
 
-- `[ ]` Bundle sizes, lazy loading, large data, memory and object-URL cleanup. Record in `.claude/PERFORMANCE_AUDIT.md`.
+- `[x]` Done (2026-10-12); see `.claude/PERFORMANCE_AUDIT.md`. **Fixed** (commit 3dad21c): Fluency Check's log drew every check, so after P4 removed its cap a 10,000-check log took 3.3 s to open on a slow phone CPU. The table now starts with the newest 500, with "Show all"; it opens in about 0.6 s at any size.
+
+  **Held up:** 90 to 105 kB per cold page; on Lighthouse's mobile throttling every page shows its content by 1.27 s (LCP median 1.23 s, slowest 1.87 s); other large data (100,000 ballots, 10,000 turns, a 50 MB CSV); no memory growth over 24 hours of Day Clock; every object URL released after real flows. **Option, not a defect:** a `modulepreload` hint for each experiment's code would save about one round trip.
 
 ### P7: Discoverability metadata
 
@@ -137,6 +139,11 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 - `[ ]` Only fixes backed by the audits above.
 
 ## Log
+
+- **2026-10-12:** P6 done and verified in production (commit 3dad21c with the audit in 383533a, deploy 38303281596 succeeded; production serves `index-BIylSpZc.js`).
+  - **Fluency Check on production, in Chromium and WebKit** (`p6-fluency-log.cjs`): 500 rows at first, "Show all" by click and keyboard, the CSV with all 1,200, "Delete all 1,200 checks?", one student's 400.
+  - **Large logs on production** (slowed CPU): 2,000 to 10,000 checks open in 0.63 to 0.65 s.
+  - **Smoke test:** 104 page loads, 0 problems.
 
 - **2026-10-12:** P5 done and verified in production (commits 7082b95 and 14aaf98, deploy 38298379025 succeeded; production's worker is the new one).
   - **The real upgrade on production:** profiles that opened Day Clock, Stall Till, and Fluency Check under the old worker came back after the deploy and took the new one. All three still load offline, and `/day-clock/index.html` too, in Chromium and WebKit.
