@@ -54,6 +54,8 @@ const PAGE_ONLY = /^(?:page|p\.|pg\.?|seite|página|pagina)\s*\S|^[-–—]\s*\d
 const CLAUSE_END = /[.!?:;。！？]["'”’)\]]*$/
 const CJK = /[぀-ヿ㐀-䶿一-鿿豈-﫿\u3000-〿＀-￯]/
 const SENTENCE_END = /[.!?。！？]["'”’)\]]*$/
+/** How far back to look for the start of a split word or address: further than any real one, so a hostile run of split lines stays quick. */
+const LONGEST = 1000
 
 export function mend(input: string, options: Options): { text: string; stats: Stats } {
   const stats: Stats = { joinedLines: 0, fixedHyphens: 0, removedLines: 0, removed: [], quoteMarks: 0, fixedCharacters: 0 }
@@ -130,25 +132,42 @@ function dropFurniture(lines: string[], stats: Stats): string[] {
   t.forEach((line, i) => {
     const k = key(line)
     if (!page[i] && k.length >= 3 && k.length <= 60 && /\p{L}{3}/u.test(k) && !LIST_ITEM.test(line)) {
-      positions.set(k, [...(positions.get(k) ?? []), i])
+      const at = positions.get(k)
+      if (at) at.push(i)
+      else positions.set(k, [i])
     }
   })
   const repeated = [...positions.values()].filter((at) => at.length >= 3 && (at[at.length - 1] - at[0]) / (at.length - 1) >= 15)
   const candidate = page.slice()
   for (const at of repeated) for (const i of at) candidate[i] = true
 
+  // Worked out once for every line, so long or repetitive text costs no more per line than a short page.
+  const nearest = (keep: (j: number) => boolean) => {
+    const before = new Array<number>(t.length)
+    const after = new Array<number>(t.length)
+    for (let i = 0, last = -1; i < t.length; i++) {
+      before[i] = last
+      if (keep(i)) last = i
+    }
+    for (let i = t.length - 1, last = -1; i >= 0; i--) {
+      after[i] = last
+      if (keep(i)) last = i
+    }
+    return { before, after }
+  }
+  const lineNear = nearest((j) => !!t[j])
+  const textNear = nearest((j) => !!t[j] && !candidate[j])
   /** The nearest line in that direction that isn't blank, and isn't furniture too if `text`. */
   const near = (i: number, step: number, text = false) => {
-    let j = i + step
-    while (j >= 0 && j < t.length && (!t[j] || (text && candidate[j]))) j += step
-    return j >= 0 && j < t.length ? j : -1
+    const { before, after } = text ? textNear : lineNear
+    return step < 0 ? before[i] : after[i]
   }
-  /** Lines of text in the paragraph from line i onward, in that direction. */
-  const extent = (i: number, step: number) => {
-    let n = 0
-    for (let j = i; j >= 0 && j < t.length && t[j]; j += step) if (!candidate[j]) n++
-    return n
-  }
+  // Lines of text in the paragraph from line i onward, in that direction.
+  const upward = new Array<number>(t.length)
+  const downward = new Array<number>(t.length)
+  for (let i = 0; i < t.length; i++) upward[i] = t[i] ? (i > 0 ? upward[i - 1] : 0) + (candidate[i] ? 0 : 1) : 0
+  for (let i = t.length - 1; i >= 0; i--) downward[i] = t[i] ? (i < t.length - 1 ? downward[i + 1] : 0) + (candidate[i] ? 0 : 1) : 0
+  const extent = (i: number, step: number) => (step < 0 ? upward[i] : downward[i])
   /** A sentence runs on across line i: a word split before it, or a full line and lowercase after it, in mid-paragraph. */
   const runsAcross = (i: number) => {
     const a = near(i, -1, true)
@@ -180,7 +199,12 @@ function dropFurniture(lines: string[], stats: Stats): string[] {
   // The next page's number, a page or more away: 12 … 13 … 14.
   const value = (i: number) => Number(/\d+/.exec(t[i])![0])
   const byValue = new Map<number, number[]>()
-  page.forEach((p, i) => p && byValue.set(value(i), [...(byValue.get(value(i)) ?? []), i]))
+  page.forEach((p, i) => {
+    if (!p) return
+    const at = byValue.get(value(i))
+    if (at) at.push(i)
+    else byValue.set(value(i), [i])
+  })
   const queue = drop.flatMap((d, i) => (d ? [i] : []))
   while (queue.length) {
     const j = queue.pop()!
@@ -237,14 +261,42 @@ function width(lengths: number[]): number {
 
 interface Block {
   list: boolean
-  text: string
+  /** The paragraph's lines as joined, put together at the end. */
+  parts: string[]
+  /**
+   * A copy of the paragraph's last stretch, at least 2 × LONGEST characters
+   * when there are that many, for the checks at the end. Reading the end of
+   * a string built by appending makes the browser copy it whole each time,
+   * which is slow in a long paragraph.
+   */
+  end: string
   /** Separated from the previous block by a blank line in the original. */
   afterGap: boolean
+}
+
+/** Adds a line to a paragraph, first dropping the paragraph's last character if `dropLast`. */
+function append(b: Block, glue: string, line: string, dropLast = false) {
+  if (dropLast) {
+    b.parts[b.parts.length - 1] = b.parts[b.parts.length - 1].slice(0, -1)
+    b.end = b.end.slice(0, -1)
+  }
+  b.parts.push(glue + line)
+  b.end += glue + line
+  if (b.end.length > 4 * LONGEST) b.end = b.end.slice(-2 * LONGEST)
 }
 
 function joinParagraphs(lines: string[], options: Options, stats: Stats): string {
   const typical = width(lines.filter((l) => l).map((l) => l.length))
   const whole = lines.join(' ')
+  // Pairs the text writes with a hyphen somewhere ("well-known"), lowercased, found once on the first split word.
+  let pairs: Set<string> | null = null
+  const writtenHyphenated = (a: string, b: string) => {
+    if (!pairs) {
+      pairs = new Set()
+      for (const m of whole.matchAll(/(?<!\p{L})(?=(\p{L}+)[-\u2010](\p{L}+)(?!\p{L}))/gu)) pairs.add(`${m[1]}-${m[2]}`.toLowerCase())
+    }
+    return pairs.has(`${a}-${b}`.toLowerCase())
+  }
   const blocks: Block[] = []
   let current: Block | null = null
   let last = ''
@@ -259,28 +311,31 @@ function joinParagraphs(lines: string[], options: Options, stats: Stats): string
     }
     const listItem = LIST_ITEM.test(line)
     if (current && !listItem && shouldJoin(last, line, typical)) {
-      const hyphen = new RegExp(`(\\p{L}+)${HYPHEN}$`, 'u').exec(current.text)
-      if (current.text.endsWith(SOFT_HYPHEN)) {
+      const hyphen = splitWord(current.end)
+      if (current.end.endsWith(SOFT_HYPHEN)) {
         // A soft hyphen marks where a word was split for layout: always rejoin it.
-        current.text = current.text.slice(0, -1) + line
+        append(current, '', line, true)
         stats.fixedHyphens++
       } else if (hyphen && /^\p{Ll}/u.test(line)) {
         // "infor-" + "mation" → "information", unless the text writes the pair hyphenated elsewhere ("well-known").
         const next = /^\p{L}+/u.exec(line)![0]
         // Typesetters don't hyphenate web and email addresses, so a hyphen inside one is part of it.
-        const address = /\/\/|www\.|@/i.test(/\S*$/.exec(current.text)![0] + /^\S*/.exec(line)![0])
-        const compound = !options.fixHyphens || address || new RegExp(`(^|[^\\p{L}])${escape(hyphen[1])}${HYPHEN}${escape(next)}(?![\\p{L}])`, 'iu').test(whole)
-        current.text = current.text.slice(0, -1) + (compound ? '-' : '') + line
+        const end = current.end
+        let word = end.length
+        while (word > 0 && word > end.length - LONGEST && !/\s/.test(end[word - 1])) word--
+        const address = /\/\/|www\.|@/i.test(end.slice(word) + /^\S*/.exec(line)![0])
+        const compound = !options.fixHyphens || address || writtenHyphenated(hyphen, next)
+        append(current, compound ? '-' : '', line, true)
         if (!compound) stats.fixedHyphens++
       } else {
         // No space after a dash on a word ("anti-" + "American") or between Chinese or Japanese characters; a spaced dash keeps its space.
-        const glue = /\S[-\u2010–—]$/.test(current.text) || (CJK.test(current.text.slice(-1)) && CJK.test(line[0])) ? '' : ' '
-        current.text += glue + line
+        const glue = /\S[-\u2010–—]$/.test(current.end.slice(-3)) || (CJK.test(current.end.slice(-1)) && CJK.test(line[0])) ? '' : ' '
+        append(current, glue, line)
       }
       stats.joinedLines++
     } else {
       if (current) blocks.push(current)
-      current = { list: listItem, text: line, afterGap: gap }
+      current = { list: listItem, parts: [line], end: line, afterGap: gap }
     }
     gap = false
     last = line
@@ -288,7 +343,7 @@ function joinParagraphs(lines: string[], options: Options, stats: Stats): string
   if (current) blocks.push(current)
 
   const breakBetween = options.paragraphBreak === 'blank' ? '\n\n' : '\n'
-  return blocks.map((b, i) => (i === 0 ? '' : b.list && blocks[i - 1].list && !b.afterGap ? '\n' : breakBetween) + b.text.replaceAll(SOFT_HYPHEN, '')).join('')
+  return blocks.map((b, i) => (i === 0 ? '' : b.list && blocks[i - 1].list && !b.afterGap ? '\n' : breakBetween) + b.parts.join('').replaceAll(SOFT_HYPHEN, '')).join('')
 }
 
 /**
@@ -316,6 +371,19 @@ function keepLines(lines: string[], options: Options): string {
   return lines.join('\n').replace(/\n{2,}/g, blank).replaceAll(SOFT_HYPHEN, '')
 }
 
-function escape(text: string): string {
-  return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+/**
+ * The letters just before a hyphen that ends the text ("infor" in "… infor-"),
+ * or null. It reads back from the end, so a long paragraph costs no more than
+ * a short one.
+ */
+function splitWord(text: string): string | null {
+  if (!new RegExp(`${HYPHEN}$`).test(text.slice(-1))) return null
+  let start = text.length - 1
+  while (start > 0 && start > text.length - LONGEST) {
+    const pair = start >= 2 && /^[\ud800-\udbff][\udc00-\udfff]$/.test(text.slice(start - 2, start))
+    const ch = pair ? text.slice(start - 2, start) : text[start - 1]
+    if (!/^\p{L}$/u.test(ch)) break
+    start -= ch.length
+  }
+  return start < text.length - 1 ? text.slice(start, -1) : null
 }
