@@ -16,6 +16,14 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-12 · Fluency Check: long logs open quickly
+
+- **What:** the log of saved checks starts with the newest 500, with "Show all" below. A log of thousands of checks now opens in about half a second on a phone, instead of up to three seconds with the page freezing. Downloading a CSV, the student filter, the progress chart, and "Delete all" still use every check.
+- **Why:** P6 of the autonomous queue, a performance audit. Since the security pass, the log keeps every check (it used to drop the oldest past 2,000 without a word), so a long log drew a very long table.
+- **Notes:**
+  - The rest held up: every page starts in about 1.2 seconds on a slow phone connection, other large data loads quickly, pages left running for a day don't grow in memory, and temporary file links are released after downloads.
+  - Details are in `.claude/PERFORMANCE_AUDIT.md`.
+
 ## 2026-10-12 · Offline copies stay complete
 
 - **What:**
