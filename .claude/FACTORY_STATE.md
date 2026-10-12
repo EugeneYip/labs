@@ -28,7 +28,8 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 - **Progress:**
   - P1 done (2026-10-11): trust wording in Fluency Check, Custody Calendar (plus a clear control), and Day Clock (a device-voice preference, an honest keep-awake caveat, supported browsers).
   - P2 done (2026-10-11): the accessibility audit; fixes in `.claude/ACCESSIBILITY_AUDIT.md`.
-  - **Next:** P3, the cross-browser matrix.
+  - P3 done (2026-10-11): the browser matrix (Chromium and WebKit; Firefox blocked by the sandbox). Fixed blank pages on load failure. See `.claude/BROWSER_MATRIX.md`.
+  - **Next:** P4, the security and privacy audit.
 
 ## Stage 0 interview preparation (complete; interviewing not begun)
 

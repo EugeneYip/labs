@@ -30,14 +30,15 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ## Now
 
-- **Current:** P3, the cross-browser matrix (Firefox needs installing first).
-- **Next:** P4, the security and privacy audit.
+- **Current:** P4, the security and privacy audit.
+- **Next:** P5, offline and service-worker resilience.
 
 ## Parked lanes (human-blocked)
 
 - `[B]` **Fluency Check Stage 0 interviews.** The kit is ready in `.claude/validation/fluency-check/interviews/`. The owner sends OUTREACH.md message A when there's time. Keep Fluency Check on HOLD; no pilot.
 - `[B]` **Open-Meteo written questions:** the 10,000-a-day figure, weighted calls versus HTTP requests, and donations. An email to Open-Meteo is owner outreach.
 - `[B]` **Regrouping Custody Calendar, Day Clock, and Frost Dates to Maintain** in PORTFOLIO_RESOLUTION.md. This is an owner review of the comparative decisions.
+- `[B]` **Firefox testing:** needs a Claude Code permission rule, or the owner running the script (see P3).
 - `[B]` **A no-account feedback channel** (an email alias on the owner's domain). It needs a registrar setting and publishes an address.
 
 ## Queue
@@ -74,8 +75,9 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ### P3: Cross-browser matrix
 
-- `[ ]` Firefox plus Chromium and WebKit, on all 26 pages. Then deeper API checks. Record in `.claude/BROWSER_MATRIX.md`.
-- `[ ]` Investigate a static "this browser is too old" fallback. On browsers older than the build target (for example, iPads stuck on iPadOS 15), the page may stay blank. (Found during P1.)
+- `[x]` Chromium (Brave) and WebKit 27.2 on all 26 pages: 104 production loads, 0 problems. Deeper checks of 15 features pass in both engines, or fail gracefully where there's no microphone. See `.claude/BROWSER_MATRIX.md`.
+- `[x]` **Fixed:** a blank page when code can't load. `LoadBoundary` in App.tsx, plus a static start-failure message in index.html. Verified in both engines. This also covers the "too old browser" item from P1.
+- `[B]` **Firefox:** it exits at start-up inside the command sandbox, and launching it outside the sandbox was refused. Needs the owner to allow it in Claude Code's permissions, or to run `.claude/qa/browser/smoke.cjs firefox` themselves.
 
 ### P4: Security and privacy audit
 
@@ -119,7 +121,9 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ## Log
 
-- **2026-10-11:** P2 done. Fixes verified locally (axe re-scan of 32 runs clean, plus keyboard flows); production check after deploy.
+- **2026-10-11:** P3 done. The load-failure fix was verified locally in both engines. Production verification follows the deploy.
+
+- **2026-10-11:** P2 done and verified in production (commit 6f13d1c, deploy succeeded): the keyboard flows, announcements, Day Clock read-aloud and night contrast, and an axe re-scan of 32 runs with 0 violations.
 
 - **2026-10-11:** queue created, and P1 done and verified.
   - **Local browser checks** (`.claude/qa/plan-p1.json`, `plan-p1b.json`):

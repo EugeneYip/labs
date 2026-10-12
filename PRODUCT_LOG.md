@@ -16,6 +16,20 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-11 · No more blank pages when code can't load
+
+- **What:**
+  - **When an experiment's code can't load or run,** the page keeps its header and says "This experiment couldn't load", with a Reload button and a note about browser age. Before, the page went completely blank.
+  - **When the site's main code can't start,** the page says "Labs couldn't start in this browser…" instead of showing nothing.
+- **Why:** P3 of the autonomous queue, a cross-browser matrix in Chromium and WebKit.
+  - Blocking an experiment's code file left a blank page in both engines.
+  - That happens offline before an experiment was ever opened, when a deploy replaces files mid-load, and in browsers older than the site supports. Fluency Check and Photo Scrub need Safari 16.4 or later.
+- **Notes:**
+  - Checked in Chromium and WebKit: a normal load, a blocked experiment file, a blocked main file, and a broken main file.
+  - The same matrix found every public page loading cleanly in both engines, light and dark, at desktop and phone widths.
+  - Features worked in both engines: photo cleaning, downloads, the clipboard, date and time fields, dragging, canvas images, H.264 and HEVC video, offline reloads, and storage. Recording worked in Chromium with a simulated microphone.
+  - Firefox couldn't be run in this environment; details are in `.claude/BROWSER_MATRIX.md`.
+
 ## 2026-10-11 · Accessibility fixes across the portfolio
 
 - **What:**

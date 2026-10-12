@@ -20,6 +20,23 @@
   <body>
     <div id="root"></div>
     <noscript>Labs needs JavaScript to run.</noscript>
+    <script>
+      // If the site's code can't start (a failed download, or a browser too old for it), say so instead of leaving a blank page.
+      addEventListener(
+        'error',
+        function (event) {
+          // Only the site's own scripts count, not errors from browser extensions.
+          var source = event.target && event.target.tagName === 'SCRIPT' ? event.target.src : event instanceof ErrorEvent ? event.filename : ''
+          if (!source || source.indexOf(location.origin) !== 0) return
+          setTimeout(function () {
+            var root = document.getElementById('root')
+            if (!root || root.firstChild) return
+            root.innerHTML = '<p style="max-width:34rem;margin:20vh auto;padding:0 1rem;font:1rem/1.5 system-ui,sans-serif">Labs couldn’t start in this browser. Check the connection and reload the page, or try a recent version of Safari, Chrome, Edge, or Firefox.</p>'
+          }, 0)
+        },
+        true,
+      )
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
