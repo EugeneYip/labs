@@ -16,6 +16,17 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-12 · Offline copies stay complete
+
+- **What:**
+  - Experiments you've opened before keep working offline after many updates to Labs. Before, once enough updates had piled up, one you hadn't opened online for a while could fail to start offline ("Labs couldn't start in this browser") until you opened it online again.
+  - An experiment's address ending in `/index.html` also works offline.
+- **Why:** P5 of the autonomous queue: offline tests of first visits, every form of an address, updates, tabs left open through an update, saved data across updates, and the offline store's clean-up, in Chromium and WebKit.
+- **Notes:**
+  - Everything else held up: a page opened once works offline, an update never interrupts an open page, and saved data carries over.
+  - A first visit is ready for offline use about 2 seconds after the page loads.
+  - Details are in `.claude/OFFLINE_RESILIENCE.md`.
+
 ## 2026-10-12 · Security and privacy fixes
 
 - **What:**
