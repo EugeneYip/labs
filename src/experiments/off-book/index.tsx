@@ -68,7 +68,7 @@ export default function OffBook() {
     <div className="flex-1">
       <div className="mx-auto w-full max-w-3xl px-4 pt-6 pb-24 sm:px-6 sm:pt-10">
         <p className="max-w-prose text-pretty text-dim">
-          Learn your lines from your script. Paste it in, pick your part, and practice from your cues: Off Book hides your line until you’ve said it, gives you a word or two when you call for a line, and keeps track of the ones that need work. Everything stays on this device.
+          Learn your lines from your script. Paste it in, pick your part, and practice from your cues: Off Book hides your line until you’ve said it, gives you a word or two when you call for a line, and keeps track of the ones that need work. Everything stays on this device, unless cues are read aloud by an online voice.
         </p>
 
         <section aria-labelledby="script-heading" className="mt-8">

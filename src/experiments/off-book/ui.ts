@@ -21,8 +21,24 @@ export function speak(text: string) {
   const utterance = new SpeechSynthesisUtterance(text)
   // Scripts are usually in the reader's own language, so use the device's voice for it.
   utterance.lang = navigator.language
+  const voice = deviceVoice(navigator.language)
+  if (voice) utterance.voice = voice
   utterance.rate = 1
   speechSynthesis.speak(utterance)
+}
+
+/**
+ * The browser's own choice of voice can be an online one, which sends the cue to a speech service.
+ * So pick a voice on this device for the language, the usual one where it fits, matching the region
+ * first ("en-GB") and then just the language ("en"). With none, the browser chooses.
+ */
+function deviceVoice(locale: string): SpeechSynthesisVoice | undefined {
+  const local = speechSynthesis.getVoices().filter((v) => v.localService)
+  const tag = (v: SpeechSynthesisVoice) => v.lang.replace('_', '-').toLowerCase()
+  const lang = locale.toLowerCase()
+  const exact = local.filter((v) => tag(v) === lang)
+  const base = local.filter((v) => tag(v).split('-')[0] === lang.split('-')[0])
+  return exact.find((v) => v.default) ?? exact[0] ?? base.find((v) => v.default) ?? base[0]
 }
 
 export function stopSpeaking() {

@@ -130,6 +130,7 @@ export function Cards({ script, section, roles, lines, marks, onMark, speakCues,
           )}
         </div>
       </div>
+      {speakCues && canSpeak() && <p className="mt-2 text-sm text-pretty text-dim">Cues are read by a voice on this device where it has one; otherwise the browser may use an online voice, which sends the cue to its speech service.</p>}
 
       <div className="mt-3 grid gap-2">
         {cue.map((i) => (
