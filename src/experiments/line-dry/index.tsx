@@ -136,8 +136,8 @@ export default function LineDry() {
 
         <p className="mt-12 text-sm text-pretty text-dim">
           Drying times are rough guides from the forecast’s evaporation, rain, and daylight. They assume washing hung in the sun and
-          the breeze; thick fabric, a crowded line, or shade make it slower. Check the sky too. The place you pick is sent to
-          Open-Meteo for the forecast, rounded to about a kilometer. Weather data by{' '}
+          the breeze; thick fabric, a crowded line, or shade make it slower. Check the sky too. What you type to find a place is
+          sent to Open-Meteo, and so is the place you pick, rounded to about a kilometer, to get its forecast. Weather data by{' '}
           <a href="https://open-meteo.com/" className="underline underline-offset-4 hover:text-ink" rel="noreferrer">
             Open-Meteo.com
           </a>{' '}

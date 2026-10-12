@@ -152,7 +152,7 @@ export default function FrostDates() {
         </div>
 
         <p className="mt-14 max-w-prose text-sm text-pretty text-dim">
-          Frost here means a night when the air two meters above the ground fell to the chosen temperature, in a weather archive that covers the world in squares about 10 km across. City gardens and sheltered walls get frost less often than the archive shows. The place you pick is sent to Open-Meteo, rounded to about a kilometer. Weather records by{' '}
+          Frost here means a night when the air two meters above the ground fell to the chosen temperature, in a weather archive that covers the world in squares about 10 km across. City gardens and sheltered walls get frost less often than the archive shows. What you type to find a place is sent to Open-Meteo, and so is the place you pick, rounded to about a kilometer. Weather records by{' '}
           <a href="https://open-meteo.com/" className="underline underline-offset-4 hover:text-ink" rel="noreferrer">
             Open-Meteo.com
           </a>{' '}
