@@ -16,6 +16,33 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-11 · Trust wording: Fluency Check, Custody Calendar, Day Clock
+
+- **What:**
+  - **Fluency Check:**
+    - The scoring guide says the accuracy guideline (95% comfortable, 90–94% challenging) comes from running records, and that assessments such as DIBELS use cutoffs of their own.
+    - The DIBELS sentence now notes that DIBELS® is a registered trademark of the University of Oregon, which isn't connected with the page.
+    - The saved-checks note asks school or practice users to keep official results in their own records too.
+  - **Custody Calendar:**
+    - "Nothing is sent anywhere" became "Nothing you enter is sent anywhere unless you share a link or a calendar file".
+    - A hint under the names says first names, initials, or nicknames are enough.
+    - After copying a share link, it says anyone with the link can see the names and schedule, and a link can't be taken back.
+    - The counting note adds that this is a planning calendar and the court order or parenting plan is what counts.
+    - A new "Clear it from this device" control (with a confirmation) removes the saved names and schedule from a shared device.
+  - **Day Clock:**
+    - The summary and setup text say "spare tablet" rather than "old tablet", and name the browser it needs: Safari on iPadOS 16.4 or later, or Chrome 111 or later.
+    - The settings no longer promise the screen stays on. They say some devices sleep anyway: iPads before iPadOS 18.4 when it's opened from the Home Screen, and in power-saving modes.
+    - Read-aloud now uses a voice on the device where there is one, so the day, time, message, and reminders aren't sent to an online speech service. The settings say so.
+- **Why:** follow-ups from the Winner Validation research, done in autonomous continuation mode.
+  - **Absolute or reliability claims that weren't quite true:** "Nothing is sent anywhere"; "The screen stays on"; "old tablet", when the page needs iPadOS 16.4.
+  - **A trademark used without attribution.**
+  - **A safety gap for shared devices:** schedules couldn't be cleared without browser settings, and the share note didn't say links can't be withdrawn. Domestic-violence technology-safety guidance stresses both.
+  - **A privacy gap:** browsers such as Edge can default to online voices, which receive whatever is read aloud.
+- **Notes:**
+  - Day Clock's description still names dementia: it describes who it's for and claims no treatment or monitoring.
+  - No features were added beyond the clear control.
+  - Checked in a browser: the new text, the clear control emptying the saved names, the share note, and the voice choice (an on-device US voice over an online default; a UK voice for en-GB). The existing tests pass.
+
 ## 2026-10-11 · #017 Frost Dates update; GeoNames credit in Line Dry
 
 - **What:**

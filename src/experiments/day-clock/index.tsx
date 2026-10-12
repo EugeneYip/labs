@@ -84,6 +84,8 @@ export default function DayClock() {
     speechSynthesis.cancel()
     const u = new SpeechSynthesisUtterance(spokenText(now, settings, locale))
     u.lang = locale
+    const voice = deviceVoice(locale)
+    if (voice) u.voice = voice
     u.rate = 0.9
     speechSynthesis.speak(u)
   }
@@ -206,12 +208,12 @@ function SettingsPanel({ settings, onChange, onDone, awake }: { settings: Settin
           </button>
         </div>
         <p className="mt-2 max-w-prose text-sm text-pretty text-dim">
-          Day Clock shows the day, the time of day, and the date in large, calm type, for someone who loses track of them. Leave it on an old tablet or phone near their chair or bed. Settings stay on this device, and open from the clock by pressing and holding Settings.
+          Day Clock shows the day, the time of day, and the date in large, calm type, for someone who loses track of them. Leave it on a spare tablet or phone near their chair or bed. It needs a fairly recent browser, such as Safari on iPadOS 16.4 or later, or Chrome 111 or later. Settings stay on this device, and open from the clock by pressing and holding Settings.
         </p>
         {awake === null ? (
           <p className="mt-3 text-sm text-pretty">This browser can’t keep the screen on by itself, so set the device’s screen lock or sleep to “never” and keep it plugged in.</p>
         ) : (
-          <p className="mt-3 text-sm text-dim">The screen stays on while the clock is showing. Keep the device plugged in.</p>
+          <p className="mt-3 text-sm text-pretty text-dim">Day Clock asks the browser to keep the screen on while the clock is showing, but some devices sleep anyway. iPads before iPadOS 18.4 do when the clock is opened from the Home Screen rather than in Safari, and power-saving modes may turn the screen off. Check that it stays on, and keep the device plugged in.</p>
         )}
 
         <Section title="What to show">
@@ -221,6 +223,7 @@ function SettingsPanel({ settings, onChange, onDone, awake }: { settings: Settin
           {settings.showDate && <Check label="The year" checked={settings.showYear} onChange={(showYear) => set({ showYear })} />}
           <Check label="Dark, dim colors at night" checked={settings.nightColors} onChange={(nightColors) => set({ nightColors })} />
           <Check label="Read the day and time aloud when the screen is tapped" checked={settings.speak} onChange={(speak) => set({ speak })} />
+          {settings.speak && <p className="text-sm text-pretty text-dim">The message and reminders are read too. Day Clock uses a voice on this device where it has one; otherwise the browser may use an online voice, which sends the words to its speech service.</p>}
         </Section>
 
         <Section title="Times of day" hint="When each part of the day begins, and the word shown for it. Words can be in any language.">
@@ -330,6 +333,20 @@ function Check({ label, checked, onChange }: { label: string; checked: boolean; 
       {label}
     </label>
   )
+}
+
+/**
+ * The browser's own choice of voice can be an online one, which sends the words, message and reminders
+ * included, to a speech service. So pick a voice on this device for the language, the usual one where it
+ * fits, matching the region first ("en-GB") and then just the language ("en"). With none, the browser chooses.
+ */
+function deviceVoice(locale: string): SpeechSynthesisVoice | undefined {
+  const local = speechSynthesis.getVoices().filter((v) => v.localService)
+  const tag = (v: SpeechSynthesisVoice) => v.lang.replace('_', '-').toLowerCase()
+  const lang = locale.toLowerCase()
+  const exact = local.filter((v) => tag(v) === lang)
+  const base = local.filter((v) => tag(v).split('-')[0] === lang.split('-')[0])
+  return exact.find((v) => v.default) ?? exact[0] ?? base.find((v) => v.default) ?? base[0]
 }
 
 /** The current time, updated every second. */

@@ -233,7 +233,7 @@ export const experiments: readonly Experiment[] = [
     number: 22,
     slug: 'day-clock',
     title: 'Day Clock',
-    summary: 'A large, calm display of the day, the time of day, and the date for someone living with dementia, with reminders, for an old tablet left on by their chair.',
+    summary: 'A large, calm display of the day, the time of day, and the date for someone living with dementia, with reminders, for a spare tablet left on by their chair.',
     shipped: '2026-10-09',
     status: 'live',
     category: 'family',

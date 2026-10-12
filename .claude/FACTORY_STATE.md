@@ -2,6 +2,33 @@
 
 The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`, `FACTORY_CONSTITUTION.md`, and this file, then check `git status` and `git log`, before acting. Never redo completed work. Update this file after every milestone (idea chosen, built, tested, shipped, dropped).
 
+## Autonomous continuation mode (current)
+
+- **Authorized** by the owner on 2026-10-11. The owner has no time for interviews, so human-blocked lanes are parked and owner-independent work continues.
+- **The queue** is `.claude/AUTONOMOUS_QUEUE.md`: priorities P1–P13, parked lanes, and a log. After each item, verify it, record it there and here, then take the next unblocked item.
+- **When to stop:** only at the session limit, when every remaining task needs the owner, or under a system constraint. Before stopping, commit, push authorized fixes, verify production, and update the queue and this file with the exact next action.
+- **Fixes may ship without asking** when backed by:
+  - a correctness defect;
+  - an accessibility failure;
+  - a browser incompatibility;
+  - a data-loss risk;
+  - a privacy or safety issue;
+  - misleading wording;
+  - a clear performance regression;
+  - broken metadata.
+- **Still prohibited:**
+  - contacting people, interviews, recruitment;
+  - paid services or domains;
+  - accounts or backends for expansion;
+  - unsupported claims;
+  - deleting or archiving experiments;
+  - a Fluency Check pilot;
+  - #026.
+- **Parked:** Fluency Check interviews (the kit is ready; HOLD), the Open-Meteo email, regrouping the STOP products, and a no-account feedback channel. All are BLOCKED — OWNER REQUIRED.
+- **Progress:**
+  - P1 done (2026-10-11): trust wording in Fluency Check, Custody Calendar (plus a clear control), and Day Clock (a device-voice preference, an honest keep-awake caveat, supported browsers).
+  - **Next:** P2, the accessibility audit.
+
 ## Stage 0 interview preparation (complete; interviewing not begun)
 
 - **Scope:** authorized by the owner on 2026-10-11. Prepare Fluency Check's Stage 0 problem interviews with independent reading tutors. Fluency Check stays on HOLD. Not authorized:

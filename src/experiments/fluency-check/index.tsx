@@ -217,8 +217,8 @@ export default function FluencyCheck() {
             <li>Tap each word read incorrectly: a wrong or mispronounced word, a skipped word, a word read out of order, a word sounded out but not blended, or one you had to say after three seconds. If a whole line is skipped, tap each word in it.</li>
             <li>If the student corrects a word on their own, tap it again to mark a self-correction, which counts as correct. Added words, repeated words, and differences in pronunciation due to accent, dialect, or articulation aren&rsquo;t errors.</li>
             <li>When the minute is up, a tone sounds: tap the last word the student read. If they finish early, tap &ldquo;Read to the end&rdquo; and the score is scaled to a minute.</li>
-            <li>Words correct per minute is the words read minus errors. A common guideline for accuracy: 95% or more is comfortable, 90 to 94% is challenging, and below 90% the passage is probably too hard for now.</li>
-            <li>These rules follow common practice, as in DIBELS 8. If your school uses different ones, follow those. One check is a snapshot of speed and accuracy, not of understanding, so look at several over time.</li>
+            <li>Words correct per minute is the words read minus errors. For accuracy, a common guideline from running records is that 95% or more is comfortable, 90 to 94% is challenging, and below 90% the passage is probably too hard for now. Assessments such as DIBELS use cutoffs of their own.</li>
+            <li>These scoring rules are common practice and match DIBELS® 8th Edition. DIBELS is a registered trademark of the University of Oregon, which isn&rsquo;t connected with this page. If your school uses different rules, follow those. One check is a snapshot of speed and accuracy, not of understanding, so look at several over time.</li>
             <li>
               For grade-level expectations, use your program&rsquo;s benchmarks or the{' '}
               <a href={NORMS} target="_blank" rel="noreferrer" className="underline underline-offset-4 hover:text-ink">

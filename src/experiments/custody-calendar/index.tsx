@@ -69,6 +69,18 @@ export default function CustodyCalendar() {
     change({ nights })
   }
   const flipPattern = (i: number) => change({ nights: schedule.nights.map((p, k) => (k === i ? ((1 - p) as Parent) : p)) })
+  // On a shared device, the saved names and nights can be removed from here, without digging through browser settings.
+  const forget = () => {
+    if (!window.confirm('Clear the names and schedule saved in this browser? Links already shared keep their copy.')) return
+    try {
+      localStorage.removeItem(STORAGE_KEY)
+    } catch {
+      // Nothing saved, or storage is blocked.
+    }
+    setSchedule(freshSchedule())
+    setReplaced(null)
+    setNote('The schedule was cleared from this device.')
+  }
 
   const download = () => {
     const from = dayNumber(`${year}-01-01`)
@@ -92,7 +104,7 @@ export default function CustodyCalendar() {
     navigator.clipboard.writeText(url).then(
       () => {
         done('yes')
-        setNote('Link copied. It holds the schedule as it is now: changes made later don’t reach it, so send a new link after any change.')
+        setNote('Link copied. Anyone with it can see the names and the schedule, and a link can’t be taken back once it’s sent. It holds the schedule as it is now, so send a new link after any change.')
       },
       () => done('no'),
     )
@@ -105,7 +117,7 @@ export default function CustodyCalendar() {
       <div className="mx-auto w-full max-w-6xl px-4 pt-6 pb-24 sm:px-6 sm:pt-10 print:p-0">
         <div className="print:hidden">
           <p className="max-w-prose text-pretty text-dim">
-            A calendar for two homes. Choose the repeating pattern of nights, and see the whole year by who has the children each night, with each parent’s share of overnights and the next handovers. Swap nights for holidays, then add it to your calendar or share it with the other parent. Nothing is sent anywhere.
+            A calendar for two homes. Choose the repeating pattern of nights, and see the whole year by who has the children each night, with each parent’s share of overnights and the next handovers. Swap nights for holidays, then add it to your calendar or share it with the other parent. Nothing you enter is sent anywhere unless you share a link or a calendar file.
           </p>
 
           {broken && (
@@ -152,6 +164,7 @@ export default function CustodyCalendar() {
                   </label>
                 ))}
               </div>
+              <p className="-mt-2 text-sm text-dim">First names, initials, or nicknames are enough. Share links and calendar files carry them.</p>
               <div>
                 <p className="mb-1.5 text-sm font-medium">Start from</p>
                 <div className="flex flex-wrap gap-2">
@@ -283,7 +296,10 @@ export default function CustodyCalendar() {
         </section>
 
         <p className="mt-12 max-w-prose text-sm text-pretty text-dim print:mt-4 print:text-[8pt]">
-          Each day counts toward whoever has the children that night, a common way to count custody time. Courts and child-support formulas can count differently, so check how yours does. A share link holds the names and a copy of the schedule: anyone with it can see them, and later changes don’t reach it.
+          Each day counts toward whoever has the children that night, a common way to count custody time. Courts and child-support formulas can count differently, so check how yours does: this is a planning calendar, and your court order or parenting plan is what counts. A share link holds the names and a copy of the schedule: anyone with it can see them, and later changes don’t reach it. The schedule is saved in this browser, so anyone using this device can see it.{' '}
+          <button type="button" onClick={forget} className="cursor-pointer underline underline-offset-4 hover:text-ink print:hidden">
+            Clear it from this device
+          </button>
         </p>
       </div>
       <style>{`.stripes { background-image: repeating-linear-gradient(135deg, transparent 0 4px, rgb(0 0 0 / 0.07) 4px 6px); }
@@ -365,12 +381,17 @@ function Month({ year, month, schedule, today, onSwap }: { year: number; month: 
 
 function start(): { schedule: Schedule; replaced: Schedule | null; broken: boolean } {
   const saved = loadSaved()
-  const fresh: Schedule = { names: ['', ''], nights: presetNights('2-2-5-5', SUNDAY_FIRST), anchor: startOfWeek(isoDate(todayDay()), SUNDAY_FIRST), overrides: {} }
+  const fresh = freshSchedule()
   const hash = location.hash.slice(1)
   const shared = hash ? decode(hash) : null
   if (shared) return { schedule: shared, replaced: saved && encode(saved) !== encode(shared) ? saved : null, broken: false }
   // A link that fails to read, such as one cut short in a message, says so rather than quietly showing another schedule.
   return { schedule: saved ?? fresh, replaced: null, broken: hash !== '' }
+}
+
+/** The schedule a first visit starts with: no names, a common pattern, from this week. */
+function freshSchedule(): Schedule {
+  return { names: ['', ''], nights: presetNights('2-2-5-5', SUNDAY_FIRST), anchor: startOfWeek(isoDate(todayDay()), SUNDAY_FIRST), overrides: {} }
 }
 
 function loadSaved(): Schedule | null {
