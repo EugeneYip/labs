@@ -3,6 +3,8 @@ import { checkKey, fromCSV, localStamp, newId, percent, toCSV, type Check } from
 import { control, dateText, outline, quiet, shortDate, whenText } from './ui.ts'
 
 const ALL = ''
+/** Rows drawn at first: a log of thousands of checks then opens quickly, and the rest are one tap away. */
+const ROWS = 500
 
 const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`
 
@@ -12,6 +14,7 @@ export function Log({ log, onChange }: { log: Check[]; onChange: (log: Check[]) 
   const [deleted, setDeleted] = useState<Check[] | null>(null)
   const [loaded, setLoaded] = useState<{ text: string; ids: string[] } | null>(null)
   const [confirming, setConfirming] = useState(false)
+  const [rows, setRows] = useState(ROWS)
   const fileInput = useRef<HTMLInputElement>(null)
 
   const students = useMemo(() => {
@@ -21,6 +24,8 @@ export function Log({ log, onChange }: { log: Check[]; onChange: (log: Check[]) 
   }, [log])
   const chosen = student !== ALL && students.some((s) => s.toLocaleLowerCase() === student.toLocaleLowerCase()) ? student : ALL
   const shown = log.filter((c) => chosen === ALL || c.student.trim().toLocaleLowerCase() === chosen.toLocaleLowerCase()).sort((a, b) => b.at - a.at)
+  // Downloading, deleting, and the chart still use every check shown; only the table starts with the newest.
+  const drawn = shown.slice(0, rows)
 
   const remove = (gone: Check[]) => {
     const ids = new Set(gone.map((c) => c.id))
@@ -184,7 +189,7 @@ export function Log({ log, onChange }: { log: Check[]; onChange: (log: Check[]) 
               </tr>
             </thead>
             <tbody className="divide-y divide-rule">
-              {shown.map((c) => (
+              {drawn.map((c) => (
                 <tr key={c.id}>
                   <td className="py-2 pr-3 whitespace-nowrap" title={whenText(c.at)}>
                     {shortDate(c.at)}
@@ -214,12 +219,20 @@ export function Log({ log, onChange }: { log: Check[]; onChange: (log: Check[]) 
           </table>
         </div>
       )}
+      {shown.length > drawn.length && (
+        <p className="mt-3 flex flex-wrap items-center gap-x-3 text-sm text-dim">
+          Showing the newest {drawn.length.toLocaleString()} of {shown.length.toLocaleString()} checks.
+          <button type="button" onClick={() => setRows(Infinity)} className="cursor-pointer text-ink underline underline-offset-4 hover:text-dim">
+            Show all
+          </button>
+        </p>
+      )}
 
       {shown.length > 1 && (
         <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
           {confirming ? (
             <>
-              <span>Delete {chosen === ALL ? `all ${shown.length} checks` : `all ${shown.length} checks for ${chosen || 'Unnamed'}`}?</span>
+              <span>Delete {chosen === ALL ? `all ${shown.length.toLocaleString()} checks` : `all ${shown.length.toLocaleString()} checks for ${chosen || 'Unnamed'}`}?</span>
               <button type="button" onClick={() => remove(shown)} className={`${outline} border-red-600 text-red-700 dark:border-red-400 dark:text-red-300`}>
                 Delete them
               </button>
