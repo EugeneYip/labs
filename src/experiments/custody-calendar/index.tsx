@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
+import { NotSaving } from '../../components/NotSaving.tsx'
+import { useOtherTabs } from '../../components/useOtherTabs.ts'
 import { dayNumber, decode, encode, exchanges, isoDate, LIMITS, matchPreset, nightOf, patternNight, presetNights, PRESETS, startOfWeek, sundayFirst, swapNight, toICS, totals, validISO, weekday, type Parent, type Schedule } from './model.ts'
 
 // The schedule, kept on this device. A share link carries it in the part after #, which never reaches the server.
@@ -38,6 +40,12 @@ export default function CustodyCalendar() {
   const [year, setYear] = useState(() => new Date().getFullYear())
   const [copied, setCopied] = useState<'yes' | 'no' | null>(null)
   const [note, setNote] = useState<string | null>(null)
+  const [notSaving, setNotSaving] = useState(false)
+  // A schedule changed or cleared in another open tab is taken up here, so this tab can't save the old one back.
+  const save = useOtherTabs(STORAGE_KEY, () => {
+    setSchedule(loadSaved() ?? freshSchedule())
+    setReplaced(null)
+  })
 
   // The shared schedule is now saved here, so the link's copy comes off the address.
   useEffect(() => {
@@ -46,11 +54,13 @@ export default function CustodyCalendar() {
 
   useEffect(() => {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 1, ...schedule }))
+      save(JSON.stringify({ version: 1, ...schedule }))
+      setNotSaving(false)
     } catch {
-      // Private browsing or full storage: the schedule just won't be remembered.
+      // Full or blocked storage: the schedule won't survive a reload, so the page says so.
+      setNotSaving(true)
     }
-  }, [schedule])
+  }, [schedule, save])
 
   const change = (patch: Partial<Schedule>) => setSchedule((s) => ({ ...s, ...patch }))
   const names = schedule.names.map((n, i) => n.trim() || (i ? 'Parent B' : 'Parent A')) as [string, string]
@@ -119,6 +129,12 @@ export default function CustodyCalendar() {
           <p className="max-w-prose text-pretty text-dim">
             A calendar for two homes. Choose the repeating pattern of nights, and see the whole year by who has the children each night, with each parent’s share of overnights and the next handovers. Swap nights for holidays, then add it to your calendar or share it with the other parent. Nothing you enter is sent anywhere unless you share a link or a calendar file.
           </p>
+
+          {notSaving && (
+            <NotSaving className="mt-6">
+              This browser isn’t saving the schedule (its storage is full or blocked), so it will be gone if the page reloads or closes. To keep it, copy a share link or add it to a calendar.
+            </NotSaving>
+          )}
 
           {broken && (
             <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 rounded-xl border border-rule p-4 text-sm" role="status">

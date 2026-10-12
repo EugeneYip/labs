@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { useOtherTabs } from '../../components/useOtherTabs.ts'
 import { Cards, type Mark } from './Cards.tsx'
 import { fingerprint, myLines, parseScript, sections } from './model.ts'
 import { ReadThrough, type Show } from './Read.tsx'
@@ -30,13 +31,16 @@ export default function OffBook() {
   const [note, setNote] = useState('')
   const file = useRef<HTMLInputElement>(null)
 
+  // A script, part, or progress changed in another open tab is taken up here, so this tab can't save older ones over it.
+  const save = useOtherTabs(STORAGE_KEY, () => setSaved(load()))
+
   useEffect(() => {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 1, ...saved }))
+      save(JSON.stringify({ version: 1, ...saved }))
     } catch {
       setNote('This browser couldn’t save the script, so it will be gone after a reload.')
     }
-  }, [saved])
+  }, [saved, save])
 
   const change = (patch: Partial<Saved>) => setSaved((s) => ({ ...s, ...patch }))
   const setText = (text: string) => {

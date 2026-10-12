@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
+import { NotSaving } from '../../components/NotSaving.tsx'
+import { useOtherTabs } from '../../components/useOtherTabs.ts'
 import { changes, clock, LIMITS, makePlan, parseRoster, random, type Format, type Plan } from './model.ts'
 
 // The roster, today's absences, and the game format, kept on this device.
@@ -33,13 +35,19 @@ export default function PlayingTime() {
   const format = saved.format
   const plan = useMemo(() => makePlan(here.length, format, random(saved.shuffle)), [here.length, format, saved.shuffle])
 
+  const [notSaving, setNotSaving] = useState(false)
+  // A roster or game changed in another open tab is taken up here, so this tab can't save an older one over it.
+  const save = useOtherTabs(STORAGE_KEY, () => setSaved(load()))
+
   useEffect(() => {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 1, ...saved }))
+      save(JSON.stringify({ version: 1, ...saved }))
+      setNotSaving(false)
     } catch {
-      // Private browsing or full storage: the roster just won't be remembered.
+      // Full or blocked storage: the roster won't survive a reload, so the page says so.
+      setNotSaving(true)
     }
-  }, [saved])
+  }, [saved, save])
 
   const change = (patch: Partial<Saved>) => setSaved((s) => ({ ...s, ...patch }))
   const setFormat = (patch: Partial<Format>) => change({ format: { ...format, ...patch } })
@@ -56,6 +64,11 @@ export default function PlayingTime() {
             Give every player a fair share of the game. Enter your roster and the game format to get a substitution plan with
             minutes as even as the format allows, who comes off and goes on at each break, and a grid to print for the sideline.
           </p>
+          {notSaving && (
+            <NotSaving>
+              This browser isn’t saving the roster (its storage is full or blocked), so it will be gone if the page reloads or closes. Print the plan before you close it.
+            </NotSaving>
+          )}
 
           <div className="grid gap-6 md:grid-cols-[minmax(0,18rem)_minmax(0,1fr)]">
             <div className="grid content-start gap-2">

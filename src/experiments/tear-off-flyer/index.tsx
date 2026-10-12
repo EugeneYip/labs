@@ -1,4 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
+import { NotSaving } from '../../components/NotSaving.tsx'
+import { useOtherTabs } from '../../components/useOtherTabs.ts'
 import { BLANK, defaultPaper, EXAMPLE, largestFit, LIMITS, MARGIN, PAPERS, sanitize, type Flyer } from './model.ts'
 
 // The flyer's text and settings, and a downscaled copy of its photo, kept on this device.
@@ -19,14 +21,19 @@ export default function TearOffFlyer() {
   const [overflow, setOverflow] = useState(false)
   const [tabOverflow, setTabOverflow] = useState(false)
   const [clearing, setClearing] = useState(false)
+  const [notSaving, setNotSaving] = useState(false)
+  // A flyer changed in another open tab is taken up here, so this tab can't save an older one over it.
+  const save = useOtherTabs(STORAGE_KEY, () => setFlyer(load()))
 
   useEffect(() => {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 1, ...flyer }))
+      save(JSON.stringify({ version: 1, ...flyer }))
+      setNotSaving(false)
     } catch {
-      // Private browsing or full storage: the flyer just won't be remembered.
+      // Full or blocked storage: the flyer won't survive a reload, so the page says so.
+      setNotSaving(true)
     }
-  }, [flyer])
+  }, [flyer, save])
 
   const change = (patch: Partial<Flyer>) => setFlyer((f) => ({ ...f, ...patch }))
 
@@ -66,6 +73,11 @@ export default function TearOffFlyer() {
             Make a flyer for a noticeboard or lamppost with tear-off tabs along the bottom, so people can take your number with
             them. The text sizes itself to fill the page. Print it, or save it as a PDF from the print dialog.
           </p>
+          {notSaving && (
+            <NotSaving>
+              This browser isn’t saving the flyer (its storage is full or blocked), so it will be gone if the page reloads or closes. Print it before you close the page.
+            </NotSaving>
+          )}
 
           <Field label="Headline">
             <input value={flyer.headline} onChange={(e) => change({ headline: e.target.value })} maxLength={LIMITS.headline} placeholder="Lost cat, Guitar lessons, Room for rent…" dir="auto" className={`${field} h-11 sm:h-10`} />

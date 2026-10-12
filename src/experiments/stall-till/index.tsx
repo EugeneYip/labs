@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { useOtherTabs } from '../../components/useOtherTabs.ts'
 import { currency, CURRENCIES, decimals, floatToKeep, localCurrency, money, moneyExact, parseMoney, quickTenders, rescale } from './money.ts'
 
 // Items, the day's sales, and the cash count, kept on this device only.
@@ -64,16 +65,18 @@ export default function StallTill() {
   const exact = (m: number) => moneyExact(m, code)
   const [notSaving, setNotSaving] = useState(false)
   const [unreadable, setUnreadable] = useState(() => readBackup())
+  // Sales made in another open tab are taken up here, so this tab can't save over them.
+  const save = useOtherTabs(STORAGE_KEY, () => setSaved(load()))
 
   useEffect(() => {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 1, ...saved }))
+      save(JSON.stringify({ version: 1, ...saved }))
       setNotSaving(false)
     } catch {
-      // Private browsing or full storage: sales won't survive a reload, so the page says so.
+      // Full or blocked storage: sales won't survive a reload, so the page says so.
       setNotSaving(true)
     }
-  }, [saved])
+  }, [saved, save])
 
   const tabs = (
     <div className="flex gap-2" role="tablist" aria-label="Till">
@@ -96,7 +99,7 @@ export default function StallTill() {
       <div className="mx-auto w-full max-w-5xl px-4 pt-5 pb-28 sm:px-6 sm:pt-8 print:p-0">
         {notSaving && (
           <p className="mb-4 rounded-xl border border-red-600 px-4 py-3 text-sm text-pretty text-red-800 dark:border-red-400 dark:text-red-300 print:hidden" role="alert">
-            This browser isn’t saving sales (a private window, or storage is full), so they’ll be gone if the page reloads or closes. Keep it open, and download the CSV from the Today tab before you close it.
+            This browser isn’t saving sales (its storage is full or blocked), so they’ll be gone if the page reloads or closes. Keep it open, and download the CSV from the Today tab before you close it.
           </p>
         )}
         {unreadable && (

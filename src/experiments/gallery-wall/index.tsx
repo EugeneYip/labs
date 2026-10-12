@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
+import { NotSaving } from '../../components/NotSaving.tsx'
+import { useOtherTabs } from '../../components/useOtherTabs.ts'
 import {
   across,
   convertPlan,
@@ -37,13 +39,24 @@ export default function GalleryWall() {
   const result = useMemo(() => layout(plan), [plan])
   const issues = problems(plan, result)
 
+  const [notSaving, setNotSaving] = useState(false)
+  // A plan changed in another open tab is taken up here, so this tab can't save an older one over it. The fields
+  // start again from it, as they hold their own copies of what's typed.
+  const [synced, setSynced] = useState(0)
+  const save = useOtherTabs(STORAGE_KEY, () => {
+    setPlan(load())
+    setSynced((n) => n + 1)
+  })
+
   useEffect(() => {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 1, ...plan }))
+      save(JSON.stringify({ version: 1, ...plan }))
+      setNotSaving(false)
     } catch {
-      // Private browsing or full storage: the plan just won't be remembered.
+      // Full or blocked storage: the plan won't survive a reload, so the page says so.
+      setNotSaving(true)
     }
-  }, [plan])
+  }, [plan, save])
 
   const change = (patch: Partial<Plan>) => setPlan((p) => ({ ...p, ...patch }))
   const setFrames = (frames: Frame[]) => change({ frames })
@@ -56,7 +69,7 @@ export default function GalleryWall() {
 
   return (
     <div className="flex-1">
-      <div className="mx-auto w-full max-w-6xl px-4 pt-6 pb-24 sm:px-6 sm:pt-10 print:p-0 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:items-start lg:gap-12">
+      <div key={synced} className="mx-auto w-full max-w-6xl px-4 pt-6 pb-24 sm:px-6 sm:pt-10 print:p-0 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:items-start lg:gap-12">
         <section aria-labelledby="setup-heading" className="grid gap-6 print:hidden">
           <h2 id="setup-heading" className="sr-only">
             Frames and layout
@@ -65,6 +78,11 @@ export default function GalleryWall() {
             Plan a gallery wall without extra holes. Enter your frames and how you want them arranged, and get a drawing of the
             wall and where each nail goes, measured from the floor and across.
           </p>
+          {notSaving && (
+            <NotSaving>
+              This browser isn’t saving the plan (its storage is full or blocked), so it will be gone if the page reloads or closes. Print it before you close the page.
+            </NotSaving>
+          )}
 
           <Segmented label="Measure in" value={u} options={[['in', 'Inches'], ['cm', 'Centimeters']]} onChange={(unit: Unit) => setPlan((p) => convertPlan(p, unit))} />
 

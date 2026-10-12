@@ -1,4 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
+import { NotSaving } from '../../components/NotSaving.tsx'
+import { useOtherTabs } from '../../components/useOtherTabs.ts'
 import { DEFAULT_SETTINGS, dueReminders, minutesOf, parseTime, partOf, PARTS, sanitize, spokenText, timeValue, validStarts, type Part, type Reminder, type Settings } from './model.ts'
 
 // The caregiver's settings, kept on this device.
@@ -40,14 +42,25 @@ export default function DayClock() {
   const part = partOf(minutesOf(now), settings.starts)
   const night = settings.nightColors && part === 'night'
 
+  const [notSaving, setNotSaving] = useState(false)
+  // Settings changed in another open tab are taken up here, so a clock left showing can't save its older ones back
+  // over them. The settings fields start again from them, as some hold their own copies.
+  const [synced, setSynced] = useState(0)
+  const save = useOtherTabs(STORAGE_KEY, () => {
+    setSettings(load())
+    setSynced((n) => n + 1)
+  })
+
   // Saved again as each part of the day begins: a browser can clear the data of a page left untouched for weeks, and this puts it back.
   useEffect(() => {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 1, ...settings }))
+      save(JSON.stringify({ version: 1, ...settings }))
+      setNotSaving(false)
     } catch {
-      // Private browsing or full storage: settings just won't be remembered.
+      // Full or blocked storage: settings won't survive a reload, so the settings say so.
+      setNotSaving(true)
     }
-  }, [settings, part])
+  }, [settings, part, save])
   const locale = navigator.language
   const day = new Intl.DateTimeFormat(locale, { weekday: 'long' }).format(now)
   const date = new Intl.DateTimeFormat(locale, { month: 'long', day: 'numeric', ...(settings.showYear ? { year: 'numeric' } : {}) }).format(now)
@@ -77,7 +90,7 @@ export default function DayClock() {
   }, [shown, scale, full, editing])
   const size = (expr: string) => `calc(${scale.toFixed(3)} * ${expr})`
 
-  if (editing) return <SettingsPanel settings={settings} onChange={setSettings} onDone={() => setEditing(false)} awake={awake} />
+  if (editing) return <SettingsPanel key={synced} settings={settings} onChange={setSettings} onDone={() => setEditing(false)} awake={awake} notSaving={notSaving} />
 
   const speak = () => {
     if (!settings.speak || !('speechSynthesis' in window)) return
@@ -191,7 +204,7 @@ function HoldButton({ night, onOpen }: { night: boolean; onOpen: () => void }) {
   )
 }
 
-function SettingsPanel({ settings, onChange, onDone, awake }: { settings: Settings; onChange: (s: Settings) => void; onDone: () => void; awake: boolean | null }) {
+function SettingsPanel({ settings, onChange, onDone, awake, notSaving }: { settings: Settings; onChange: (s: Settings) => void; onDone: () => void; awake: boolean | null; notSaving: boolean }) {
   const set = (patch: Partial<Settings>) => onChange({ ...settings, ...patch })
   const [startText, setStartText] = useState(() => Object.fromEntries(PARTS.map((p) => [p, timeValue(settings.starts[p])])) as Record<Part, string>)
   const parsed = Object.fromEntries(PARTS.map((p) => [p, parseTime(startText[p])])) as Record<Part, number | null>
@@ -216,6 +229,11 @@ function SettingsPanel({ settings, onChange, onDone, awake }: { settings: Settin
         <p className="mt-2 max-w-prose text-sm text-pretty text-dim">
           Day Clock shows the day, the time of day, and the date in large, calm type, for someone who loses track of them. Leave it on a spare tablet or phone near their chair or bed. It needs a fairly recent browser, such as Safari on iPadOS 16.4 or later, or Chrome 111 or later. Settings stay on this device, and open from the clock by pressing and holding Settings.
         </p>
+        {notSaving && (
+          <NotSaving className="mt-3">
+            This browser isn’t saving these settings (its storage is full or blocked), so the clock will lose them if the page reloads. If the browser blocks site data, allow it for this site.
+          </NotSaving>
+        )}
         {awake === null ? (
           <p className="mt-3 text-sm text-pretty">This browser can’t keep the screen on by itself, so set the device’s screen lock or sleep to “never” and keep it plugged in.</p>
         ) : (

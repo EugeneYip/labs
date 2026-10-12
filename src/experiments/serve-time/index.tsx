@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react'
+import { NotSaving } from '../../components/NotSaving.tsx'
+import { useOtherTabs } from '../../components/useOtherTabs.ts'
 import { Cook } from './Cook.tsx'
 import { defaultServeAt, defaultUnit, freshServeAt, LIMITS, type Delay, type Dish, type Plan } from './model.ts'
 import { Planner } from './Planner.tsx'
@@ -15,14 +17,24 @@ interface Saved {
 /** Experiment #008: plan a meal backward from serving time, then cook along with a countdown. */
 export default function ServeTime() {
   const [saved, setSaved] = useState(load)
+  const [notSaving, setNotSaving] = useState(false)
+  // A plan changed in another open tab is taken up here, so this tab can't save an older one over it. The views
+  // start again from it, as some fields hold their own copies.
+  const [synced, setSynced] = useState(0)
+  const save = useOtherTabs(STORAGE_KEY, () => {
+    setSaved(load())
+    setSynced((n) => n + 1)
+  })
 
   useEffect(() => {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 1, ...saved.plan, cooking: saved.cooking }))
+      save(JSON.stringify({ version: 1, ...saved.plan, cooking: saved.cooking }))
+      setNotSaving(false)
     } catch {
-      // Private browsing or full storage: the plan just won't be remembered.
+      // Full or blocked storage: the plan won't survive a reload, so the page says so.
+      setNotSaving(true)
     }
-  }, [saved])
+  }, [saved, save])
 
   const setPlan = (plan: Plan) => setSaved((s) => ({ ...s, plan }))
   const setCooking = (cooking: boolean) => {
@@ -32,10 +44,16 @@ export default function ServeTime() {
 
   return (
     <div className="flex-1">
+      {notSaving && (
+        <div className={`mx-auto w-full px-4 pt-6 sm:px-6 sm:pt-10 ${saved.cooking ? 'max-w-2xl' : 'max-w-6xl'}`}>
+          <NotSaving>This browser isn’t saving the plan (its storage is full or blocked), so it will be gone if the page reloads or closes. Print it, or keep the page open while you cook.</NotSaving>
+        </div>
+      )}
       {saved.cooking ? (
-        <Cook plan={saved.plan} onChange={setPlan} onExit={() => setCooking(false)} />
+        <Cook key={synced} plan={saved.plan} onChange={setPlan} onExit={() => setCooking(false)} />
       ) : (
         <Planner
+          key={synced}
           plan={saved.plan}
           onChange={setPlan}
           onCook={() => {

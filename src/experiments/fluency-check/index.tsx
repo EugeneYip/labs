@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useMemo, useState, type Dispatch, type SetStateAction } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type Dispatch, type SetStateAction } from 'react'
+import { useOtherTabs } from '../../components/useOtherTabs.ts'
 import { CheckView, restoreRun, startRun, type Run } from './Check.tsx'
 import { Log } from './Log.tsx'
 import { band, clock, MINUTE, newId, parsePassage, passageName, percent, score, type Band, type Check, type Mode, type Result } from './model.ts'
@@ -41,18 +42,35 @@ export default function FluencyCheck() {
   const [at, setAt] = useState(pending?.at ?? 0)
   const [savedAs, setSavedAs] = useState(pending?.savedAs ?? null)
   const [notSaving, setNotSaving] = useState(false)
+  // Checks saved in another open tab are taken up here, so this tab can't save over them. During a check only the
+  // log is, so the passage being read stays as it is, and it isn't saved back over the other tab's unless it changes.
+  const fromOtherTab = useRef<{ saved: Saved; stored: string | null } | null>(null)
+  const save = useOtherTabs(STORAGE_KEY, () => {
+    const other = load()
+    const next = run ? { ...saved, log: other.log } : other
+    fromOtherTab.current = { saved: next, stored: stored() }
+    setSaved(next)
+  })
 
   useEffect(() => {
+    const from = fromOtherTab.current
+    if (from && saved === from.saved && stored() === from.stored) return
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 1, ...saved }))
+      save(JSON.stringify({ version: 1, ...saved }))
       setNotSaving(false)
     } catch {
-      // Private browsing or full storage: checks still work, but won't survive a reload, so the page says so.
+      // Full or blocked storage: checks still work, but won't survive a reload, so the page says so.
       setNotSaving(true)
     }
-  }, [saved])
+  }, [saved, save])
 
+  // With no check under way, a leftover record is cleared once, when the page opens, and not again each time another
+  // tab's save is taken up: the record may be that tab's check.
+  const cleared = useRef(false)
   useEffect(() => {
+    if (run) cleared.current = false
+    else if (cleared.current) return
+    else cleared.current = true
     const keep = () => storeRun(run && { run, at, savedAs }, saved)
     keep()
     if (run?.phase !== 'running') return
@@ -390,7 +408,7 @@ function GoalField({ goal, onChange }: { goal: number | null; onChange: (goal: n
 function NotSaving({ log }: { log: 'below' | 'back' }) {
   return (
     <p className="mb-6 rounded-xl border border-red-600 px-4 py-3 text-sm text-pretty text-red-800 dark:border-red-400 dark:text-red-300 print:hidden" role="alert">
-      This browser isn’t saving checks (a private window, or storage is full), so new ones will be gone when the page reloads or closes. {log === 'below' ? 'Download a CSV from the log below before you close it.' : 'To keep this one, go back and download a CSV from the log before you close the page.'}
+      This browser isn’t saving checks (its storage is full or blocked), so new ones will be gone when the page reloads or closes. {log === 'below' ? 'Download a CSV from the log below before you close it.' : 'To keep this one, go back and download a CSV from the log before you close the page.'}
     </p>
   )
 }
@@ -400,6 +418,15 @@ function summaryText(result: Result, student: string, passage: string, at: numbe
   const accuracy = result.accuracy === null ? '' : `, ${percent(result.accuracy)}% accuracy (${result.correct} of ${result.read} words correct)`
   const missed = result.missed.length ? ` Missed: ${result.missed.join(', ')}.` : ''
   return `${student.trim() || 'Reader'}, ${whenText(at)}, ${passage}: ${result.wcpm} words correct per minute${accuracy}, ${plural(result.errors, 'error')}, ${plural(result.selfCorrections, 'self-correction')}, time ${clock(result.ms)}.${missed}`
+}
+
+/** What's saved, as stored, or null. */
+function stored(): string | null {
+  try {
+    return localStorage.getItem(STORAGE_KEY)
+  } catch {
+    return null
+  }
 }
 
 function load(): Saved {

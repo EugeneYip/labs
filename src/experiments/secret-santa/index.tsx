@@ -1,4 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react'
+import { NotSaving } from '../../components/NotSaving.tsx'
+import { useOtherTabs } from '../../components/useOtherTabs.ts'
 import { decodeMatch, draw, EMPTY_EXCHANGE, encodeMatch, LIMITS, parseNames, type Exchange } from './model.ts'
 
 // The organizer's setup and the links they send. Reveal pages never store anything.
@@ -98,25 +100,47 @@ function Reveal({ token }: { token: string }) {
 function Organizer() {
   const [saved, setSaved] = useState(load)
   const { exchange, links } = saved
+  const [notSaving, setNotSaving] = useState(false)
+  // A change made in another open tab is taken up here, so this tab can't save an older draw over it. The views
+  // start again from it, as their fields hold their own copies.
+  const [synced, setSynced] = useState(0)
+  const save = useOtherTabs(STORAGE_KEY, () => {
+    setSaved(load())
+    setSynced((n) => n + 1)
+  })
 
   useEffect(() => {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 1, ...saved }))
+      save(JSON.stringify({ version: 1, ...saved }))
+      setNotSaving(false)
     } catch {
-      // Not saved on this device; the links still work wherever they're sent.
+      // Not saved on this device, so the page says so; the links still work wherever they're sent.
+      setNotSaving(true)
     }
-  }, [saved])
+  }, [saved, save])
 
-  return links ? (
-    <Links
-      exchange={exchange}
-      links={links}
-      onRedraw={(next) => setSaved({ exchange, links: next })}
-      onEdit={() => setSaved({ exchange, links: null })}
-      onReset={() => setSaved({ exchange: EMPTY_EXCHANGE, links: null })}
-    />
-  ) : (
-    <Setup exchange={exchange} onChange={(next) => setSaved({ exchange: next, links: null })} onDrawn={(next, made) => setSaved({ exchange: next, links: made })} />
+  return (
+    <>
+      {notSaving && (
+        <NotSaving className="mb-6">
+          {links
+            ? 'This browser isn’t saving the draw (its storage is full or blocked), so these links will be gone if the page reloads or closes. Send every link before you close it; links already sent keep working.'
+            : 'This browser isn’t saving the names (its storage is full or blocked), so they’ll be gone if the page reloads or closes.'}
+        </NotSaving>
+      )}
+      {links ? (
+        <Links
+          key={synced}
+          exchange={exchange}
+          links={links}
+          onRedraw={(next) => setSaved({ exchange, links: next })}
+          onEdit={() => setSaved({ exchange, links: null })}
+          onReset={() => setSaved({ exchange: EMPTY_EXCHANGE, links: null })}
+        />
+      ) : (
+        <Setup key={synced} exchange={exchange} onChange={(next) => setSaved({ exchange: next, links: null })} onDrawn={(next, made) => setSaved({ exchange: next, links: made })} />
+      )}
+    </>
   )
 }
 

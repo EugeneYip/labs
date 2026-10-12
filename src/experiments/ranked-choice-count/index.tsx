@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { NotSaving } from '../../components/NotSaving.tsx'
+import { useOtherTabs } from '../../components/useOtherTabs.ts'
 import { count, firstChoiceWinners, type Result, type Round } from './count.ts'
 import { NAME_MAX, parseBallots, type Parsed } from './parse.ts'
 
@@ -25,14 +27,23 @@ const ORD = (n: number) => `${n}${n % 10 === 1 && n % 100 !== 11 ? 'st' : n % 10
 export default function RankedChoiceCount() {
   const [saved, setSaved] = useState(load)
   const [names, setNames] = useState(() => saved.candidates.join('\n'))
+  const [notSaving, setNotSaving] = useState(false)
+  // Ballots added in another open tab are taken up here, so this tab can't save over them.
+  const save = useOtherTabs(STORAGE_KEY, () => {
+    const next = load()
+    setSaved(next)
+    setNames(next.candidates.join('\n'))
+  })
 
   useEffect(() => {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 1, ...saved }))
+      save(JSON.stringify({ version: 1, ...saved }))
+      setNotSaving(false)
     } catch {
-      // Private browsing or full storage: ballots just won't be remembered.
+      // Full or blocked storage: ballots won't survive a reload, so the page says so.
+      setNotSaving(true)
     }
-  }, [saved])
+  }, [saved, save])
 
   const change = (patch: Partial<Saved>) => setSaved((s) => ({ ...s, ...patch }))
   const setCandidates = (text: string) => {
@@ -58,6 +69,11 @@ export default function RankedChoiceCount() {
           <p className="max-w-prose text-pretty text-dim">
             Count a ranked-choice vote for a club, a union, a school council, or an award. Tap in paper ballots or paste the results from Google Forms or Microsoft Forms, and see every round of the count explained. One seat is counted by instant runoff, more by the single transferable vote. The ballots stay on this device.
           </p>
+          {notSaving && (
+            <NotSaving className="mt-6">
+              This browser isn’t saving the ballots (its storage is full or blocked), so they’ll be gone if the page reloads or closes. Keep the page open until the count is done, and print the results before you close it.
+            </NotSaving>
+          )}
 
           <section aria-labelledby="candidates-heading" className="mt-8">
             <h2 id="candidates-heading" className="text-lg font-semibold tracking-tight">

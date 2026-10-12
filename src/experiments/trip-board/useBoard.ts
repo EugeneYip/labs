@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useOtherTabs } from '../../components/useOtherTabs.ts'
 import { boardToJson, EMPTY_BOARD, parseBoardJson, type Board } from './model.ts'
 
 // Every Labs experiment shares one site, so storage keys carry the experiment's slug.
@@ -12,27 +13,26 @@ const STORAGE_KEY = 'labs:trip-board'
 export function useBoard() {
   const [board, setBoard] = useState(load)
   const [saved, setSaved] = useState(true)
+  // Another tab's board is taken up here; one this version can't read is left alone.
+  const save = useOtherTabs(STORAGE_KEY, () => {
+    try {
+      const json = localStorage.getItem(STORAGE_KEY)
+      const next = json === null ? EMPTY_BOARD : parseBoardJson(json).board
+      if (next) setBoard(next)
+    } catch {
+      // Storage is blocked: keep this board.
+    }
+  })
 
   useEffect(() => {
     try {
-      const json = boardToJson(board)
-      // Writing only real changes also stops two open tabs from echoing each other.
-      if (localStorage.getItem(STORAGE_KEY) !== json) localStorage.setItem(STORAGE_KEY, json)
+      // Only real changes are written, which also stops two open tabs from echoing each other.
+      save(boardToJson(board))
       setSaved(true)
     } catch {
       setSaved(false)
     }
-  }, [board])
-
-  useEffect(() => {
-    function syncFromOtherTab(event: StorageEvent) {
-      if (event.key !== STORAGE_KEY) return
-      const next = event.newValue === null ? EMPTY_BOARD : parseBoardJson(event.newValue).board
-      if (next) setBoard(next)
-    }
-    window.addEventListener('storage', syncFromOtherTab)
-    return () => window.removeEventListener('storage', syncFromOtherTab)
-  }, [])
+  }, [board, save])
 
   return [board, setBoard, saved] as const
 }

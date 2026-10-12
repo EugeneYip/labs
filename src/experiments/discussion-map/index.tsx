@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
+import { NotSaving } from '../../components/NotSaving.tsx'
+import { useOtherTabs } from '../../components/useOtherTabs.ts'
 import { addTurn, clock, exchanges, MAP, parseNames, reseat, stats, turnsCSV, type Person, type Turn } from './model.ts'
 
 // The people, their seats, and the discussion under way, kept on this device.
@@ -30,14 +32,19 @@ export default function DiscussionMap() {
   const running = saved.startedAt !== null && saved.endedAt === null
   const now = useNow(running)
   const elapsed = saved.startedAt === null ? 0 : (saved.endedAt ?? now - saved.startedAt)
+  const [notSaving, setNotSaving] = useState(false)
+  // A discussion changed in another open tab is taken up here, so this tab can't save an older one over it.
+  const save = useOtherTabs(STORAGE_KEY, () => setSaved(load()))
 
   useEffect(() => {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 1, ...saved }))
+      save(JSON.stringify({ version: 1, ...saved }))
+      setNotSaving(false)
     } catch {
-      // Private browsing or full storage: the discussion just won't be remembered.
+      // Full or blocked storage: the discussion won't survive a reload, so the page says so.
+      setNotSaving(true)
     }
-  }, [saved])
+  }, [saved, save])
 
   const change = (patch: Partial<Saved>) => setSaved((s) => ({ ...s, ...patch }))
   const tap = (who: string | null) =>
@@ -74,6 +81,11 @@ export default function DiscussionMap() {
   return (
     <div className="flex-1">
       <div className="mx-auto w-full max-w-6xl px-4 pt-5 pb-24 sm:px-6 sm:pt-8 print:p-0">
+        {notSaving && (
+          <NotSaving className="mb-4">
+            This browser isn’t saving this discussion (its storage is full or blocked), so it will be gone if the page reloads or closes. Download the turns or print the map before you close it.
+          </NotSaving>
+        )}
         <div className="flex flex-wrap items-center gap-2 print:hidden">
           <p className="mr-2 text-3xl font-semibold tracking-tight tabular-nums" aria-label={`Discussion time ${clock(elapsed)}`}>
             {clock(elapsed)}
