@@ -16,6 +16,27 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-12 · Security and privacy fixes
+
+- **What:**
+  - **Ranked Choice Count:**
+    - A candidate named `__proto__` no longer breaks the count. Before, the page stopped with "This experiment couldn't load", and kept doing so on every visit, because the ballots are saved.
+    - A paste with huge ballot counts (such as a first column of row numbers) is refused with an explanation, instead of building millions of ballots and freezing the tab.
+    - "2024 > Ava" is a candidate named 2024 ranked first, not 2,024 ballots for Ava; "1:" and "0:" counts work as expected; long names still match their ballots.
+    - When the numbers in front of pasted lines run 1, 2, 3…, the page points out that they may be row numbers being read as ballot counts.
+  - **Fluency Check, Stall Till, Fair Share, Serve Time:** saved data that can't be shown, such as an impossible date, is skipped or replaced by a default instead of breaking the page on every visit. Fair Share skips just the damaged recent group and shows the rest.
+  - **Fluency Check:** when the browser won't save (a private window or full storage), a red alert says so and how to keep the check, and the button reads "Kept until the page closes" instead of "Saved on this device". The log no longer drops checks past 2,000.
+  - **Custody Calendar:** names in the calendar file can't add lines of their own. Before, a name from a crafted share link could slip an extra entry (such as a web address) into calendar apps that read the file loosely.
+  - **Clean Paste:** long pastes are fast. Cleaning a 60-page PDF copy took about 7 seconds, during which the page froze, and 1 MB took nearly two minutes; the cleanup now takes a fraction of a second, with exactly the same result.
+  - **Photo Scrub:** a photo with deliberately malformed metadata is still cleaned. Before, one odd character reference stopped it being cleaned at all ("Something went wrong…"), and thousands of unclosed tags froze the page for about 20 seconds.
+  - **Off Book:** reading cues aloud uses a voice on the device where there is one, so the script isn't sent to an online speech service, and the page says when it might be.
+  - **Frost Dates, Line Dry:** the note on what's sent to Open-Meteo now mentions the place search as well as the place picked.
+- **Why:** P4 of the autonomous queue, a security and privacy audit: hostile pastes and files, crafted share links, 4,863 kinds of damaged saved data, link and CSV safety, and what leaves the device.
+- **Notes:**
+  - Checked in Chromium and WebKit, with an independent reference count for Ranked Choice Count and a word-for-word comparison of the old and new Clean Paste on over 4,000 inputs.
+  - Share links, Trip Board's link checks, and CSV formula protection held up without changes.
+  - Details, and the risks that remain, are in `.claude/SECURITY_PRIVACY_AUDIT.md`.
+
 ## 2026-10-11 · No more blank pages when code can't load
 
 - **What:**
