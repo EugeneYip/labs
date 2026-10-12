@@ -191,9 +191,18 @@ function loadRecent(): Recent[] {
     const data = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '{}')
     const list: unknown = data?.groups
     if (!Array.isArray(list)) return []
+    // Each entry is checked on its own, so a damaged one is skipped and the rest still show.
     return list.filter(
       (r): r is Recent =>
-        typeof r?.id === 'string' && typeof r.name === 'string' && typeof r.hash === 'string' && r.hash.startsWith('v1.') && typeof r.updatedAt === 'number',
+        typeof r?.id === 'string' &&
+        typeof r.name === 'string' &&
+        typeof r.hash === 'string' &&
+        r.hash.startsWith('v1.') &&
+        Number.isInteger(r.people) &&
+        r.people >= 0 &&
+        typeof r.total === 'string' &&
+        typeof r.updatedAt === 'number' &&
+        Math.abs(r.updatedAt) <= 8.64e15,
     )
   } catch {
     return []

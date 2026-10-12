@@ -117,7 +117,19 @@ export function stays(s: Schedule, from: number, to: number): { parent: Parent; 
   return out
 }
 
-const icsText = (s: string) => s.replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n')
+/**
+ * Text for an iCalendar value: backslashes, semicolons, and commas escaped,
+ * any kind of line break written as \n, and other control characters, which
+ * the format doesn't allow, left out (a tab is allowed). A name from a share
+ * link can't start a line of its own.
+ */
+const icsText = (s: string) =>
+  s
+    .replace(/\\/g, '\\\\')
+    .replace(/;/g, '\\;')
+    .replace(/,/g, '\\,')
+    .replace(/\r\n|[\r\n\u0085\u2028\u2029]/g, '\\n')
+    .replace(/[\u0000-\u0008\u000b-\u001f\u007f]/g, '')
 const icsDate = (day: number) => isoDate(day).replace(/-/g, '')
 
 /** Widens a range of days to whole stays, so a stay crossing either end isn't cut in two. */

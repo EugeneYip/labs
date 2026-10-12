@@ -13,7 +13,7 @@ const RUN_KEY = 'labs:fluency-check:run'
 /** A reload this quick doesn't stop the clock: the student kept reading. */
 const RELOAD_MS = 15_000
 const HOUR = 3_600_000
-const LIMITS = { text: 20_000, log: 2000, name: 80, goal: 400 }
+const LIMITS = { text: 20_000, name: 80, goal: 400 }
 
 interface Pending {
   run: Run
@@ -40,12 +40,15 @@ export default function FluencyCheck() {
   const [run, setRun] = useState<Run | null>(pending?.run ?? null)
   const [at, setAt] = useState(pending?.at ?? 0)
   const [savedAs, setSavedAs] = useState(pending?.savedAs ?? null)
+  const [notSaving, setNotSaving] = useState(false)
 
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 1, ...saved }))
+      setNotSaving(false)
     } catch {
-      // Private browsing or full storage: nothing is remembered, but checks still work.
+      // Private browsing or full storage: checks still work, but won't survive a reload, so the page says so.
+      setNotSaving(true)
     }
   }, [saved])
 
@@ -109,10 +112,11 @@ export default function FluencyCheck() {
                 student={saved.student}
                 onStudent={(student) => change({ student })}
                 savedAs={savedAs}
+                notSaving={notSaving}
                 onSave={(sig) => {
                   const id = savedAs?.id ?? newId()
                   const check: Check = { id, at, student: saved.student.trim(), passage: name, length: passage.words.length, mode: saved.mode, read: result.read, errors: result.errors, selfCorrections: result.selfCorrections, ms: result.ms, wcpm: result.wcpm, accuracy: result.accuracy, goal: saved.goal, missed: result.missed }
-                  setSaved((s) => ({ ...s, log: [...s.log.filter((c) => c.id !== id), check].slice(-LIMITS.log) }))
+                  setSaved((s) => ({ ...s, log: [...s.log.filter((c) => c.id !== id), check] }))
                   setSavedAs({ id, sig })
                 }}
                 summary={() => summaryText(result, saved.student, name, at)}
@@ -229,6 +233,7 @@ export default function FluencyCheck() {
           </ul>
         </details>
 
+        {notSaving && <NotSaving log="below" />}
         <Log log={saved.log} onChange={(log) => change({ log })} />
       </div>
     </div>
@@ -248,6 +253,7 @@ function Results({
   student,
   onStudent,
   savedAs,
+  notSaving,
   onSave,
   summary,
   onNext,
@@ -259,6 +265,7 @@ function Results({
   student: string
   onStudent: (student: string) => void
   savedAs: { id: string; sig: string } | null
+  notSaving: boolean
   onSave: (sig: string) => void
   summary: () => string
   onNext: () => void
@@ -326,9 +333,14 @@ function Results({
           <input value={student} maxLength={LIMITS.name} onChange={(e) => onStudent(e.target.value)} className={field} dir="auto" placeholder="Name or initials" autoComplete="off" />
         </label>
         <button type="button" onClick={() => onSave(sig)} disabled={upToDate} className={primary}>
-          {upToDate ? 'Saved on this device' : savedAs ? 'Save changes' : 'Save to this device'}
+          {upToDate ? (notSaving ? 'Kept until the page closes' : 'Saved on this device') : savedAs ? 'Save changes' : 'Save to this device'}
         </button>
       </div>
+      {notSaving && savedAs && (
+        <div className="mt-3">
+          <NotSaving log="back" />
+        </div>
+      )}
       <div className="mt-3 flex flex-wrap gap-2">
         <button type="button" onClick={() => window.print()} className={outline}>
           Print the record
@@ -374,6 +386,15 @@ function GoalField({ goal, onChange }: { goal: number | null; onChange: (goal: n
   )
 }
 
+/** Shown when saving to the browser fails, so no one thinks checks are kept when they aren't. */
+function NotSaving({ log }: { log: 'below' | 'back' }) {
+  return (
+    <p className="mb-6 rounded-xl border border-red-600 px-4 py-3 text-sm text-pretty text-red-800 dark:border-red-400 dark:text-red-300 print:hidden" role="alert">
+      This browser isn’t saving checks (a private window, or storage is full), so new ones will be gone when the page reloads or closes. {log === 'below' ? 'Download a CSV from the log below before you close it.' : 'To keep this one, go back and download a CSV from the log before you close the page.'}
+    </p>
+  )
+}
+
 function summaryText(result: Result, student: string, passage: string, at: number): string {
   const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`
   const accuracy = result.accuracy === null ? '' : `, ${percent(result.accuracy)}% accuracy (${result.correct} of ${result.read} words correct)`
@@ -394,12 +415,16 @@ function load(): Saved {
       student: text(data.student, LIMITS.name),
       mode: data.mode === 'whole' ? 'whole' : 'minute',
       goal,
-      log: Array.isArray(data.log) ? data.log.filter(validCheck).slice(-LIMITS.log) : [],
+      // Every readable check is kept: the log has no cap, so none are dropped without a word.
+      log: Array.isArray(data.log) ? data.log.filter(validCheck) : [],
     }
   } catch {
     return fallback
   }
 }
+
+/** A time a date can show: beyond about 275,000 years either way, formatting it throws. */
+const validTime = (v: unknown): v is number => typeof v === 'number' && Math.abs(v) <= 8.64e15
 
 function validCheck(c: unknown): c is Check {
   if (!c || typeof c !== 'object') return false
@@ -407,7 +432,7 @@ function validCheck(c: unknown): c is Check {
   const count = (v: unknown) => Number.isInteger(v) && (v as number) >= 0
   return (
     typeof x.id === 'string' &&
-    Number.isFinite(x.at) &&
+    validTime(x.at) &&
     typeof x.student === 'string' &&
     typeof x.passage === 'string' &&
     count(x.length) &&
@@ -443,7 +468,7 @@ function storeRun(pending: Pending | null, saved: Saved) {
 function loadRun(saved: Saved): Pending | null {
   try {
     const data = JSON.parse(localStorage.getItem(RUN_KEY) ?? 'null')
-    if (!data || data.version !== 1 || data.check !== fingerprint(saved) || !Number.isFinite(data.at) || !Number.isFinite(data.aliveAt)) return null
+    if (!data || data.version !== 1 || data.check !== fingerprint(saved) || !validTime(data.at) || !Number.isFinite(data.aliveAt)) return null
     let run = restoreRun(data.run, parsePassage(saved.text).words.length)
     if (!run) return null
     const savedAs = typeof data.savedAs?.id === 'string' && typeof data.savedAs?.sig === 'string' ? { id: data.savedAs.id, sig: data.savedAs.sig } : null

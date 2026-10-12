@@ -723,7 +723,8 @@ function load(): Saved {
             const whole = lines.length && lines.reduce((n, l) => n + l.price * l.qty, 0) === s.total
             return {
               id: typeof s.id === 'string' ? s.id : `restored-${k}`,
-              at: Number.isFinite(s.at) ? s.at : 0,
+              // A time beyond what a date can show (about 275,000 years either way) would stop the page; such a sale keeps its takings.
+              at: typeof s.at === 'number' && Math.abs(s.at) <= 8.64e15 ? s.at : 0,
               lines: whole ? lines : [{ name: 'Sale (details unreadable)', price: s.total, qty: 1 }],
               total: s.total,
               method: (['cash', 'card', 'other'] as const).includes(s.method) ? s.method : 'other',

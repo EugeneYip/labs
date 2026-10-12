@@ -71,7 +71,8 @@ function load(): Saved {
     const delays: Delay[] = (Array.isArray(data.delays) ? data.delays : [])
       .filter((d: Record<string, unknown>) => Number.isFinite(d?.at) && Number.isInteger(d?.minutes) && (d.minutes as number) > 0 && (d.minutes as number) <= 600)
       .slice(0, 50)
-    const serveAt = Number.isFinite(data.serveAt) ? freshServeAt(data.serveAt, now) : fresh.plan.serveAt
+    // A date can show about 275,000 years either way. A serving time at or past that edge would stop the page once a delay moves it on, so it gets the usual default instead.
+    const serveAt = typeof data.serveAt === 'number' && Math.abs(data.serveAt) <= 8.6e15 ? freshServeAt(data.serveAt, now) : fresh.plan.serveAt
     // An old plan moved to its next serving day starts that day fresh, without old delays or an open cooking mode.
     const moved = serveAt !== data.serveAt
     return {
