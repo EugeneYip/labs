@@ -102,26 +102,43 @@ export function detectPitch(samples: Float32Array, sampleRate: number, minHz = 7
     cmnd[tau] = running ? (d[tau] * tau) / running : 1
   }
 
-  // The first dip under the threshold, followed to its bottom. A dip bottoming out at a shorter lag than the range
-  // allows is a note above the range, which would otherwise read an octave low.
+  // The first dip under the threshold, followed to its bottom.
   let tau = -1
   for (let t = 2; t <= tauMax; t++) {
     if (cmnd[t] < threshold) {
       while (t + 1 <= tauMax && cmnd[t + 1] < cmnd[t]) t++
-      if (t < tauMin) return null
       tau = t
       break
     }
   }
   if (tau < 0) return null
+  // A vowel can make the second harmonic louder than all the rest ("ah" high in a man's range, "oo" low in a woman's),
+  // and the first dip is then at half the true period: an octave too high, and a shallow dip, as the lag only nearly
+  // repeats the sound. A truly periodic sound dips as deep at twice its period, so a much deeper dip there means it's
+  // the period. Depths are compared between samples, as a short period seldom falls on a whole sample, and only for a
+  // shallow first dip: a clean tone's dips are all near zero, where a ratio means nothing.
+  const first = bottom(cmnd, tau)
+  const near = Math.round(first.lag * 2)
+  const reach = Math.max(2, Math.round(near * 0.02))
+  if (first.depth > 0.03 && near + reach + 1 <= tauMax) {
+    let t = near - reach
+    for (let s = near - reach + 1; s <= near + reach; s++) if (cmnd[s] < cmnd[t]) t = s
+    const second = bottom(cmnd, t)
+    if (second.depth < threshold && second.depth < first.depth * 0.5) tau = t
+  }
+  // A dip at a shorter lag than the range allows is a note above the range, which would otherwise read an octave low.
+  if (tau < tauMin) return null
 
-  // A parabola through the neighbors places the dip between samples.
-  const a = cmnd[tau - 1] ?? cmnd[tau]
-  const b = cmnd[tau]
-  const c = tau + 1 <= tauMax ? cmnd[tau + 1] : b
+  return { hz: sampleRate / bottom(cmnd, tau).lag, clarity: Math.max(0, 1 - cmnd[tau]) }
+}
+
+/** A dip's bottom around lag t, placed between samples by a parabola through its neighbors: where it is and how deep. */
+function bottom(cmnd: Float32Array, t: number): { lag: number; depth: number } {
+  const a = cmnd[t - 1] ?? cmnd[t]
+  const b = cmnd[t]
+  const c = t + 1 < cmnd.length ? cmnd[t + 1] : b
   const curve = a + c - 2 * b
-  const exact = curve > 0 ? tau + (a - c) / (2 * curve) : tau
-  return { hz: sampleRate / exact, clarity: Math.max(0, 1 - b) }
+  return curve > 0 ? { lag: t + (a - c) / (2 * curve), depth: Math.max(0, b - (a - c) ** 2 / (8 * curve)) } : { lag: t, depth: b }
 }
 
 /** The middle value, which ignores a stray octave jump among recent readings. */
