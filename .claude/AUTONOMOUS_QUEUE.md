@@ -30,8 +30,8 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ## Now
 
-- **Current:** P8, experimental candidates.
-- **Next:** P9, import, export, and durability.
+- **Current:** P9, import, export, and durability.
+- **Next:** P10, production observability without analytics.
 
 ## Parked lanes (human-blocked)
 
@@ -117,7 +117,12 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ### P8: Experimental candidates
 
-- `[ ]` Numbers by Ear, Line Dry, In Tune, Form Check, Family Stories: reduce whatever uncertainty doesn't need people.
+- `[x]` Done (2026-10-12). Findings in `.claude/EXPERIMENTAL_CANDIDATES.md`. **Fixed:**
+  - In Tune read some sung notes an octave high when the vowel boosts the second harmonic (commit d9753e4). In-tune notes matched within 2.5 s: 51–56 of 60 before, 59–60 after, on 900 synthesized notes;
+  - Form Check stepped 240 fps slow motion 4 or 8 frames at a time; the rate now comes from the file (07cf644, comment 5029b4a);
+  - Family Stories told a private window it was out of space; it now says it can't keep the answer, while recording too (402370f).
+
+  **Left:** a child's "ah" at C5 and C♯5 still reads an octave high (a looser rule halves buzzy tones). Chromium's WebM recordings have no stored length (a careful P13 candidate). **BLOCKED — OWNER REQUIRED:** Numbers by Ear's voices on Windows, Android, and ChromeOS devices; Line Dry against real washing; real singers, phones, and iPhones for the rest.
 
 ### P9: Import, export, and durability
 
@@ -143,6 +148,12 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 - `[ ]` Only fixes backed by the audits above.
 
 ## Log
+
+- **2026-10-12:** P8 done and verified in production (commits d9753e4, 07cf644, 402370f, 5029b4a, and 8e542ca; deploy 38311285906 succeeded; production serves `index-WyDuM49i.js`).
+  - **In Tune on production** (`p8-intune-browser.cjs`, a synthesized man's voice as Chromium's microphone): G4 "ah" matched in 2.8 s, where it had read "G5: about 12 semitones too high" and never matched; D4 "ah" matched in 2.8 s.
+  - **Form Check on production** (`p8-formcheck-phone.cjs`): the four phone-like clips in Chromium and WebKit all show the right size and length, report 60, 240, 30, and 29.97 fps, and step exactly one frame.
+  - **Family Stories on production** (`p8-familystories-record.cjs`): WebKit with WebM and with MP4, a private-like WebKit profile, and Chromium all pass.
+  - **Smoke test:** 104 page loads, 0 problems.
 
 - **2026-10-12:** P7 done and verified in production (commit ad9eed8, deploy 38304012548 succeeded). `.claude/qa/p7-meta-prod.cjs`: `robots.txt` and `sitemap.xml` answer 200, with 26 addresses; each page answers 200 with its own canonical and og:url; `/stall-till/index.html` names `/stall-till/`; an unknown address answers 404 with none. The smoke test: 104 page loads, 0 problems.
 
