@@ -25,13 +25,17 @@ research → number → risk list → implement → tests → adversarial audit 
 
 ## Now
 
-- **Step:** discovery. The broad pool and first screen are in `CANDIDATES.md`; 17 candidates are being taken through the gate (A–G) by four read-only research threads, with the results to be checked before any decision.
-- **Next action:** read the four research results, verify the claims a decision rests on, record REJECT/HOLD/BUILD for each in `CANDIDATES.md`, then take the strongest survivor (if any passes) to #026.
+- **Step:** #026 Exam Timekeeper (`exam-timekeeper`): BUILD decided 2026-10-13; the risk list is in `026-exam-timekeeper.md`. Implementing.
+- **Next action:** build `src/experiments/exam-timekeeper/` (a pure `model.ts` for the times, then the page), test the model against an independent simulation, then the adversarial audit and the shipping gate in this file.
+- **After #026:** the anonymize-transcripts candidate's last check, then the part-writing checker's (`CANDIDATES.md`, "Decisions after the gate").
 
 ## Numbered experiments
 
-None yet.
+| # | Title | Slug | Status | Dossier |
+|---|---|---|---|---|
+| 026 | Exam Timekeeper | exam-timekeeper | building | `026-exam-timekeeper.md` |
 
 ## Log
 
 - **2026-10-13:** reconciled. `main` = `origin/main` = 3d08ca5, clean. Production's 61 files are byte-identical to a fresh build of 3d08ca5; the daily check passes 11 of 11 against production (run locally; GitHub's first scheduled run is at 11:17 UTC today); every recent deploy succeeded. Batch 07 recorded; candidate pool written.
+- **2026-10-13:** discovery. About 130 ideas considered: about 100 screened out without research, 26 taken through the gate by six read-only research threads (each decision's deciding claims checked again here). 16 rejected, 6 on hold, 3 survivors. #026 assigned to Exam Timekeeper after the JCQ clock rule and its competitors were verified directly.
