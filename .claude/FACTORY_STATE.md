@@ -6,14 +6,13 @@ The checkpoint for autonomous Labs work. Read it down to the "History" heading; 
 
 The current state, kept short. `.claude/hooks/session-context.sh` prints this section at the start of every session and after the context is compacted, and `.claude/hooks/stop-continue.sh` reads **Autonomy** and **Next action** from it, so keep those two lines' wording as they are.
 
-- **Autonomy:** complete
-- **Batch:** 07, Discovery Cycle 2, complete. It was authorized by the owner on 2026-10-13 for up to five new experiments (#026–#030, never #031), and closed the same day with four, #026–#029. No batch is active.
-- **Batch file:** `.claude/batch-07/BATCH_07.md`; the closeout is `.claude/batch-07/CLOSEOUT.md`.
-- **Experiment:** none. The next number, #030, is unassigned: nothing passed the gate for it.
-- **Lifecycle:** closed. #028 Hidden Data Check and #026 Exam Timekeeper are PROMOTE candidates; #027 Transcript Pseudonyms and #029 Places by Choice are MAINTAIN.
+- **Autonomy:** active
+- **Batch:** 08, Discovery Cycle 3, authorized by the owner on 2026-10-13 for up to five new experiments, #030–#034 (never #035, and no further batch). An upper limit, not a quota. Part A, Autonomous Ops v2.1, comes before discovery.
+- **Batch file:** `.claude/batch-08/BATCH_08.md`; every idea and its outcome in `.claude/batch-08/CANDIDATES.md`.
+- **Experiment:** none yet. #030 is the next number, assigned only when a candidate passes the gate.
 - **Where the work is:** `main`, which matches `origin/main`. No work-in-progress branch.
-- **Next action:** none until the owner authorizes more work; what waits for the owner is under "Owner-blocked" and in the closeout.
-- **Done and verified:** #026–#029, shipped and verified in production on 2026-10-13. The closeout fixes to #027 and #028 (commit 5c883ad) are verified in production.
+- **Next action:** finish Autonomous Ops v2.1 (permissions, the bounded QA runner, the Stop hook's guard), commit and push it, check the deploy, then validate the Stop hook live and begin need-first discovery for #030.
+- **Done and verified:** the Batch 08 baseline (2026-10-13): `main` = `origin/main` = c157fe5; production byte-identical to a fresh build; daily check 11 of 11. Batch 07 is complete: #026–#029 live and verified.
 - **Owner-blocked (parked; don't start them):**
   - Fluency Check interviews or a pilot;
   - the email to Open-Meteo;
@@ -24,15 +23,23 @@ The current state, kept short. `.claude/hooks/session-context.sh` prints this se
   - an automation permission to test #028 with workbooks saved by Excel itself.
 
   Details are in `.claude/AUTONOMOUS_QUEUE.md` and the closeout.
-- **Autonomy values:** `active` (carry on without asking), `paused` (the owner asked to pause), `blocked` (everything left needs the owner), `complete` (the batch is finished and reported). Only `active` makes the Stop hook ask Claude to carry on, and never twice in a row.
+- **Autonomy values:** `active` (carry on without asking), `paused` (the owner asked to pause), `blocked` (everything left needs the owner), `complete` (the batch is finished and reported). Only `active` makes the Stop hook ask Claude to carry on, and it doesn't ask again until Claude has used a tool since it last asked (and at most 3 times in 10 minutes).
 
 ## How to resume
 
-1. Run `git status`, `git branch`, and `git log --oneline -5`. Uncommitted changes are unfinished work: keep them. If "Where the work is" names a `wip/` branch, switch to it (`git switch wip/...`); its copy of this file is the current one.
+1. Run `git status`, `git branch`, and `git log --oneline -5`. Uncommitted changes are unfinished work: keep them. If "Where the work is" names a `wip/` branch, or the session-start output lists one, switch to it (`git switch wip/...`); its copy of this file is the current one. While an experiment is being built, its milestones and "Now" updates are committed on that branch; `main` gets records that don't depend on the unfinished code (discovery, rejections), and the experiment itself only as one squashed commit when it ships.
 2. Read the batch file's "Now", then the current experiment's dossier.
 3. Do the next action. Commit each verified milestone (on the `wip/` branch while an experiment is being built, otherwise on `main`) and update "Now" here and in the batch file.
 4. When an experiment ships: on `main`, `git merge --squash wip/<number>-<slug>`, commit as "#0NN Title: summary", run `npm run build`, push, watch the deploy, check production, then record that here, in the batch file, and in the dossier; commit and push the record. Delete the `wip/` branch once `git diff main wip/<number>-<slug>` shows nothing that matters, and start the next discovery.
 5. Long runs: bound them (see "Long jobs" in `CLAUDE.md`), keep partial results in files, and when a lane stalls, record it here and carry on with another.
+
+## Batch 08: Discovery Cycle 3 (active)
+
+- **Authorized** by the owner on 2026-10-13: discover, build, audit, deploy, and resolve up to five new experiments, #030–#034, with no routine approval between experiments. Never #035; no further batch without the owner. Owner authorization once, autonomous execution after, the owner's attention only at real boundaries.
+- **Part A, Autonomous Ops v2.1,** before discovery: permissions for the routine lifecycle, writable checkpoints, the WIP-branch lifecycle, session start, the Stop hook, long-work recovery, and one harmless autonomous cycle. Results in the batch file.
+- **Still prohibited:** contacting anyone, posting, recruiting, interviews, spending money, accounts or backends, keyed services, analytics, weakening the constitution, permission workarounds (Firefox stays parked), desktop-app automation needing a new owner permission, and the parked owner lanes.
+- **Records:** `.claude/batch-08/BATCH_08.md` (the rules in short, the checkpoint under "Now", the log), `.claude/batch-08/CANDIDATES.md` (every idea and its outcome), and a dossier per numbered experiment in `.claude/batch-08/`.
+- **Close:** when the evidence says to stop (the brief's early-close test), with the closeout report; then Autonomy goes to `complete`.
 
 ## Batch 07: Discovery Cycle 2 (complete)
 

@@ -30,7 +30,7 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ## Now
 
-- **Current:** nothing in this queue. P1–P13 are done and verified. Batch 07 ran on 2026-10-13 and closed at four experiments (#026–#029); its closeout is `.claude/batch-07/CLOSEOUT.md`. Nothing is authorized beyond it.
+- **Current:** Batch 08 (Discovery Cycle 3, #030–#034), authorized by the owner on 2026-10-13; its checkpoint is `.claude/batch-08/BATCH_08.md`. Nothing in this queue: P1–P13 are done and verified. Batch 07 closed at four experiments (#026–#029); its closeout is `.claude/batch-07/CLOSEOUT.md`.
 - **Parked lanes** (below) stay parked until the owner chooses one; they never hold up other work.
 - **When something new needs the owner** (in any batch): add it under "Parked lanes" as BLOCKED — OWNER REQUIRED, with what's ready and what the owner would do, mention it in "Now" in `.claude/FACTORY_STATE.md`, and carry on with the rest.
 
