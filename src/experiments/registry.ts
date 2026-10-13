@@ -274,6 +274,15 @@ export const experiments: readonly Experiment[] = [
     status: 'live',
     category: 'school',
   },
+  {
+    number: 27,
+    slug: 'transcript-pseudonyms',
+    title: 'Transcript Pseudonyms',
+    summary: 'Replaces the names and other identifiers you choose in an interview transcript with consistent pseudonyms, with a key to keep apart, on your own device.',
+    shipped: '2026-10-13',
+    status: 'live',
+    category: 'files',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */

@@ -25,8 +25,8 @@ research → number → risk list → implement → tests → adversarial audit 
 
 ## Now
 
-- **Step:** #027 Transcript Pseudonyms (`transcript-pseudonyms`): BUILD decided 2026-10-13 after its last check; risk list in `027-transcript-pseudonyms.md`. Implementing.
-- **Next action:** build `src/experiments/transcript-pseudonyms/` (pure `model.ts`: suggestions, matching, replacement, key CSV; a small .docx text reader), property-test that only chosen spans change, then the page, the audit, and the shipping gate.
+- **Step:** #027 Transcript Pseudonyms: built, audited (nine defects found and fixed; `027-transcript-pseudonyms.md`), shipping gate met, pushed.
+- **Next action:** verify #027 in production (the deploy, files byte-identical, `tp-flow.cjs` and `tp-audit.cjs` against production, an offline check on production, the smoke test, the daily check), record it, then the part-writing checker's final check.
 - **After #027:** the part-writing checker's final check (`CANDIDATES.md`, "Decisions after the gate").
 
 ## Numbered experiments
@@ -34,7 +34,7 @@ research → number → risk list → implement → tests → adversarial audit 
 | # | Title | Slug | Status | Dossier |
 |---|---|---|---|---|
 | 026 | Exam Timekeeper | exam-timekeeper | shipped 2026-10-13, verified in production | `026-exam-timekeeper.md` |
-| 027 | Transcript Pseudonyms | transcript-pseudonyms | building | `027-transcript-pseudonyms.md` |
+| 027 | Transcript Pseudonyms | transcript-pseudonyms | pushed; production check next | `027-transcript-pseudonyms.md` |
 
 ## Log
 
