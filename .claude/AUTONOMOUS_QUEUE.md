@@ -30,8 +30,8 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ## Now
 
-- **Current:** P10, production observability without analytics.
-- **Next:** P11, dependencies and maintenance.
+- **Current:** P11, dependencies and maintenance.
+- **Next:** P12, documentation and handoff.
 
 ## Parked lanes (human-blocked)
 
@@ -135,7 +135,14 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ### P10: Production observability without analytics
 
-- `[ ]` A scheduled GitHub Actions smoke test of routes and dependencies, if free and safe. It monitors the product, not users.
+- `[x]` Done (2026-10-12, commit 8d3fe38). `.github/workflows/daily-check.yml` runs `.github/scripts/daily-check.ts` once a day (11:17 UTC) and on demand. Free for a public repository; read-only permissions; no keys; public pages only. It checks:
+  - every sitemap page answers with its own address and a title;
+  - every script and style file loads, including each experiment's own code and the shared files;
+  - robots.txt, sw.js, a 404, and http redirecting to https;
+  - the HTTPS certificate has 14 days left (GitHub Pages renews it);
+  - Open-Meteo's place search, forecast, and archive, read with Frost Dates' and Line Dry's own code, with every forecast field Line Dry uses really there.
+
+  A busy or failed request is tried twice more. GitHub emails a failed run to whoever last changed the schedule (the owner's notification settings decide). **Limit:** GitHub turns scheduled runs off after 60 days without a commit; the Actions tab turns them back on.
 
 ### P11: Dependencies and maintenance
 
@@ -150,6 +157,10 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 - `[ ]` Only fixes backed by the audits above.
 
 ## Log
+
+- **2026-10-12:** P10 done and verified (commit 8d3fe38).
+  - **On GitHub** (run 38325081794, started by hand): 11 of 11 checks pass, and the schedule is active.
+  - **Locally:** 11 of 11 pass in 7 seconds. With fetch wrapped to break one thing at a time, it fails on a missing file, a page with the wrong address, a missing forecast field, and Open-Meteo not answering, naming each, and rides out one "too many requests".
 
 - **2026-10-12:** P9 done and verified in production (commits 2a1e12c, efd862d, 6f847f6, and e8e6066; deploy 38323719203 succeeded; production serves `index--w1y5gDG.js`).
   - **On production, in Chromium and WebKit:** the two-tab checks (13 experiments x 9 cases), no echo between tabs, all 13 notices at 390 px, Stall Till's 3 sales of 3, Fluency Check during a check and its reload recovery, Trip Board's damaged board, the three round trips, and Day Clock saving its settings again after they're cleared: all pass.

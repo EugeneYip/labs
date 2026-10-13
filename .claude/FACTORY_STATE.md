@@ -52,7 +52,8 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
     - Nine pages that held typed-in work saved silently when storage failed; they now say so (`src/components/NotSaving.tsx`). Private windows were wrongly blamed in two notices.
     - Trip Board's damaged board is no longer hidden.
     - Rule for the next saved-format change: use a new key (old tabs would otherwise strip the new format at once).
-  - **Next:** P10, a scheduled GitHub Actions check of the live site and Open-Meteo, if free and safe. A draft (34 checks in 5 seconds, read-only) is in the session scratchpad: every sitemap page with its own address, every script and style file, robots.txt, sw.js, a 404, and Open-Meteo's place search, forecast, and archive read with the pages' own parsers.
+  - P10 done (2026-10-12, commit 8d3fe38) and verified on GitHub (run 38325081794: 11 of 11). A daily check of the live site and Open-Meteo, `.github/workflows/daily-check.yml` with `.github/scripts/daily-check.ts`, type-checked with the site. Limit: GitHub stops scheduled runs after 60 days without a commit.
+  - **Next:** P11, dependencies and maintenance: vulnerabilities, unnecessary packages, warnings, and a clean-checkout build. GitHub Actions warns that `ubuntu-latest` moves to Ubuntu 26 from 2026-10-19.
 
 ## Stage 0 interview preparation (complete; interviewing not begun)
 
