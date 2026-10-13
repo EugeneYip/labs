@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react'
 import { NotSaving } from '../../components/NotSaving.tsx'
 import { useOtherTabs } from '../../components/useOtherTabs.ts'
 import { dayNumber, decode, encode, exchanges, isoDate, LIMITS, matchPreset, nightOf, patternNight, presetNights, PRESETS, startOfWeek, sundayFirst, swapNight, toICS, totals, validISO, weekday, type Parent, type Schedule } from './model.ts'
@@ -296,7 +296,10 @@ export default function CustodyCalendar() {
               <span className="inline-block h-3.5 w-3.5 rounded-sm outline-[1.5px] outline-ink outline-dashed" aria-hidden="true" />
               Swapped night
             </span>
-            <span className="print:hidden">{full ? `That’s ${LIMITS.overrides} swapped nights, the most a schedule can hold. Undo some to swap more.` : 'Tap any day to swap that night, for holidays or trips.'}</span>
+            <span className="print:hidden">
+              {full ? `That’s ${LIMITS.overrides} swapped nights, the most a schedule can hold. Undo some to swap more.` : 'Tap any day to swap that night, for holidays or trips.'}
+              <span className="sr-only"> With a keyboard, Tab moves between months and the arrow keys between days.</span>
+            </span>
             {swaps > 0 && (
               <button type="button" onClick={() => change({ overrides: {} })} className="cursor-pointer underline underline-offset-4 hover:text-ink print:hidden">
                 Undo all {swaps} {swaps === 1 ? 'swap' : 'swaps'}
@@ -362,10 +365,24 @@ function Month({ year, month, schedule, today, onSwap }: { year: number; month: 
   const lead = SUNDAY_FIRST ? (weekday(first) + 1) % 7 : weekday(first)
   const cells: (number | null)[] = [...Array<null>(lead).fill(null), ...Array.from({ length: days }, (_, i) => first + i)]
   const weekStart = first - lead
+  // One stop in the Tab order per month, not one per day (about 400 in a year): the arrow keys move between days.
+  // The day kept is today in its month, or the first, unless a day here was focused since.
+  const [chosen, setChosen] = useState<number | null>(null)
+  const inMonth = (day: number | null): day is number => day !== null && day >= first && day < first + days
+  const focus = inMonth(chosen) ? chosen : inMonth(today) ? today : first
+  const buttons = useRef(new Map<number, HTMLButtonElement>())
+  const onKeyDown = (e: KeyboardEvent) => {
+    const to: Record<string, number> = { ArrowRight: focus + 1, ArrowLeft: focus - 1, ArrowDown: focus + 7, ArrowUp: focus - 7, Home: first, End: first + days - 1 }
+    if (!(e.key in to)) return
+    e.preventDefault()
+    const day = Math.min(first + days - 1, Math.max(first, to[e.key]))
+    setChosen(day)
+    buttons.current.get(day)?.focus()
+  }
   return (
     <div className="break-inside-avoid">
       <h3 className="text-sm font-semibold print:text-[9pt]">{monthName.format(atDay(first))}</h3>
-      <div className="mt-1.5 grid grid-cols-7 gap-0.5 text-center text-[11px] print:text-[7pt]" role="group" aria-label={`${monthName.format(atDay(first))} ${year}`}>
+      <div className="mt-1.5 grid grid-cols-7 gap-0.5 text-center text-[11px] print:text-[7pt]" role="group" aria-label={`${monthName.format(atDay(first))} ${year}`} onKeyDown={onKeyDown}>
         {Array.from({ length: 7 }, (_, i) => (
           <span key={i} className="pb-0.5 text-dim" aria-hidden="true">
             {dayLetter.format(atDay(weekStart + i))}
@@ -379,7 +396,13 @@ function Month({ year, month, schedule, today, onSwap }: { year: number; month: 
           return (
             <button
               key={day}
+              ref={(el) => {
+                if (el) buttons.current.set(day, el)
+                else buttons.current.delete(day)
+              }}
               type="button"
+              tabIndex={day === focus ? 0 : -1}
+              onFocus={() => setChosen(day)}
               data-night={p}
               onClick={() => onSwap(day)}
               className={`relative h-8 cursor-pointer rounded-[4px] tabular-nums text-ink print:h-[0.22in] ${FILL[p]} ${handover ? 'border-l-[3px] border-ink' : ''} ${swapped ? 'outline-[1.5px] outline-offset-[-2px] outline-ink outline-dashed' : ''} ${day === today ? 'font-bold underline underline-offset-2' : ''}`}
