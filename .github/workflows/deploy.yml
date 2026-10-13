@@ -1,6 +1,8 @@
 # Builds the site and publishes it to GitHub Pages on every push to main.
 # The custom domain (labs.eugeneyip.net) is stored in the repository's Pages
 # settings, so deployments never reset it. public/CNAME records it in the code too.
+# The runner's system is named (not ubuntu-latest), so the build moves to a new
+# one only when it has been checked there.
 name: Deploy
 
 on:
@@ -20,7 +22,7 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -36,7 +38,7 @@ jobs:
 
   deploy:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
