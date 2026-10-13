@@ -79,7 +79,9 @@ function inlineSpeech(line: string): { speaker: string; text: string } | null {
 
 /** A capitalized name alone on its line: "HAMLET", "HAMLET.", "JACK (V.O.)". */
 function nameLine(line: string): string | null {
-  const m = line.match(/^(.+?)\s*(\([^)]*\))?\s*[.:]?$/)
+  // The name part is at most 60 characters (a name over 40 is refused anyway). Unbounded, a long line with unclosed
+  // brackets was tried at every character, which grew with the square of its length.
+  const m = line.match(/^(.{1,60}?)\s*(\([^)]*\))?\s*[.:]?$/)
   if (!m) return null
   const name = m[1].trim()
   return nameLike(name, true) ? cleanName(name) : null
@@ -192,12 +194,22 @@ export type Segment = { kind: 'spoken' | 'direction'; text: string }
 /** Splits a speech into what's said and the directions in [brackets] or (parentheses) inside it. */
 export function segments(text: string): Segment[] {
   const out: Segment[] = []
-  const re = /\[[^\]]*\]|\([^)]*\)/g
   let at = 0
-  for (const m of text.matchAll(re)) {
-    if (m.index! > at) out.push({ kind: 'spoken', text: text.slice(at, m.index) })
-    out.push({ kind: 'direction', text: m[0] })
-    at = m.index! + m[0].length
+  // Each opening bracket runs to the first closing one after it. They're found by hand, keeping where the next ')' and
+  // ']' are, because a regex tried every bracket left unclosed all the way to the end, which took time growing with
+  // the square of the text's length.
+  const next = { ')': text.indexOf(')'), ']': text.indexOf(']') }
+  for (let i = 0; i < text.length; i++) {
+    const close = text[i] === '(' ? ')' : text[i] === '[' ? ']' : null
+    if (!close) continue
+    if (next[close] !== -1 && next[close] < i) next[close] = text.indexOf(close, i + 1)
+    const end = next[close]
+    // No closing bracket of this kind from here on, so none of this kind can close later either.
+    if (end === -1) continue
+    if (i > at) out.push({ kind: 'spoken', text: text.slice(at, i) })
+    out.push({ kind: 'direction', text: text.slice(i, end + 1) })
+    at = end + 1
+    i = end
   }
   if (at < text.length) out.push({ kind: 'spoken', text: text.slice(at) })
   return out.map((s) => ({ ...s, text: s.text.replace(/\s+/g, ' ') })).filter((s) => s.text.trim())
