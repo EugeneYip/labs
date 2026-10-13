@@ -25,8 +25,8 @@ research → number → risk list → implement → tests → adversarial audit 
 
 ## Now
 
-- **Step:** #027 Transcript Pseudonyms shipped and verified in production (2026-10-13). Discovery for #028.
-- **Next action:** choose #028 by evidence among the remaining survivor (the part-writing checker) and the HOLDs whose one question research can settle (tournament day schedule; compare two lists of names), plus any stronger new candidate; record the decision in `CANDIDATES.md`.
+- **Step:** discovery for #028. The remaining survivor and two HOLDs were rejected, and so were three new rule-driven ideas, each already built free (`CANDIDATES.md`, "Discovery for #028"). A need-first round is running: three read-only threads looking for official guidance that asks lay people for an artifact, people asking for a tool and being told there isn't one, and work on locked-down devices.
+- **Next action:** verify whatever survives those threads; BUILD #028 only on strong evidence. If nothing survives, close the batch with two shipped (the success condition allows it) and write the closeout.
 - **After #027:** the part-writing checker's final check (`CANDIDATES.md`, "Decisions after the gate").
 
 ## Numbered experiments
