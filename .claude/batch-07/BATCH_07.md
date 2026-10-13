@@ -25,8 +25,8 @@ research → number → risk list → implement → tests → adversarial audit 
 
 ## Now
 
-- **Step:** #027 Transcript Pseudonyms: built, audited (nine defects found and fixed; `027-transcript-pseudonyms.md`), shipping gate met, pushed.
-- **Next action:** verify #027 in production (the deploy, files byte-identical, `tp-flow.cjs` and `tp-audit.cjs` against production, an offline check on production, the smoke test, the daily check), record it, then the part-writing checker's final check.
+- **Step:** #027 Transcript Pseudonyms shipped and verified in production (2026-10-13). Discovery for #028.
+- **Next action:** choose #028 by evidence among the remaining survivor (the part-writing checker) and the HOLDs whose one question research can settle (tournament day schedule; compare two lists of names), plus any stronger new candidate; record the decision in `CANDIDATES.md`.
 - **After #027:** the part-writing checker's final check (`CANDIDATES.md`, "Decisions after the gate").
 
 ## Numbered experiments
@@ -34,10 +34,11 @@ research → number → risk list → implement → tests → adversarial audit 
 | # | Title | Slug | Status | Dossier |
 |---|---|---|---|---|
 | 026 | Exam Timekeeper | exam-timekeeper | shipped 2026-10-13, verified in production | `026-exam-timekeeper.md` |
-| 027 | Transcript Pseudonyms | transcript-pseudonyms | pushed; production check next | `027-transcript-pseudonyms.md` |
+| 027 | Transcript Pseudonyms | transcript-pseudonyms | shipped 2026-10-13, verified in production | `027-transcript-pseudonyms.md` |
 
 ## Log
 
 - **2026-10-13:** reconciled. `main` = `origin/main` = 3d08ca5, clean. Production's 61 files are byte-identical to a fresh build of 3d08ca5; the daily check passes 11 of 11 against production (run locally; GitHub's first scheduled run is at 11:17 UTC today); every recent deploy succeeded. Batch 07 recorded; candidate pool written.
 - **2026-10-13:** discovery. About 125 ideas considered: about 100 screened out in a first pass (51 rows in `CANDIDATES.md`), and 23 taken through the gate by six read-only research threads, with each decision's deciding claims checked again here: 14 rejected, 6 on hold, 3 survivors. #026 assigned to Exam Timekeeper after the JCQ clock rule and its competitors were verified directly.
 - **2026-10-13:** #026 Exam Timekeeper shipped (commit 731ed53, deploy 38374652232) and verified in production. The audit before the push found nine defects, all fixed: a 7.1 s freeze per tick with the largest exam (formatters rebuilt for every time shown), a fit-to-screen loop that crashed the board, a cut-off board, a confusing "Finish 10:31" for a start just after 09:00, mis-tap breaks, ambiguous field names, an unreachable scroll region, missing focus rings on time fields, and "UK" where JCQ's rules cover less. Production: files byte-identical, 46/46 flow checks and all audit checks in both engines, offline, smoke 108/0, daily check 11/11.
+- **2026-10-13:** #027 Transcript Pseudonyms shipped (commit 66df97b, deploy 38378802716) and verified in production. The audit before the push found nine defects, all fixed: Will and May on the common-words list, sentence-starting words suggested as names, text from XML comments and fallback copies in Word files, a false lowercase warning, "[Person N]" for places, keyboard focus lost after a choice, a duplicated second-look list, two scans that grew with the identifiers or a text without spaces, and literal byte-order marks in the source. Production: files byte-identical, 40/40 flow checks and all audit checks in both engines, offline, smoke 112/0, daily check 11/11.

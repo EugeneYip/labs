@@ -84,7 +84,12 @@ Added for privacy during the audit: spell check and form restore off in every fi
 
 ## Production verification
 
-(Filled in after the deploy.)
+2026-10-13, commit 66df97b, deploy run 38378802716 succeeded.
+- Production's 65 files are byte-identical to the local build of that commit.
+- `tp-flow.cjs` against production: 40 of 40 in Chromium and in WebKit (the example, eight replacements, grouping, the result checked word by word, both downloads, the key reused on a .docx, refused files, the leave-page warning, nothing stored, axe at 1280 px light and 320 px dark, a 1 MB paste).
+- `tp-audit.cjs` against production: every check passes in both engines.
+- `tp-offline-prod.cjs`: with the browser's network cut after one visit, an address never saved fails while the page reloads and pseudonymizes, in both engines.
+- The 28-page smoke test on production: 112 page loads, 0 problems. The daily check: 11 of 11.
 
 ## Lifecycle recommendation
 
