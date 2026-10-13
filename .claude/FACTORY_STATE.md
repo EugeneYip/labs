@@ -1,6 +1,30 @@
 # Factory State
 
-The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`, `FACTORY_CONSTITUTION.md`, and this file, then check `git status` and `git log`, before acting. Never redo completed work. Update this file after every milestone (idea chosen, built, tested, shipped, dropped).
+The checkpoint for autonomous Labs work. Read it down to the "History" heading; everything below that is the record of earlier phases. Update "Now" at every milestone (idea chosen, built, tested, shipped, dropped, blocked), so a new session can continue from this file, the batch file it names, and git alone. The rules for working without the owner are in `CLAUDE.md` ("Autonomous operation").
+
+## Now
+
+The current state, kept short. `.claude/hooks/session-context.sh` prints this section at the start of every session and after the context is compacted, and `.claude/hooks/stop-continue.sh` reads **Autonomy** and **Next action** from it, so keep those two lines' wording as they are.
+
+- **Autonomy:** active
+- **Batch:** 07, Discovery Cycle 2: up to five new experiments, #026–#030, authorized by the owner on 2026-10-13. Never #031.
+- **Batch file:** `.claude/batch-07/BATCH_07.md`
+- **Experiment:** #028 Hidden Data Check (`hidden-data-check`); dossier `.claude/batch-07/028-hidden-data-check.md`.
+- **Lifecycle:** building. Research, number, and risk list are done. The inspection code is mid-refactor and doesn't type-check yet; there's no page, registry entry, or Product Log entry yet.
+- **Where the work is:** the local branch `wip/028-hidden-data-check`, never pushed. `main` is deployable and matches `origin/main`.
+- **Next action:** on `wip/028-hidden-data-check`, reconcile `inspect.ts` with the rewritten `sheet.ts`, then run the defect cases in `.claude/qa/hdc/`; the full sequence is in the batch file's "Now".
+- **Done and verified:** #026 Exam Timekeeper and #027 Transcript Pseudonyms, shipped and verified in production on 2026-10-13.
+- **Owner-blocked (parked; don't start them):** Fluency Check interviews or a pilot; the email to Open-Meteo; a no-account feedback address; regrouping Custody Calendar, Day Clock, and Frost Dates to Maintain; Firefox testing (it needs a permission rule). Details in `.claude/AUTONOMOUS_QUEUE.md`.
+- **After #028:** its production check and records, then discovery for #029 under the batch's research gate, then #030 the same way, then the batch report. Strong evidence matters more than the count: stopping short of #030 is fine, a weak experiment isn't.
+- **Autonomy values:** `active` (carry on without asking), `paused` (the owner asked to pause), `blocked` (everything left needs the owner), `complete` (the batch is finished and reported). Only `active` makes the Stop hook ask Claude to carry on, and never twice in a row.
+
+## How to resume
+
+1. Run `git status`, `git branch`, and `git log --oneline -5`. Uncommitted changes are unfinished work: keep them. If "Where the work is" names a `wip/` branch, switch to it (`git switch wip/...`); its copy of this file is the current one.
+2. Read the batch file's "Now", then the current experiment's dossier.
+3. Do the next action. Commit each verified milestone (on the `wip/` branch while an experiment is being built, otherwise on `main`) and update "Now" here and in the batch file.
+4. When an experiment ships: on `main`, `git merge --squash wip/<number>-<slug>`, commit as "#0NN Title: summary", run `npm run build`, push, watch the deploy, check production, then record that here, in the batch file, and in the dossier; commit and push the record. Delete the `wip/` branch once `git diff main wip/<number>-<slug>` shows nothing that matters, and start the next discovery.
+5. Long runs: bound them (see "Long jobs" in `CLAUDE.md`), keep partial results in files, and when a lane stalls, record it here and carry on with another.
 
 ## Batch 07: Discovery Cycle 2 (current)
 
@@ -11,7 +35,87 @@ This section is the current state. Everything below it is history: where an olde
 - **Records:** `.claude/batch-07/BATCH_07.md` (the rules in short, the checkpoint under "Now", the log) and `.claude/batch-07/CANDIDATES.md` (every idea and its outcome). Each numbered experiment gets a dossier in `.claude/batch-07/`.
 - **Reconciled (2026-10-13):** `main` = `origin/main` = 3d08ca5, clean; production's 61 files byte-identical to a fresh build; the daily check passes 11 of 11 against production; every recent deploy succeeded.
 - **Shipped in Batch 07:** #026 Exam Timekeeper and #027 Transcript Pseudonyms (2026-10-13, both verified in production).
-- **Next action:** whatever `.claude/batch-07/BATCH_07.md` says under "Now".
+- **Next action:** "Now" at the top of this file, then `.claude/batch-07/BATCH_07.md` under "Now".
+
+## Shipped
+
+| # | Name | Slug | Category | Interaction model | Audience | Shipped |
+|---|------|------|----------|-------------------|----------|---------|
+| 001 | Trip Board | trip-board | Travel / information organization | Saved list, paste-to-add | Self-planning travelers | 2026-10-08 |
+| 002 | Photo Scrub | photo-scrub | Privacy / browser file tool | Drop files in, clean files out | Anyone sharing photos (marketplaces, forums) | 2026-10-09 |
+| 003 | Fair Share | fair-share | Group money / expense splitting | Ledger form; the link is the document | Friend groups, roommates | 2026-10-09 |
+| 004 | Clean Paste | clean-paste | Language / text repair | Paste in, live clean text out | Students, researchers, office workers | 2026-10-09 |
+| 005 | CSV Checkup | csv-checkup | Data tools | Drop a file, read a report | Analysts, ops and small-business staff | 2026-10-09 |
+| 006 | Secret Santa | secret-santa | Social / events (gift exchange) | Private per-person links, tap to reveal | Families, offices, friend groups | 2026-10-09 |
+| 007 | Numbers by Ear | numbers-by-ear | Language learning | Listen, type, check loop (speech synthesis) | Language learners, travelers, expats | 2026-10-09 |
+| 008 | Serve Time | serve-time | Cooking / home | Plan backward from a deadline, then a live countdown | Home cooks hosting meals | 2026-10-09 |
+| 009 | Tear-Off Flyer | tear-off-flyer | Community / print | Form to live print layout (paper output) | Neighbors, tutors, people posting notices | 2026-10-09 |
+| 010 | Gallery Wall | gallery-wall | Home / decorating (counts with Cooking / home: 2) | Physical layout calculator with a to-scale drawing | Renters and homeowners hanging art | 2026-10-09 |
+| 011 | Line Dry | line-dry | Weather / household (home-ish: 3 of 3) | Live keyless API to a recommendation with an hourly chart | Households drying washing outside | 2026-10-09 |
+| 012 | Glance | glance | Games / daily puzzle | Flash, then guess; shareable daily score | Daily puzzle players | 2026-10-09 |
+| 013 | In Tune | in-tune | Music | Real-time microphone pitch feedback | Choir singers, voice students | 2026-10-09 |
+| 014 | Playing Time | playing-time | Sports / coaching | Roster to a generated fair schedule with sideline calls; print | Volunteer youth coaches | 2026-10-09 |
+| 015 | Back Row | back-row | Accessibility / presenting | Perceptual simulation of an image, with sizing advice | Presenters, teachers, sign makers | 2026-10-09 |
+| 016 | Fluency Check | fluency-check | Education / reading assessment | Live tap-to-mark while listening, on a timer; print and on-device log | Teachers, tutors, reading specialists | 2026-10-09 |
+| 017 | Frost Dates | frost-dates | Gardening / climate | Place to 30-year climate odds, a season-by-season chart, and a planting calendar | Gardeners worldwide, especially outside North America | 2026-10-09 |
+| 018 | Off Book | off-book | Theater / performing arts | Paste a script, then self-tested cue cards and a read-through with your lines masked | Actors in school, community, and professional shows | 2026-10-09 |
+| 019 | Form Check | form-check | Sports technique / video | Local video with frame stepping, slow motion, drawn lines and angles, and a linked side-by-side | Athletes, coaches, hobbyists (golf, running, lifting) | 2026-10-09 |
+| 020 | Custody Calendar | custody-calendar | Family / co-parenting | Pattern to year calendar, tap to swap nights, .ics export, share link, print | Separated parents sharing custody | 2026-10-09 |
+| 021 | Family Stories | family-stories | Family history / oral history | Guided question cards with per-question audio recording, stored in IndexedDB, ZIP download | Families interviewing elders | 2026-10-09 |
+| 022 | Day Clock | day-clock | Elder care / dementia | Ambient full-screen display with fitted type, night colors, wake lock, timed reminders, press-and-hold settings | Families and carers of people with dementia | 2026-10-09 |
+| 023 | Discussion Map | discussion-map | Facilitation / meetings and seminars | Tap-to-log speakers on a seating map, lines between consecutive speakers, talk-time stats, drag seats | Teachers (Harkness, Socratic seminars), facilitators | 2026-10-09 |
+| 024 | Ranked Choice Count | ranked-choice-count | Civic / organizations (voting) | Tap-entered paper ballots or forgiving export import, then IRV/STV rounds with bars and plain-language transfers | Clubs, unions, councils, award committees | 2026-10-09 |
+| 025 | Stall Till | stall-till | Small business / market stalls | Tap-grid register with change due, day summary, cash-up by denomination with a float suggestion | Market and craft-fair sellers, bake sales, garage sales | 2026-10-09 |
+| 026 | Exam Timekeeper | exam-timekeeper | Exams / invigilation | Projected actual-time board with per-candidate stop-the-clock rest breaks, a second-window board, a printed record | Exams officers, invigilators, teachers running mocks | 2026-10-13 |
+| 027 | Transcript Pseudonyms | transcript-pseudonyms | Research data / privacy | Paste or open a transcript, review suggestions, consistent whole-word replacement, a key to reuse; nothing stored | Qualitative researchers, research students | 2026-10-13 |
+
+## Procedure per experiment
+
+1. Review what has shipped and the category limits above.
+2. Generate several candidates, reject weak, repetitive, or infrastructure-heavy ones, and pick the strongest. Record the choice here.
+3. Build the smallest complete product in `src/experiments/<slug>/`. Pure logic goes in `model.ts`.
+4. Test proportionally (checklist below). Fix meaningful defects. After two failed repair passes, drop the idea, record why, and delete its unfinished files.
+5. `npm run build` must pass.
+6. Registry entry (shipped date = deploy day) and PRODUCT_LOG entry (What, Problem it tests, Scope decisions, Limitations, Revisit if).
+7. Commit and push to `main`. Watch the Actions run (`gh run watch <id> --repo EugeneYip/labs --exit-status`).
+8. Verify production: the direct URL returns 200 with the right title, the app works, the console is clean, and the homepage lists the experiment.
+9. Update this file, then move on.
+
+## QA checklist
+
+Where applicable: core flow; persistence or file handling; several edge cases; invalid input; phone and desktop layouts; light and dark mode; keyboard use and visible focus; console clean; production build; GitHub Pages-style direct URL (`pages` launch config serves `dist/` without a fallback page); production smoke test. Go deeper only where the experiment's behavior warrants it.
+
+## Tools and environment notes
+
+- **Screenshots:** `node .claude/qa/shot.mjs plan.json` drives headless Brave with a throwaway profile (gitignored helper; see its header for the plan format). The in-app browser pane can be tiny, so use this for visual checks. First launch can take about a minute. Plans can stub browser APIs before page scripts run (`initScript`) and send real key presses (`keys`) for keyboard and focus checks. Tab presses in the in-app pane don't reliably move focus, so test keyboard use with `keys`.
+- **Helper option added in #009:** `pdf: true` saves a real print (`Page.printToPDF`, CSS page size, no background graphics) next to the screenshot; the Read tool can open the PDF to check pages and layout.
+- **Fixtures:** `.claude/qa/fixtures/` holds saved real API answers (London, Madrid forecasts, London place search) for stable screenshots; stub `fetch` and `Date.now` in an `initScript`.
+- **Microphone in tests:** headless Brave's `getUserMedia` hangs even with fake-device flags and granted permission. Instead, replace `navigator.mediaDevices.getUserMedia` in an `initScript` with a stream from an oscillator through `createMediaStreamDestination()`; everything after the stream is the real code.
+- **Lesson from #012:** `requestAnimationFrame` stops entirely in background tabs (the in-app pane counts as one), so anything that must end on time uses a timer.
+- **Lesson from #009:** `img.decode()` can wait forever while a tab is in the background (seen in the in-app pane). Use `onload`/`onerror` for images the user picks.
+- **Helper options added in #008:** `print: true` emulates print media; `preScript` sets up state before `keys`. For time-dependent pages, an `initScript` that replaces `Date.now` with a fixed clock (and writes localStorage) gives stable screenshots.
+- **In-app pane quirk:** `Math.random` appears seeded the same on each load there (the first number repeated across reloads). Not a product bug; headless Brave varies normally.
+- **Pure-logic tests:** write a throwaway script in `.claude/qa/` and run it with `node --experimental-strip-types --no-warnings <file>.ts` (imports `src/.../model.ts` directly; no test dependencies).
+- **Dev server:** `preview_start` with the `dev` config (port 5173). Production check: `npm run build`, then the `pages` config (port 4174).
+- **GitHub:** `gh` is logged in as EugeneYip. Pages deploys from Actions; the custom domain is in the Pages settings.
+- **Lesson from #016:** typing a `\u` escape (like `\u00AD`) in a tool call's text writes the literal invisible character into the file. Write such escapes from Python with `chr(92)` and always run the invisible-character scan over `src/` before committing.
+- **Fixtures added in #017:** `frost-boston.json`, `frost-canberra.json`, `frost-seville.json` (1995-01-01 to 2026-10-07 daily lows), plus 1991–2020 copies for Boston, Denver, and Portland. Seed settings before page scripts with an `initScript` guarded by a sessionStorage flag: the helper's `storage` option races a lazily loaded experiment that saves its defaults on mount.
+- **Video in tests (from #019):** `.claude/qa/form-video.js` is an `initScript` that adds `__makeVideo()` (a canvas animation recorded with MediaRecorder as WebM), `__open(...files)` (puts files into the page's file input with a DataTransfer), and `__tap(svg, fx, fy)` (pointer events). Recorded WebM has no stated duration (the player seeks to the end to find it) and irregular frame timing.
+- **Recording in tests (from #021):** a stand-in microphone built from an oscillator through `createMediaStreamDestination()` records only silence unless Brave starts with `browserArgs: ["--autoplay-policy=no-user-gesture-required"]`, because scripted clicks don't count as a user gesture and the AudioContext stays suspended. Don't `await ctx.resume()` in the stub; it never settles. Key lists in plans can now include numbers, which are pauses in milliseconds.
+- **Offline tests (Batch 03):** `.claude/qa/shot.mjs` plans take `exec` (a shell command run before a shot) and `offline` (CDP network emulation for the page only; a service worker's own fetches still reach the network, so real offline tests stop the server instead). The scratchpad `serve.sh start|stop` served a copy of `dist/` on port 4175 for this.
+- **zsh gotcha:** never name a shell loop variable `path`; zsh ties it to `PATH`, so commands like curl stop being found. Unquoted variables aren't split into words either: loop over pairs with `for mode engine in a b c d`.
+- **Browser checks since P3 (Playwright 1.64):** the `.claude/qa/browser/*.cjs` scripts (P3), the `p4-*` to `p9-*.cjs` ones, and later harnesses use Playwright's library. Since 2026-10-13 it's in `.claude/qa/node_modules/` (ignored by git, so local to this machine, and kept across reboots), where scripts in `.claude/qa/` find it without `NODE_PATH`. If it's missing, run `npm install --prefix .claude/qa playwright@1.64.0`; its browsers are in `~/Library/Caches/ms-playwright/` (WebKit 2370). Older notes set `NODE_PATH` to a session scratchpad's copy, which a reboot clears. Chromium runs as Brave (`executablePath: '/Applications/Brave Browser.app/Contents/MacOS/Brave Browser'`).
+  - `route-preload.cjs` serves a built folder at `https://labs.local` with no server: `ROUTE_DIR=<built site> node -r ./route-preload.cjs <script>.cjs https://labs.local [engine]`, from `.claude/qa/`. Service-worker checks need a real server instead: the `pages` launch config (port 4174).
+  - The 26-page smoke test: `node browser/smoke.cjs https://labs.eugeneyip.net out/<name>.json chromium webkit` (104 page loads).
+  - macOS has no `timeout`: bound a run with `perl -e 'alarm shift; exec @ARGV' <seconds> node …`. Every wait inside a script is bounded too (the P5 harness once hung for 1 h 40 min on an unbounded one). Foreground `sleep` is blocked: wait for a background command, or use Monitor.
+- **Daily check:** `node --experimental-strip-types --disable-warning=ExperimentalWarning .github/scripts/daily-check.ts` runs the same check as GitHub's daily run, against production.
+- Storage keys must be `labs:<slug>` (Constitution, amended 2026-10-09 with owner authorization).
+
+---
+
+# History
+
+Earlier phases, kept for the record. Where a section below says not to start a batch or #026, or gives a "Next action", it describes its own time; "Now" above is the current state.
 
 ## Autonomous continuation mode (complete)
 
@@ -274,38 +378,6 @@ Checked 2026-10-09. Keep these so later picks don't repeat the research.
 - **Discussion map / speaking time (strong, later):** no free web tool combines tap-to-log speakers, talk time, and a discussion map. Equity Maps and Speaker Tracker are paid or Apple-only, and the Zoom and Google add-ons are trials that work only in online meetings.
 - **Rotating shift calendar (rejected):** ToolGrit and Teambridge already offer free, no-account pattern calendars, and ToolGrit exports .ics.
 
-## Shipped
-
-| # | Name | Slug | Category | Interaction model | Audience | Shipped |
-|---|------|------|----------|-------------------|----------|---------|
-| 001 | Trip Board | trip-board | Travel / information organization | Saved list, paste-to-add | Self-planning travelers | 2026-10-08 |
-| 002 | Photo Scrub | photo-scrub | Privacy / browser file tool | Drop files in, clean files out | Anyone sharing photos (marketplaces, forums) | 2026-10-09 |
-| 003 | Fair Share | fair-share | Group money / expense splitting | Ledger form; the link is the document | Friend groups, roommates | 2026-10-09 |
-| 004 | Clean Paste | clean-paste | Language / text repair | Paste in, live clean text out | Students, researchers, office workers | 2026-10-09 |
-| 005 | CSV Checkup | csv-checkup | Data tools | Drop a file, read a report | Analysts, ops and small-business staff | 2026-10-09 |
-| 006 | Secret Santa | secret-santa | Social / events (gift exchange) | Private per-person links, tap to reveal | Families, offices, friend groups | 2026-10-09 |
-| 007 | Numbers by Ear | numbers-by-ear | Language learning | Listen, type, check loop (speech synthesis) | Language learners, travelers, expats | 2026-10-09 |
-| 008 | Serve Time | serve-time | Cooking / home | Plan backward from a deadline, then a live countdown | Home cooks hosting meals | 2026-10-09 |
-| 009 | Tear-Off Flyer | tear-off-flyer | Community / print | Form to live print layout (paper output) | Neighbors, tutors, people posting notices | 2026-10-09 |
-| 010 | Gallery Wall | gallery-wall | Home / decorating (counts with Cooking / home: 2) | Physical layout calculator with a to-scale drawing | Renters and homeowners hanging art | 2026-10-09 |
-| 011 | Line Dry | line-dry | Weather / household (home-ish: 3 of 3) | Live keyless API to a recommendation with an hourly chart | Households drying washing outside | 2026-10-09 |
-| 012 | Glance | glance | Games / daily puzzle | Flash, then guess; shareable daily score | Daily puzzle players | 2026-10-09 |
-| 013 | In Tune | in-tune | Music | Real-time microphone pitch feedback | Choir singers, voice students | 2026-10-09 |
-| 014 | Playing Time | playing-time | Sports / coaching | Roster to a generated fair schedule with sideline calls; print | Volunteer youth coaches | 2026-10-09 |
-| 015 | Back Row | back-row | Accessibility / presenting | Perceptual simulation of an image, with sizing advice | Presenters, teachers, sign makers | 2026-10-09 |
-| 016 | Fluency Check | fluency-check | Education / reading assessment | Live tap-to-mark while listening, on a timer; print and on-device log | Teachers, tutors, reading specialists | 2026-10-09 |
-| 017 | Frost Dates | frost-dates | Gardening / climate | Place to 30-year climate odds, a season-by-season chart, and a planting calendar | Gardeners worldwide, especially outside North America | 2026-10-09 |
-| 018 | Off Book | off-book | Theater / performing arts | Paste a script, then self-tested cue cards and a read-through with your lines masked | Actors in school, community, and professional shows | 2026-10-09 |
-| 019 | Form Check | form-check | Sports technique / video | Local video with frame stepping, slow motion, drawn lines and angles, and a linked side-by-side | Athletes, coaches, hobbyists (golf, running, lifting) | 2026-10-09 |
-| 020 | Custody Calendar | custody-calendar | Family / co-parenting | Pattern to year calendar, tap to swap nights, .ics export, share link, print | Separated parents sharing custody | 2026-10-09 |
-| 021 | Family Stories | family-stories | Family history / oral history | Guided question cards with per-question audio recording, stored in IndexedDB, ZIP download | Families interviewing elders | 2026-10-09 |
-| 022 | Day Clock | day-clock | Elder care / dementia | Ambient full-screen display with fitted type, night colors, wake lock, timed reminders, press-and-hold settings | Families and carers of people with dementia | 2026-10-09 |
-| 023 | Discussion Map | discussion-map | Facilitation / meetings and seminars | Tap-to-log speakers on a seating map, lines between consecutive speakers, talk-time stats, drag seats | Teachers (Harkness, Socratic seminars), facilitators | 2026-10-09 |
-| 024 | Ranked Choice Count | ranked-choice-count | Civic / organizations (voting) | Tap-entered paper ballots or forgiving export import, then IRV/STV rounds with bars and plain-language transfers | Clubs, unions, councils, award committees | 2026-10-09 |
-| 025 | Stall Till | stall-till | Small business / market stalls | Tap-grid register with change due, day summary, cash-up by denomination with a float suggestion | Market and craft-fair sellers, bake sales, garage sales | 2026-10-09 |
-| 026 | Exam Timekeeper | exam-timekeeper | Exams / invigilation | Projected actual-time board with per-candidate stop-the-clock rest breaks, a second-window board, a printed record | Exams officers, invigilators, teachers running mocks | 2026-10-13 |
-| 027 | Transcript Pseudonyms | transcript-pseudonyms | Research data / privacy | Paste or open a transcript, review suggestions, consistent whole-word replacement, a key to reuse; nothing stored | Qualitative researchers, research students | 2026-10-13 |
-
 ## Category distribution
 
 Limits across #001–#015: at most 3 per product category, at most 2 primarily travel, no two consecutive experiments solving the same type of problem. By #010, at least 6 distinct problem domains.
@@ -363,48 +435,6 @@ Rejected on sight (avoid list): todo lists, habit trackers, Pomodoro timers, QR 
 ## Unresolved issues
 
 None.
-
-## Procedure per experiment
-
-1. Review what has shipped and the category limits above.
-2. Generate several candidates, reject weak, repetitive, or infrastructure-heavy ones, and pick the strongest. Record the choice here.
-3. Build the smallest complete product in `src/experiments/<slug>/`. Pure logic goes in `model.ts`.
-4. Test proportionally (checklist below). Fix meaningful defects. After two failed repair passes, drop the idea, record why, and delete its unfinished files.
-5. `npm run build` must pass.
-6. Registry entry (shipped date = deploy day) and PRODUCT_LOG entry (What, Problem it tests, Scope decisions, Limitations, Revisit if).
-7. Commit and push to `main`. Watch the Actions run (`gh run watch <id> --repo EugeneYip/labs --exit-status`).
-8. Verify production: the direct URL returns 200 with the right title, the app works, the console is clean, and the homepage lists the experiment.
-9. Update this file, then move on.
-
-## QA checklist
-
-Where applicable: core flow; persistence or file handling; several edge cases; invalid input; phone and desktop layouts; light and dark mode; keyboard use and visible focus; console clean; production build; GitHub Pages-style direct URL (`pages` launch config serves `dist/` without a fallback page); production smoke test. Go deeper only where the experiment's behavior warrants it.
-
-## Tools and environment notes
-
-- **Screenshots:** `node .claude/qa/shot.mjs plan.json` drives headless Brave with a throwaway profile (gitignored helper; see its header for the plan format). The in-app browser pane can be tiny, so use this for visual checks. First launch can take about a minute. Plans can stub browser APIs before page scripts run (`initScript`) and send real key presses (`keys`) for keyboard and focus checks. Tab presses in the in-app pane don't reliably move focus, so test keyboard use with `keys`.
-- **Helper option added in #009:** `pdf: true` saves a real print (`Page.printToPDF`, CSS page size, no background graphics) next to the screenshot; the Read tool can open the PDF to check pages and layout.
-- **Fixtures:** `.claude/qa/fixtures/` holds saved real API answers (London, Madrid forecasts, London place search) for stable screenshots; stub `fetch` and `Date.now` in an `initScript`.
-- **Microphone in tests:** headless Brave's `getUserMedia` hangs even with fake-device flags and granted permission. Instead, replace `navigator.mediaDevices.getUserMedia` in an `initScript` with a stream from an oscillator through `createMediaStreamDestination()`; everything after the stream is the real code.
-- **Lesson from #012:** `requestAnimationFrame` stops entirely in background tabs (the in-app pane counts as one), so anything that must end on time uses a timer.
-- **Lesson from #009:** `img.decode()` can wait forever while a tab is in the background (seen in the in-app pane). Use `onload`/`onerror` for images the user picks.
-- **Helper options added in #008:** `print: true` emulates print media; `preScript` sets up state before `keys`. For time-dependent pages, an `initScript` that replaces `Date.now` with a fixed clock (and writes localStorage) gives stable screenshots.
-- **In-app pane quirk:** `Math.random` appears seeded the same on each load there (the first number repeated across reloads). Not a product bug; headless Brave varies normally.
-- **Pure-logic tests:** write a throwaway script in `.claude/qa/` and run it with `node --experimental-strip-types --no-warnings <file>.ts` (imports `src/.../model.ts` directly; no test dependencies).
-- **Dev server:** `preview_start` with the `dev` config (port 5173). Production check: `npm run build`, then the `pages` config (port 4174).
-- **GitHub:** `gh` is logged in as EugeneYip. Pages deploys from Actions; the custom domain is in the Pages settings.
-- **Lesson from #016:** typing a `\u` escape (like `\u00AD`) in a tool call's text writes the literal invisible character into the file. Write such escapes from Python with `chr(92)` and always run the invisible-character scan over `src/` before committing.
-- **Fixtures added in #017:** `frost-boston.json`, `frost-canberra.json`, `frost-seville.json` (1995-01-01 to 2026-10-07 daily lows), plus 1991–2020 copies for Boston, Denver, and Portland. Seed settings before page scripts with an `initScript` guarded by a sessionStorage flag: the helper's `storage` option races a lazily loaded experiment that saves its defaults on mount.
-- **Video in tests (from #019):** `.claude/qa/form-video.js` is an `initScript` that adds `__makeVideo()` (a canvas animation recorded with MediaRecorder as WebM), `__open(...files)` (puts files into the page's file input with a DataTransfer), and `__tap(svg, fx, fy)` (pointer events). Recorded WebM has no stated duration (the player seeks to the end to find it) and irregular frame timing.
-- **Recording in tests (from #021):** a stand-in microphone built from an oscillator through `createMediaStreamDestination()` records only silence unless Brave starts with `browserArgs: ["--autoplay-policy=no-user-gesture-required"]`, because scripted clicks don't count as a user gesture and the AudioContext stays suspended. Don't `await ctx.resume()` in the stub; it never settles. Key lists in plans can now include numbers, which are pauses in milliseconds.
-- **Offline tests (Batch 03):** `.claude/qa/shot.mjs` plans take `exec` (a shell command run before a shot) and `offline` (CDP network emulation for the page only; a service worker's own fetches still reach the network, so real offline tests stop the server instead). The scratchpad `serve.sh start|stop` served a copy of `dist/` on port 4175 for this.
-- **zsh gotcha:** never name a shell loop variable `path`; zsh ties it to `PATH`, so commands like curl stop being found. Unquoted variables aren't split into words either: loop over pairs with `for mode engine in a b c d`.
-- **Browser checks since P3 (Playwright 1.64):** the `.claude/qa/browser/*.cjs` scripts (P3) and the `p4-*` to `p9-*.cjs` ones need Playwright's library on `NODE_PATH`. It isn't in the repo: it was installed in a session scratchpad, `/private/tmp/claude-501/-Volumes-Projects-labs/6ac1a0fb-f9e8-4dec-afb2-4158221dabeb/scratchpad/pw/node_modules`, which a reboot clears. To reinstall, run `npm install playwright@1.64.0` in a new scratch folder; its browsers are in `~/Library/Caches/ms-playwright/` (WebKit 2370). Chromium runs as Brave (`executablePath: '/Applications/Brave Browser.app/Contents/MacOS/Brave Browser'`).
-  - `route-preload.cjs` serves a built folder at `https://labs.local` with no server: `ROUTE_DIR=<built site> NODE_PATH=<pw>/node_modules node -r ./route-preload.cjs <script>.cjs https://labs.local [engine]`. Service-worker checks need a real server instead: the `pages` launch config (port 4174).
-  - The 26-page smoke test: `node browser/smoke.cjs https://labs.eugeneyip.net out/<name>.json chromium webkit` (104 page loads).
-  - macOS has no `timeout`: bound a run with `perl -e 'alarm shift; exec @ARGV' <seconds> node …`. Every wait inside a script is bounded too (the P5 harness once hung for 1 h 40 min on an unbounded one). Foreground `sleep` is blocked: wait for a background command, or use Monitor.
-- **Daily check:** `node --experimental-strip-types --disable-warning=ExperimentalWarning .github/scripts/daily-check.ts` runs the same check as GitHub's daily run, against production.
-- Storage keys must be `labs:<slug>` (Constitution, amended 2026-10-09 with owner authorization).
 
 ## Batch report formats
 

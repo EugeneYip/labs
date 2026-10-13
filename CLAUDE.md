@@ -4,7 +4,17 @@ A public lab of small static web experiments, live at https://labs.eugeneyip.net
 
 @FACTORY_CONSTITUTION.md
 
-If `.claude/FACTORY_STATE.md` exists, an autonomous batch may be in progress: read it, check `git status`, and continue from its recorded next action before doing anything else.
+## Autonomous operation
+
+Work runs across many sessions, and the repository holds its state, not any chat. Four files are authoritative: this one, `.claude/FACTORY_STATE.md` (its "Now" section first), `.claude/AUTONOMOUS_QUEUE.md`, and the current batch's checkpoint (named in "Now").
+
+- **Resuming.** At the start of a session and after the context is compacted, a hook (`.claude/hooks/session-context.sh`) prints "Now", the batch checkpoint's "Now", and the state of git. If it didn't, read those yourself and run `git status` and `git branch`. Then continue from the recorded next action, before anything else and without waiting to be told. Never redo verified work.
+- **Continuing.** Finishing a step, or a whole experiment, isn't a reason to stop while a batch is authorized: record it, checkpoint, and start the next step. Stop only when the batch is complete, when everything left needs the owner, at a safety or authorization boundary, or after repeated technical failures where another attempt is unlikely to help. When you stop, say which of these applies and leave "Now" saying exactly what comes next.
+- **Asking the owner.** Only about something that changes what's authorized, costs money, needs credentials or an account, contacts anyone, or changes an outside account or setting. Settle everything technical yourself (implementation, tests, browser checks, research method, fixtures, fixes, documents, deploy checks), and never ask whether to continue. If the owner asks to pause, set **Autonomy** in "Now" to `paused`.
+- **Blocked lanes.** Mark the lane BLOCKED — OWNER REQUIRED in `.claude/AUTONOMOUS_QUEUE.md`, park only that lane, and carry on with the rest.
+- **Checkpoints.** Verified work never lives only in the chat or the working tree. An experiment under construction lives on a local branch, `wip/<number>-<slug>`, committed at each milestone and never pushed (its audit comes before any public push); it reaches `main` as one squashed commit when it ships. Other state updates (discovery, records) are committed to `main`, which must stay deployable. Update "Now" and the batch checkpoint at every milestone, so the next session can continue from them alone. Never rewrite pushed history.
+- **Long jobs.** Bound every run (macOS has no `timeout`: `perl -e 'alarm shift; exec @ARGV' <seconds> <command>`) and every wait inside a script. Write partial results to files as you go. If a research thread, browser run, or tool stalls or hits a limit, keep what it found, park that lane, and continue elsewhere. Say whether a failure is the test harness's or the product's.
+- **Permissions.** `.claude/settings.json` allows routine read-only git, builds, local commits, and the QA scripts without asking, and refuses secrets and privilege escalation. Pushing, installing packages, deleting, and changing settings or hooks still go through the normal check. Never work around a refusal.
 
 ## Quick reference
 

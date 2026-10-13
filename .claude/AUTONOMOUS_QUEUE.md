@@ -30,8 +30,9 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ## Now
 
-- **Current:** none. P1–P13 are done and verified; every remaining item needs the owner.
-- **Next:** the parked lanes below, when the owner chooses. (Since 2026-10-13 the current work is Batch 07, in `.claude/batch-07/BATCH_07.md`; the parked lanes stay parked.)
+- **Current:** nothing in this queue. P1–P13 are done and verified. Since 2026-10-13 the current work is Batch 07: "Now" in `.claude/FACTORY_STATE.md` says where it stands and what's next.
+- **Parked lanes** (below) stay parked until the owner chooses one; they never hold up other work.
+- **When something new needs the owner** (in any batch): add it under "Parked lanes" as BLOCKED — OWNER REQUIRED, with what's ready and what the owner would do, mention it in "Now" in `.claude/FACTORY_STATE.md`, and carry on with the rest.
 
 ## Parked lanes (human-blocked)
 

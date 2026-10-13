@@ -25,10 +25,12 @@ research → number → risk list → implement → tests → adversarial audit 
 
 ## Now
 
-- **Step:** #028 Hidden Data Check (`hidden-data-check`): research done, number assigned, risk list written (`028-hidden-data-check.md`). Implementing next.
-- **Next action:** build `src/experiments/hidden-data-check/` per the dossier (a streaming zip and XML reader; the ICO's list of hidden places; findings with what each holds and how to remove it), then tests, the audit, the push, and the production check.
-- **The need-first round's three research threads** all stopped on the session limit; their partial leads were checked here (`CANDIDATES.md`, "Need-first round"). Parked leads for later discovery: allocating people to activities by ranked choices; exporting Word comments to a table; small-number suppression.
-
+- **Step:** #028 Hidden Data Check (`hidden-data-check`): building, on the local branch `wip/028-hidden-data-check` (never pushed). Research, number, and risk list are done (`028-hidden-data-check.md`).
+- **The code so far** (saved in commit 2601ad1 on that branch): `xml.ts`, `zip.ts`, and `sheet.ts` are reworked after a first review; `inspect.ts` is still the first draft and doesn't type-check against them (`SheetContext.memory` missing, the old `far` fields). There's no `index.tsx` yet. The first draft as it was is kept in `.claude/qa/hdc/draft-original/`, and the defect cases are in `.claude/qa/hdc/` (`cases.ts`, `zipwrite.ts`, `probe-one.ts`, `probe-draft.ts`); all of `.claude/qa/` is local only.
+- **The first draft's defects** (each shown by a case in `cases.ts`; fix the cause, not the case): workbook parts silently skipped (Power Query); an unreadable hidden sheet called empty; a failed sheet's leftovers hiding the next sheet's far-away data; "text no cell uses" claimed when a sheet couldn't be read in full; a damaged file taking minutes (an unterminated quote); `list.map(clip)` passing the index as the length, so list items came out cut short; ordinary chart, metadata, and macro parts listed as unread; visible formatting (yellow on white, page-number headers) reported as hidden; a Word `.doc` called an old Excel file.
+- **Next action:** reconcile `inspect.ts` with `sheet.ts` (pass a `SheetMemory`, use `far.rows`/`far.cols` and `far.error`, drop leftovers from the draft), then run every case and fix what fails; then fictional fixtures checked by an independent reader, the page, the audit, the shipping gate, the squash-merge to `main`, the push, and the production check.
+- **Then:** discovery for #029 (gate rules above). Parked leads for later discovery: allocating people to activities by ranked choices; exporting Word comments to a table; small-number suppression.
+- **The need-first round's three research threads** all stopped on the session limit; their partial leads were checked here (`CANDIDATES.md`, "Need-first round").
 ## Numbered experiments
 
 | # | Title | Slug | Status | Dossier |

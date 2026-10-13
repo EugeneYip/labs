@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(git status)",
+      "Bash(git status *)",
+      "Bash(git diff)",
+      "Bash(git diff *)",
+      "Bash(git log)",
+      "Bash(git log *)",
+      "Bash(git show *)",
+      "Bash(git branch)",
+      "Bash(git branch --show-current)",
+      "Bash(git branch -a)",
+      "Bash(git branch -vv)",
+      "Bash(git branch --list *)",
+      "Bash(git rev-parse *)",
+      "Bash(git rev-list *)",
+      "Bash(git merge-base *)",
+      "Bash(git ls-files)",
+      "Bash(git ls-files *)",
+      "Bash(git check-ignore *)",
+      "Bash(git cat-file *)",
+      "Bash(git for-each-ref *)",
+      "Bash(git blame *)",
+      "Bash(git grep *)",
+      "Bash(git remote -v)",
+      "Bash(git stash list)",
+      "Bash(git worktree list)",
+      "Bash(git fetch)",
+      "Bash(git fetch origin)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(npm run build)",
+      "Bash(npx tsc --noEmit)",
+      "Bash(npx tsc --noEmit -p .)",
+      "Bash(npm ls)",
+      "Bash(npm ls *)",
+      "Bash(npm audit)",
+      "Bash(npm outdated)",
+      "Bash(node --experimental-strip-types --no-warnings .claude/qa/*)",
+      "Bash(node --experimental-strip-types --disable-warning=ExperimentalWarning .github/scripts/daily-check.ts)",
+      "Bash(gh run list *)",
+      "Bash(gh run view *)",
+      "Bash(gh run watch *)",
+      "Bash(gh api repos/EugeneYip/labs/pages)",
+      "Bash(sh .claude/hooks/session-context.sh)",
+      "Edit(/src/**)",
+      "Edit(/public/**)",
+      "Edit(/PRODUCT_LOG.md)",
+      "Edit(/README.md)",
+      "Edit(/.claude/qa/**)"
+    ],
+    "ask": [
+      "Edit(/.claude/settings.json)",
+      "Edit(/.claude/settings.local.json)",
+      "Edit(/.claude/hooks/**)",
+      "Edit(/FACTORY_CONSTITUTION.md)",
+      "Bash(git reset --hard*)",
+      "Bash(git clean *)",
+      "Bash(git checkout -- *)",
+      "Bash(git stash drop*)",
+      "Bash(git stash clear*)"
+    ],
+    "deny": [
+      "Bash(sudo *)",
+      "Bash(su *)",
+      "Bash(git push --force*)",
+      "Bash(git push -f*)",
+      "Bash(git push * --force*)",
+      "Bash(git push * -f*)",
+      "Bash(git push --mirror*)",
+      "Bash(git push * --delete *)",
+      "Bash(gh auth token*)",
+      "Bash(gh auth status --show-token*)",
+      "Bash(gh secret *)",
+      "Bash(gh repo delete *)",
+      "Bash(security *)",
+      "Bash(printenv*)",
+      "Bash(ssh *)",
+      "Bash(scp *)",
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(~/.ssh/**)",
+      "Read(~/.aws/**)",
+      "Read(~/.gnupg/**)",
+      "Read(~/.config/gh/**)",
+      "Read(~/.netrc)",
+      "Read(~/.git-credentials)",
+      "Read(~/.npmrc)",
+      "Read(~/.claude/.credentials.json)",
+      "Read(~/Library/Keychains/**)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-context.sh\"",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh \"$CLAUDE_PROJECT_DIR/.claude/hooks/stop-continue.sh\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
