@@ -292,6 +292,15 @@ export const experiments: readonly Experiment[] = [
     status: 'live',
     category: 'files',
   },
+  {
+    number: 29,
+    slug: 'places-by-choice',
+    title: 'Places by Choice',
+    summary: 'Gives out places in activities, projects, or workshops from everyone’s ranked choices, as high on each person’s list as the places allow, without uploading the responses.',
+    shipped: '2026-10-13',
+    status: 'live',
+    category: 'groups',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */

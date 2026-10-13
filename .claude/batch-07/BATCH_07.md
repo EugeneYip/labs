@@ -25,8 +25,8 @@ research → number → risk list → implement → tests → adversarial audit 
 
 ## Now
 
-- **Step:** #029 Places by Choice (`places-by-choice`): research done, number assigned, risk list written (`029-places-by-choice.md`). Building next, on a local branch `wip/029-places-by-choice`.
-- **Next action:** create the branch and build `src/experiments/places-by-choice/` per the dossier: `model.ts` (reading form responses in three shapes, the allocation as a minimum-cost flow with squared choice numbers, the lottery, minimum sizes) with model tests (brute force on small cases), then the page, the audit, the shipping gate, the squash-merge to `main`, the push, and the production check.
+- **Step:** #029 Places by Choice (`places-by-choice`) is built, audited, squash-merged to `main`, and pushed (dossier: Implementation and Audit). Production check next.
+- **Next action:** verify #029 in production: the deploy, production's files against a local build, `.claude/qa/pbc-flow.cjs` against https://labs.eugeneyip.net in both engines, offline after one visit (`pbc-offline.cjs`'s checks on production, with the network cut), the homepage card, the smoke test, the daily check. Record it in the dossier, here, and in `.claude/FACTORY_STATE.md`, delete the local branch, then start discovery for #030 (the last the batch allows; never #031).
 - **Parked leads** for later discovery: exporting Word comments to a table; small-number suppression (both files and privacy, so only if clearly the strongest, given #027 and #028).
 - **Research threads:** give each a bounded brief and write its findings to a file as it goes; if one stops, keep its partial leads, check them here, and carry on.
 ## Numbered experiments
@@ -36,7 +36,7 @@ research → number → risk list → implement → tests → adversarial audit 
 | 026 | Exam Timekeeper | exam-timekeeper | shipped 2026-10-13, verified in production | `026-exam-timekeeper.md` |
 | 027 | Transcript Pseudonyms | transcript-pseudonyms | shipped 2026-10-13, verified in production | `027-transcript-pseudonyms.md` |
 | 028 | Hidden Data Check | hidden-data-check | shipped 2026-10-13, verified in production | `028-hidden-data-check.md` |
-| 029 | Places by Choice | places-by-choice | building | `029-places-by-choice.md` |
+| 029 | Places by Choice | places-by-choice | shipped 2026-10-13; production check next | `029-places-by-choice.md` |
 
 ## Log
 
@@ -49,3 +49,4 @@ research → number → risk list → implement → tests → adversarial audit 
 - **2026-10-13:** #028 Hidden Data Check built and audited. The first draft's nine defects were each fixed at their cause; the audit found nine more, all fixed (an .xlsb or .docx given an empty report, a budget stop said twice, threaded comments without authors, hundreds of hidden rows listed one by one, scroll areas as landmarks, sideways scrolling with text at 200%, two overclaims, comments' removal steps, small wording). Checked against openpyxl, 18,000 damaged files, 62 model checks, and 72 browser checks per engine; offline; the 29-page smoke test, 116 loads, 0 problems.
 - **2026-10-13:** #028 Hidden Data Check shipped (commit 02dc91e, deploy 38455167140) and verified in production: files byte-identical (67), 72 of 72 flow checks in both engines, offline, the homepage card, smoke 116/0, daily check 11/11. Discovery for #029 next.
 - **2026-10-13:** discovery for #029. The diversity rule set aside the files-and-privacy leads; allocation by ranked choices went through the gate with nine searches. Free options need Google (Alice Keeler's Scheduler: greedy rounds, broad permissions) or Moodle; the rest are paid, institutional, or code people write themselves; teachers sort paper slips by hand. #029 assigned to Places by Choice.
+- **2026-10-13:** #029 Places by Choice built and audited. The audit found eight defects, all fixed (a crash on a second file with fewer columns, the activities table on phones, a button wider than a phone at 200% text, a draw read from before it was typed, focus jumping on each new draw, rows cut without a word, a merged spelling's places box, literal byte-order marks in the source). Checked by exhaustive search (4,000 cases), an independent Hungarian solver (10 cases), 3,000 hostile inputs, 17 model checks, and 64 browser checks per engine; offline; the 30-page smoke test, 120 loads, 0 problems.

@@ -48,4 +48,62 @@ Dossier for Batch 07's fourth experiment. Research and decision: `CANDIDATES.md`
 
 ## Implementation
 
-(After building.)
+- `model.ts`: `allocate` drops activities fewer chose than their minimum, solves, drops the smallest activity left under its minimum and solves again until none is, fills the rest where there's room if asked, and gives each person left out a reason. `solve` is a minimum-cost flow by successive shortest paths, searched over activities (a person moving from one activity to another is an edge between them), with potentials so no search meets a negative cost; costs are the choice number squared, scaled so the draw's tie-breaks (a hash of the draw, the person, and the activity) can never outweigh one step in anyone's choice. It yields to the page every 40 ms and stops on a signal.
+- `responses.ts`: CSV or a pasted table (the separator the first line uses most, RFC 4180 quotes, a byte-order mark), the three shapes forms write (a column per choice, Microsoft Forms' ranked list, Google Forms' grid), the name column, and activity names matched ignoring case and spacing. At most 20,000 rows, and says so if there were more.
+- `example.ts`: a made-up school's enrichment choices (96 students, eight activities, three choices each).
+- `index.tsx`: the responses (paste, open a CSV, or the example), which columns hold the names and choices (guessed, then changeable, with the first few as read), repeated names, the activities (places, an optional minimum, renaming to merge), give out places (progress and Stop), and the result: the totals by choice, who's left out and why, activities that don't run, the draw (replay or a new one), each activity's list (printable, one per page), everyone (find a name), and two CSV downloads. Nothing stored; a warning before leaving with a result not downloaded.
+- Size: 34.4 kB, 11.3 kB gzipped. No dependencies.
+
+## Audit
+
+Before the push, on the built site, in Chromium (Brave) and WebKit 27.2 through Playwright 1.64. Scripts in `.claude/qa/` (git-ignored): `places-by-choice-test.ts`, `pbc-flow.cjs`, `pbc-narrow.cjs`, `pbc-offline.cjs`, and in `.claude/qa/pbc/`: `make.ts` (fictional responses in each form's shape), `independent.py` with `compare.ts`, `fuzz.ts`.
+
+**Correctness by an independent method.**
+- Exhaustive search on 4,000 random small cases (up to 7 people, 4 activities): the allocation matches exactly on how many are placed, the total, and the draw's tie-breaks; no activity over its places.
+- An independent solver at realistic sizes: the textbook Hungarian method, written separately in Python (each place a column, "not placed" columns costed above any total), reading the files with Python's own csv module. On the example, the Microsoft Forms, Google Forms, and semicolon files, and six random school-sized cases with tight places (49 to 139 people), it agrees with the page on every count and total.
+- Hand-worked cases: a person with only one choice isn't left out so others keep theirs (where rounds by rank would); squared costs don't move one person to a third choice to give two others a first.
+- 17 model checks (`places-by-choice-test.ts`): the above, a draw replayed, other draws keeping the total, both kinds of drop for a minimum, filling only when asked, each reason for being left out, Stop, the three shapes, quotes and semicolons, and timing.
+
+**Material defects found, all fixed before the push** (eight):
+
+| Found | Effect | Fix |
+|---|---|---|
+| Opening a second file with fewer columns read it with the first file's column choices for one render | The page crashed ("This experiment couldn’t load") | Column choices belong to the table they were made for; the reader ignores columns a table doesn't have |
+| The activities table on a phone | Places cut off ("2(" for 20), the minimum off the side; on a desktop, places boxes stretched across | Two counts in one column, fixed-width number boxes, a compact table |
+| A button wider than a phone at 200% text | Sideways scrolling | Buttons that wrap; a shorter label |
+| A draw typed and submitted at once could use the number before it, and a draw was blocked while placing | "Use this draw" gave the wrong draw now and then | The field's own value is read; the draw controls stay usable, and a new draw replaces one under way |
+| Focus jumped to the heading after every new draw | Keyboard users lost their place (and a key press could be lost) | Focus moves to the result only when places are given out from the activities; a new draw is announced |
+| More than 20,000 rows were cut without a word | A silent truncation (the 10,000-person limit kept it from giving wrong places) | Said |
+| A merged spelling's places box looked editable but was ignored | Confusing | Disabled, with which activity's places count |
+| Literal byte-order marks in the source where escapes were meant (the known `\u` trap) | Worked, but invisible in the code | Written as escapes; the scan is clean |
+
+**Hostile input** (`fuzz.ts`): 3,000 runs of random text and damaged exports (quotes left open, separators mixed, huge cells) through the reader and a full allocation: no crash, the slowest 12 ms. 20,500 rows are read as 20,000, and the page says so.
+
+**Performance:** 1,500 people in 40 activities: 0.23 s. 5,000 people in 200 activities with six choices each: 0.8 to 1.3 s in the browsers (1.8 s in Node), the worst case tried (5,000 people wanting the same few of 50, places short) 2.6 s. The page stays responsive (it yields every 40 ms, with progress) and Stop works.
+
+**Browser checks** (`pbc-flow.cjs`, 64 checks, six clean runs, three in each engine): the example (96 placed, no activity over its places), focus to the result, the download (everyone, plain name), a new draw keeping the total, the first draw replayed giving the same lists, print (the lists only), Microsoft Forms' ranking column and Google Forms' grid found and placed, repeated names and "use only the last", a spelling variant matched, too few places (who's left out and why), a formula-like name defused in the download, filling, merging, Stop on 5,000 people, the leave-page warning, the keyboard path, axe, overflow, storage, requests, console, at 1280 px light and 390 px dark.
+
+**Accessibility:** axe finds 0 violations on the start and on a result; no sideways scroll at 320 px, or at 390 and 1280 px with text at 200%.
+
+**Privacy:** no request at all once the page has loaded; localStorage, sessionStorage, and IndexedDB stay empty; downloads have plain names; a name starting with =, +, -, or @ is written so a spreadsheet won't run it.
+
+**Offline** (`pbc-offline.cjs`, the built site on a real server, then stopped): the page opens, gives out the example's places, and reads a file, in both engines.
+
+**Site-wide:** the 30-page smoke test on the built site: 120 page loads, 0 problems.
+
+**Harness issues, not the page's:** a dialog listener left from one step caught another step's dialog; the leave-page check is made by dispatching the event, not by closing the page.
+
+**Browser coverage:** Chromium and WebKit through Playwright. Not covered: Firefox (parked), real Safari and iOS, Windows, and exports from the forms themselves (the fixtures follow their documented shapes: Microsoft Forms' "A;B;C;" ranking column, Google Forms' "Question [Item]" grid).
+
+**Residual uncertainty:**
+- Whether the squared rule is the one organizers want: it's stated and shown, with the totals by choice, but some will want "as many first choices as possible" instead.
+- Real exports' quirks (other form tools, other languages' headers); the column choices can be set by hand.
+- No sessions at different times, and no keeping people together or apart: said on the page.
+
+## Production verification
+
+(After the push.)
+
+## Lifecycle recommendation
+
+(At closeout.)
