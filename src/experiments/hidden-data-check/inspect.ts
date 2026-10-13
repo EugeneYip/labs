@@ -552,7 +552,23 @@ async function checkWorkbook(ctx: Context, main: string, fileName: string): Prom
 
   // Charts keep a copy of the values they plot, which can outlive the cells they came from.
   for (const c of charts) {
-    const sources = c.sheets.map((n) => ({ name: n, sheet: sheetByName.get(n.toLowerCase()) }))
+    // A named range takes its data from wherever its name points; a name that's gone, or points at deleted cells
+    // (#REF!), leaves the chart holding data that's no longer in the workbook.
+    const sheetNames = [...c.sheets]
+    let external = c.external
+    const lost: string[] = []
+    for (const n of c.names) {
+      const key = n.toLowerCase()
+      const named = names.find((x) => x.name.toLowerCase() === key && x.local === undefined) ?? names.find((x) => x.name.toLowerCase() === key)
+      if (!named || /#REF!/i.test(named.formula)) {
+        lost.push(n)
+        continue
+      }
+      const got = sheetsIn(named.formula)
+      if (got.external) external = true
+      for (const s of got.sheets) if (!sheetNames.includes(s)) sheetNames.push(s)
+    }
+    const sources = sheetNames.map((n) => ({ name: n, sheet: sheetByName.get(n.toLowerCase()) }))
     const gone = sources.filter((x) => !x.sheet).map((x) => x.name)
     const hidden = sources.filter((x) => x.sheet && x.sheet.state !== 'visible').map((x) => x.name)
     const onWhat = c.sheet ? `on “${c.sheet}”` : c.orphan ? 'in a part no sheet uses' : ''
@@ -560,8 +576,16 @@ async function checkWorkbook(ctx: Context, main: string, fileName: string): Prom
     if (c.unread) ctx.incomplete.push(`A chart ${onWhat} couldn’t be read in full, so its copy of its data may be missing here.`)
     // A chart that keeps no values has nothing to give away, whatever it points at.
     if (!c.points) continue
-    if (c.external)
+    if (external)
       findings.push({ tier: 'data', title: 'A chart’s copy of another file’s data', detail: `A chart ${onWhat} plots data from another workbook. ${kept} from it, readable without the other file.`, list: c.values.slice(0, SAMPLE), fix: 'Select the chart and press Delete, or copy it and paste it as a picture.' })
+    else if (lost.length)
+      findings.push({
+        tier: 'data',
+        title: 'A chart’s copy of data no longer in the workbook',
+        detail: `A chart ${onWhat} plots ${list(lost.map((n) => `“${n}”`))}, ${lost.length === 1 ? 'a name that no longer points' : 'names that no longer point'} at any cells. ${kept}, still in the file.`,
+        list: c.values.slice(0, SAMPLE),
+        fix: 'Select the chart and press Delete, or copy it and paste it as a picture.',
+      })
     else if (gone.length)
       findings.push({
         tier: 'data',
@@ -645,7 +669,7 @@ async function checkWorkbook(ctx: Context, main: string, fileName: string): Prom
       detail: `${plural(hiddenNames.length, 'defined name')} ${hiddenNames.length === 1 ? 'is' : 'are'} hidden from the Name Manager. Add-ins such as Solver keep settings this way; others may point at data.`,
       list: hiddenNames.slice(0, SAMPLE).map((n) => `${n.name}: ${clip(n.formula)}`),
     })
-  const linkedNames = ownNames.filter((n) => /\[\d+\]|\[[^\]]*\.xl\w*\]/i.test(n.formula))
+  const linkedNames = ownNames.filter((n) => refersElsewhere(n.formula))
   if (linkedNames.length)
     people.push({
       tier: 'people',
@@ -1241,6 +1265,8 @@ interface ChartInfo {
   orphan: boolean
   /** The sheets its formulas take data from. */
   sheets: string[]
+  /** The workbook's own names its formulas use, for named ranges. */
+  names: string[]
   external: boolean
   /** Values typed into the chart rather than taken from cells. */
   literal: boolean
@@ -1345,7 +1371,7 @@ async function drawing(ctx: Context, part: string, sheet: string | null, label: 
 async function chart(ctx: Context, part: string, sheet: string | null, orphan: boolean): Promise<ChartInfo | null> {
   const entry = find(ctx, part)
   if (!entry) return null
-  const info: ChartInfo = { sheet, orphan, sheets: [], external: false, literal: false, points: 0, values: [], unread: false }
+  const info: ChartInfo = { sheet, orphan, sheets: [], names: [], external: false, literal: false, points: 0, values: [], unread: false }
   const refs: string[] = []
   let inF = false
   let f = ''
@@ -1382,13 +1408,27 @@ async function chart(ctx: Context, part: string, sheet: string | null, orphan: b
   )
   info.unread = !ok
   for (const r of refs) {
-    for (const m of xstring(r).matchAll(/(?:'((?:[^']|'')+)'|([^\s'!(),=+\-*/^&;{}]+))!/g)) {
-      const name = (m[1] ?? m[2]).replace(/''/g, "'")
-      if (/\[[^\]]*\]/.test(name)) info.external = true
-      else if (!info.sheets.includes(name)) info.sheets.push(name)
-    }
+    const x = xstring(r)
+    const got = sheetsIn(x)
+    if (got.external) info.external = true
+    for (const s of got.sheets) if (!info.sheets.includes(s)) info.sheets.push(s)
+    // A named range is written "[0]!Name" ([0] is the workbook itself); the name says where the data is.
+    for (const m of x.matchAll(/\[0\]!([^\s'!(),=+\-*/^&;{}[\]]+)/g)) if (!info.names.includes(m[1])) info.names.push(m[1])
   }
   return info
+}
+
+/** The sheets a formula takes data from, and whether it takes any from another workbook. */
+function sheetsIn(formula: string): { sheets: string[]; external: boolean } {
+  const out = { sheets: [] as string[], external: false }
+  for (const p of prefixes(formula)) {
+    // [0] is the workbook itself: "[0]!Name" is one of its names, not a sheet.
+    const name = p.replace(/^\[0\]/, '')
+    if (!name) continue
+    if (/\[[^\]]*\]/.test(name)) out.external = true
+    else if (!out.sheets.includes(name)) out.sheets.push(name)
+  }
+  return out
 }
 
 async function connectionList(ctx: Context, wbRels: Rel[]): Promise<string[]> {
@@ -1942,6 +1982,59 @@ function readState(s: SheetScan): SheetSummary['read'] {
 
 function truthy(v: string | undefined): boolean {
   return v === '1' || v === 'true'
+}
+
+/** Whether a formula refers to another workbook: by its number in the file's list of links ([1], [2]…; Excel writes
+ * [0] for the workbook itself), or by a file name in brackets. */
+export function refersElsewhere(formula: string): boolean {
+  return prefixes(formula).some((p) => /^\[[1-9]\d*\]|\[[^\]]*\.xl\w*\]/i.test(p))
+}
+
+/** What comes before each "!" in a formula: a sheet ("Pay", "'My sheet'"), a workbook and sheet ("[1]Pay"), or a
+ * workbook ("[0]", "[1]"). One pass, so a long formula can't slow it down; quoted text and table references such as
+ * Sales[2024] or Sales[[#Headers],[2024]] are skipped. */
+function prefixes(formula: string): string[] {
+  const out: string[] = []
+  const end = formula.length
+  // Where the run of characters before i began (a delimiter ends a run).
+  let start = 0
+  let i = 0
+  while (i < end) {
+    const ch = formula[i]
+    if (ch === '"') {
+      // Quoted text, where "" is a quote mark.
+      i++
+      while (i < end && !(formula[i] === '"' && formula[i + 1] !== '"')) i += formula[i] === '"' ? 2 : 1
+      start = ++i
+    } else if (ch === "'") {
+      // A quoted sheet name, where '' is an apostrophe.
+      const from = ++i
+      while (i < end && !(formula[i] === "'" && formula[i + 1] !== "'")) i += formula[i] === "'" ? 2 : 1
+      const name = formula.slice(from, i).replace(/''/g, "'")
+      i++
+      if (formula[i] === '!') {
+        out.push(name)
+        i++
+      }
+      start = i
+    } else if (ch === '[' && i > start && /[\p{L}\p{N}_.\\]/u.test(formula[i - 1])) {
+      // A table reference: skip its brackets, however nested.
+      let depth = 0
+      while (i < end) {
+        if (formula[i] === '[') depth++
+        else if (formula[i] === ']' && --depth === 0) break
+        i++
+      }
+      start = ++i
+    } else if (ch === '!') {
+      if (i > start) out.push(formula.slice(start, i))
+      start = ++i
+    } else {
+      i++
+      if (/[\s(),=+\-*/^&;{}<>%:]/.test(ch)) start = i
+    }
+  }
+  return out
 }
 
 function grid(cells: Cell[]): Grid {

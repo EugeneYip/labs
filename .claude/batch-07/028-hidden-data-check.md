@@ -118,7 +118,7 @@ Checked against sources: the ICO's spreadsheet guidance (31 July 2025: the list 
 - Whether FOI and information-governance staff would use a web page for this, even one that sends nothing: needs people.
 - Files from real systems: Excel's own quirks, and exports from other programs.
 - Colour hiding is judged by a rule from the stored colours (with tints); cells under conditional formats and table styles aren't judged.
-- Not detected: shapes covering others, objects in hidden rows or columns, what's inside pictures, a data model, macros, or embedded files that aren't workbooks.
+- Not detected: shapes covering others, and objects in hidden rows or columns. Found, but not read inside: pictures, a data model, macros, and embedded files that aren't workbooks.
 
 ## Production verification
 
@@ -129,6 +129,31 @@ Checked against sources: the ICO's spreadsheet guidance (31 July 2025: the list 
 - The homepage lists it under "Files & text".
 - The 29-page smoke test on production: 116 page loads, 0 problems. The daily check: 11 of 11.
 
+## After the push
+
+2026-10-13, at the batch's close: the page on a workbook Excel itself wrote, the Solver add-in that comes with Excel for Mac. Until then the fixtures had come from openpyxl or been written by hand to the published formats. One material defect, fixed:
+
+| Found | Effect | Fix |
+|---|---|---|
+| Excel writes `[0]` for the workbook itself: names for its own macros (`[0]!Help1_Click`) and a chart's named ranges (`[0]!Name`). The page counted any bracketed number as a link to another workbook, and table columns such as `Sales[2024]` too | A false "Names that point to other files" on Solver. Every chart on a named range would have been called "another file's data" | Only `[1]`, `[2]`… or a file name counts as another workbook, read in one pass that skips quoted text and table references. A chart's named ranges are followed through the workbook's names, so a chart drawing on a hidden or deleted sheet through a name is still found, and a name pointing at deleted cells (`#REF!`) gets a finding of its own: "A chart's copy of data no longer in the workbook" |
+
+**Checks:**
+- **Speed.** The fix's first version used regular expressions that took 6.5 s on a hostile 100,000-character name. The one-pass scan takes 2 ms, and a model check now holds it to that.
+- **Model checks:** 73 (10 new).
+- **Old against new.** The reports of the page before and after the fix are identical on all 21 fixtures; on Solver, the only change is that the false link is gone.
+- **Hostile input** (seed 31): 5,700 damaged copies of 19 fixtures, Solver included, gave 0 crashes, with the slowest at 336 ms.
+- **Browser:** 72 of 72 checks in Chromium and in WebKit.
+
 ## Lifecycle recommendation
 
-(At closeout.)
+**PROMOTE candidate**, the strongest of Batch 07:
+- A regulator names the job and the failure: the ICO's guidance of July 2025, and the fines and reprimands over hidden sheets and pivot caches.
+- Uploading a file to check it would itself be a disclosure, so working only on the device is the wedge.
+- Every spreadsheet that goes out is an occasion.
+- Document Inspector is Windows-only and shows nothing of what it finds.
+
+What would test it:
+1. **Technical, needing only a permission:** workbooks saved by Excel itself. Excel for Mac is on this machine, but driving it needs an automation permission.
+2. **Human:** a few FOI or information-governance officers run it on files they're about to send. Does it find what they'd have missed, and does anyone read "nothing found" as "safe"?
+
+Both are the owner's call. What would move it to Maintain: officers who won't use a page their IT hasn't approved, or findings they already catch with Document Inspector. Watch new Excel features (each adds parts) and the ICO's guidance.

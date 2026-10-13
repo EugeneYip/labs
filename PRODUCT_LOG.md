@@ -16,6 +16,12 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-13 · Hidden Data Check and Transcript Pseudonyms: fixes from Excel's and Word's own files
+
+- **What:** Two fixes, found by reading files that Microsoft's own apps wrote. [Hidden Data Check](https://labs.eugeneyip.net/hidden-data-check/) no longer calls a workbook's names for its own macros, or table columns such as Sales[2024], links to other files: Excel writes [0] for the workbook itself. It also follows a chart's named ranges to the cells they name, so a chart drawing on a hidden or deleted sheet through a name is found, and so is one whose name points at deleted cells. [Transcript Pseudonyms](https://labs.eugeneyip.net/transcript-pseudonyms/) keeps the blank lines in a Word file: Word writes an empty paragraph in a short form the page skipped.
+- **Why:** Until now the test files had come from openpyxl, macOS's converter, and hand-written XML following the published formats. Excel's Solver add-in and the templates that come with Word were the first files from Microsoft's own apps.
+- **Notes:** Word text was checked against a separately written Python reader on 252 of Word's files. Hidden Data Check's old and new reports were compared on every test file: identical except for the false link. Both were run on hostile input and through both pages' browser checks in Chromium and WebKit.
+
 ## 2026-10-13 · #029 Places by Choice
 
 - **What:** [labs.eugeneyip.net/places-by-choice](https://labs.eugeneyip.net/places-by-choice/). For giving out places in activities, projects, or workshops from everyone's ranked choices. Paste or open the responses from a form (Microsoft Forms' ranking question, Google Forms' grid, or one question for each choice), check which columns hold the names and the choices, set each activity's places and an optional minimum, and give out places. Everyone gets a place as high on their list as the places allow, by a stated rule; the result shows how many got each choice, who couldn't be placed and why, and any activity that didn't reach its minimum. A draw settles ties and can be replayed from its number. Each activity's list prints one per page, and everyone's places download as CSV. Nothing is uploaded or saved, and it works offline after one visit.

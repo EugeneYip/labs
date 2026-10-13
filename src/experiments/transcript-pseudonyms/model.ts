@@ -433,7 +433,8 @@ export function bodyText(xml: string): string {
     else if (!closing && (name === 'w:tab' || name === 'w:ptab')) skip || out.push('\t')
     else if (!closing && (name === 'w:br' || name === 'w:cr')) skip || out.push('\n')
     else if (!closing && name === 'w:noBreakHyphen') skip || out.push('-')
-    else if (closing && name === 'w:p') skip || out.push('\n')
+    // An empty paragraph is a line too: Word writes it as <w:p …/>.
+    else if ((closing || selfClosing) && name === 'w:p') skip || out.push('\n')
   }
   return out.join('').replace(/\n+$/, '\n')
 }

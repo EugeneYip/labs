@@ -91,6 +91,16 @@ Added for privacy during the audit: spell check and form restore off in every fi
 - `tp-offline-prod.cjs`: with the browser's network cut after one visit, an address never saved fails while the page reloads and pseudonymizes, in both engines.
 - The 28-page smoke test on production: 112 page loads, 0 problems. The daily check: 11 of 11.
 
+## After the push
+
+2026-10-13, at the batch's close: the page's Word reader on 252 files that Word itself wrote (the templates that come with Word for Mac, in 30 languages), against a second reader written separately in Python with its own zip and XML code. Until then, Word files had been stood in for by macOS's converter. One material defect, fixed:
+
+| Found | Effect | Fix |
+|---|---|---|
+| Word writes an empty paragraph as `<w:p …/>` (80 in one template), and the page ended a line only at `</w:p>` | Blank lines vanished from text read from Word files, such as the blank line between turns | An empty paragraph is a line too |
+
+After the fix the two readers agree on all 252 files (228,290 characters; the templates' text is in their building blocks, read with the same code as a document's main text). 3,077 model checks (one new) and the 40 browser checks in Chromium and WebKit pass.
+
 ## Lifecycle recommendation
 
-(At closeout.)
+**MAINTAIN.** Sound and verified: deterministic replacement checked exactly, and since the fix above, Word's own files read the same as an independent reader. The job is real and recurs with every project, and nothing is stored. But use comes per project, and many researchers manage with find-and-replace or a university's approved AI, so the gap is narrower than for the two promoted Batch 07 experiments. Like Ranked Choice Count: promote it if researchers adopt it. Watch Word's format and transcription tools' exports.
