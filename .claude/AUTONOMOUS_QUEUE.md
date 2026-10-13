@@ -30,8 +30,8 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ## Now
 
-- **Current:** P13, evidence-based passive improvements.
-- **Next:** nothing queued after P13; the parked lanes need the owner.
+- **Current:** none. P1–P13 are done and verified; every remaining item needs the owner.
+- **Next:** the parked lanes below, when the owner chooses.
 
 ## Parked lanes (human-blocked)
 
@@ -122,7 +122,7 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
   - Form Check stepped 240 fps slow motion 4 or 8 frames at a time; the rate now comes from the file (07cf644, comment 5029b4a);
   - Family Stories told a private window it was out of space; it now says it can't keep the answer, while recording too (402370f).
 
-  **Left:** a child's "ah" at C5 and C♯5 still reads an octave high (a looser rule halves buzzy tones). Chromium's WebM recordings have no stored length (a careful P13 candidate). **BLOCKED — OWNER REQUIRED:** Numbers by Ear's voices on Windows, Android, and ChromeOS devices; Line Dry against real washing; real singers, phones, and iPhones for the rest.
+  **Left:** a child's "ah" at C5 and C♯5 still reads an octave high (a looser rule halves buzzy tones). Chromium's WebM recordings have no stored length (P13 made the page's player find it; downloaded files still carry none). **BLOCKED — OWNER REQUIRED:** Numbers by Ear's voices on Windows, Android, and ChromeOS devices; Line Dry against real washing; real singers, phones, and iPhones for the rest.
 
 ### P9: Import, export, and durability
 
@@ -164,14 +164,21 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ### P13: Evidence-based passive improvements
 
-- `[ ]` Only fixes backed by the audits above. Candidates gathered so far:
-  - Custody Calendar's year view has about 400 tab stops (P2);
-  - Off Book on one enormous pasted line (P4);
-  - a `modulepreload` hint per experiment, an option rather than a defect (P6);
-  - Chromium's WebM recordings have no stored length; fixing it rewrites recordings, so only with great care (P8);
-  - Fluency Check's samples are labeled Early reader, Middle grades, and Upper grades, but aren't leveled, and only the code says so (found in P12).
+- `[x]` Done (2026-10-12), each fix backed by an earlier audit:
+  - **Custody Calendar** (P2; commit 5fcb4b4): the year view had about 400 Tab stops. Now there's one per month, with the arrow keys, Home, and End between days. 47 stops on the page; axe finds no violations.
+  - **Off Book** (P4; 36bb51e): a 500 KB script pasted as one line, with unclosed brackets, took 4 to 16 s to read, on every visit. Two patterns are now linear. It reads in 30 ms, with identical results on 71,000 random scripts.
+  - **Fluency Check** (P12; c9e029c): the samples now say "practice passage (not leveled)".
+  - **Family Stories** (P8; af90546): in Chromium the player now finds a WebM answer's length itself, so it shows it and scrubs from the start. The recording isn't changed (downloads are byte-identical).
+  - **Not done:** a `modulepreload` hint per experiment (P6). It's an option rather than a defect, saving about one round trip on a cold visit.
 
 ## Log
+
+- **2026-10-12:** P13 done and verified in production (commits 36bb51e, 5fcb4b4, c9e029c, and af90546; deploys 38333838468 and 38334354658 succeeded; production's files are byte-identical to the local build).
+  - **Custody Calendar's keyboard checks:** 8 of 8 in Chromium and WebKit.
+  - **Off Book:** with the 500 KB one-line script saved, the page opens in 0.6 s on a 4x-slowed CPU.
+  - **Family Stories:** Chromium's player shows a 6 s answer as 5.9 s at 0 s, and the 7 Chromium recording checks pass.
+  - **Fluency Check:** the wording shows at 320 px with no overflow in both engines.
+  - **Smoke test:** 104 page loads, 0 problems. **Daily check:** 11 of 11.
 
 - **2026-10-12:** P12 done. 37 documents and comments corrected (details under P12). The build is unchanged, byte for byte.
 

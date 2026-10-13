@@ -48,7 +48,7 @@ This section is the current state. The older sections below are history: their "
     - Form Check: 240 fps slow motion now steps one frame; the rate is read from the file.
     - Family Stories: a private window now gets an honest message, during recording and after Stop. Recording, reload, download, and recovery work in WebKit with WebM and MP4.
     - Numbers by Ear: sensible starting voices on Windows and Android voice lists. Line Dry needs real washing.
-  - **P13 candidate from P8:** Chromium's MediaRecorder WebM has no stored length (Family Stories' players can't seek until played through). Fixing it means rewriting recordings, so only with great care.
+  - **P13 candidate from P8** (done in P13 on the player side, without rewriting recordings): Chromium's MediaRecorder WebM has no stored length.
   - P9 done (2026-10-12) and verified in production (commits 2a1e12c to e8e6066, deploy 38323719203 succeeded): import, export, and durability, in `.claude/DURABILITY_AUDIT.md`.
     - Two open tabs erased each other's work (Stall Till's sales, verified in both engines). Fixed with a shared hook, `src/components/useOtherTabs.ts`, in 13 experiments. CLAUDE.md now says new experiments save through it.
     - Nine pages that held typed-in work saved silently when storage failed; they now say so (`src/components/NotSaving.tsx`). Private windows were wrongly blamed in two notices.
@@ -57,7 +57,8 @@ This section is the current state. The older sections below are history: their "
   - P10 done (2026-10-12, commit 8d3fe38) and verified on GitHub (run 38325081794: 11 of 11). A daily check of the live site and Open-Meteo, `.github/workflows/daily-check.yml` with `.github/scripts/daily-check.ts`, type-checked with the site. Limit: GitHub stops scheduled runs after 60 days without a commit.
   - P11 done (2026-10-12), in `.claude/MAINTENANCE.md`. No vulnerabilities, no unused packages, actions current. A clean checkout builds byte-identically (61 of 61 files). Both workflows moved to `ubuntu-26.04` (commit b7f82f7), verified by a deploy and a daily check there.
   - P12 done (2026-10-12): documents made consistent with each other and with the code (37 files; details in the queue). Older sections of this file are marked as history.
-  - **Next:** P13, evidence-based passive improvements: only fixes the audits back. The candidates are listed under P13 in the queue.
+  - P13 done (2026-10-12) and verified in production: Custody Calendar by keyboard (one Tab stop per month), Off Book's long one-line scripts (linear parsing), Fluency Check's samples marked "not leveled", and Family Stories' player finding a WebM answer's length in Chromium. Details in the queue.
+  - **Next:** none. The queue is finished; every remaining item is a parked lane that needs the owner (see the queue). A new session should report to the owner rather than start new work, and must not start #026 or a Batch 07.
 
 ## Stage 0 interview preparation (complete; interviewing not begun)
 

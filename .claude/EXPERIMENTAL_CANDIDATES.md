@@ -66,7 +66,7 @@ Two things an earlier version of the check reported were not the page:
 - "No length after a reload" was the check reading the length the moment the metadata arrived. WebKit works a WebM's length out a few milliseconds later.
 - Once, a recovered answer wouldn't load in WebKit (media error 4, both of its players). That was 1 run in 19 with WebM, and it didn't happen again in 18 more, the last 8 with diagnostics ready.
 
-**Residual.** In Chromium, a WebM straight from MediaRecorder has no stored length (its `duration` is Infinity). The player can't show a total or seek until it has played through once, and other players may not know the length either; the page's own label gives the length. Writing the length into the file means rewriting irreplaceable recordings, so it's left as a careful P13 candidate.
+**Residual.** In Chromium, a WebM straight from MediaRecorder has no stored length (its `duration` is Infinity). The player can't show a total or seek until it has played through once, and other players may not know the length either; the page's own label gives the length. Writing the length into the file means rewriting irreplaceable recordings, so it's left as a careful P13 candidate. (P13, commit af90546: the page's player now works the length out itself, without changing the recording, so in Chromium it shows the length and scrubs from the start. Downloaded WebM files still carry no stored length, so other players may not show one.)
 
 **Still open:** a real iPhone (audio interruptions, a page suspended in the background), and whether people download their recordings, which needs people.
 
