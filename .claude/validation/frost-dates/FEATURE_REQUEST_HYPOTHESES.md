@@ -17,7 +17,7 @@ A request becomes evidence only when a real user needs it.
 | # | Idea | Status and signal | Labs fit | Main cost or risk |
 |---|---|---|---|---|
 | 1 | Dates corrected against local stations at frost-prone sites | **Indirect, strongest:** Canberra about 5 weeks optimistic (`notes/accuracy-check.md`); "the station isn't where the garden is" pain [V] | Amendment (offline correction with GHCN, CC0) | Method design; a different product in effect |
-| 2 | A warmth-aware or qualified planting calendar for mild climates | **Indirect, strong:** the RHS uses 16 °C; NZ uses 18 °C soil; the maritime calendar is 1.5–2.5 months early [V] | Yes (night temperatures are already in the record) | Rules per crop; keeping it simple |
+| 2 | A warmth-aware or qualified planting calendar for mild climates (built 2026-10-11, commit 291fac5) | **Indirect, strong:** the RHS uses 16 °C; NZ uses 18 °C soil; the maritime calendar is 1.5–2.5 months early [V] | Yes (night temperatures are already in the record) | Rules per crop; keeping it simple |
 | 3 | Per-place pages (a URL for each town) for search and sharing | Indirect: place queries in Australia, NZ and Germany show no tool [SERP] | Amendment (pre-built pages) | Build pipeline; thin-content risk |
 | 4 | Place in the address, so a result can be shared | Hypothetical | Yes | Low |
 | 5 | Lower thresholds for growers (25 °F, 20 °F) | Indirect: the MRCC tool added them for high tunnels [V] | Yes | Scope beyond home gardeners |

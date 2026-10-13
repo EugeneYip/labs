@@ -75,9 +75,9 @@ Forum and blog accounts are anecdotes. Several are old, and they illustrate prob
 
 **Frost-prone inland valleys.** At Canberra, Frost Dates' cautious date is about 5 weeks earlier than two station records, and it shows half the stations' frost nights [V, own check].
 - A gardener there gets a worse answer than the folk rule.
-- The page's general warning about hollows and valleys points the right way, but doesn't convey a month-long error across a city.
+- The page's general warning about hollows and valleys points the right way, but doesn't convey a month-long error across a city. (Since commit 291fac5, an "Estimates, not guarantees" caveat says valleys and basins can be weeks off.)
 
-**Maritime climates.** The frost-anchored calendar advises tomatoes outside 1.5–2.5 months before local guidance: Dublin Mar 12–19, London Apr 11–18, Christchurch Sep 14–21 [V, own check].
+**Maritime climates.** Before commit 291fac5, the frost-anchored calendar advised tomatoes outside 1.5–2.5 months before local guidance: Dublin Mar 12–19, London Apr 11–18, Christchurch Sep 14–21 [V, own check].
 
 **Continental climates.** Dates and calendar are reasonable: Minneapolis tomatoes go out May 14–21 counted from the cautious date [V, own check]. This matches the earlier NOAA check of US cities [repo].
 

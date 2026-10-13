@@ -23,7 +23,7 @@ Nothing was signed up for, requested or downloaded, and nobody was contacted.
 | Rate limits | Enforced per visitor IP address, so each visitor gets about 120 lookups a day [V/E] | The README asks any *application* above 10,000 calls a day to get in touch. That's about 120 lookups a day across all visitors [V/E] |
 | Availability | No uptime guarantee. Open-Meteo may block applications or IP addresses that misuse the service, without notice [V] | The same, unless on a paid plan (99.9% target) [V] |
 | Attribution | Open-Meteo, CC BY 4.0, ERA5, ERA5-Land, IFS and Copernicus are all credited [V, rechecked]. GeoNames, behind the place search, was not; **credited since the 2026-10-11 maintenance pass** (also in Line Dry) | The same, plus whatever any new data source needs |
-| Data quality and reliance | The page's caveats (2 m air, grid squares, hollows, cities) match ECMWF's documentation [V]. **But at Canberra, the cautious date is about 5 weeks too early against two station records**, and the planting calendar advises tender crops 1.5–2.5 months early in maritime climates (`notes/accuracy-check.md`) [V, own check] | Stakes rise if it's sold to growers |
+| Data quality and reliance | The page's caveats (2 m air, grid squares, hollows, cities) match ECMWF's documentation [V]. **But at Canberra, the cautious date is about 5 weeks too early against two station records**, and the planting calendar advised tender crops 1.5–2.5 months early in maritime climates until commit 291fac5 (`notes/accuracy-check.md`) [V, own check] | Stakes rise if it's sold to growers |
 | Privacy | The chosen place, rounded to about 1 km, goes to Open-Meteo, and so does the search text. Settings and the last place's records stay in the browser [V, rechecked] | Ads or analytics would add third-party tracking |
 
 ## 1. What Open-Meteo's terms permit today
@@ -172,7 +172,7 @@ Geocoding calls aren't included [E/V]. Whether geocoding has its own limits is u
 - It shows about half the stations' frost nights.
 - Part of the gap is screen height (1.2 m against 2 m), but most of it matches the documented inversion problem.
 
-**Planting calendar in maritime climates** (`notes/accuracy-check.md` §2) [V, own check]:
+**Planting calendar in maritime climates** (`notes/accuracy-check.md` §2) [V, own check], before commit 291fac5, which makes tender crops wait for warm nights in these places:
 
 | Place | Tomatoes out (typical) | Tomatoes out (cautious) |
 |---|---|---|
@@ -195,7 +195,7 @@ Local guidance says late May or June in the UK and Ireland, and late October or 
 **What the wording doesn't convey:**
 - That the odds are the grid's, not a garden's.
 - That at frost-prone inland sites they can be a month too optimistic.
-- That the calendar doesn't suit mild climates.
+- That the calendar didn't suit mild climates (fixed in commit 291fac5).
 
 This was judged a material accuracy issue for an owner decision, not a "genuinely harmful factual claim": no safety or legal stakes, a general caveat already present, and seedlings at stake. No public change was made in this phase.
 
@@ -207,7 +207,7 @@ This was judged a material accuracy issue for an owner decision, not a "genuinel
 
 **What the page says about it** [V, rechecked]:
 - The page says "the place you pick is sent to Open-Meteo, rounded to about a kilometer".
-- Search text isn't mentioned. That's a small omission, not a harmful claim.
+- Search text isn't mentioned. That's a small omission, not a harmful claim. (Since P4, commit 6da220a, the page says what's typed in the search is sent too.)
 
 **What stays in the browser** [V, rechecked]:
 - Settings and the last place's records, under `labs:frost-dates` and `labs:frost-dates:data`.
@@ -225,7 +225,7 @@ This was judged a material accuracy issue for an owner decision, not a "genuinel
 **The current wording avoids all of these** [V, rechecked].
 
 **Two places overreach** [V/U]:
-- The summary promises frost dates "for any place in the world … with a planting calendar to match". The calendar doesn't match maritime climates.
+- The summary promises frost dates "for any place in the world … with a planting calendar to match". The calendar didn't match maritime climates. (Fixed in commit 291fac5; the summary now says "a planting calendar of rules of thumb".)
 - "In 9 springs out of 10" reads as a garden-level probability.
 
 Wording to consider:
@@ -234,14 +234,14 @@ Wording to consider:
 
 ## 10. Owner actions and decisions
 
-**Maintenance pass (2026-10-11, owner-authorized, commit 291fac5).** Items 1 and 3 are done:
+**Maintenance pass (2026-10-11, owner-authorized, commit 291fac5).** Item 1 and most of item 3 are done (not done: suggesting the Light frost threshold or the cautious date for tender crops):
 - GeoNames is credited in Frost Dates and Line Dry.
 - A visible "Estimates, not guarantees" caveat sits under the frost dates.
 - Tender crops wait for warm nights where the record's average low reaches 10°C more than three weeks after the frost date.
 - The intro, summary and calendar wording are softened.
 - The frost dates themselves are unchanged (no correction model).
 
-Items 2, 4 and 5 remain open. The original list follows.
+Items 2 and 5 remain open, and so does item 4, except its search-text note, which P4 added (commit 6da220a). The original list follows.
 
 
 1. **Add a one-line GeoNames credit** to Frost Dates' place search, for example "Place search by Open-Meteo, using GeoNames data (CC BY 4.0)". **Line Dry has the same gap.**

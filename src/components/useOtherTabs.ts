@@ -32,7 +32,7 @@ export function useOtherTabs(key: string, adopt: () => void): (value: string) =>
       // Storage that can't be read at all leaves the page as it is.
       if (now === undefined || now === seen.value) return
       // A value found missing when the page is shown again may have been removed by the browser, which can clear a
-      // site's data after weeks without a visit, not by another tab: this tab keeps its own, and its next save puts it back.
+      // site's data after about a week without a visit, not by another tab: this tab keeps its own, and its next save puts it back.
       if (now === null && !announced) return
       seen.value = now
       latest.current()

@@ -22,11 +22,11 @@ Frost dates are a real gardening job that comes back every year. But the evidenc
 
 - **Where the job is strongest** (North America and continental climates), free incumbents own it and own search.
 - **In the UK**, a free tool built on the Met Office's 1 km grid already exists.
-- **In maritime climates**, warmth decides planting, not frost. There Frost Dates' calendar advises planting tender crops 1.5–2.5 months early.
+- **In maritime climates**, warmth decides planting, not frost. There Frost Dates' calendar advised planting tender crops 1.5–2.5 months early, until the maintenance pass below (commit 291fac5).
 - **In the one beachhead with a real gap** (cool-climate south-eastern Australia, Canberra first), Frost Dates' cautious dates run about five weeks earlier than two station records, which is worse than the local folk rule.
 - The need comes twice a year, and the page has no per-place addresses that search could find.
 
-Frost Dates stays a useful Labs tool in continental climates. It has accuracy wording to fix, which is an owner decision.
+Frost Dates stays a useful Labs tool in continental climates. Its accuracy wording was fixed in the owner-authorized maintenance pass below (commit 291fac5).
 
 ## Core question
 
@@ -91,7 +91,7 @@ Is worldwide frost-date lookup underserved, searchable, and useful enough to jus
    - The folk rule (Melbourne Cup Day, early November) agrees with the stations.
 2. **In maritime climates, warmth decides, not frost:**
    - The RHS times tomatoes by month and by temperatures reliably above 16 °C [V].
-   - Frost Dates' calendar on default settings puts tomatoes outside in Dublin on Mar 12–19, in London on Apr 11–18, and in Christchurch on Sep 14–21 [V, own check].
+   - Frost Dates' calendar on default settings put tomatoes outside in Dublin on Mar 12–19, in London on Apr 11–18, and in Christchurch on Sep 14–21 [V, own check], before commit 291fac5. London and Dublin now wait for warm nights; Christchurch wasn't rechecked.
 3. **The UK already has a free tool on better data:** lastfrostdate.co.uk uses the Met Office's 1 km HadUK-Grid (1960–2023), offers air, light and hard frost, and has a last-30-years toggle [V, rechecked].
 4. **Search is captured where demand is visible:**
    - The Almanac owns ZIP queries, and UK tools rank for UK queries [SERP].
@@ -117,7 +117,7 @@ Is worldwide frost-date lookup underserved, searchable, and useful enough to jus
 - the stakes are seedlings, not safety;
 - the page already warns that hollows, valleys and open country get frost earlier and later.
 
-**But there are material issues for the owner to decide on** (RISK_AND_COMPLIANCE.md §10):
+**The material issues found for the owner** (RISK_AND_COMPLIANCE.md §10). Since then, the maintenance pass above did items 2 and 3 and most of item 1; item 4 is open:
 1. **Accuracy wording:**
    - The odds are the grid's, and frost-prone inland sites can see frost weeks later.
    - Suggest the Light frost threshold or the cautious date for tender crops.

@@ -11,9 +11,9 @@ Recorded during Comparative Research (2026-10-11). **None is to be built.** Stat
 | 5 | Child-support estimates | Hypothetical | Yes technically | **Never**: official calculators exist; reliance and claims risk |
 | 6 | Exchange log or records of actual time | Indirect: documentation is what people pay for [V] | No (records need integrity) | Evidence and safety implications |
 | 7 | Messaging | Indirect (platforms) | No | Stored Communications Act, abuse channel |
-| 8 | "Forget this schedule on this device" | Indirect: safety research [V] | Yes | Low |
-| 9 | Share without names; initials hint | Indirect: safety research [V] | Yes | Low |
-| 10 | Safety note by the share button | Indirect: NNEDV guidance [V] | Yes | Wording |
+| 8 | "Forget this schedule on this device" (built in P1: "Clear it from this device") | Indirect: safety research [V] | Yes | Low |
+| 9 | Share without names; initials hint (the hint built in P1) | Indirect: safety research [V] | Yes | Low |
+| 10 | Safety note by the share button (built in P1) | Indirect: NNEDV guidance [V] | Yes | Wording |
 | 11 | Hour-based counting option | Indirect: Arizona, New Jersey, Virginia definitions [V] | Yes | Complexity; still not a legal count |
 | 12 | Multi-year view or two-year averages | Indirect: Minnesota, Oregon averaging [V] | Yes | Low |
 | 13 | Printable exhibit with a "planning view, not a court record" footer | Indirect: professionals exchange PDFs [V] | Yes | Must avoid "court-ready" framing |

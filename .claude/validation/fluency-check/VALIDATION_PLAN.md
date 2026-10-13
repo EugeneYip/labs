@@ -73,7 +73,7 @@ Six weeks of use, then a single unprompted question at week 8. Six weeks lets a 
 ### What to observe (behavior first)
 
 - Date of the first real check (activation).
-- Weekly: number of checks and number of distinct students, read by the participant from the "Saved checks" list. Numbers only.
+- Weekly: number of checks and number of distinct students, read by the participant from the saved checks list (headed "Saved on this device"). Numbers only.
 - Whether Fluency Check replaced their old method for those checks or ran alongside it.
 - Which parts they used: printed record, chart, CSV, goal.
 - Help requests, and what they were about.
@@ -86,7 +86,7 @@ Six weeks of use, then a single unprompted question at week 8. Six weeks lets a 
 | When | Question | Effort |
 |---|---|---|
 | Day 3–7, after the first real check | What did you use it for? Anything confusing? Did the score match what you'd have counted? | 2 minutes, email |
-| Weekly (weeks 1–6) | How many checks this week, with how many students (count from the Saved checks list)? Anything that got in the way? | 1 minute, email reply |
+| Weekly (weeks 1–6) | How many checks this week, with how many students (count from the list headed "Saved on this device")? Anything that got in the way? | 1 minute, email reply |
 | Week 3 | Time one check your old way and one with Fluency Check, from start to recorded score. Which would you rather do, and why? | 10 minutes, email or call |
 | Week 6 (exit) | When did you choose it, and when didn't you? What would make you stop? If it disappeared tomorrow, what would you use? How would you feel: very, somewhat, or not disappointed? Have you told anyone about it? What did you wish it did? | 20 minutes, call or written |
 | Week 8 (unprompted) | Did you use it in the last two weeks? How many checks? | 1 minute, email |

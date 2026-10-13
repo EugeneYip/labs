@@ -1,5 +1,7 @@
 # Frost Dates: accuracy and calendar check
 
+> **Since these notes were written:** the maintenance pass (2026-10-11, commit 291fac5) added an "Estimates, not guarantees" caveat, a planting calendar that waits for warm nights for tender crops, soil-temperature and local-advice wording, and GeoNames credits. P4 (commit 6da220a) added that what's typed in the place search is sent to Open-Meteo. Statements below about the page describe it before those changes.
+
 A desk check run on 2026-10-11 for the comparative research. It tests three things the market notes flagged as decisive (market-notes.md, "Tests that would change this assessment"):
 
 1. Does Frost Dates agree with local station records at the beachhead (Canberra)?

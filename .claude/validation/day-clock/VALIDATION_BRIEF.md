@@ -43,7 +43,7 @@ Is a browser-based dementia orientation clock genuinely useful compared with ine
 
 ## Product status
 
-Unchanged; no harmful claim. Notes for later, with the owner's approval:
+Unchanged in this phase; no harmful claim. Notes for later, with the owner's approval. Since then, P1 of the autonomous queue (2026-10-11) made read-aloud prefer on-device voices, named the supported browsers, and added the sleep caveat; the summary was kept as it is, since it describes the audience and claims no treatment or monitoring:
 - The public summary says "for someone living with dementia". For a commercial product in the UK or EU, wording aimed at compensating for a condition can make software a medical device; a free, non-commercial page is probably outside those rules, but neutral wording ("an easy-to-read calendar clock for a spare tablet") is safer (RISK_AND_COMPLIANCE.md).
 - Read-aloud speaks the message and due reminders; with an online voice, that text goes to the voice provider. Preferring on-device voices would make "settings stay on this device" fully true in spirit.
 - A visible warning when the screen may sleep (Home Screen mode before iPadOS 18.4, or no wake lock), a plain list of supported devices, and a printable setup card would cut the fragility.

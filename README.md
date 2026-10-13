@@ -25,12 +25,20 @@ src/
   components/
     ExperimentCard.tsx   An experiment's card in the homepage index.
     ExperimentShell.tsx  The frame around every experiment page.
+    useOtherTabs.ts      Saving, so two open tabs don't erase each other's work.
+    NotSaving.tsx        The notice shown when the browser won't save.
+    feedback.ts          The feedback link to a new GitHub issue.
   Home.tsx               The homepage.
   App.tsx                Picks the page to show from the address.
+  main.tsx               Starts the app, and the service worker in the built site.
   index.css              Tailwind and the Labs colors.
 public/
   CNAME                  The custom domain.
-vite.config.ts           Build setup, including the per-experiment pages.
+  sw.js                  The service worker that keeps opened pages working offline.
+.github/
+  workflows/             deploy.yml publishes the site; daily-check.yml checks it each day.
+  scripts/daily-check.ts The daily check itself.
+vite.config.ts           Build setup: the per-experiment pages, sitemap.xml, and robots.txt.
 ```
 
 ## Adding an experiment

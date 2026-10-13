@@ -1,5 +1,7 @@
 # Custody Calendar: legal, safety and privacy risk notes
 
+> **Since these notes were written:** P1 of the autonomous queue (2026-10-11, commit 75c8844) narrowed "Nothing is sent anywhere" to "Nothing you enter is sent anywhere unless you share a link or a calendar file", added a hint that first names, initials, or nicknames are enough, a note by the share button that anyone with the link can see the schedule and a link can't be taken back, "this is a planning calendar; your court order or parenting plan is what counts", and a "Clear it from this device" control (with confirmation). Statements below about the page describe it before those changes.
+
 Written 2026-10-11 for the Custody Calendar (#020) validation study. This is research for product decisions, not legal advice. Sources were read on 2026-10-11.
 
 **Labels.** Each claim cites a source tag such as [S4]. The Sources list at the end gives each tag's URL and its label: **VERIFIED** (read on the page), **SNIPPET** (seen only in search results) or **UNVERIFIED** (not confirmed). Where a claim rests on a SNIPPET source, the text says so. **ANALYSIS** marks my own inference from cited facts. **REPO** marks facts read in this repository.

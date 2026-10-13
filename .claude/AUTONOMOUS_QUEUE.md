@@ -30,8 +30,8 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ## Now
 
-- **Current:** P12, documentation and handoff.
-- **Next:** P13, evidence-based passive improvements.
+- **Current:** P13, evidence-based passive improvements.
+- **Next:** nothing queued after P13; the parked lanes need the owner.
 
 ## Parked lanes (human-blocked)
 
@@ -155,13 +155,25 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ### P12: Documentation and handoff
 
-- `[ ]` Remove contradictions across CLAUDE.md, the constitution, the factory state, the portfolio files, the validation folders, the Product Log, and this queue.
+- `[x]` Done (2026-10-12). Three reviews, two by sub-agents, read every document against the code and the later priorities; each finding was checked before it was fixed. 37 files changed:
+  - **The factory state:** older sections' "Next action" lines said to wait for the owner and to review every push, which contradicted the current mode. They're now marked superseded, and the old "Position" points to the top. Firefox joined the parked list. A tooling note says where Playwright lives, how `route-preload.cjs` and the smoke test run, and how to bound waits.
+  - **The validation research** (23 files) described the products before P1 and the Frost Dates maintenance pass: "no clear control", "no on-device voice", the planting calendar "1.5–2.5 months early", GeoNames "not credited", and "unchanged" status lines. The notes got a dated header; briefs, risks, plans, and hypotheses got inline notes with the commit.
+  - **The portfolio and audits:** forward pointers where a later priority fixed a residual risk; corrected counts (16 silent savers, not 15; 42 packages, not 30; Line Dry's risk change 4 → 3, which matches its total); "Safari" became "WebKit" where only Playwright's WebKit was used.
+  - **CLAUDE.md, the README, memory:** CLAUDE.md's "pages are always fetched fresh" now describes the worker as it is (network first, the saved copy after 4 seconds, and the browser's 10-minute cache). The README's layout lists the shared files, the worker, and the workflows. Memory notes that the autonomous authorization covers its fixes. Two code comments no longer blame private windows or say "weeks".
+  - **The constitution:** no contradiction. One thing for the owner: "Don't add ... build infrastructure" (§5) doesn't mention monitoring. The daily check (P10) is outside the build, but an amendment could say scheduled checks of the live site are allowed.
 
 ### P13: Evidence-based passive improvements
 
-- `[ ]` Only fixes backed by the audits above.
+- `[ ]` Only fixes backed by the audits above. Candidates gathered so far:
+  - Custody Calendar's year view has about 400 tab stops (P2);
+  - Off Book on one enormous pasted line (P4);
+  - a `modulepreload` hint per experiment, an option rather than a defect (P6);
+  - Chromium's WebM recordings have no stored length; fixing it rewrites recordings, so only with great care (P8);
+  - Fluency Check's samples are labeled Early reader, Middle grades, and Upper grades, but aren't leveled, and only the code says so (found in P12).
 
 ## Log
+
+- **2026-10-12:** P12 done. 37 documents and comments corrected (details under P12). The build is unchanged, byte for byte.
 
 - **2026-10-12:** P11 done and verified. Deploy 38325368394 ran on Ubuntu 26.04.1 and succeeded, and production's 61 files are byte-identical to the local build. The daily check passed on 26.04 (run 38325487870, 11 of 11).
 

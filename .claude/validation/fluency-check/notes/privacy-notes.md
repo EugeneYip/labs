@@ -1,5 +1,7 @@
 # Fluency Check: student-privacy research notes
 
+> **Since these notes were written:** P1 of the autonomous queue (2026-10-11, commit 75c8844) reworded the DIBELS sentence (DIBELS® 8th Edition, a registered trademark of the University of Oregon, which isn't connected with the page), attributed the accuracy bands to the running-record guideline, and asked school or practice users to keep official results in their own records. Later priorities added a notice when the browser isn't saving (P4, P9), dropped the log's 2,000-check cap (P4), and show the newest 500 with "Show all" (P6). Statements below about the page describe it before those changes.
+
 Research for product validation, not legal advice. Checked 2026-10-10. Each question is split into the **current static version** (labs.eugeneyip.net/fluency-check/, data only in the teacher's browser) and a **hypothetical standalone** with cloud sync, rosters, or colleague sharing.
 
 ## How to read the evidence

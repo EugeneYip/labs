@@ -4,6 +4,8 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 
 ## Autonomous continuation mode (current)
 
+This section is the current state. The older sections below are history: their "Next action", "Authority", "Position", and "If interrupted" lines describe earlier phases and are superseded here.
+
 - **Authorized** by the owner on 2026-10-11. The owner has no time for interviews, so human-blocked lanes are parked and owner-independent work continues.
 - **The queue** is `.claude/AUTONOMOUS_QUEUE.md`: priorities P1–P13, parked lanes, and a log. After each item, verify it, record it there and here, then take the next unblocked item.
 - **When to stop:** only at the session limit, when every remaining task needs the owner, or under a system constraint. Before stopping, commit, push authorized fixes, verify production, and update the queue and this file with the exact next action.
@@ -24,7 +26,7 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
   - deleting or archiving experiments;
   - a Fluency Check pilot;
   - #026.
-- **Parked:** Fluency Check interviews (the kit is ready; HOLD), the Open-Meteo email, regrouping the STOP products, and a no-account feedback channel. All are BLOCKED — OWNER REQUIRED.
+- **Parked:** Fluency Check interviews (the kit is ready; HOLD), the Open-Meteo email, regrouping the STOP products, Firefox testing, and a no-account feedback channel. All are BLOCKED — OWNER REQUIRED.
 - **Progress:**
   - P1 done (2026-10-11): trust wording in Fluency Check, Custody Calendar (plus a clear control), and Day Clock (a device-voice preference, an honest keep-awake caveat, supported browsers).
   - P2 done (2026-10-11): the accessibility audit; fixes in `.claude/ACCESSIBILITY_AUDIT.md`.
@@ -36,8 +38,8 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
     - Photo Scrub: an out-of-range character reference blocked cleaning, and unclosed XMP tags froze the page;
     - Off Book's on-device voice; Frost Dates and Line Dry saying the place search goes to Open-Meteo.
   - **P4 results:** storage fuzz 4,863 cases with no data-caused failure in Chromium and 0 failures in WebKit; 174 hostile share links per engine; 25 unit-test files pass.
-  - **P9 inputs from P4:** 15 of the 21 experiments that save do it silently when storage fails; one damaged Trip Board item hides the whole board without a message; a Tear-Off Flyer photo can take up to 29% of the site's shared 5.2-million-character storage.
-  - **P11 input:** GitHub Actions warns that `ubuntu-latest` moves to Ubuntu 26 from 2026-10-19.
+  - **P9 inputs from P4** (all dealt with in P9): 15 of the 21 experiments that save do it silently when storage fails; one damaged Trip Board item hides the whole board without a message; a Tear-Off Flyer photo can take up to 29% of the site's shared 5.2-million-character storage.
+  - **P11 input** (dealt with in P11): GitHub Actions warns that `ubuntu-latest` moves to Ubuntu 26 from 2026-10-19.
   - P5 done (2026-10-12) and verified in production (commits 7082b95 and 14aaf98, deploy 38298379025 succeeded): offline and service-worker resilience, in `.claude/OFFLINE_RESILIENCE.md`. The worker no longer drops files that saved pages still need once more than 150 pile up, and `/<slug>/index.html` works offline. The real upgrade from the old worker was checked on production in Chromium and WebKit. Harness: `.claude/qa/p5-offline.cjs`, now with every wait bounded. Residual: in Playwright's WebKit, leaving a page the instant it loads can leave the worker installing until the browser restarts (not checked in Safari).
   - P6 done (2026-10-12) and verified in production (commits 3dad21c and 383533a, deploy 38303281596 succeeded): the performance audit, in `.claude/PERFORMANCE_AUDIT.md`. Fixed Fluency Check's log, which drew every check (3.3 s for 10,000 on a slow phone CPU; now the newest 500 and "Show all", about 0.6 s at any size). Cold start, other large data, long runs, and object URLs held up.
   - P7 done (2026-10-12) and verified in production (commit ad9eed8, deploy 38304012548 succeeded): the build writes `sitemap.xml` and `robots.txt`, and every page has a canonical address and og:url (`experimentPages()` in `vite.config.ts`, the address from `public/CNAME`). Checks: `.claude/qa/p7-meta-check.cjs` (built site) and `p7-meta-prod.cjs` (production).
@@ -54,7 +56,8 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
     - Rule for the next saved-format change: use a new key (old tabs would otherwise strip the new format at once).
   - P10 done (2026-10-12, commit 8d3fe38) and verified on GitHub (run 38325081794: 11 of 11). A daily check of the live site and Open-Meteo, `.github/workflows/daily-check.yml` with `.github/scripts/daily-check.ts`, type-checked with the site. Limit: GitHub stops scheduled runs after 60 days without a commit.
   - P11 done (2026-10-12), in `.claude/MAINTENANCE.md`. No vulnerabilities, no unused packages, actions current. A clean checkout builds byte-identically (61 of 61 files). Both workflows moved to `ubuntu-26.04` (commit b7f82f7), verified by a deploy and a daily check there.
-  - **Next:** P12, documentation and handoff: remove contradictions across CLAUDE.md, the constitution, this file, the portfolio files, the validation folders, the Product Log, and the queue.
+  - P12 done (2026-10-12): documents made consistent with each other and with the code (37 files; details in the queue). Older sections of this file are marked as history.
+  - **Next:** P13, evidence-based passive improvements: only fixes the audits back. The candidates are listed under P13 in the queue.
 
 ## Stage 0 interview preparation (complete; interviewing not begun)
 
@@ -88,7 +91,7 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
     - Line Dry's footer and the homepage summary.
   - No overflow, no console errors or warnings.
 - **Not changed:** the frost dates themselves (no correction model; station calibration needs infrastructure). Still open: the Open-Meteo email.
-- **Next action:** none until the owner decides. Don't start the Fluency Check tutor interviews automatically. Don't start Batch 07 or create #026.
+- **Next action** (then): none until the owner decides. Don't start the Fluency Check tutor interviews automatically. Don't start Batch 07 or create #026. Superseded by the autonomous continuation mode at the top.
 
 ## Comparative validation (complete)
 
@@ -97,7 +100,7 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 - **Outputs:** `.claude/validation/custody-calendar/`, `day-clock/`, `frost-dates/` (seven documents each plus `notes/`; Frost Dates adds `notes/accuracy-check.md`), and `.claude/validation/COMPARATIVE_DECISION.md` (14-criterion matrix, expected value of the owner's next hour, ranking: Fluency Check, Custody Calendar, Frost Dates, Day Clock). `.claude/PORTFOLIO_RESOLUTION.md` gained "Validation outcomes (2026-10-11)". The accuracy check's scripts and output are local only in `.claude/qa/frost-accuracy/`.
 - **Findings carried into the report:** (1) Open-Meteo weighs requests by variables/10 × days/14, so a Frost Dates lookup costs about 83 calls, not ~830 as said earlier in chat; limits are enforced per IP (about 120 lookups a day per visitor; the ninth lookup inside a minute got HTTP 429); the README asks apps above 10,000 calls a day to get in touch. (2) Frost Dates and Line Dry don't credit GeoNames (licence gap, one-line fix, owner approval). (3) NASA POWER and Open-Meteo's `openmeteo` bucket both allow browser requests. (4) Frost Dates' accuracy and calendar issues are material but not "genuinely harmful" (seedlings at stake; the page warns about hollows and valleys), so no public change; flagged for the owner. (5) `models=era5_land` doesn't improve accuracy.
 - **Safari wording:** internal documents use the precise framing (WebKit's tracking prevention may remove script-writable storage after seven days of Safari use without interaction with the site; Home Screen web apps are exempt from that cap per WebKit). Public pages say "can" and "about a week without a visit", judged not materially misleading, unchanged.
-- **Next action:** superseded by the maintenance pass above (Frost Dates wording, calendar and GeoNames credits done). Stage 0 interviews (the exact first step is in COMPARATIVE_DECISION.md), the other wording fixes (Custody Calendar, Day Clock, Fluency Check), the Open-Meteo email, and regrouping the three STOP products to Maintain each still need the owner's explicit yes.
+- **Next action:** superseded by the maintenance pass above (Frost Dates wording, calendar and GeoNames credits done). Stage 0 interviews (the exact first step is in COMPARATIVE_DECISION.md), the other wording fixes (Custody Calendar, Day Clock, Fluency Check), the Open-Meteo email, and regrouping the three STOP products to Maintain each still needed the owner's explicit yes. The wording fixes were made since, in P1 of the autonomous queue; the rest are parked lanes.
 
 ## Validation phase (complete)
 
@@ -106,7 +109,7 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
 - **Outputs:** `.claude/validation/fluency-check/`: VALIDATION_BRIEF.md (decision), WORKFLOW_RESEARCH.md, COMPETITIVE_LANDSCAPE.md, RISK_AND_COMPLIANCE.md, VALIDATION_PLAN.md, RECRUITMENT_CHANNELS.md, FEATURE_REQUEST_HYPOTHESES.md, and `notes/` (five research threads with sources). Internal; committed to the public repository, never published to the website.
 - **Product:** unchanged. No serious regression or harmful claim found. Wording to review later with the owner: the DIBELS sentence, the accuracy-band source, a line about keeping results in school records (RISK_AND_COMPLIANCE.md §6, §10).
 - **Limits found:** Reddit and the main teacher forums couldn't be read by any available tool (the built-in browser blocks Reddit too); the research threads' shared search allowance (200) ran out; LibKey isn't available, so scholarly sources are marked unresolved; three research threads stopped at a usage limit after writing their notes.
-- **Next action:** none until the owner decides. Stage 0 interviews, any pilot, the email feedback alias, and any wording change each need the owner's explicit yes. Don't start Batch 07 or create #026.
+- **Next action** (then): none until the owner decides. Stage 0 interviews, any pilot, the email feedback alias, and any wording change each needed the owner's explicit yes. Don't start Batch 07 or create #026. Superseded: the wording changes were made in P1 of the autonomous queue, and the rest are parked lanes.
 
 ## Batch
 
@@ -227,8 +230,8 @@ The five highest totals in the portfolio review, all tier A: **#016 Fluency Chec
 
 ## Position
 
-- **Current:** no batch in progress; the Validation phase section at the top is current. Batch 06 is complete and the discovery cycle is closed: decisions in `.claude/PORTFOLIO_RESOLUTION.md`, evidence in `.claude/PORTFOLIO_REVIEW.md`.
-- **Next action:** none until the owner gives new instructions. Do not start Batch 07 or create #026. The recommended next phase (validation of the four promoted experiments, starting with a feedback channel that needs no account) is in `.claude/PORTFOLIO_RESOLUTION.md` and needs the owner's go-ahead. Outside a batch, the review-before-push rule applies: a plain-language review and an explicit yes before pushing any experiment change.
+- **Current:** the autonomous continuation mode at the top of this file. Batch 06 is complete and the discovery cycle is closed: decisions in `.claude/PORTFOLIO_RESOLUTION.md`, evidence in `.claude/PORTFOLIO_REVIEW.md`. No Batch 07 and no #026.
+- **Next action:** see the top of this file. Outside an owner authorization, the review-before-push rule applies: a plain-language review and an explicit yes before pushing any experiment change. The autonomous continuation mode is such an authorization, for the evidence-backed fixes it lists. The recommended next phase after the discovery cycle (validation of the four promoted experiments, starting with a feedback channel that needs no account) is in `.claude/PORTFOLIO_RESOLUTION.md` and needs the owner's go-ahead.
 
 ## Batch 03 audits
 
@@ -381,7 +384,12 @@ Where applicable: core flow; persistence or file handling; several edge cases; i
 - **Video in tests (from #019):** `.claude/qa/form-video.js` is an `initScript` that adds `__makeVideo()` (a canvas animation recorded with MediaRecorder as WebM), `__open(...files)` (puts files into the page's file input with a DataTransfer), and `__tap(svg, fx, fy)` (pointer events). Recorded WebM has no stated duration (the player seeks to the end to find it) and irregular frame timing.
 - **Recording in tests (from #021):** a stand-in microphone built from an oscillator through `createMediaStreamDestination()` records only silence unless Brave starts with `browserArgs: ["--autoplay-policy=no-user-gesture-required"]`, because scripted clicks don't count as a user gesture and the AudioContext stays suspended. Don't `await ctx.resume()` in the stub; it never settles. Key lists in plans can now include numbers, which are pauses in milliseconds.
 - **Offline tests (Batch 03):** `.claude/qa/shot.mjs` plans take `exec` (a shell command run before a shot) and `offline` (CDP network emulation for the page only; a service worker's own fetches still reach the network, so real offline tests stop the server instead). The scratchpad `serve.sh start|stop` served a copy of `dist/` on port 4175 for this.
-- **zsh gotcha:** never name a shell loop variable `path`; zsh ties it to `PATH`, so commands like curl stop being found.
+- **zsh gotcha:** never name a shell loop variable `path`; zsh ties it to `PATH`, so commands like curl stop being found. Unquoted variables aren't split into words either: loop over pairs with `for mode engine in a b c d`.
+- **Browser checks since P3 (Playwright 1.64):** the `.claude/qa/browser/*.cjs` scripts (P3) and the `p4-*` to `p9-*.cjs` ones need Playwright's library on `NODE_PATH`. It isn't in the repo: it was installed in a session scratchpad, `/private/tmp/claude-501/-Volumes-Projects-labs/6ac1a0fb-f9e8-4dec-afb2-4158221dabeb/scratchpad/pw/node_modules`, which a reboot clears. To reinstall, run `npm install playwright@1.64.0` in a new scratch folder; its browsers are in `~/Library/Caches/ms-playwright/` (WebKit 2370). Chromium runs as Brave (`executablePath: '/Applications/Brave Browser.app/Contents/MacOS/Brave Browser'`).
+  - `route-preload.cjs` serves a built folder at `https://labs.local` with no server: `ROUTE_DIR=<built site> NODE_PATH=<pw>/node_modules node -r ./route-preload.cjs <script>.cjs https://labs.local [engine]`. Service-worker checks need a real server instead: the `pages` launch config (port 4174).
+  - The 26-page smoke test: `node browser/smoke.cjs https://labs.eugeneyip.net out/<name>.json chromium webkit` (104 page loads).
+  - macOS has no `timeout`: bound a run with `perl -e 'alarm shift; exec @ARGV' <seconds> node …`. Every wait inside a script is bounded too (the P5 harness once hung for 1 h 40 min on an unbounded one). Foreground `sleep` is blocked: wait for a background command, or use Monitor.
+- **Daily check:** `node --experimental-strip-types --disable-warning=ExperimentalWarning .github/scripts/daily-check.ts` runs the same check as GitHub's daily run, against production.
 - Storage keys must be `labs:<slug>` (Constitution, amended 2026-10-09 with owner authorization).
 
 ## Batch report formats

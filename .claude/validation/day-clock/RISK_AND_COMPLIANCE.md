@@ -8,7 +8,7 @@ Comparative Research (2026-10-11). **Not medical or legal advice.** Full evidenc
 |---|---|---|
 | Medical-device boundary | Low risk if worded neutrally; a free, non-commercial page is probably outside device rules | Real risk if it claims to help a condition, manages medication, or monitors |
 | Reliability as an always-on display | The main practical risk: sleep, restarts, power-saving modes, browser support | Same, plus remote failure modes |
-| Privacy | Settings stay in the browser; read-aloud may send the spoken text to an online voice provider | Remote updates mean servers, accounts, and health-adjacent data duties |
+| Privacy | Settings stay in the browser; read-aloud may send the spoken text to an online voice provider (since P1, only where the device has no voice, and the page says so) | Remote updates mean servers, accounts, and health-adjacent data duties |
 | Hazards | Always-on charging and burn-in: modest, partly anecdotal | Same |
 
 ## 1. Medical or safety device: where the line is

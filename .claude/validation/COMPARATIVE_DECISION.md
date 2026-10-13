@@ -21,7 +21,7 @@ Winner Validation, Comparative Research (2026-10-11). Internal; not for the webs
 | **#016 Fluency Check** | **HOLD** (Phase 1, unchanged): **the primary candidate** | A narrow beachhead the product fits as built (independent reading tutors), and a cheap, decisive, low-risk human test already designed |
 | **#020 Custody Calendar** | **STOP FOCUSED VALIDATION** | The market leader gives professionals the same job free; the pre-agreement job is episodic; after agreement the need is sync and records; legal and safety sensitivity |
 | **#022 Day Clock** | **STOP FOCUSED VALIDATION** | A free iPad app with the same name and nearly the same features; well-reviewed clocks at $25–$60; the most repeated caregiver need (remote updates) is impossible within Labs |
-| **#017 Frost Dates** | **STOP FOCUSED VALIDATION** | Free where demand is visible. In the one beachhead with a gap (Canberra), its cautious dates are about 5 weeks too early against station records. Its planting calendar is 1.5–2.5 months early in maritime climates |
+| **#017 Frost Dates** | **STOP FOCUSED VALIDATION** | Free where demand is visible. In the one beachhead with a gap (Canberra), its cautious dates are about 5 weeks too early against station records. Its planting calendar was 1.5–2.5 months early in maritime climates (fixed 2026-10-11, commit 291fac5: tender crops now wait for warm nights) |
 
 All three STOP products remain maintained Labs tools. **No backup candidate is named:** the evidence isn't close (see "Ranking").
 
@@ -36,13 +36,13 @@ All three STOP products remain maintained Labs tools. **No backup candidate is n
 |---|---|---|---|---|
 | **Pain strength** | **M**: Real pain is one-on-one testing time across a caseload, not the scoring the tool removes. Tutors' pain unproven | **M**: Strong around platforms (cost, calendars) and holiday rules. Not in visualization, which is given away | **M**: Repeated questions and night confusion are real, but served by free apps and cheap clocks | **U**: Conflicting numbers and false springs; low stakes. Folk rules and forecasts suffice for most |
 | **Frequency** | **M**: Checks every 1–2 weeks per student in intervention. Unproven for tutors (what the interviews test) | **U**: Episodic before agreement. The recurring job afterwards belongs to calendars and platforms | **M**: Daily use once set up, but the caregiver's choice is made once | **U**: Twice a year; a lookup once per place |
-| **Differentiation** | **F**: The only tool found that combines no account, nothing recorded or uploaded, any passage, live word-by-word scoring, a printable record, and a history per student. Meaningful for tutors, who are excluded by DIBELS licensing and school accounts | **M**: A gap in form (free, no account, any pattern, dated year) but not in function: the leader's builder is free for professionals | **U**: A free same-name iPad app with nearly identical features runs on older iPads than Day Clock does | **M**: Unique combination (worldwide, thresholds, odds, recent 30 seasons), undermined by accuracy at frost-prone sites and by the calendar in mild climates |
+| **Differentiation** | **F**: The only tool found that combines no account, nothing recorded or uploaded, any passage, live word-by-word scoring, a printable record, and a history per student. Meaningful for tutors, who are excluded by DIBELS licensing and school accounts | **M**: A gap in form (free, no account, any pattern, dated year) but not in function: the leader's builder is free for professionals | **U**: A free same-name iPad app with nearly identical features runs on older iPads than Day Clock does | **M**: Unique combination (worldwide, thresholds, odds, recent 30 seasons), undermined by accuracy at frost-prone sites and, until commit 291fac5, by the calendar in mild climates |
 | **Competition** (room left) | **M**: Crowded in schools (district platforms, McGraw Hill, Microsoft). Tutors are structurally underserved | **U**: OurFamilyWizard's free professional builder, Custody X Change, free apps, general calendars, court-ordered platforms | **U**: Free tablet apps (one with the same name), free or cheap apps with remote updates (Calendar Clock, RecallCue), and clocks at $13–$65 | **M**: The US and UK are captured. Australia, NZ and Germany are open, but the data fails there |
 | **Beachhead clarity** | **F**: Independent structured-literacy tutors, with written inclusion criteria | **U**: Parents before agreement are episodic and shouldn't be approached directly. Mediators are already served | **M**: Caregivers living with the person who own a spare tablet. Narrow; size unknown | **U**: Clear on paper (Canberra, inland NZ), but fails the station test |
 | **User reachability** | **M**: Through one introducer (a structured-literacy trainer or tutoring-business owner). Teacher forums unreadable; no posting | **M**: Mediators by introduction only. Never parents in conflict | **M**: Forums and occupational therapists. A vulnerable population; professionals recommend from trusted catalogues | **F**: Gardeners are easy to find and low-sensitivity (clubs, allotments: NAS about 130,000). Australian and NZ channels unverified |
 | **Trust barrier** (low = F) | **M**: Student names on a device and district approval rules. Local-only storage helps, and tutors are freer to choose | **U**: Legal stakes, conflict, safety; professionals need state-correct counts | **U**: A vulnerable person, reliability, setup falling on the caregiver | **M**: Low in general. High at the beachhead, where figures must match stations, and they don't |
 | **Real-user evidence quality** | **U**: One tutor anecdote; tutors' voices missing (forums unreadable) | **M**: Rich indirect evidence (platform reviews, court forms), none about this kind of tool before agreement | **M**: Caregiver forum accounts from 2015–2026 and official guidance; mixed results with clocks | **M**: Columns, nursery guides, forums (no Reddit), and an accuracy check against stations |
-| **External dependency** (none = F) | **F**: None | **F**: None | **M**: Browser wake lock, device sleep and passcode behaviour, online voices | **U**: Open-Meteo for data and place search: per-IP limits, no uptime guarantee, a contact threshold at about 120 lookups a day per application |
+| **External dependency** (none = F) | **F**: None | **F**: None | **M**: Browser wake lock, device sleep and passcode behaviour, online voices (since P1, only where the device has none) | **U**: Open-Meteo for data and place search: per-IP limits, no uptime guarantee, a contact threshold at about 120 lookups a day per application |
 | **Regulatory and legal sensitivity** (low = F) | **M**: Student data. Local-only avoids most vendor duties; a cloud version would bring FERPA, COPPA and state laws | **U**: The legal-information line, reliance on overnight counts, domestic-violence safety, records and subpoenas if it grows | **M**: The medical-device boundary if commercial in the UK or EU; claims about a condition | **F**: Licence attribution and the data terms' non-commercial condition only |
 | **Infrastructure pressure** (low = F) | **M**: None for tutors. Schools would need rosters and sync later | **U**: Live sync between households and records follow agreement immediately | **U**: Remote updates need servers and accounts | **M**: Growth needs precomputation (an amendment) or contact with Open-Meteo. Per-place pages need a build step |
 | **Search and distribution potential** | **M**: Literacy coaches and trainers are a channel, but tools like this rarely spread (teacher-built apps have few users) | **M**: Pattern queries are held by vendors and law firms | **U**: "Dementia clock online" appears in autocomplete with unknown volume; the same-name app collides | **M**: Huge seasonal demand, captured in the US and UK. The opening needs per-place pages |
@@ -102,7 +102,7 @@ All three STOP products remain maintained Labs tools. **No backup candidate is n
   - Calendar Clock is free with remote control and 20,000+ daily users.
 - **Frost Dates.**
   - Against Canberra Airport (1995–2010) and Tuggeranong (1996–2026) station records, its cautious last-frost date is about 5 weeks early (Oct 4 against Nov 11; Oct 1 against Nov 3), with half the frost nights. The folk rule matches the stations.
-  - Its calendar puts tomatoes outside in Dublin on Mar 12–19 and in London on Apr 11–18.
+  - Its calendar put tomatoes outside in Dublin on Mar 12–19 and in London on Apr 11–18. Since commit 291fac5 it waits for warm nights there.
 
 ## Why the owner's time should go to Fluency Check
 
@@ -127,7 +127,7 @@ If yes, the first step is a short message from the owner to **one introducer the
   - never any student information.
 - Decide after 6–8 interviews by the written rule.
 
-## Product upkeep found along the way (owner decisions; separate from validation; nothing changed)
+## Product upkeep found along the way (owner decisions; separate from validation)
 
 - **Frost Dates:**
   - **Done** in the owner-authorized maintenance pass (2026-10-11, commit 291fac5):
@@ -136,16 +136,16 @@ If yes, the first step is a short message from the owner to **one introducer the
     - GeoNames credits in Frost Dates and Line Dry.
   - **Still open:** an email to Open-Meteo about the 10,000-a-day figure and donations.
   - None of these was judged a "genuinely harmful factual claim": the stakes are seedlings, and the page already warns about hollows and valleys. They're the most material upkeep items found.
-- **Custody Calendar:**
+- **Custody Calendar** (all done in P1 of the autonomous queue (2026-10-11, commit 75c8844)):
   - a "forget this schedule" control;
   - an initials hint;
   - a safety note by the share button;
   - narrower "nothing is sent" wording.
 - **Day Clock:**
-  - neutral summary wording (not "for someone living with dementia");
-  - prefer on-device voices;
-  - a warning when the screen may sleep.
-- **Fluency Check:**
+  - neutral summary wording (not "for someone living with dementia"): considered in P1 and kept as it is, since it describes the audience and claims no treatment or monitoring;
+  - prefer on-device voices: done in P1;
+  - a warning when the screen may sleep: done in P1.
+- **Fluency Check** (all done in P1):
   - the DIBELS sentence;
   - the source of the accuracy bands;
   - a line about keeping results in school records.

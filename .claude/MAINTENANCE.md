@@ -5,7 +5,7 @@ P11 of the autonomous queue, 2026-10-12: dependencies, warnings, and whether the
 ## Found
 
 - **Vulnerabilities:** `npm audit` finds none.
-- **Packages:** 10 direct ones, all used: React and React DOM; Vite with its React and Tailwind plugins; Tailwind; TypeScript; and the type definitions for React and Node. 30 packages are installed in all.
+- **Packages:** 10 direct ones, all used: React and React DOM; Vite with its React and Tailwind plugins; Tailwind; TypeScript; and the type definitions for React and Node. 42 packages are installed in all.
 - **Out of date:** two.
   - `@types/node` 24.19.1, with 24.19.2 available. A patch to type definitions, not worth a change on its own.
   - TypeScript 6.0.3, with 7.0.2 available. A new major version, the compiler rewritten; nothing here needs it.
@@ -31,4 +31,10 @@ npm outdated
 npm ls --depth=0
 ```
 
-Then compare every file in `dist` with production, after `npm run build` on the commit that's deployed. In `.claude/qa/out/`, P11 used a `shasum` loop over `find dist -type f` against `https://labs.eugeneyip.net/<file>`. The deploy log's warnings are under the run's annotations: `gh run view <id> --log | grep -i -E 'warn|deprecat|notice'`.
+Then build the commit that's deployed (`npm run build`), and compare every file in `dist` with production. Nothing should print:
+
+```bash
+cd dist && for f in $(find . -type f | sed 's|^\./||'); do [ "$(shasum -a 256 < "$f")" = "$(curl -s "https://labs.eugeneyip.net/$f" | shasum -a 256)" ] || echo "differs: $f"; done
+```
+
+The deploy log's warnings: `gh run view <id> --repo EugeneYip/labs --log | grep -i -E 'warn|deprecat|notice'`.

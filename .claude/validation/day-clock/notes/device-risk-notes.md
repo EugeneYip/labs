@@ -1,5 +1,7 @@
 # Day Clock: device, reliability, regulatory and privacy risk notes
 
+> **Since these notes were written:** P1 of the autonomous queue (2026-10-11, commit 75c8844) made read-aloud prefer an on-device voice (falling back to the browser's choice, not to silence) and say so, named the browsers it needs (Safari on iPadOS 16.4 or later, Chrome 111 or later), and turned the keep-awake promise into an honest caveat. The clock already moved its text a few pixels each minute against burn-in. Statements below about the page describe it before those changes.
+
 Research date: 2026-10-11. Scope: questions 1 to 7 of the Day Clock validation brief (labs.eugeneyip.net/day-clock/).
 This is research only. Nothing here is medical or legal advice. Where a section reaches a legal-sounding conclusion, it is labelled *Analysis* and should go to counsel before it is relied on.
 

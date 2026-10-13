@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 
 /**
  * Says the browser isn't saving an experiment's work, so it will be gone when the page reloads or closes, and how to
- * keep it. For while saves fail: a private window that keeps nothing, or storage that's full.
+ * keep it. For while saves fail: storage that's full, or blocked in the browser's settings.
  */
 export function NotSaving({ children, className = '' }: { children: ReactNode; className?: string }) {
   return (

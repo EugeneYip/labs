@@ -85,7 +85,7 @@ Nothing new is possible without hanging real loads. The model was already compar
 
 ## For the lifecycle decisions
 
-In Tune and Form Check each lost a named failure mode, and Family Stories' recording is now verified in WebKit, so their technical confidence rises. All five stay **experimental**: each question still ends in real use.
+In Tune and Form Check each lost a named failure mode, and Family Stories' recording is now verified in WebKit, so their technical confidence rises (not re-scored in `.claude/PORTFOLIO_RESOLUTION.md`). All five stay **experimental**: each question still ends in real use.
 
 ## Files
 

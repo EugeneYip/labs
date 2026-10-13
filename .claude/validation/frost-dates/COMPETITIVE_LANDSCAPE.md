@@ -80,7 +80,7 @@ Frost Dates has neither per-place URLs nor localisation, so as built it can't ra
 | Odds (a cautious date) | **Holds as a design strength** | Wanted, inconsistently offered [V] |
 | Recent 30 seasons | **Holds** | Frost seasons are shifting in south-eastern Australia; UK last frosts are coming earlier [V/S] |
 | Accurate enough where the gap is | **Fails at Canberra** | Cautious date about 5 weeks early against two stations [V, own check] |
-| A planting calendar that works worldwide | **Fails in maritime climates** | 1.5–2.5 months early for tomatoes in Dublin, London and Christchurch [V, own check] |
+| A planting calendar that works worldwide | **Failed in maritime climates** before commit 291fac5 | 1.5–2.5 months early for tomatoes in Dublin, London and Christchurch [V, own check]; tender crops now wait for warm nights |
 
 ## Monetization norms (research only)
 

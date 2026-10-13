@@ -8,18 +8,18 @@ The closing decision for the 25-experiment Labs discovery cycle (Batches 01 to 0
 
 ## The four groups
 
-- **Promote (4).** The best candidates to grow beyond Labs if real-world evidence arrives. The next round of effort goes here first: validation, then distribution. No spin-out now.
+- **Promote (4).** The best candidates to grow beyond Labs if real-world evidence arrives. The next round of effort goes here first: validation, then distribution. No spin-out now. (Since then, the comparative validation of 2026-10-11 put Fluency Check on HOLD and the other three at STOP FOCUSED VALIDATION; moving those three to Maintain waits for the owner. See "Validation outcomes" below.)
 - **Maintain (14).** Sound, verified, and worth keeping as they are. Fix defects when found; no new features.
 - **Experimental (5).** Live, with an open question that only real-world use can settle: a real voice, a real microphone, real footage, real washing. No further investment until it's answered, one way or the other.
 - **Archive candidate (2).** Recommended for public archival, which is the owner's call. Until then they stay live and unchanged, and get fixes only for something harmful.
 
 ## All 25
 
-"Assessed total" is the latest assessment out of 65: the Batch 03 scores plus each later post-audit change recorded in the portfolio review. It's evidence for the decision, not the decision.
+"Assessed total" is the latest assessment out of 65: the Batch 03 scores plus each later post-audit change recorded in the portfolio review. It's evidence for the decision, not the decision. P8 raised technical confidence for In Tune, Form Check, and Family Stories without a re-score.
 
 | # | Experiment | Group | Assessed total | Deciding reason |
 |---|---|---|---|---|
-| 001 | Trip Board | Archive candidate | 34 | Sound code (no defect in an independent audit), in a market where trips need sync and collaboration. Nothing distinctive to grow |
+| 001 | Trip Board | Archive candidate | 34 | Sound code (no defect in an independent audit; P9 later fixed two durability defects), in a market where trips need sync and collaboration. Nothing distinctive to grow |
 | 002 | Photo Scrub | Maintain | 50 | The best-verified privacy claim in Labs, but an occasional, preventive need that phones and platforms increasingly cover |
 | 003 | Fair Share | Maintain | 48 | Correct, and shared by link, but copies diverge across phones, where free apps sync |
 | 004 | Clean Paste | Maintain | 46 | Word-perfect on real PDFs and often useful, but a solitary utility with little to set it apart from assistants and line-break sites |
@@ -31,19 +31,19 @@ The closing decision for the 25-experiment Labs discovery cycle (Batches 01 to 0
 | 010 | Gallery Wall | Maintain | 44 | Accurate geometry for a once-in-a-while job |
 | 011 | Line Dry | Experimental | 39 | Honest since the audit, but its drying estimates have never been checked against real washing |
 | 012 | Glance | Maintain | 45 | A sound daily game with a share loop that costs almost nothing to keep; entertainment, so no investment |
-| 013 | In Tune | Experimental | 42 | The detector is verified with generated signals and synthesized singing, which found octave errors (fixed in P8); it has never heard a real voice through a phone microphone |
+| 013 | In Tune | Experimental | 42 | The detector is verified with generated signals and synthesized singing, which found octave errors (fixed in P8, except a child's "ah" at C5 and C♯5); it has never heard a real voice through a phone microphone |
 | 014 | Playing Time | Maintain | 50 | Sound and weekly in season, but many free coaching apps compete, and a standalone would be a different product (live game tracking) |
 | 015 | Back Row | Maintain | 44 | Correct and unusual, for an occasional job |
 | 016 | Fluency Check | **Promote** | 52 | Weekly professional use, a large and reachable audience, and nothing about students leaves the device |
 | 017 | Frost Dates | **Promote** | 48 | The only frost-date tool found that covers anywhere in the world, for a search people make every spring; depends on Open-Meteo |
 | 018 | Off Book | Maintain | 48 | Useful line practice; real script PDFs vary more than the tests, and polished apps compete |
-| 019 | Form Check | Experimental | 45 | Works in Safari and Chrome with phone-like clips (4K, 240 fps slow motion, HDR, Android-like), stepping one frame since P8; real phones' files are untested |
+| 019 | Form Check | Experimental | 45 | Works in WebKit and Chromium (Safari's and Chrome's engines) with phone-like clips (4K, 240 fps slow motion, HDR, Android-like), stepping one frame since P8; real phones' files are untested |
 | 020 | Custody Calendar | **Promote** | 52 | A high-stakes, recurring planning job dominated by paid, account-based platforms; the share link carries the schedule |
 | 021 | Family Stories | Experimental | 44 | Irreplaceable recordings live in browser storage; recording works in Safari's engine (P8), but is untested on a real iPhone |
 | 022 | Day Clock | **Promote** | 52 | Daily, always-on use for people with memory loss: a free alternative to dedicated clocks, on a tablet the family already has |
 | 023 | Discussion Map | Maintain | 46 | Verified timing for a niche classroom job |
 | 024 | Ranked Choice Count | Maintain | 49 | The best-verified logic in Labs, but occasional and consequential, and organizations' rules vary. Closest to promotion |
-| 025 | Stall Till | Maintain | 44 | Verified arithmetic, and works offline on iPhones, but a day's sales still live in one browser |
+| 025 | Stall Till | Maintain | 44 | Verified arithmetic, and works offline in the iPhone simulator, but a day's sales still live in one browser |
 
 Counts: 4 promote, 14 maintain, 5 experimental, 2 archive candidates.
 
@@ -133,7 +133,7 @@ Planning only. Nothing below has been built, posted, or sent, and none of it sho
 - **Why this.** Dedicated calendar clocks are bought as hardware, and apps vary. Day Clock is free, needs no install or account, runs on a tablet the family already has, and keeps its settings on the device.
 - **Evidence.** Batch 03 audit: screen readers aren't flooded every minute, the limits of reminders are stated, and settings restore themselves after a browser clears them. Batch 06: it opens offline from the service worker in iOS Safari after a relaunch; the settings fit an iPhone in Safari (fixed); on iPad, Wake Lock and full screen are available, and the clock fills the screen in portrait. Joint highest score (52). No user evidence.
 - **Risks.**
-  - Device age. The site is built for Safari 16.4 and later (Vite's default target), which on iPads means iPadOS 16.4 or later: the 5th-generation iPad (2017) onward. The iPad Air 2, the iPad mini 4, and older models stop at iPadOS 15, outside the target and untested. "An old tablet" needs that caveat.
+  - Device age. The site is built for Safari 16.4 and later (Vite's default target), which on iPads means iPadOS 16.4 or later: the 5th-generation iPad (2017) onward. The iPad Air 2, the iPad mini 4, and older models stop at iPadOS 15, outside the target and untested. "An old tablet" needed that caveat (since P1 the page says "spare tablet" and names the browsers it needs).
   - Unattended running: power cuts, system updates, Safari reloading the page, and kiosk setup (Guided Access) are left to the caregiver.
   - Reminders are only on screen and aren't recorded (the page says not to rely on them alone for medicines).
   - Settings can only be changed at the device, so family living elsewhere can't update the message.
@@ -183,7 +183,7 @@ The questions themselves still need real use.
 
 Not deleted, not changed, and still live, with status `live` in the registry. If the owner authorizes public archival, the only change is the registry status: the homepage card and the experiment's header then say "Archived", and the page keeps working at the same address.
 
-- **#001 Trip Board.** The first experiment, and historically important. An independent audit found no material defect: hostile imports are refused whole, links are matched behind tracking tags, and 5,000 items stay fast. But trip planning is done with other people, and free tools (Wanderlog, TripIt, Google's saved places, Notes, Trello and Notion templates) offer sync, collaboration, and maps; keeping research private, Trip Board's advantage, matters little here. Its data also lives in one browser, where Safari's tracking prevention may remove it after seven days of Safari use without interaction with the page. Technically sound, strategically weak.
+- **#001 Trip Board.** The first experiment, and historically important. An independent audit found no material defect (P9 later fixed two: one damaged item hid the board, and a background tab missed other tabs' saves): hostile imports are refused whole, links are matched behind tracking tags, and 5,000 items stay fast. But trip planning is done with other people, and free tools (Wanderlog, TripIt, Google's saved places, Notes, Trello and Notion templates) offer sync, collaboration, and maps; keeping research private, Trip Board's advantage, matters little here. Its data also lives in one browser, where Safari's tracking prevention may remove it after seven days of Safari use without interaction with the page. Technically sound, strategically weak.
 - **#009 Tear-Off Flyer.** It works, and prints on one page in Safari since this week's fix. But it's undistinctive (word-processor and design-tool templates do the same), occasional, and a feature rather than a product, and print layout is the most fragile thing in Labs: it broke silently in Safari while Chrome was fine. Archiving says honestly that it won't be watched.
 
 ## Labs structure review (2026-10-10)
@@ -208,7 +208,7 @@ Checked against production after the decisions above. No change was needed.
 
 ## Recommended next phase
 
-No new experiments. A validation phase for the four promoted experiments: decide on a feedback channel that needs no account, prepare the one-page guides, and run the small pilots described in the dossiers, recruited through the owner's own contacts. Expect weeks, not days, because classrooms, families, gardens, and caregiving move at their own pace. Spin out only what crosses its threshold. The experiments in the other groups need nothing beyond fixes in the meantime.
+No new experiments. A validation phase for the four promoted experiments: decide on a feedback channel that needs no account, prepare the one-page guides, and run the small pilots described in the dossiers, recruited through the owner's own contacts. Expect weeks, not days, because classrooms, families, gardens, and caregiving move at their own pace. Spin out only what crosses its threshold. The experiments in the other groups need nothing beyond fixes in the meantime. (Superseded 2026-10-11 by the validation outcomes below: no pilot is authorized, and the Fluency Check tutor interviews wait for the owner.)
 
 ## Validation outcomes (2026-10-11)
 
@@ -228,4 +228,4 @@ Winner Validation ran as desk research only. Nobody was contacted and no product
 **Several judgements above didn't survive the research:**
 - **Fluency Check:** "teachers" as the audience.
 - **Custody Calendar:** search demand as an opening.
-- **Frost Dates:** worldwide coverage as the wedge. Its cautious dates are about 5 weeks early against Canberra station records, and its planting calendar is 1.5–2.5 months early in maritime climates (`.claude/validation/frost-dates/notes/accuracy-check.md`).
+- **Frost Dates:** worldwide coverage as the wedge. Its cautious dates are about 5 weeks early against Canberra station records, and its planting calendar was 1.5–2.5 months early in maritime climates until commit 291fac5 (`.claude/validation/frost-dates/notes/accuracy-check.md`).

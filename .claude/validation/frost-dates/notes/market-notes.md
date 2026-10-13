@@ -1,5 +1,7 @@
 # Frost Dates: market notes
 
+> **Since these notes were written:** the maintenance pass (2026-10-11, commit 291fac5) added an "Estimates, not guarantees" caveat, a planting calendar that waits for warm nights for tender crops, soil-temperature and local-advice wording, and GeoNames credits. P4 (commit 6da220a) added that what's typed in the place search is sent to Open-Meteo. Statements below about the page describe it before those changes.
+
 Research notes for the Phase 1 validation of #017 Frost Dates (labs.eugeneyip.net/frost-dates/). Compiled 2026-10-11. Internal; not for the website.
 
 The question being tested: is worldwide frost-date lookup underserved, searchable, and useful enough to justify a standalone service? These notes try to falsify that.

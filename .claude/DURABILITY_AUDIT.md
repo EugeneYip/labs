@@ -54,7 +54,7 @@ The real case is a phone. A page opened again from a bookmark or the home screen
 - a fresh read whenever the page is shown again, for a background tab or a page restored by the Back button, which can miss the event.
 
 Four details:
-- **Missing values.** A value found missing on return is ignored, not taken as "cleared". The browser may have removed old site data itself (Safari can, after weeks without a visit), and Day Clock deliberately saves again to put it back. A removal announced by another tab is followed, such as Custody Calendar's "Clear it from this device".
+- **Missing values.** A value found missing on return is ignored, not taken as "cleared". The browser may have removed old site data itself (Safari can, after about a week without a visit), and Day Clock deliberately saves again to put it back. A removal announced by another tab is followed, such as Custody Calendar's "Clear it from this device".
 - **No echo, little cost.** A changed value is written straight away. An unchanged one is written only if what's stored differs (the browser cleared it). So two tabs don't keep re-saving each other's saves, and a large value isn't read back on every change.
 - **A gap at load.** The stored value is noted while the page loads and read again once it starts listening, so a save in between isn't missed.
 - **Fluency Check during a check.** It takes up only the log, so the passage being read can't change under the reader. What it takes up isn't saved back unless something changes here. And a tab with no check under way clears a leftover check record only once, when it opens: taking up another tab's save used to clear that tab's finished check from the record, so a reload there lost it from the screen (the check stayed in the log).
@@ -73,7 +73,7 @@ Pages whose fields hold their own copy of the text start those fields again from
 
 ### 2. Nine pages holding typed-in work saved silently when storage failed
 
-From P4: when the browser refused to save, 15 experiments stayed silent. The ones holding work now say so with a shared notice (`src/components/NotSaving.tsx`), in the same style as Stall Till's and Fluency Check's:
+From P4: when the browser refused to save, 16 experiments stayed silent (P4 counted 15). The ones holding work now say so with a shared notice (`src/components/NotSaving.tsx`), in the same style as Stall Till's and Fluency Check's:
 - Ranked Choice Count, Discussion Map, Secret Santa (both before and after the draw), and Custody Calendar;
 - Playing Time, Serve Time, and Gallery Wall;
 - Tear-Off Flyer's text (its photo already had one);
@@ -135,8 +135,8 @@ Importing a file still refuses a damaged file whole, with the reason.
   - two tabs edited at the same moment: the later save wins;
   - half-typed text in a field is replaced when another tab's save is taken up;
   - a removal noticed only on return is ignored.
-- **Private windows** keep everything until the window closes, and a page can't tell. Trip Board, Fluency Check, and Family Stories mention that browsers can clear saved data; the others don't.
-- **Schema versions.** Everything is saved as version 1, with no migrations. The loaders read leniently and mostly ignore the version; Trip Board refuses other versions, and so does Fluency Check's check under way.
+- **Private windows** keep localStorage until the window closes, and a page can't tell (WebKit's keep no recordings, which Family Stories detects and says). Trip Board, Fluency Check, and Family Stories mention that browsers can clear saved data; the others don't.
+- **Schema versions.** Everything in localStorage is saved as version 1, with no migrations; Family Stories' IndexedDB is at version 2, with an upgrade from version 1. The loaders read leniently and mostly ignore the version; Trip Board refuses other versions, and so does Fluency Check's check under way.
 
   An older page will meet newer data: a tab left open across a deploy, or an offline copy. It reads the data with its old loader and drops whatever it doesn't know. Since P9 it also takes up other tabs' saves, and then saves its own reading back at once. So adding fields isn't enough. **Rule for the next format change:** save the new format under a new key (such as `labs:<slug>:v2`), and copy the old key's data across once, leaving the old key as the old code expects. Old pages then keep to the old key, and neither version can overwrite the other.
 

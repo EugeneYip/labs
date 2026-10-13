@@ -8,7 +8,7 @@ An opportunity may exist, but only in a narrow group (independent reading tutors
 
 - **Proceed to the pilot** if the interviews meet the bar in VALIDATION_PLAN.md §2: at least 4 tutors check at least every two weeks for 3+ students, at least 3 name friction in the parts Fluency Check removes, and no more than 2 already use a digital tool they're happy with.
 - **Stop** if 2 or fewer meet the frequency bar, most say their current method is fine, or their interest is in passages rather than scoring. Fluency Check then stays an unchanged, maintained Labs experiment.
-- Nothing starts without the owner's authorization. The public product is unchanged.
+- Nothing starts without the owner's authorization. The public product was unchanged in this phase (see "Product status" for what changed later).
 
 ## The question
 
@@ -74,7 +74,7 @@ Teachers expect this workflow to be free. The money in this market is districts 
 
 ## Product status
 
-Unchanged. No serious regression or harmful factual claim was found. Wording to review later, with the owner's approval: the DIBELS sentence (reword, or add the registered mark and a non-affiliation note), a note that the 95/90 accuracy bands come from the reading-inventory tradition rather than DIBELS 8's 96/91 cutoffs, and a line asking teachers to keep results in their school's own records (RISK_AND_COMPLIANCE.md §6, §10).
+Unchanged in Phase 1. No serious regression or harmful factual claim was found. Since then: P1 of the autonomous queue made the three wording changes below; P4 added a notice when the browser isn't saving and dropped the log's 2,000-check cap; P6 shows the newest 500 checks with "Show all"; P9 takes up checks saved in another open tab. Wording to review later, with the owner's approval (done in P1): the DIBELS sentence (reword, or add the registered mark and a non-affiliation note), a note that the 95/90 accuracy bands come from the reading-inventory tradition rather than DIBELS 8's 96/91 cutoffs, and a line asking teachers to keep results in their school's own records (RISK_AND_COMPLIANCE.md §6, §10).
 
 ## Research limits
 

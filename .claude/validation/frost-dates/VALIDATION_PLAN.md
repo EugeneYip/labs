@@ -13,14 +13,14 @@ This document records the hypotheses and what would have to be true before a hum
 | H3 | The need is searchable and winnable | **Unresolved, leaning no** | The US and UK are taken. No tool ranks in Australia, NZ or Germany, but volume is unknown and there are no per-place URLs |
 | H4 | A 10 km reanalysis is trustworthy enough for gardens | **Mixed** | US cities within about 8 days. **Canberra about 5 weeks optimistic** (`notes/accuracy-check.md`) |
 | H5 | Frequency justifies a standalone service | **Likely falsified** | Decisions twice a year, a lookup once per place |
-| H6 | A frost-anchored planting calendar works worldwide | **Falsified for maritime climates** | 1.5–2.5 months early for tomatoes in Dublin, London and Christchurch |
+| H6 | A frost-anchored planting calendar works worldwide | **Falsified for maritime climates** | 1.5–2.5 months early for tomatoes in Dublin, London and Christchurch. Since commit 291fac5, tender crops wait for warm nights |
 
 ## Prerequisites before any human test
 
 1. **Accuracy at frost-prone sites.** Cautious dates within about two weeks of station records at Canberra Airport, Tuggeranong, and one or two other inland stations.
    - This would take correction against stations (for example, GHCN-Daily, CC0), or a different data method.
    - That's product work, and possibly an offline data script that needs a constitution amendment.
-2. **A warmth-aware or qualified calendar** for mild climates.
+2. **A warmth-aware or qualified calendar** for mild climates. Done 2026-10-11 (commit 291fac5).
 3. **Evidence of demand** for Australian, NZ or German place queries. Labs has no analytics, and adding any would be an owner decision outside this phase.
 4. **Per-place pages** if search is to be the channel. That means pre-building pages, which again is an owner decision.
 

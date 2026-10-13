@@ -7,7 +7,7 @@ P5 of the autonomous queue, 2026-10-12. The service worker (`public/sw.js`, regi
 | Check | How |
 |---|---|
 | Harness | `.claude/qa/p5-offline.cjs`, Playwright 1.64. The built site is served like GitHub Pages by the `pages` entry in `.claude/launch.json` (a folder of static files, one `index.html` per experiment, `404.html` otherwise). A deploy is simulated by swapping the served folder between builds |
-| Builds | 702bc7d (production before P4), the P4 build (production now), the P5 build (P4 plus the new worker: only `sw.js` differs), and a copy of the P5 build with every asset renamed and every reference updated, standing in for the next deploy |
+| Builds | 702bc7d (production before P4), the P4 build (production at the time), the P5 build (P4 plus the new worker: only `sw.js` differs), and a copy of the P5 build with every asset renamed and every reference updated, standing in for the next deploy |
 | Engines | Brave's Chromium, and Playwright's WebKit 27.2 with a persistent profile per scenario. In Playwright's throwaway WebKit profiles, Cache Storage is emptied whenever the worker updates (even when only a comment changed); with a persistent profile, as Safari has, it isn't. So the throwaway kind can't test updates |
 | Focus | Day Clock, Stall Till, Trip Board, Fluency Check, Family Stories, Custody Calendar, then all 26 pages |
 

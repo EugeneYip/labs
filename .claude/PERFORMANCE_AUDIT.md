@@ -13,7 +13,7 @@ P6 of the autonomous queue, 2026-10-12, covering all 25 experiments and the home
 | One experiment's own code | 12 to 44 kB | 5 to 15 kB (Fluency Check is the largest) |
 | A page's HTML | 2.5 kB | 1 kB |
 
-A cold visit to an experiment is 4 to 5 requests and 90 to 105 kB. React DOM is most of the main script. Each experiment's code loads only on its own page, as a separate file. GitHub Pages serves gzip, not Brotli, and gives every file, even the content-hashed ones, `cache-control: max-age=600`. The service worker makes up for that: it serves hashed files from its saved copies.
+A cold visit to an experiment is 4 to 5 requests and 90 to 105 kB. (Since P9, 13 experiments also load one or two shared files, under 1 kB together.) React DOM is most of the main script. Each experiment's code loads only on its own page, as a separate file. GitHub Pages serves gzip, not Brotli, and gives every file, even the content-hashed ones, `cache-control: max-age=600`. The service worker makes up for that: it serves hashed files from its saved copies.
 
 ## Cold start (`.claude/qa/p6-coldstart.cjs`)
 

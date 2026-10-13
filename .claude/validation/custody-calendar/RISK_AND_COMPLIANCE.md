@@ -9,7 +9,7 @@ Comparative Research (2026-10-11). **Not legal advice.** Full evidence: `notes/l
 | Legal-information line | On the information side: the user picks the pattern; the page counts and draws it [V/U] | Generating plans, support estimates, or recommendations moves toward legal services |
 | Reliance on the count | The main legal risk: parents may quote the share as their legal time-share | State-aware counts would need per-jurisdiction rules and upkeep |
 | Court context | A planning view, not a record or evidence | Joins the "court records" market: integrity, custodians, subpoenas |
-| Safety | Moderate, mostly in the user's hands: links can't be withdrawn; data lingers on shared devices; full names by default | The whole technology-abuse surface: accounts, monitoring, messaging, location |
+| Safety | Moderate, mostly in the user's hands: links can't be withdrawn; data lingers on shared devices; full names by default (since P1, a hint says initials or nicknames are enough, and the data can be cleared) | The whole technology-abuse surface: accounts, monitoring, messaging, location |
 | Privacy | Nothing typed reaches Labs; links and files leave the device when shared | Security and breach duties, privacy-law thresholds, COPPA for child accounts, subpoena handling |
 
 ## 1. Overnights and reliance
@@ -27,7 +27,7 @@ Courts order specific apps (Oregon form, Colorado checklist, Missouri order, a W
 ## 4. Safety (domestic violence and high conflict)
 
 - NNEDV's Safety Net (2024) warns that shared schedules, contact details, and children's activities can be misused to stalk, harass, or control; it advises collecting only what's needed, plain notices, user-controlled deletion, and safety planning with advocates [V]. WomensLaw notes parents uncomfortable with an ordered app may ask the judge for a different one [V].
-- **What the page exposes** [V/U]: a share link carries both names and a year of nights (future "pattern of life" data), travels through whatever app sends it, can be forwarded, and can't be withdrawn or expire, because no server is involved. The page removes the fragment from the address bar once opened; whether the original link persists in browser history or syncs to other devices hasn't been tested. The saved schedule stays in the browser, visible to anyone using it; there's no "forget" control. The calendar file carries both names. The page asks for no children's names, addresses, handover places, or times, which limits exposure.
+- **What the page exposes** [V/U]: a share link carries both names and a year of nights (future "pattern of life" data), travels through whatever app sends it, can be forwarded, and can't be withdrawn or expire, because no server is involved. The page removes the fragment from the address bar once opened; whether the original link persists in browser history or syncs to other devices hasn't been tested. The saved schedule stays in the browser, visible to anyone using it; there was no "forget" control (since P1, "Clear it from this device"). The calendar file carries both names. The page asks for no children's names, addresses, handover places, or times, which limits exposure.
 - Any third-party script added to the page could read every shared schedule from the link, so the page must stay free of analytics and embeds [V].
 
 ## 5. Privacy
@@ -39,6 +39,8 @@ A co-parenting schedule with names is personal data but not a listed sensitive c
 Court-approved or court-accepted; legally binding or official; child-support calculator or estimate; accurate overnight percentage for court, court-ready, use in court; admissible, records, evidence, tamper-proof; no lawyer needed; the best or fairest schedule; private, secure, encrypted, or safe for domestic-violence situations; "custody percentage" (custody can mean decision-making) [V]. Safer: "A planning calendar. Your court order or parenting plan is what counts." and "Each parent's share of nights in [year], by this page's count."
 
 ## 7. Low-cost risk reducers for later (owner decisions; not done in this phase)
+
+Since then, P1 of the autonomous queue (2026-10-11, commit 75c8844) did items 1, 2 (the hint, not sharing without names), and 3 (without a link to an outside resource).
 
 1. A "Forget this schedule on this device" button.
 2. A hint that initials or nicknames work; optionally, share without names.

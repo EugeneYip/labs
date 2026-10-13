@@ -38,7 +38,7 @@ Is there a meaningful underserved job before or outside paid co-parenting platfo
 
 ## Product status
 
-Unchanged; no harmful claim. The page's counting rule and its warning that courts and child-support formulas count differently match the sources [V]. Notes for later, with the owner's approval (RISK_AND_COMPLIANCE.md):
+Unchanged in this phase; no harmful claim. The page's counting rule and its warning that courts and child-support formulas count differently match the sources [V]. Notes for later, with the owner's approval (RISK_AND_COMPLIANCE.md). Since then, P1 of the autonomous queue (2026-10-11, commit 75c8844) made all of these except sharing without names; the legal line reads "this is a planning calendar, and your court order or parenting plan is what counts":
 - add a "forget this schedule on this device" control (there's none today);
 - suggest initials, or allow sharing without names;
 - a one-line safety note by the share button (a link can't be taken back);

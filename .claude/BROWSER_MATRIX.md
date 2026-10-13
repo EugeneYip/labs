@@ -64,7 +64,7 @@ P3 of the autonomous queue, 2026-10-11.
 **Finding.** No error boundary surrounded the lazily loaded experiments, and the page shell had no fallback. If an experiment's code couldn't load or run, React unmounted everything, leaving a completely blank page with no header and no message. Reproduced in both engines by blocking the experiment's file. Causes:
 - offline before that experiment was ever opened;
 - a deploy replacing files mid-load;
-- a browser older than the build target. Fluency Check and Photo Scrub use regex lookbehind, which Safari supports only from 16.4.
+- a browser older than the build target. Fluency Check, Photo Scrub, and (since P4) Clean Paste use regex lookbehind, which Safari supports only from 16.4.
 
 **Fix:**
 - `src/App.tsx` gained a `LoadBoundary`. The header stays, and the page says "This experiment couldn't load", with a Reload button and a note about browser age.

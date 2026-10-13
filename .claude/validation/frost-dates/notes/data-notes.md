@@ -1,5 +1,7 @@
 # Frost Dates: data sources, Open-Meteo terms, and sustainability
 
+> **Since these notes were written:** the maintenance pass (2026-10-11, commit 291fac5) added an "Estimates, not guarantees" caveat, a planting calendar that waits for warm nights for tender crops, soil-temperature and local-advice wording, and GeoNames credits. P4 (commit 6da220a) added that what's typed in the place search is sent to Open-Meteo. Statements below about the page describe it before those changes.
+
 Research notes for the Frost Dates (#017) winner-validation study, prepared 2026-10-11.
 Research only: nothing was signed up for, no keys requested, no forms submitted, nobody contacted, no datasets downloaded. Pages and public source files were read. **Not legal advice.**
 
@@ -58,7 +60,7 @@ Code: `/Volumes/Projects/labs/src/experiments/frost-dates/index.tsx` (VERIFIED).
   - A statement that the page contains modified Copernicus Climate Change Service information.
   - A note that the dates are worked out on the page, which indicates changes.
 
-  GeoNames, the place database behind the search, is **not** credited. That's a small gap. Labs has no LICENSE file, so the code is public but not formally open source.
+  GeoNames, the place database behind the search, is **not** credited (credited since commit 291fac5). That's a small gap. Labs has no LICENSE file, so the code is public but not formally open source.
 
 ---
 
