@@ -283,6 +283,15 @@ export const experiments: readonly Experiment[] = [
     status: 'live',
     category: 'files',
   },
+  {
+    number: 28,
+    slug: 'hidden-data-check',
+    title: 'Hidden Data Check',
+    summary: 'Lists what’s in an Excel workbook but not on screen, such as hidden sheets, pivot-table caches, and data far from the rest, with what each holds and how to remove it, without uploading the file.',
+    shipped: '2026-10-13',
+    status: 'live',
+    category: 'files',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */

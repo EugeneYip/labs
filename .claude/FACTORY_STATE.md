@@ -10,9 +10,9 @@ The current state, kept short. `.claude/hooks/session-context.sh` prints this se
 - **Batch:** 07, Discovery Cycle 2: up to five new experiments, #026–#030, authorized by the owner on 2026-10-13. Never #031.
 - **Batch file:** `.claude/batch-07/BATCH_07.md`
 - **Experiment:** #028 Hidden Data Check (`hidden-data-check`); dossier `.claude/batch-07/028-hidden-data-check.md`.
-- **Lifecycle:** building. Research, number, and risk list are done. The inspection code is mid-refactor and doesn't type-check yet; there's no page, registry entry, or Product Log entry yet.
-- **Where the work is:** the local branch `wip/028-hidden-data-check`, never pushed. `main` is deployable and matches `origin/main`.
-- **Next action:** on `wip/028-hidden-data-check`, reconcile `inspect.ts` with the rewritten `sheet.ts`, then run the defect cases in `.claude/qa/hdc/`; the full sequence is in the batch file's "Now".
+- **Lifecycle:** shipped (squash-merged to `main` and pushed); the production check is next. Audit record in the dossier.
+- **Where the work is:** `main`. The local branch `wip/028-hidden-data-check` is merged and can be deleted once production is checked.
+- **Next action:** verify #028 in production and record it (the batch file's "Now" lists the checks), then start discovery for #029.
 - **Done and verified:** #026 Exam Timekeeper and #027 Transcript Pseudonyms, shipped and verified in production on 2026-10-13.
 - **Owner-blocked (parked; don't start them):** Fluency Check interviews or a pilot; the email to Open-Meteo; a no-account feedback address; regrouping Custody Calendar, Day Clock, and Frost Dates to Maintain; Firefox testing (it needs a permission rule). Details in `.claude/AUTONOMOUS_QUEUE.md`.
 - **After #028:** its production check and records, then discovery for #029 under the batch's research gate, then #030 the same way, then the batch report. Strong evidence matters more than the count: stopping short of #030 is fine, a weak experiment isn't.
@@ -34,7 +34,7 @@ This section is the current state. Everything below it is history: where an olde
 - **Still prohibited:** contacting anyone, posting or recruiting, spending money, accounts or backends, keyed services, analytics, weakening the constitution, permission workarounds (Firefox stays parked), and the parked owner lanes (Fluency Check interviews or pilot, the Open-Meteo email, a feedback email).
 - **Records:** `.claude/batch-07/BATCH_07.md` (the rules in short, the checkpoint under "Now", the log) and `.claude/batch-07/CANDIDATES.md` (every idea and its outcome). Each numbered experiment gets a dossier in `.claude/batch-07/`.
 - **Reconciled (2026-10-13):** `main` = `origin/main` = 3d08ca5, clean; production's 61 files byte-identical to a fresh build; the daily check passes 11 of 11 against production; every recent deploy succeeded.
-- **Shipped in Batch 07:** #026 Exam Timekeeper and #027 Transcript Pseudonyms (2026-10-13, both verified in production).
+- **Shipped in Batch 07:** #026 Exam Timekeeper and #027 Transcript Pseudonyms (2026-10-13, both verified in production); #028 Hidden Data Check (2026-10-13, production check next).
 - **Next action:** "Now" at the top of this file, then `.claude/batch-07/BATCH_07.md` under "Now".
 
 ## Shipped
@@ -68,6 +68,7 @@ This section is the current state. Everything below it is history: where an olde
 | 025 | Stall Till | stall-till | Small business / market stalls | Tap-grid register with change due, day summary, cash-up by denomination with a float suggestion | Market and craft-fair sellers, bake sales, garage sales | 2026-10-09 |
 | 026 | Exam Timekeeper | exam-timekeeper | Exams / invigilation | Projected actual-time board with per-candidate stop-the-clock rest breaks, a second-window board, a printed record | Exams officers, invigilators, teachers running mocks | 2026-10-13 |
 | 027 | Transcript Pseudonyms | transcript-pseudonyms | Research data / privacy | Paste or open a transcript, review suggestions, consistent whole-word replacement, a key to reuse; nothing stored | Qualitative researchers, research students | 2026-10-13 |
+| 028 | Hidden Data Check | hidden-data-check | Privacy / data protection (files) | Open a workbook; every place data hides that isn’t on screen, with what it holds (folded) and how to remove it; a printable record; nothing stored | FOI and information-governance staff, anyone sending spreadsheets out | 2026-10-13 |
 
 ## Procedure per experiment
 
