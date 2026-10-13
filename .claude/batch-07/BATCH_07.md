@@ -25,10 +25,10 @@ research → number → risk list → implement → tests → adversarial audit 
 
 ## Now
 
-- **Step:** discovery for #029. #026, #027, and #028 are shipped and verified in production.
-- **Next action:** discovery for #029 under the gate above: screen candidates (start from the parked leads and `CANDIDATES.md`, keeping the diversity rule in mind: two of the three so far are files and privacy tools, #027 and #028, so a third in that domain needs to be clearly stronger than the alternatives), take the strongest few through A–G with current searches, and number one only if it survives. Record each outcome in `CANDIDATES.md` and here.
-- **Parked leads** for later discovery: allocating people to activities by ranked choices; exporting Word comments to a table; small-number suppression.
-- **Research threads:** give each a bounded brief and write its findings to a file as it goes; if one stops (the session limit stopped all three in the need-first round), keep its partial leads, check them here, and carry on.
+- **Step:** #029 Places by Choice (`places-by-choice`): research done, number assigned, risk list written (`029-places-by-choice.md`). Building next, on a local branch `wip/029-places-by-choice`.
+- **Next action:** create the branch and build `src/experiments/places-by-choice/` per the dossier: `model.ts` (reading form responses in three shapes, the allocation as a minimum-cost flow with squared choice numbers, the lottery, minimum sizes) with model tests (brute force on small cases), then the page, the audit, the shipping gate, the squash-merge to `main`, the push, and the production check.
+- **Parked leads** for later discovery: exporting Word comments to a table; small-number suppression (both files and privacy, so only if clearly the strongest, given #027 and #028).
+- **Research threads:** give each a bounded brief and write its findings to a file as it goes; if one stops, keep its partial leads, check them here, and carry on.
 ## Numbered experiments
 
 | # | Title | Slug | Status | Dossier |
@@ -36,6 +36,7 @@ research → number → risk list → implement → tests → adversarial audit 
 | 026 | Exam Timekeeper | exam-timekeeper | shipped 2026-10-13, verified in production | `026-exam-timekeeper.md` |
 | 027 | Transcript Pseudonyms | transcript-pseudonyms | shipped 2026-10-13, verified in production | `027-transcript-pseudonyms.md` |
 | 028 | Hidden Data Check | hidden-data-check | shipped 2026-10-13, verified in production | `028-hidden-data-check.md` |
+| 029 | Places by Choice | places-by-choice | building | `029-places-by-choice.md` |
 
 ## Log
 
@@ -47,3 +48,4 @@ research → number → risk list → implement → tests → adversarial audit 
 - **2026-10-13:** Autonomous Ops v2 (commit a26109e): the operating contract in CLAUDE.md, "Now" at the top of the factory state, project settings with a narrow allowlist and refusals, and hooks that print the state at the start of a session and after compaction and ask once to carry on while autonomy is active. #028's unfinished code was found untracked and mid-refactor, and kept on a local branch.
 - **2026-10-13:** #028 Hidden Data Check built and audited. The first draft's nine defects were each fixed at their cause; the audit found nine more, all fixed (an .xlsb or .docx given an empty report, a budget stop said twice, threaded comments without authors, hundreds of hidden rows listed one by one, scroll areas as landmarks, sideways scrolling with text at 200%, two overclaims, comments' removal steps, small wording). Checked against openpyxl, 18,000 damaged files, 62 model checks, and 72 browser checks per engine; offline; the 29-page smoke test, 116 loads, 0 problems.
 - **2026-10-13:** #028 Hidden Data Check shipped (commit 02dc91e, deploy 38455167140) and verified in production: files byte-identical (67), 72 of 72 flow checks in both engines, offline, the homepage card, smoke 116/0, daily check 11/11. Discovery for #029 next.
+- **2026-10-13:** discovery for #029. The diversity rule set aside the files-and-privacy leads; allocation by ranked choices went through the gate with nine searches. Free options need Google (Alice Keeler's Scheduler: greedy rounds, broad permissions) or Moodle; the rest are paid, institutional, or code people write themselves; teachers sort paper slips by hand. #029 assigned to Places by Choice.

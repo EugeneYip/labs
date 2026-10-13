@@ -9,10 +9,10 @@ The current state, kept short. `.claude/hooks/session-context.sh` prints this se
 - **Autonomy:** active
 - **Batch:** 07, Discovery Cycle 2: up to five new experiments, #026–#030, authorized by the owner on 2026-10-13. Never #031.
 - **Batch file:** `.claude/batch-07/BATCH_07.md`
-- **Experiment:** none numbered yet for #029; discovery is under way. The last shipped is #028 Hidden Data Check (`hidden-data-check`).
-- **Lifecycle:** discovery for #029 (research gate A–G before a number).
-- **Where the work is:** `main`, which matches `origin/main`. No work-in-progress branch.
-- **Next action:** discovery for #029, as the batch file's "Now" describes.
+- **Experiment:** #029 Places by Choice (`places-by-choice`); dossier `.claude/batch-07/029-places-by-choice.md`.
+- **Lifecycle:** building. Research, number, and risk list are done; no code yet.
+- **Where the work is:** the local branch `wip/029-places-by-choice` (never pushed) once code starts; `main` matches `origin/main`.
+- **Next action:** build #029 on `wip/029-places-by-choice`: `model.ts` and its tests first, as the batch file's "Now" describes.
 - **Done and verified:** #026 Exam Timekeeper, #027 Transcript Pseudonyms, and #028 Hidden Data Check, shipped and verified in production on 2026-10-13.
 - **Owner-blocked (parked; don't start them):** Fluency Check interviews or a pilot; the email to Open-Meteo; a no-account feedback address; regrouping Custody Calendar, Day Clock, and Frost Dates to Maintain; Firefox testing (it needs a permission rule). Details in `.claude/AUTONOMOUS_QUEUE.md`.
 - **After #029:** #030 the same way, then the batch report. Strong evidence matters more than the count: stopping short of #030 is fine, a weak experiment isn't.

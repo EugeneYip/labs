@@ -215,3 +215,34 @@ None of these threads is relied on further. The leads are checked here, and the 
     4. .xlsx and .xlsm only (the format of the breaches); other formats are refused with a way forward.
     5. Pivot caches, external caches, and remote cells are what ExcelErrorFinder doesn't name, and they caused the Islington and Kensington and Chelsea fines.
   - **Name:** no product called "Hidden Data Check" found; "Hidden Data Detector" (2016 Windows freeware) is the nearest.
+
+## Discovery for #029 (2026-10-13)
+
+The diversity rule shapes this round: #027 and #028 are both mainly files and privacy, so a third there needs to be clearly the strongest. That sets aside the parked Word-comments and small-number-suppression leads for now. The strongest lead outside that domain is allocation by ranked choices, checked here with nine searches.
+
+- **Allocating people to activities by ranked choices: BUILD → #029** (below).
+  - **A. Who:** whoever turns ranked choices into places with limits. First, school staff running enrichment, electives, clubs, and activities weeks (a teacher with about 180 students and 12–15 activities a week, whose two staff "sift through" paper slips by hand: MrExcel forum, *source claim*); then university project and module allocation, conference and staff-training workshops, camps and youth groups.
+  - **B. The job:** before, choices collected on a form or slips, then allocated by hand, by a spreadsheet's rounds, or by first come, first served. After: paste or open the form's responses, set each activity's places, and get everyone placed as high on their list as the places allow, with each activity's list, who got which choice, and anyone who couldn't be placed and why.
+  - **C. Recurrence and stakes:** weekly or termly enrichment, yearly activities weeks and project allocation, each conference. Fairness is visible: children and parents compare who got their first choice, and a hand allocation can't show it was fair.
+  - **D. What people use today** (*verified* unless marked):
+    - **Scheduler by Alice Keeler** (Google Workspace add-on: 70K+ users, "free of charge, with paid features", updated July 2025). It needs a Google Form with one grid question, and the organizer grants it Docs and Sheets access, "send email as you", and running in their absence. It assigns greedily: it "cycles through the activity list looking for participants 1st choice", then the next rank. Not for Microsoft Forms, which many UK schools use.
+    - **Moodle's Fair Allocation (Ratingallocate)** and Allocation Form: they maximize overall satisfaction with capacities, but only inside a Moodle course.
+    - **Institutional systems:** Southampton's Choices, Bath's Fair Allocation, Harvard's Automated Allocation (logins, their own students).
+    - **Paid platforms:** Clipboard's preferential activity selection (a school platform), StatsDirect (statistics software), event platforms such as Happenee; Cvent users ask how to collect ranked session choices and assign on the back end (*source claim*). PowerSchool can't take ranked elective choices (its forum, *source claim*).
+    - **Code and DIY:** GroupMatcher (Go), students-projects-assigner (Python), assign-projects (ASP, with minimum sizes), an R Shiny app used for 400 delegates at the GSS Conference 2018, a 2024 Scott Logic series (its assigner "improved fairness over hand-calculated assignments by 30%"), Criteo Labs, a StuKon 2023 student project, a "Data Science for Schools" Python article (2024), and an Excel Solver attempt that found no feasible solution (*source claim* for these write-ups).
+    - **Not the same job:** Clever Groups forms teams from who wants to work with whom (account, free trial of 20 generations); TeamSort and RankedChoices are polls; GroupMixer and SORT make random groups.
+    - **No free tool found** that allocates by ranked choice with places per activity, without an account or an install.
+  - **E. Wedge:** any form's responses (Microsoft Forms' ranking question, Google Forms' grid or one question per choice, or typed in), no account and no Google permissions, nothing uploaded (pupils' names stay on the device), an allocation that's best for the whole group by a stated rule rather than greedy rounds, minimum sizes (an activity too few chose is dropped and its people re-placed), a lottery for ties that can be replayed, and each activity's list to print or download.
+  - **F. Fits Labs:** static; the allocation is a min-cost flow, fast in a browser for thousands of people; files in and out (CSV); works offline.
+  - **G. Strongest case against** (searched):
+    1. Many schools book clubs and activities first come, first served (school booklets; ParentPay- and Arbor-style booking) or run a draw, so not all of them collect ranked choices.
+    2. Google schools have a free incumbent with 70K+ users.
+    3. The page only does the middle of the job: choices still come from a form, and results go out by hand.
+    4. "Best for the group" can be argued: giving one person their fifth choice so three get their first may look unfair.
+    5. Activities weeks and conferences often have several sessions, each person in a different activity in each: a harder problem.
+  - **Why BUILD survives:**
+    1. The evidence of pain is broad and recurring: hand sorting at weekly scale, people writing their own code across schools, universities, and conferences, and platform users asking for exactly this.
+    2. Against the incumbent: Microsoft schools have nothing; greedy rounds leave people lower on their lists than an allocation for the whole group would; and no account or Google permissions are needed.
+    3. The rule is stated and shown: as many first choices as possible, then as many second choices, and so on (rank-maximal), with every person's result and the totals by rank visible, and the lottery's tie-breaks replayable from a number.
+    4. Scope cut to keep it small and correct: one place per person (several distinct places only if it stays simple); sessions over several time slots left out.
+  - **Name:** "Activity Allocator" is a module of HEI Apply's admissions software, so it's avoided; nothing found called "Places by Choice". Number #029, slug `places-by-choice`, homepage category `groups`.
