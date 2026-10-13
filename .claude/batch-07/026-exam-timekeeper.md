@@ -85,7 +85,13 @@ Added for the core job during the audit: the status bar, and the Change panel (a
 
 ## Production verification
 
-(Filled in after the deploy.)
+2026-10-13, commit 731ed53, deploy run 38374652232 succeeded.
+- Production's 63 files are byte-identical to the local build of that commit; `/exam-timekeeper/` answers 200 with its own title and canonical address.
+- `et-flow.cjs` against production: 46 of 46 in Chromium and in WebKit (the whole exam flow on a fake clock, the board here and in a second window, print, phone width in dark mode, console clean).
+- `et-audit.cjs` against production: every check passes in both engines.
+- `et-offline-prod.cjs`: with the browser's network cut after one visit, an address never saved fails while the page, the saved exam, and the board in a new window all load, in both engines.
+- The 27-page smoke test on production: 108 page loads, 0 problems. The daily check: 11 of 11 (it reads the sitemap, so it now covers 27 pages).
+- The homepage lists it first under School & work ("4 of 26").
 
 ## Lifecycle recommendation
 

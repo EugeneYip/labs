@@ -10,6 +10,7 @@ This section is the current state. Everything below it is history: where an olde
 - **Still prohibited:** contacting anyone, posting or recruiting, spending money, accounts or backends, keyed services, analytics, weakening the constitution, permission workarounds (Firefox stays parked), and the parked owner lanes (Fluency Check interviews or pilot, the Open-Meteo email, a feedback email).
 - **Records:** `.claude/batch-07/BATCH_07.md` (the rules in short, the checkpoint under "Now", the log) and `.claude/batch-07/CANDIDATES.md` (every idea and its outcome). Each numbered experiment gets a dossier in `.claude/batch-07/`.
 - **Reconciled (2026-10-13):** `main` = `origin/main` = 3d08ca5, clean; production's 61 files byte-identical to a fresh build; the daily check passes 11 of 11 against production; every recent deploy succeeded.
+- **Shipped in Batch 07:** #026 Exam Timekeeper (2026-10-13, verified in production).
 - **Next action:** whatever `.claude/batch-07/BATCH_07.md` says under "Now".
 
 ## Autonomous continuation mode (complete)
@@ -302,6 +303,7 @@ Checked 2026-10-09. Keep these so later picks don't repeat the research.
 | 023 | Discussion Map | discussion-map | Facilitation / meetings and seminars | Tap-to-log speakers on a seating map, lines between consecutive speakers, talk-time stats, drag seats | Teachers (Harkness, Socratic seminars), facilitators | 2026-10-09 |
 | 024 | Ranked Choice Count | ranked-choice-count | Civic / organizations (voting) | Tap-entered paper ballots or forgiving export import, then IRV/STV rounds with bars and plain-language transfers | Clubs, unions, councils, award committees | 2026-10-09 |
 | 025 | Stall Till | stall-till | Small business / market stalls | Tap-grid register with change due, day summary, cash-up by denomination with a float suggestion | Market and craft-fair sellers, bake sales, garage sales | 2026-10-09 |
+| 026 | Exam Timekeeper | exam-timekeeper | Exams / invigilation | Projected actual-time board with per-candidate stop-the-clock rest breaks, a second-window board, a printed record | Exams officers, invigilators, teachers running mocks | 2026-10-13 |
 
 ## Category distribution
 
