@@ -122,7 +122,12 @@ Checked against sources: the ICO's spreadsheet guidance (31 July 2025: the list 
 
 ## Production verification
 
-(After the push.)
+2026-10-13, commit 02dc91e, deploy run 38455167140 succeeded.
+- Production's 67 files are byte-identical to the local build of that commit.
+- `hdc-flow.cjs` against production: 72 of 72 in Chromium and in WebKit (the example, the FOI response, refusals, an embedded workbook and back, a damaged sheet, Stop, the keyboard, drag and drop, print, axe at 1280 px light and 390 px dark, no requests after load, nothing stored).
+- `hdc-offline-prod.cjs`: with the browser's network cut after one visit, an address never opened fails, while the page reloads and checks the example and a file, in both engines.
+- The homepage lists it under "Files & text".
+- The 29-page smoke test on production: 116 page loads, 0 problems. The daily check: 11 of 11.
 
 ## Lifecycle recommendation
 

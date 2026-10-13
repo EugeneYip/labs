@@ -25,17 +25,17 @@ research → number → risk list → implement → tests → adversarial audit 
 
 ## Now
 
-- **Step:** #028 Hidden Data Check (`hidden-data-check`) is built, audited, squash-merged to `main`, and pushed (dossier: Implementation and Audit). Production check next.
-- **Next action:** verify #028 in production: the deploy succeeded, production's files match a local build of the commit, `.claude/qa/hdc-flow.cjs` against https://labs.eugeneyip.net in both engines, offline after one visit, the smoke test, the daily check. Record it in the dossier, here, and in `.claude/FACTORY_STATE.md`, delete the local `wip/028-hidden-data-check` branch, then start discovery for #029 under the gate above.
+- **Step:** discovery for #029. #026, #027, and #028 are shipped and verified in production.
+- **Next action:** discovery for #029 under the gate above: screen candidates (start from the parked leads and `CANDIDATES.md`, keeping the diversity rule in mind: two of the three so far are files and privacy tools, #027 and #028, so a third in that domain needs to be clearly stronger than the alternatives), take the strongest few through A–G with current searches, and number one only if it survives. Record each outcome in `CANDIDATES.md` and here.
 - **Parked leads** for later discovery: allocating people to activities by ranked choices; exporting Word comments to a table; small-number suppression.
-- **The need-first round's three research threads** all stopped on the session limit; their partial leads were checked here (`CANDIDATES.md`, "Need-first round").
+- **Research threads:** give each a bounded brief and write its findings to a file as it goes; if one stops (the session limit stopped all three in the need-first round), keep its partial leads, check them here, and carry on.
 ## Numbered experiments
 
 | # | Title | Slug | Status | Dossier |
 |---|---|---|---|---|
 | 026 | Exam Timekeeper | exam-timekeeper | shipped 2026-10-13, verified in production | `026-exam-timekeeper.md` |
 | 027 | Transcript Pseudonyms | transcript-pseudonyms | shipped 2026-10-13, verified in production | `027-transcript-pseudonyms.md` |
-| 028 | Hidden Data Check | hidden-data-check | shipped 2026-10-13; production check next | `028-hidden-data-check.md` |
+| 028 | Hidden Data Check | hidden-data-check | shipped 2026-10-13, verified in production | `028-hidden-data-check.md` |
 
 ## Log
 
@@ -46,3 +46,4 @@ research → number → risk list → implement → tests → adversarial audit 
 - **2026-10-13:** discovery for #028. The part-writing checker and one HOLD (tournament schedules) were rejected, along with three new rule-driven ideas, each already built free. Of the three need-first research threads, all stopped on the account's session limit (ae19ac5c8c849e92f with nothing, a9043a6c8a1158a4e and a0ec439020103807f with partial leads); the leads were checked here directly. #028 assigned to Hidden Data Check: the ICO's July 2025 guidance lists the hidden places in spreadsheets, mySociety's analyser stopped about 2% of spreadsheets sent through WhatDoTheyKnow in 2024 as breaches, and no free tool found checks that list without an upload.
 - **2026-10-13:** Autonomous Ops v2 (commit a26109e): the operating contract in CLAUDE.md, "Now" at the top of the factory state, project settings with a narrow allowlist and refusals, and hooks that print the state at the start of a session and after compaction and ask once to carry on while autonomy is active. #028's unfinished code was found untracked and mid-refactor, and kept on a local branch.
 - **2026-10-13:** #028 Hidden Data Check built and audited. The first draft's nine defects were each fixed at their cause; the audit found nine more, all fixed (an .xlsb or .docx given an empty report, a budget stop said twice, threaded comments without authors, hundreds of hidden rows listed one by one, scroll areas as landmarks, sideways scrolling with text at 200%, two overclaims, comments' removal steps, small wording). Checked against openpyxl, 18,000 damaged files, 62 model checks, and 72 browser checks per engine; offline; the 29-page smoke test, 116 loads, 0 problems.
+- **2026-10-13:** #028 Hidden Data Check shipped (commit 02dc91e, deploy 38455167140) and verified in production: files byte-identical (67), 72 of 72 flow checks in both engines, offline, the homepage card, smoke 116/0, daily check 11/11. Discovery for #029 next.
