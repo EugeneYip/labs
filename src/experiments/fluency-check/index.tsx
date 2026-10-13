@@ -185,7 +185,8 @@ export default function FluencyCheck() {
             <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-dim">
               <span className="tabular-nums">{passage.words.length === 1 ? '1 word' : `${passage.words.length} words`}</span>
               <span aria-hidden="true">·</span>
-              <span>Try a sample:</span>
+              {/* The samples are for trying the tool; they aren't leveled, so real checks use a program's passages. */}
+              <span>Try a practice passage (not leveled):</span>
               {SAMPLES.map((s) => (
                 <button key={s.title} type="button" onClick={() => change({ title: s.title, text: s.text })} className="cursor-pointer underline underline-offset-4 hover:text-ink">
                   {s.label}
