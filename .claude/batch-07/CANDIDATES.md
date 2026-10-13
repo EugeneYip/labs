@@ -161,3 +161,57 @@ Checked here directly, after #027 shipped:
 - **UK settlement (ILR) absence calculator: REJECT.** Free calculators of the 180-days-in-any-12-months rule already exist (ilrtracker.com, Jobbatical, law firms; *source claim*).
 
 **What this says about the pool:** the concrete, rule-driven, local-first tools are increasingly built already (BentoPDF, BunTool, the citation checkers, the statement converters). The two that shipped were genuine gaps. One more round looks for need first (official guidance that asks lay people for an artifact; people asking for a tool and being told to use a spreadsheet; work on locked-down devices) before deciding whether #028 exists at all.
+
+## Need-first round (2026-10-13)
+
+### The three threads' dispositions
+
+All three stopped early on the account's session limit (HTTP 429 at about 06:00 local), before writing a report. Their transcripts were read for partial findings; nothing below relies on a thread's summary without a check here.
+
+- **Official guidance that asks lay people for an artifact** (ae19ac5c8c849e92f): **failed, nothing usable.** Its one search (Carer's Allowance earnings averaging) hit the limit. The lane is redone here directly.
+- **People asking for a tool** (a9043a6c8a1158a4e): **failed after about 15 searches; partial leads kept.** Exporting Word comments to a table (only paid add-ins, macros, and an upload site found); allocating pupils or students to activities or projects by ranked choices (a Google Sheets add-on, Moodle's Fair Allocation, by hand from slips); stage managers' line notes (Line-It $24.99 on iOS, StagePro free, paper sheets). Already covered, so dropped: Gift Aid schedules (HMRC's own spreadsheet), stitching tiled sewing patterns (PDFStitcher; Pattern Projector, *inference* to check only if reopened), running-club handicaps (rejected in the first screen).
+- **Locked-down work devices** (a0ec439020103807f): **failed after about 10 searches; partial leads kept.** Suppressing small numbers in published tables, including the secondary suppression that stops a hidden count being worked out from the totals (only R packages, Tau-Argus, SAS, or a VBA method; done by hand it's described as "arduous, time consuming, and prone to human error"); checking a spreadsheet for hidden personal data before it's disclosed (ICO and UK government guidance after the PSNI breach; mySociety's Excel Analyser serves WhatDoTheyKnow). Already covered, so dropped: gender pay gap calculators (several free ones) and genograms (GenogramTool, WebGeno).
+
+None of these threads is relied on further. The leads are checked here, and the lanes are continued here with bounded searches.
+
+### Leads checked here
+
+- **Exporting Word comments to a table: not pursued yet.** Only paid add-ins (Kutools), a federal-only macro set (NASA), free VBA macros, and comment-export.com, whose privacy is described both ways by the same guide site (*source claim*). Convenience, low stakes; parked behind stronger leads.
+- **Allocating people to activities by ranked choices: not pursued yet.** No free, no-sign-up browser tool found; the options are Scheduler by Alice Keeler (Google Sheets add-on, needs a Google account), Moodle's Fair Allocation, StatsDirect (paid), and self-hosted or Python code (*source claim*). A possible later candidate; weaker evidence of pain than the next one.
+- **Small-number suppression in published tables: not pursued yet.** Tools are R packages (GaussSuppression, countmaskr, easySdcTable), Tau-Argus (Java desktop), G-Confid (SAS), and an Excel VBA method in Ireland's CSO guidance (*source claim*). Real, but specialized, and the hard part (secondary suppression) is an optimization problem whose wrong answer is a disclosure.
+- **Checking a spreadsheet for hidden personal data before it's sent or published: BUILD → #028** (below).
+
+## Decisions for #028 (2026-10-13)
+
+- **BUILD → #028 Hidden Data Check** (`hidden-data-check`, category `files`). Checked here before numbering:
+  - **A. Who:** people who send or publish spreadsheets made from personal data. First, FOI and information-governance staff in councils, NHS trusts, police forces, universities, and schools (Tes, 3 September 2025, writes to school DPOs about it); then anyone sending a workbook outside their organisation.
+  - **B. The job:** before a spreadsheet goes out, find everything in it that isn't on screen, see what it holds, and remove it. Today that's unhiding by hand, Excel's Document Inspector, or converting to CSV. After: open the file in a page that lists every hidden place the ICO names, shows what each holds, says how to remove it in Excel, and sends the file nowhere.
+  - **C. Stakes and recurrence** (*verified* unless marked): ICO guidance of 31 July 2025 (ico.org.uk, "How do we avoid an accidental breach when personal information is hidden in spreadsheets?") lists hidden rows, columns, and worksheets; personal information "in remote rows or columns"; active filters; pivot tables, charts, slicers, timelines, and cube formulas that keep a cache; links to external sources that store a cache; and embedded data models. It says tools "may be able to detect some, but not all", that Document Inspector "cannot identify when personal information is hidden in remote rows and columns", and recommends converting to CSV where appropriate. In its first three months, mySociety's analyser screened 3,064 spreadsheets sent through WhatDoTheyKnow and stopped 21 confirmed and 53 likely breaches, about 2% (mySociety, 23 May 2024, *source claim*). Its reports to authorities and the ICO "has not improved behaviour" (*source claim*, same statement). Hammersmith and Fulham was reprimanded in May 2025 for an FOI spreadsheet with 35 hidden worksheets, ten holding the personal data of 6,528 people, 2,342 of them children, published for almost two years (ICO and Local Government Lawyer, *source claim*). PSNI was fined £750,000 in 2024 for a hidden tab. Islington (£70,000) and Kensington and Chelsea (£120,000) were fined over pivot-table caches.
+  - **D. Alternatives:**
+    - **Document Inspector** (Windows desktop Excel). It reports pivot caches, external links, embedded files, filters, and hidden names, but can't remove them (Microsoft's support page, *verified*). It misses objects covered by other objects and shapes in hidden columns (*verified*). It misses remote rows and columns (ICO, *verified*), and shows no contents. Not in Excel for Mac (SumProduct, Microsoft Tech Community, *source claim*), and no web version was found.
+    - **Free in-browser tools,** each covering a slice (all *verified* from their own pages):
+      - ExcelErrorFinder: a formula auditor that also flags hidden and very hidden sheets and hidden rows and columns; its page names no pivot caches, external caches, data models, comments, properties, remote cells, or text coloured to vanish.
+      - ExcelToolkit Pro's File Inspector: macros and external connections.
+      - MetaClean and metadatafinder: document properties.
+      - Kanaries and ExcelTool.io: viewers.
+    - **The rest:**
+      - mySociety's analyser: only for files sent through WhatDoTheyKnow, after they're sent.
+      - Python scripts for programmers: pivot-table-to-csv, ExcelExpose, xlsx-toolkit.
+      - Windows freeware: Hidden Data Detector (2016) and Hidden Text Detector (Zenodo, 2025).
+      - Enterprise metadata cleaners.
+    - **No free tool found** checks the ICO's list without an upload.
+  - **E. Wedge:** uploading a file to check it would itself disclose it, so only a page that reads it locally can help. It works on Macs, Chromebooks, and locked-down laptops. It covers the whole ICO list, finds what Document Inspector can't (remote cells, values hidden by a `;;;` format or by text coloured like its background, pivot caches whose source sheet was deleted), shows what each place holds (a cache's records, a hidden sheet's first rows), and says how to remove each in Excel.
+  - **F. Fits Labs:** static; a local zip and XML reader like #027's; no services; offline; works on a phone with a file from Files or Drive.
+  - **G. Strongest case against:**
+    1. The fix is procedural (paste values into a new workbook, or send CSV), and authorities already have Document Inspector. Breaches come from not checking, which no tool forces.
+    2. A false "nothing found" could reassure someone into a breach; no checker can prove a file is safe.
+    3. IT rules may bar unapproved sites even when nothing is uploaded.
+    4. OOXML is large, and .xls, .xlsb, .ods, and encrypted files can't be read here.
+    5. ExcelErrorFinder already catches the most common case, hidden sheets.
+  - **Why BUILD survives:**
+    1. The checks keep failing despite the guidance (the 2024 rate of about 2%, the 2025 reprimand). Seeing the contents ("a pivot cache holds 943 rows: Name, Address…") is what makes the risk concrete, and many senders don't have Windows Excel.
+    2. Never say "safe": list what was checked and what can't be, and keep the ICO's CSV advice in view.
+    3. As with #027: nothing is sent, and it works offline.
+    4. .xlsx and .xlsm only (the format of the breaches); other formats are refused with a way forward.
+    5. Pivot caches, external caches, and remote cells are what ExcelErrorFinder doesn't name, and they caused the Islington and Kensington and Chelsea fines.
+  - **Name:** no product called "Hidden Data Check" found; "Hidden Data Detector" (2016 Windows freeware) is the nearest.

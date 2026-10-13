@@ -25,9 +25,9 @@ research → number → risk list → implement → tests → adversarial audit 
 
 ## Now
 
-- **Step:** discovery for #028. The remaining survivor and two HOLDs were rejected, and so were three new rule-driven ideas, each already built free (`CANDIDATES.md`, "Discovery for #028"). A need-first round is running: three read-only threads looking for official guidance that asks lay people for an artifact, people asking for a tool and being told there isn't one, and work on locked-down devices.
-- **Next action:** verify whatever survives those threads; BUILD #028 only on strong evidence. If nothing survives, close the batch with two shipped (the success condition allows it) and write the closeout.
-- **After #027:** the part-writing checker's final check (`CANDIDATES.md`, "Decisions after the gate").
+- **Step:** #028 Hidden Data Check (`hidden-data-check`): research done, number assigned, risk list written (`028-hidden-data-check.md`). Implementing next.
+- **Next action:** build `src/experiments/hidden-data-check/` per the dossier (a streaming zip and XML reader; the ICO's list of hidden places; findings with what each holds and how to remove it), then tests, the audit, the push, and the production check.
+- **The need-first round's three research threads** all stopped on the session limit; their partial leads were checked here (`CANDIDATES.md`, "Need-first round"). Parked leads for later discovery: allocating people to activities by ranked choices; exporting Word comments to a table; small-number suppression.
 
 ## Numbered experiments
 
@@ -35,6 +35,7 @@ research → number → risk list → implement → tests → adversarial audit 
 |---|---|---|---|---|
 | 026 | Exam Timekeeper | exam-timekeeper | shipped 2026-10-13, verified in production | `026-exam-timekeeper.md` |
 | 027 | Transcript Pseudonyms | transcript-pseudonyms | shipped 2026-10-13, verified in production | `027-transcript-pseudonyms.md` |
+| 028 | Hidden Data Check | hidden-data-check | building | `028-hidden-data-check.md` |
 
 ## Log
 
@@ -42,3 +43,4 @@ research → number → risk list → implement → tests → adversarial audit 
 - **2026-10-13:** discovery. About 125 ideas considered: about 100 screened out in a first pass (51 rows in `CANDIDATES.md`), and 23 taken through the gate by six read-only research threads, with each decision's deciding claims checked again here: 14 rejected, 6 on hold, 3 survivors. #026 assigned to Exam Timekeeper after the JCQ clock rule and its competitors were verified directly.
 - **2026-10-13:** #026 Exam Timekeeper shipped (commit 731ed53, deploy 38374652232) and verified in production. The audit before the push found nine defects, all fixed: a 7.1 s freeze per tick with the largest exam (formatters rebuilt for every time shown), a fit-to-screen loop that crashed the board, a cut-off board, a confusing "Finish 10:31" for a start just after 09:00, mis-tap breaks, ambiguous field names, an unreachable scroll region, missing focus rings on time fields, and "UK" where JCQ's rules cover less. Production: files byte-identical, 46/46 flow checks and all audit checks in both engines, offline, smoke 108/0, daily check 11/11.
 - **2026-10-13:** #027 Transcript Pseudonyms shipped (commit 66df97b, deploy 38378802716) and verified in production. The audit before the push found nine defects, all fixed: Will and May on the common-words list, sentence-starting words suggested as names, text from XML comments and fallback copies in Word files, a false lowercase warning, "[Person N]" for places, keyboard focus lost after a choice, a duplicated second-look list, two scans that grew with the identifiers or a text without spaces, and literal byte-order marks in the source. Production: files byte-identical, 40/40 flow checks and all audit checks in both engines, offline, smoke 112/0, daily check 11/11.
+- **2026-10-13:** discovery for #028. The part-writing checker and one HOLD (tournament schedules) were rejected, along with three new rule-driven ideas, each already built free. Of the three need-first research threads, all stopped on the account's session limit (ae19ac5c8c849e92f with nothing, a9043a6c8a1158a4e and a0ec439020103807f with partial leads); the leads were checked here directly. #028 assigned to Hidden Data Check: the ICO's July 2025 guidance lists the hidden places in spreadsheets, mySociety's analyser stopped about 2% of spreadsheets sent through WhatDoTheyKnow in 2024 as breaches, and no free tool found checks that list without an upload.
