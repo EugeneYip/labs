@@ -265,6 +265,15 @@ export const experiments: readonly Experiment[] = [
     status: 'live',
     category: 'groups',
   },
+  {
+    number: 26,
+    slug: 'exam-timekeeper',
+    title: 'Exam Timekeeper',
+    summary: "The exam room's clock and board: the actual time and each paper's finish, with each candidate's own finish kept through extra time and rest breaks.",
+    shipped: '2026-10-13',
+    status: 'live',
+    category: 'school',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */

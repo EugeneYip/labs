@@ -25,17 +25,17 @@ research → number → risk list → implement → tests → adversarial audit 
 
 ## Now
 
-- **Step:** #026 Exam Timekeeper (`exam-timekeeper`): BUILD decided 2026-10-13; the risk list is in `026-exam-timekeeper.md`. Implementing.
-- **Next action:** build `src/experiments/exam-timekeeper/` (a pure `model.ts` for the times, then the page), test the model against an independent simulation, then the adversarial audit and the shipping gate in this file.
+- **Step:** #026 Exam Timekeeper (`exam-timekeeper`): built, audited (nine defects found and fixed before the push; `026-exam-timekeeper.md`), shipping gate met, pushed.
+- **Next action:** verify #026 in production (the deploy, the page by its address, the flow, `et-flow.cjs` and `et-offline.cjs` against production where they apply, the smoke test, the daily check), record it, then the next candidate.
 - **After #026:** the anonymize-transcripts candidate's last check, then the part-writing checker's (`CANDIDATES.md`, "Decisions after the gate").
 
 ## Numbered experiments
 
 | # | Title | Slug | Status | Dossier |
 |---|---|---|---|---|
-| 026 | Exam Timekeeper | exam-timekeeper | building | `026-exam-timekeeper.md` |
+| 026 | Exam Timekeeper | exam-timekeeper | pushed; production check next | `026-exam-timekeeper.md` |
 
 ## Log
 
 - **2026-10-13:** reconciled. `main` = `origin/main` = 3d08ca5, clean. Production's 61 files are byte-identical to a fresh build of 3d08ca5; the daily check passes 11 of 11 against production (run locally; GitHub's first scheduled run is at 11:17 UTC today); every recent deploy succeeded. Batch 07 recorded; candidate pool written.
-- **2026-10-13:** discovery. About 130 ideas considered: about 100 screened out without research, 26 taken through the gate by six read-only research threads (each decision's deciding claims checked again here). 16 rejected, 6 on hold, 3 survivors. #026 assigned to Exam Timekeeper after the JCQ clock rule and its competitors were verified directly.
+- **2026-10-13:** discovery. About 125 ideas considered: about 100 screened out in a first pass (51 rows in `CANDIDATES.md`), and 23 taken through the gate by six read-only research threads, with each decision's deciding claims checked again here: 14 rejected, 6 on hold, 3 survivors. #026 assigned to Exam Timekeeper after the JCQ clock rule and its competitors were verified directly.

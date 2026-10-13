@@ -33,11 +33,55 @@ Dossier for Batch 07's first experiment. Research and decision: `CANDIDATES.md` 
 
 ## Implementation
 
-(Filled in as it's built.)
+- `model.ts`: every time comes from timestamps. `timing(start, allowed, pauses, now)` merges the candidate's breaks and the room's stops (overlaps count once; stops before the start or after the finish don't count) and gives the exact finish, time stopped, and time left. `shownFinish` rounds up to the minute; `allowed` is exact (25% of 90 minutes is 22 min 30 s). `sanitizeExam` reads saved data leniently and bounded (12 papers, 200 candidates, 100 stops each, one open stop at most).
+- `index.tsx`: the controls. Papers (subject, length, extra-time groups for the board, start now or at a time, "Count from 09:00:00" for a start part way through a minute); everyone's time (stop and start, for an evacuation); candidates (number or initials, paper, extra time, note; Rest break and Back; a Change panel for a late start, extra time, label, and note); board settings (centre, room, 12/24-hour, seconds, dark, candidates on the board); the record, printed on its own; a new exam. A status bar keeps the time to the second, a stopped room, and who's on a break in sight. A break or stop ended within 3 s is a mis-tap and is dropped.
+- `Board.tsx`: the actual time, date, centre, and each paper's start, finish, and extra-time finishes; candidates' own finishes by number only if switched on. It fits itself to the screen, shrinking only for each content and screen size; four or more papers use two columns; only at its smallest does it scroll, so nothing is ever cut off.
+- `ui.ts`: formatters made once and reused; a clock that ticks just after each second; the screen wake lock.
+- Storage: `labs:exam-timekeeper`, version 1 (`{ exam, settings }`), through `useOtherTabs`; `NotSaving` when saves fail; a notice for unreadable saved data and for an exam from another day. The board opens in its own window (`#board`) and follows the controls through storage events.
+- Size: 41 kB, 11.8 kB gzipped.
 
 ## Audit
 
-(Filled in before the push.)
+Before the push, on the dev server and then the built site, in Chromium (Brave 155) and WebKit 27.2. Scripts in `.claude/qa/` (git-ignored): `exam-timekeeper-test.ts`, `et-flow.cjs`, `et-audit.cjs`, `et-offline.cjs`.
+
+**Correctness.**
+- Model: 10,875 checks. 4,000 random exams against an independent second-by-second simulation (working time grows only in seconds no stop covers): 0 mismatches in finish, time stopped, time left, or open stops. Hand-worked cases: extra time to the second, overlapping stops counted once, stops before a late start or after a finish ignored, rounding.
+- Browser flow (`et-flow.cjs`, 46 checks per engine, on a fake clock): two papers, three candidates, a late start, rest breaks, room stops overlapping a break, a reload during a stop, extra time changed mid-exam, the board here and in a second window, print, and a new exam, with every finish checked against hand-worked answers.
+
+**Material defects found, all fixed before the push:**
+
+| Found | Effect | Fix |
+|---|---|---|
+| A new date formatter for every time shown | With the largest exam (200 candidates, 10 breaks each) and the CPU slowed 4×, each one-second tick froze the controls for 7.1 s | Formatters made once (0.53 s), then candidate rows and the record redrawn once a minute unless something in them is live (0.10 s) |
+| Fit-to-screen swinging between two sizes when text wrapped differently | "Maximum update depth exceeded": the board fell to "This experiment couldn't load" with 6 papers and 30 candidates | Shrinks only, starting again at full size when the content or screen changes; settles before it's drawn |
+| The largest exam ran off the board | Its last lines were hidden | Two columns for four or more papers; scrolls only at its smallest |
+| Start pressed a moment after 09:00 | A 90-minute paper read "Finish 10:31": safe, but looks wrong on a projector | "Count from 09:00:00", offered, never silent |
+| A break started and ended at once | Moved a finish on by a minute | Under 3 s it's a mis-tap: dropped, and said so |
+| Each paper's title field and the candidate form's paper menu were all named "Paper" | Ambiguous for screen readers | Papers grouped as "Paper 1", "Paper 2"; the field is "Subject and paper"; length fields "Hours" and "Minutes" |
+| The record scrolls sideways at 390 px but couldn't be reached by keyboard | axe: scrollable-region-focusable | A named, focusable region |
+| Time fields showed no focus ring | Inside a time field, focus doesn't count as `:focus-visible` | Their own ring on `:focus` (Chromium's own clock-picker icon keeps its native ring) |
+| "In UK exam rooms" | JCQ's rules don't cover Scotland's exams | "For exams under JCQ's rules, such as GCSEs and A levels" |
+
+Added for the core job during the audit: the status bar, and the Change panel (a wrong extra time could otherwise only be fixed by removing the candidate and their breaks).
+
+**Hostile input and persistence** (`et-audit.cjs`, both engines): unreadable saved data gives a notice and a working page; saved data of the wrong shapes (`__proto__` ids and labels, HTML, right-to-left text, times at a date's limits) loads as plain text with no prototype pollution; an exam from another day says so; storage that refuses gives the not-saving notice; two windows stay in step.
+
+**Accessibility:** axe finds 0 violations on the controls (1280 px light, 390 px dark) and the board. By keyboard: a paper started with Enter, a candidate added with Enter, a break started with Space and ended with Enter, with focus staying on the button that changed; 60 Tab presses, every control named and ringed. Text at 200%: no sideways scroll. Changes are announced politely; the board's clock isn't announced.
+
+**Performance:** a busy hall (6 papers, 3 groups each, 30 candidates) fits the board without scrolling at 1280×720 and 1024×768 (smallest text 12 px); the largest allowed exam hides nothing; the longest task per tick is 0.10 s with the CPU slowed 4×.
+
+**Privacy:** no requests to any other site, in either engine; the exam stays in this browser.
+
+**Offline** (`et-offline.cjs`, both engines, the built site on a real server that was then stopped): the page, the saved exam, a rest break, and the board in a new window all work.
+
+**Site-wide:** the 27-page smoke test on the built site, 108 page loads, 0 problems; the model tests and the build pass.
+
+**Browser coverage:** Chromium and WebKit through Playwright. Not covered: Firefox (parked), real Safari on an iPad, Windows browsers, real projectors and second screens, and the wake lock (headless browsers can't show it).
+
+**Residual uncertainty:**
+- Whether exams officers would use a web page in a JCQ room at all: approval of tools, locked-down school laptops, kiosk setups. Needs people.
+- The device's clock is trusted as it is.
+- One device: two invigilators can't share live state, by design.
 
 ## Production verification
 
