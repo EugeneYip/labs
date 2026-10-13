@@ -25,14 +25,16 @@ research → number → risk list → implement → tests → adversarial audit 
 
 ## Now
 
-- **Step:** #026 Exam Timekeeper shipped and verified in production (2026-10-13). Discovery for #027.
-- **Next action:** the anonymize-transcripts candidate's last check (search for browser tools that pseudonymize transcripts; QualiAnon's current state), then BUILD or REJECT; if rejected, the part-writing checker's final check (`CANDIDATES.md`, "Decisions after the gate").
+- **Step:** #027 Transcript Pseudonyms (`transcript-pseudonyms`): BUILD decided 2026-10-13 after its last check; risk list in `027-transcript-pseudonyms.md`. Implementing.
+- **Next action:** build `src/experiments/transcript-pseudonyms/` (pure `model.ts`: suggestions, matching, replacement, key CSV; a small .docx text reader), property-test that only chosen spans change, then the page, the audit, and the shipping gate.
+- **After #027:** the part-writing checker's final check (`CANDIDATES.md`, "Decisions after the gate").
 
 ## Numbered experiments
 
 | # | Title | Slug | Status | Dossier |
 |---|---|---|---|---|
 | 026 | Exam Timekeeper | exam-timekeeper | shipped 2026-10-13, verified in production | `026-exam-timekeeper.md` |
+| 027 | Transcript Pseudonyms | transcript-pseudonyms | building | `027-transcript-pseudonyms.md` |
 
 ## Log
 
