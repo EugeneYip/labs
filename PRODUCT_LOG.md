@@ -16,6 +16,14 @@ Entry format for an experiment:
 Infrastructure entries can use just What, Why, and Notes.
 -->
 
+## 2026-10-12 · Custody Calendar by keyboard, Off Book with long pastes, Fluency Check's samples
+
+- **What:**
+  - **Custody Calendar:** each month of the year view is now one stop for the Tab key, and the arrow keys move between its days (Home and End go to the first and last). Before, every day was a stop, about 400 on the page, so reaching anything after the calendar by keyboard took hundreds of presses.
+  - **Off Book:** a long script pasted as one line, with brackets left unclosed, no longer freezes the page for seconds, and again on every visit once saved. It now reads in a fraction of a second, with exactly the same result as before.
+  - **Fluency Check:** the sample passages now say they're for practice and not leveled. Their labels (Early reader, Middle grades, Upper grades) could be read as passages for real checks.
+- **Why:** P13 of the autonomous queue: only fixes the earlier audits found (P2 for Custody Calendar, P4 for Off Book, P12 for Fluency Check).
+
 ## 2026-10-12 · Work stays safe in two tabs, and pages say when they can't save
 
 - **What:**
