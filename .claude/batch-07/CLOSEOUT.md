@@ -65,7 +65,7 @@ Fluency Check's interview kit is already prepared, so it's the cheaper start. Ea
 - **Four zip readers or writers.** Photo Scrub, Family Stories, Transcript Pseudonyms, and Hidden Data Check each have their own, as the constitution's self-contained rule asks. One shared reader in `src/components/` would be one thing to maintain, but moving shipped code carries its own risk. Do it only when a fix would apply to all four.
 - **Outside rules that change:** JCQ's Instructions every September (#026); the ICO's guidance and new Excel features, each of which adds parts (#028); Forms' export formats (#029).
 - **QA kept only on this machine.** The scripts and fixtures are in `.claude/qa/`, which git ignores. The dossiers say what they check.
-- **Autonomous Ops v2's hooks** run only in a new session and haven't been seen live yet. They rely on the exact wording of the "Autonomy" and "Next action" lines in the factory state.
+- **Autonomous Ops v2's hooks.** The session-start hook has run live: it printed the state after a compaction and when a session resumed. The stop hook hasn't been seen to fire while autonomy was active. Both rely on the exact wording of the "Autonomy" and "Next action" lines in the factory state.
 
 ## Found at closeout
 
