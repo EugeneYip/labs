@@ -11,8 +11,8 @@ The current state, kept short. `.claude/hooks/session-context.sh` prints this se
 - **Batch file:** `.claude/batch-08/BATCH_08.md`; every idea and its outcome in `.claude/batch-08/CANDIDATES.md`.
 - **Experiment:** none yet. #030 is the next number, assigned only when a candidate passes the gate.
 - **Where the work is:** `main`, which matches `origin/main`. No work-in-progress branch.
-- **Next action:** finish Autonomous Ops v2.1 (permissions, the bounded QA runner, the Stop hook's guard), commit and push it, check the deploy, then validate the Stop hook live and begin need-first discovery for #030.
-- **Done and verified:** the Batch 08 baseline (2026-10-13): `main` = `origin/main` = c157fe5; production byte-identical to a fresh build; daily check 11 of 11. Batch 07 is complete: #026–#029 live and verified.
+- **Next action:** need-first discovery for #030 (Part A is done except the Stop hook's live check, which is the next stop): broad research lanes outside files and privacy, every serious candidate through the gate in `.claude/batch-08/CANDIDATES.md`.
+- **Done and verified:** the Batch 08 baseline (2026-10-13); Autonomous Ops v2.1 (commit e4ec9db, deploy 38487235836, production byte-identical, daily check 11 of 11; results in the batch file). Batch 07 is complete: #026–#029 live and verified.
 - **Owner-blocked (parked; don't start them):**
   - Fluency Check interviews or a pilot;
   - the email to Open-Meteo;

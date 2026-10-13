@@ -26,8 +26,8 @@ research → gate → number → `wip/<number>-<slug>` branch → principal fail
 
 ## Now
 
-- **Step:** Part A, Autonomous Ops v2.1. The baseline is reconciled (Log); the Batch 08 records exist.
-- **Next action:** finish v2.1 (permissions, the bounded QA runner, the Stop hook's guard), commit and push it, check the deploy, then validate the Stop hook live and begin need-first discovery for #030.
+- **Step:** Part A done except the Stop hook's live check, which is the next stop; discovery for #030 begins.
+- **Next action:** need-first discovery for #030: broad research lanes for jobs, failure modes, rules, and repeated manual work outside files and privacy; every serious candidate through the gate in `CANDIDATES.md`.
 - **Numbered so far:** none. #030 is the next number.
 
 ## Part A: Autonomous Ops v2.1
@@ -40,7 +40,7 @@ research → gate → number → `wip/<number>-<slug>` branch → principal fail
 | A4 session start | **Done.** Run as after compaction: 3,181 characters, with Autonomy `active`, the batch and its limits, the discovery state, the exact next action, the owner-blocked lanes, git, and any WIP branch (the hook lists `refs/heads/wip/` from any branch). Unchanged: it was already concise. |
 | A5 Stop hook | **Offline done; live check next.** Defect fixed: the loop guard relied only on `stop_hook_active`, which may stay true for the rest of a turn once a Stop hook has blocked, so in a long run from one owner message the hook might ask only once. Now it lets a stop through when (1) it already asked 3 times in 10 minutes, (2) the transcript shows no tool used since its last ask, or (3) no earlier ask is visible (or the transcript is unreadable) and `stop_hook_active` is true. Asks are found by a marker in the reason, in entries that aren't Claude's own messages or tool results. Each run logs one line to `.claude/hooks/stop-hook.log` (ignored by git). `.claude/scripts/stop-hook-test.sh`: 29 of 29 cases (no state file; complete, paused, blocked; the fallbacks; three possible transcript shapes for an ask; the marker in Claude's own edits and in tool results; a half-written line; the rate limit; a tight loop stopping on the 4th try; odd input; quotes, backslashes, and tabs in the next action; 1,500 entries in under 5 s). |
 | A6 long-work recovery | **Done.** `.claude/scripts/qa.sh <seconds> <script>` runs a QA script with a limit and stops its whole process group (checked: a hung script with a child process was stopped at its limit, exit 124, no orphan left). `CLAUDE.md` "Long jobs": one bounded purpose per research thread or sub-agent, never wait on one indefinitely, keep partial results, the main session owns continuation. |
-| A7 one autonomous cycle | In progress: this commit, an ordinary push, the deploy, and parity. |
+| A7 one autonomous cycle | **Done.** Checkpoint, the v2.1 change itself (no page changed), the hook cases and the build, commit e4ec9db, `git push origin main`, deploy 38487235836 succeeded for e4ec9db, production byte-identical to a fresh build (69 files, 99 addresses), daily check 11 of 11, next action set; no owner step. |
 
 ## Numbered experiments
 
@@ -50,3 +50,4 @@ research → gate → number → `wip/<number>-<slug>` branch → principal fail
 ## Log
 
 - **2026-10-13:** reconciled. Batch 07 is complete (closed at four, #026–#029, all live). `main` = `origin/main` = c157fe5, clean, no WIP branch, no Batch 08 work begun. Production's 69 files are byte-identical to a fresh build (99 addresses, `.claude/qa/prod-parity.mjs`, new); the daily check passes 11 of 11 against production, and GitHub's last scheduled run (38446088538) passed; every recent deploy succeeded. Batch 08 records created.
+- **2026-10-13:** Autonomous Ops v2.1 committed (e4ec9db) and deployed (run 38487235836): permissions for the routine lifecycle, writable records, the bounded QA runner, the Stop hook's loop guard (29 offline cases), session start checked. Production byte-identical; daily check 11 of 11.
