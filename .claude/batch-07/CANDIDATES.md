@@ -246,3 +246,43 @@ The diversity rule shapes this round: #027 and #028 are both mainly files and pr
     3. The rule is stated and shown: as many first choices as possible, then as many second choices, and so on (rank-maximal), with every person's result and the totals by rank visible, and the lottery's tie-breaks replayable from a number.
     4. Scope cut to keep it small and correct: one place per person (several distinct places only if it stays simple); sessions over several time slots left out.
   - **Name:** "Activity Allocator" is a module of HEI Apply's admissions software, so it's avoided; nothing found called "Places by Choice". Number #029, slug `places-by-choice`, homepage category `groups`.
+  - **Note (at closeout):** point 3's rule (rank-maximal: as many first choices as possible, then second) was changed at the risk list, before coding, to the lowest total of choice numbers squared, so nobody is pushed far down their list to give others a first choice. The page states the rule it uses; the dossier has the reason.
+
+## Discovery for #030 (2026-10-13)
+
+The diversity rule shapes this round too: #027 and #028 are mainly files and privacy, and #029 is allocation for groups, so a fifth was looked for elsewhere (home, family, practice, outdoors, community). The four HOLDs outside files and privacy were checked again with current searches, with one new lead that would use a capability the batch hasn't (the microphone). None survives.
+
+- **Small-club year-end accounts: REJECT (was HOLD).** Free bookkeeping covers it whether or not the bank gives a year of CSV: QuickFile is free below 1,000 ledger entries a year, Manager.io's desktop edition is free, and the Charity Commission's CC16a and OSCR's receipts-and-payments templates are free spreadsheets (*source claim*). It's used once a year, so browser storage may be gone by the next year, and the accounts go to an AGM or a regulator, so a wrong total is costly.
+- **Volunteer rota: REJECT (was HOLD).** The HOLD's question has an answer: free tools already make a fair rota from unavailability, just not without an account in a browser.
+  - Simple Rota Maker, a free iOS and Android app with in-app purchases for some layouts and to remove ads, gives "an equal number of shifts", with dates someone must work or is away (*source claim*, its App Store listing).
+  - RosterThat's free tier: 1 admin, 20 people, 2 rosters, auto-fill (first round).
+  - Stage Stubs' Volunteer Rota Builder: free, no sign-up, a show day's roles and call times from names and availability, as a printable PDF (*verified*, read 2026-10-13).
+  - Church platforms let volunteers mark their own dates and swap online (ChurchSuite; Planning Center's auto-scheduler with blockout dates; ChurchBuilder's Rota Builder), and free sign-up sheets cover self-service (SignUp.com, Grasshopper Signup) (*source claim*).
+  - The pain is real: a church coordinator on Microsoft's forum asking how to share a rota fairly around the dates people can't do; parishes publishing hand-made rota PDFs; Rovva launching to replace "messy spreadsheets" and WhatsApp chasing (*source claim*). But the hard part is shared (volunteers giving dates, swaps), which Labs can't hold; the coordinator's middle step is already free; and the shape (responses in, an allocation, lists out) would repeat #029.
+- **Cross-country team scoring: REJECT (was HOLD).** Free scorers exist where the scoring happens: Cross Country Scorer in Google Sheets (first round), CC Scorer (iPhone, up to five teams, the standard five-of-seven scoring), and Quick XC Meet (free live results on iPhone) (*source claim*). A small meet takes minutes by hand. The HOLD's question (would hosts use a phone instead of a paper sheet?) needs people, and the free phone apps are already there.
+- **Scene breakdown and rehearsal planner: HOLD (unchanged).** No free tool found makes a French-scene chart from a pasted stage script. The theatre option is a Google Sheets template sold on a teaching marketplace (Classroom to Curtain), and automatic breakdowns are for screenplays (WriterDuet's scenes report is a Pro feature; Prescene, FinalBit, and Taskade use AI) (*source claim*). Stage-management guidelines list a character scene breakdown as standard paperwork (*source claim*). Still unresolvable here: French scenes change at every entrance and exit, the stage directions a parser reads worst, and real licensed scripts can't be tested here (copyright; many are printed rentals, *inference*). Doesn't block.
+- **Rhythm-clapping checker (new): REJECT.** Rhythm practice with feedback is already free by tapping, and the leading paid tool chose taps over the microphone.
+  - Songtive's Rhythm Challenge (free, in the browser): a one-bar rhythm after a count-in, tapped on the space bar or a pad, scored within about 160 ms, with the average timing error (*source claim*).
+  - Sight Reading Factory's rhythm-only assessment (paid, for schools): taps on a screen or the space bar, V, or B keys, marked leniently, moderately, or strictly (*source claim*, its blog).
+  - Apps: Rhythm Sight Reading Trainer ($3.99, iOS), Rhythm Lab (iPad), and Clapping Music (free) take taps; Rhythmic Village listens through the microphone (Microsoft Store, in-app purchases) (*source claim*).
+  - The microphone adds a delay no browser reports reliably: Chrome's input-latency setting reads 10 ms whatever the microphone, and one developer measured about 55–67 ms end to end by default (*source claim*, Jeff Kaufman). Teachers' "clap the rhythm" assignments are recordings they mark themselves (Seesaw activities, *source claim*); no request for automatic clap checking was found. In Tune (#013) already covers microphone music practice.
+- **Also screened out on what's already known** (*inference*; reopen only with new evidence):
+
+| Idea | Reason |
+|---|---|
+| Note reading by microphone (play the note shown) | Paid apps teachers already use (Note Rush and others); overlaps In Tune's pitch detection |
+| Practice-pad timing (how early or late each stroke is) | The same microphone delay, and no demand found |
+| School-holiday childcare plan for two working parents | Calendars and spreadsheets do it; Custody Calendar's territory |
+| GCSE option blocks | School information systems and timetabling software; a specialist job |
+| Time-of-use tariff check from smart-meter data | Every supplier's export differs; enthusiasts' tools exist |
+| Awaab's Law repair deadlines (social housing) | Date arithmetic with legal stakes |
+| Employment tribunal time limits | Legal stakes: a wrong date loses a claim |
+| Carer's Allowance earnings check | Overpayment stakes, and limits that change every April |
+| Medicaid work-requirement hours (US) | States' own systems will collect and verify them |
+| Dinghy race handicap results | Sailwave (free) is the standard |
+| Youth baseball pitch counts | GameChanger (free) tracks them |
+| Concussion return-to-sport plans | Medical |
+| Race-day finish timing for fun runs | Webscorer and phone apps; a lost phone would lose the results |
+| Sports-day house points | Trivial arithmetic |
+
+**Decision: no #030.** Batch 07 closes with four experiments (#026–#029). Every candidate left has a free tool already doing the job, needs people to answer its question, or would repeat a domain the batch already has; the parked files-and-privacy leads would make a third in that domain. The brief puts strong evidence ahead of the count. The number #030 stays unassigned.

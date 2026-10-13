@@ -95,4 +95,4 @@ Added for the core job during the audit: the status bar, and the Change panel (a
 
 ## Lifecycle recommendation
 
-(At closeout.)
+**PROMOTE candidate**, second in Batch 07. The need is set by a rule (JCQ's §11.7: the exam-room clock shows the actual time; no countdowns), and the gap was checked before building: no free tool found shows the actual time and the board and pauses individual candidates. It's used at every session of every series and in mocks, by a named professional, and the access-arrangements data stays on the exam-room laptop. What would test it: an exams officer using it through a mock series (approval of the tool, a projector, the pressure of a live room); the owner's call, and nobody has been contacted. What would move it to Maintain: centres that won't use a tool their IT hasn't approved, or invigilators who prefer paper slips. Watch JCQ's Instructions every September (§11.7–11.8).

@@ -101,6 +101,8 @@ Added for privacy during the audit: spell check and form restore off in every fi
 
 After the fix the two readers agree on all 252 files (228,290 characters; the templates' text is in their building blocks, read with the same code as a document's main text). 3,077 model checks (one new) and the 40 browser checks in Chromium and WebKit pass.
 
+**In production** (commit 5c883ad, deploy run 38469054081): the 69 files are byte-identical to a fresh build. On the live site, in Chromium and WebKit, its 40 browser checks pass, and `closeout-prod.cjs` checks the fix directly. The 30-page smoke test gave 120 page loads with 0 problems, and the daily check passed 11 of 11.
+
 ## Lifecycle recommendation
 
 **MAINTAIN.** Sound and verified: deterministic replacement checked exactly, and since the fix above, Word's own files read the same as an independent reader. The job is real and recurs with every project, and nothing is stored. But use comes per project, and many researchers manage with find-and-replace or a university's approved AI, so the gap is narrower than for the two promoted Batch 07 experiments. Like Ranked Choice Count: promote it if researchers adopt it. Watch Word's format and transcription tools' exports.

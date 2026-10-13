@@ -6,16 +6,24 @@ The checkpoint for autonomous Labs work. Read it down to the "History" heading; 
 
 The current state, kept short. `.claude/hooks/session-context.sh` prints this section at the start of every session and after the context is compacted, and `.claude/hooks/stop-continue.sh` reads **Autonomy** and **Next action** from it, so keep those two lines' wording as they are.
 
-- **Autonomy:** active
-- **Batch:** 07, Discovery Cycle 2: up to five new experiments, #026–#030, authorized by the owner on 2026-10-13. Never #031.
-- **Batch file:** `.claude/batch-07/BATCH_07.md`
-- **Experiment:** none numbered yet for #030 (the last the batch allows; never #031); discovery is under way. The last shipped is #029 Places by Choice (`places-by-choice`).
-- **Lifecycle:** discovery for #030 (research gate A–G before a number), or closing the batch at four if nothing survives.
+- **Autonomy:** complete
+- **Batch:** 07, Discovery Cycle 2, complete. It was authorized by the owner on 2026-10-13 for up to five new experiments (#026–#030, never #031), and closed the same day with four, #026–#029. No batch is active.
+- **Batch file:** `.claude/batch-07/BATCH_07.md`; the closeout is `.claude/batch-07/CLOSEOUT.md`.
+- **Experiment:** none. The next number, #030, is unassigned: nothing passed the gate for it.
+- **Lifecycle:** closed. #028 Hidden Data Check and #026 Exam Timekeeper are PROMOTE candidates; #027 Transcript Pseudonyms and #029 Places by Choice are MAINTAIN.
 - **Where the work is:** `main`, which matches `origin/main`. No work-in-progress branch.
-- **Next action:** discovery for #030, as the batch file's "Now" describes.
-- **Done and verified:** #026 Exam Timekeeper, #027 Transcript Pseudonyms, #028 Hidden Data Check, and #029 Places by Choice, shipped and verified in production on 2026-10-13.
-- **Owner-blocked (parked; don't start them):** Fluency Check interviews or a pilot; the email to Open-Meteo; a no-account feedback address; regrouping Custody Calendar, Day Clock, and Frost Dates to Maintain; Firefox testing (it needs a permission rule). Details in `.claude/AUTONOMOUS_QUEUE.md`.
-- **After #030:** the batch report. Strong evidence matters more than the count: stopping at four is fine, a weak fifth isn't.
+- **Next action:** none until the owner authorizes more work; what waits for the owner is under "Owner-blocked" and in the closeout.
+- **Done and verified:** #026–#029, shipped and verified in production on 2026-10-13. The closeout fixes to #027 and #028 (commit 5c883ad) are verified in production.
+- **Owner-blocked (parked; don't start them):**
+  - Fluency Check interviews or a pilot;
+  - the email to Open-Meteo;
+  - a no-account feedback address;
+  - regrouping Custody Calendar, Day Clock, and Frost Dates to Maintain;
+  - Firefox testing, which needs a permission rule;
+  - human validation of #028 Hidden Data Check, then #026 Exam Timekeeper (the closeout's recommendation);
+  - an automation permission to test #028 with workbooks saved by Excel itself.
+
+  Details are in `.claude/AUTONOMOUS_QUEUE.md` and the closeout.
 - **Autonomy values:** `active` (carry on without asking), `paused` (the owner asked to pause), `blocked` (everything left needs the owner), `complete` (the batch is finished and reported). Only `active` makes the Stop hook ask Claude to carry on, and never twice in a row.
 
 ## How to resume
@@ -26,16 +34,17 @@ The current state, kept short. `.claude/hooks/session-context.sh` prints this se
 4. When an experiment ships: on `main`, `git merge --squash wip/<number>-<slug>`, commit as "#0NN Title: summary", run `npm run build`, push, watch the deploy, check production, then record that here, in the batch file, and in the dossier; commit and push the record. Delete the `wip/` branch once `git diff main wip/<number>-<slug>` shows nothing that matters, and start the next discovery.
 5. Long runs: bound them (see "Long jobs" in `CLAUDE.md`), keep partial results in files, and when a lane stalls, record it here and carry on with another.
 
-## Batch 07: Discovery Cycle 2 (current)
+## Batch 07: Discovery Cycle 2 (complete)
 
-This section is the current state. Everything below it is history: where an older section says not to start #026 or a Batch 07, this authorization supersedes it.
+Complete on 2026-10-13. Everything below this section is history: where an older section says not to start #026 or a Batch 07, this authorization superseded it.
 
 - **Authorized** by the owner on 2026-10-13: discover, build, audit, deploy, and resolve up to five new experiments, #026–#030, with no routine approval between experiments. Never #031. Research before build, falsify before numbering, one experiment at a time, an adversarial audit before each public push.
 - **Still prohibited:** contacting anyone, posting or recruiting, spending money, accounts or backends, keyed services, analytics, weakening the constitution, permission workarounds (Firefox stays parked), and the parked owner lanes (Fluency Check interviews or pilot, the Open-Meteo email, a feedback email).
 - **Records:** `.claude/batch-07/BATCH_07.md` (the rules in short, the checkpoint under "Now", the log) and `.claude/batch-07/CANDIDATES.md` (every idea and its outcome). Each numbered experiment gets a dossier in `.claude/batch-07/`.
 - **Reconciled (2026-10-13):** `main` = `origin/main` = 3d08ca5, clean; production's 61 files byte-identical to a fresh build; the daily check passes 11 of 11 against production; every recent deploy succeeded.
-- **Shipped in Batch 07:** #026 Exam Timekeeper and #027 Transcript Pseudonyms (2026-10-13, both verified in production); #028 Hidden Data Check (2026-10-13, verified in production); #029 Places by Choice (2026-10-13, verified in production).
-- **Next action:** "Now" at the top of this file, then `.claude/batch-07/BATCH_07.md` under "Now".
+- **Shipped in Batch 07:** #026 Exam Timekeeper, #027 Transcript Pseudonyms, #028 Hidden Data Check, and #029 Places by Choice, all on 2026-10-13 and all verified in production.
+- **Closed** on 2026-10-13 at four. There is no #030, because nothing left passed the gate. The closeout is `.claude/batch-07/CLOSEOUT.md`: the comparative review, lifecycle recommendations, and two defects found with Microsoft's own files, fixed and verified in production.
+- **Next action:** none; nothing is authorized beyond this batch.
 
 ## Shipped
 

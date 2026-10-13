@@ -229,3 +229,23 @@ Winner Validation ran as desk research only. Nobody was contacted and no product
 - **Fluency Check:** "teachers" as the audience.
 - **Custody Calendar:** search demand as an opening.
 - **Frost Dates:** worldwide coverage as the wedge. Its cautious dates are about 5 weeks early against Canberra station records, and its planting calendar was 1.5–2.5 months early in maritime climates until commit 291fac5 (`.claude/validation/frost-dates/notes/accuracy-check.md`).
+
+## Batch 07 additions (2026-10-13)
+
+Batch 07 added four experiments. Each was researched before building and audited before its push. Their groups were decided at the batch's close; the reasons are in `.claude/batch-07/CLOSEOUT.md` and in each dossier. The assessed totals use the same framework, and are evidence, not the decision.
+
+| # | Experiment | Group | Assessed total | Deciding reason |
+|---|---|---|---|---|
+| 026 | Exam Timekeeper | **Promote** | 51 | A rule sets the need (JCQ: the actual time, no countdowns); no free tool pauses individual candidates; used at every exam session |
+| 027 | Transcript Pseudonyms | Maintain | 51 | Exact and private, but used per project, and find-and-replace or approved AI is enough for many |
+| 028 | Hidden Data Check | **Promote** | 52 | The ICO names the job and the failure; uploading would itself disclose, so local-only is the wedge; every outgoing spreadsheet is an occasion |
+| 029 | Places by Choice | Maintain | 47 | Exact and recurring, but Google schools have a free add-on, and its first requests would make it a bigger product |
+
+Counts across all 29: 6 promote, 16 maintain, 5 experimental, 2 archive candidates. Three of the first four promoted (Custody Calendar, Day Clock, Frost Dates) are still waiting for the owner's review to move to Maintain. Public behavior doesn't change: all four new experiments are `live`.
+
+Recommended human validation, if the owner opens a lane:
+1. #028: FOI and information-governance officers, on files they're about to send.
+2. #026: an exams officer, through a mock series.
+
+Fluency Check's prepared interviews are the cheaper start. Nobody has been contacted.
+

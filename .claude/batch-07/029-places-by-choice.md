@@ -111,4 +111,4 @@ Before the push, on the built site, in Chromium (Brave) and WebKit 27.2 through 
 
 ## Lifecycle recommendation
 
-(At closeout.)
+**MAINTAIN.** Exact and verified (exhaustive search, an independent solver, hostile input), for a recurring school job whose free tools are tied to Google or Moodle. But Google schools have a free add-on with 70K+ users, many schools book clubs first come, first served, and the first requests (sessions in several time slots, priorities, keeping people together or apart) would make it a bigger product. Revisit if schools or organizers use it. Watch Microsoft Forms' and Google Forms' export formats.

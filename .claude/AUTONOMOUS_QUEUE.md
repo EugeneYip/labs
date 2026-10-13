@@ -30,7 +30,7 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ## Now
 
-- **Current:** nothing in this queue. P1–P13 are done and verified. Since 2026-10-13 the current work is Batch 07: "Now" in `.claude/FACTORY_STATE.md` says where it stands and what's next.
+- **Current:** nothing in this queue. P1–P13 are done and verified. Batch 07 ran on 2026-10-13 and closed at four experiments (#026–#029); its closeout is `.claude/batch-07/CLOSEOUT.md`. Nothing is authorized beyond it.
 - **Parked lanes** (below) stay parked until the owner chooses one; they never hold up other work.
 - **When something new needs the owner** (in any batch): add it under "Parked lanes" as BLOCKED — OWNER REQUIRED, with what's ready and what the owner would do, mention it in "Now" in `.claude/FACTORY_STATE.md`, and carry on with the rest.
 
@@ -41,6 +41,11 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 - `[B]` **Regrouping Custody Calendar, Day Clock, and Frost Dates to Maintain** in PORTFOLIO_RESOLUTION.md. This is an owner review of the comparative decisions.
 - `[B]` **Firefox testing:** needs a Claude Code permission rule, or the owner running the script (see P3).
 - `[B]` **A no-account feedback channel** (an email alias on the owner's domain). It needs a registrar setting and publishes an address.
+- `[B]` **Human validation of #028 Hidden Data Check, then #026 Exam Timekeeper.** This is the Batch 07 closeout's recommendation; the dossiers say what each test would settle.
+  - **#028:** a few FOI or information-governance officers run it on files they're about to send.
+  - **#026:** an exams officer uses it through a mock series.
+  - Either one means contacting people, so it's the owner's call. Fluency Check's prepared interviews are the cheaper start.
+- `[B]` **Hidden Data Check with workbooks Excel itself saves.** Excel for Mac is on this machine, but having Claude drive it needs a macOS automation permission. The owner could instead open a few workbooks in Excel, save them, and leave them in `.claude/qa/hdc/`. So far the only Excel-written file tested is the Solver add-in.
 
 ## Queue
 

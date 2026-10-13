@@ -144,6 +144,8 @@ Checked against sources: the ICO's spreadsheet guidance (31 July 2025: the list 
 - **Hostile input** (seed 31): 5,700 damaged copies of 19 fixtures, Solver included, gave 0 crashes, with the slowest at 336 ms.
 - **Browser:** 72 of 72 checks in Chromium and in WebKit.
 
+**In production** (commit 5c883ad, deploy run 38469054081): the 69 files are byte-identical to a fresh build. On the live site, in Chromium and WebKit, its 72 browser checks pass, and `closeout-prod.cjs` checks the fix directly. The 30-page smoke test gave 120 page loads with 0 problems, and the daily check passed 11 of 11.
+
 ## Lifecycle recommendation
 
 **PROMOTE candidate**, the strongest of Batch 07:
