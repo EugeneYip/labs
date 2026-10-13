@@ -407,6 +407,24 @@ function InterviewView({ interview, onChange, onClose }: { interview: Interview;
   )
 }
 
+/**
+ * Chromium's recorder writes WebM with no stored length, so its player shows none, and its timeline can't be used,
+ * until the answer has played through. Asked to go past the end, it works the length out from the file, which is on
+ * this device, and then goes back to the start. The recording itself is left as it is.
+ */
+function findLength(audio: HTMLAudioElement) {
+  if (audio.duration !== Infinity) return
+  const back = () => {
+    audio.removeEventListener('durationchange', found)
+    audio.currentTime = 0
+  }
+  const found = () => Number.isFinite(audio.duration) && back()
+  audio.addEventListener('durationchange', found)
+  audio.currentTime = 1e101
+  // If no length turns up, don't leave the player at the end.
+  setTimeout(() => !Number.isFinite(audio.duration) && back(), 3000)
+}
+
 function ClipRow({ clip, label, onDelete }: { clip: Clip; label: string; onDelete: () => void }) {
   const [url, setUrl] = useState('')
   const [confirm, setConfirm] = useState(false)
@@ -421,7 +439,7 @@ function ClipRow({ clip, label, onDelete }: { clip: Clip; label: string; onDelet
         {label} <span className="font-normal text-dim tabular-nums">· {duration(clip.ms)}</span>
       </p>
       <div className="mt-2 flex flex-wrap items-center gap-2">
-        {url && <audio src={url} controls preload="metadata" className="h-10 min-w-0 flex-1 basis-60" />}
+        {url && <audio src={url} controls preload="metadata" onLoadedMetadata={(e) => findLength(e.currentTarget)} className="h-10 min-w-0 flex-1 basis-60" />}
         <button type="button" onClick={() => save(clip.blob, `${safeName(clip.question)}.${extension(clip.type)}`)} className={`${quiet} h-10 px-3`}>
           Download
         </button>
