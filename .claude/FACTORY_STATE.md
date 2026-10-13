@@ -2,9 +2,19 @@
 
 The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`, `FACTORY_CONSTITUTION.md`, and this file, then check `git status` and `git log`, before acting. Never redo completed work. Update this file after every milestone (idea chosen, built, tested, shipped, dropped).
 
-## Autonomous continuation mode (current)
+## Batch 07: Discovery Cycle 2 (current)
 
-This section is the current state. The older sections below are history: their "Next action", "Authority", "Position", and "If interrupted" lines describe earlier phases and are superseded here.
+This section is the current state. Everything below it is history: where an older section says not to start #026 or a Batch 07, this authorization supersedes it.
+
+- **Authorized** by the owner on 2026-10-13: discover, build, audit, deploy, and resolve up to five new experiments, #026–#030, with no routine approval between experiments. Never #031. Research before build, falsify before numbering, one experiment at a time, an adversarial audit before each public push.
+- **Still prohibited:** contacting anyone, posting or recruiting, spending money, accounts or backends, keyed services, analytics, weakening the constitution, permission workarounds (Firefox stays parked), and the parked owner lanes (Fluency Check interviews or pilot, the Open-Meteo email, a feedback email).
+- **Records:** `.claude/batch-07/BATCH_07.md` (the rules in short, the checkpoint under "Now", the log) and `.claude/batch-07/CANDIDATES.md` (every idea and its outcome). Each numbered experiment gets a dossier in `.claude/batch-07/`.
+- **Reconciled (2026-10-13):** `main` = `origin/main` = 3d08ca5, clean; production's 61 files byte-identical to a fresh build; the daily check passes 11 of 11 against production; every recent deploy succeeded.
+- **Next action:** whatever `.claude/batch-07/BATCH_07.md` says under "Now".
+
+## Autonomous continuation mode (complete)
+
+Complete on 2026-10-12. Its "Next: none" line below was superseded on 2026-10-13 by Batch 07 above. The older sections further down are history: their "Next action", "Authority", "Position", and "If interrupted" lines describe earlier phases.
 
 - **Authorized** by the owner on 2026-10-11. The owner has no time for interviews, so human-blocked lanes are parked and owner-independent work continues.
 - **The queue** is `.claude/AUTONOMOUS_QUEUE.md`: priorities P1–P13, parked lanes, and a log. After each item, verify it, record it there and here, then take the next unblocked item.
@@ -58,7 +68,7 @@ This section is the current state. The older sections below are history: their "
   - P11 done (2026-10-12), in `.claude/MAINTENANCE.md`. No vulnerabilities, no unused packages, actions current. A clean checkout builds byte-identically (61 of 61 files). Both workflows moved to `ubuntu-26.04` (commit b7f82f7), verified by a deploy and a daily check there.
   - P12 done (2026-10-12): documents made consistent with each other and with the code (37 files; details in the queue). Older sections of this file are marked as history.
   - P13 done (2026-10-12) and verified in production: Custody Calendar by keyboard (one Tab stop per month), Off Book's long one-line scripts (linear parsing), Fluency Check's samples marked "not leveled", and Family Stories' player finding a WebM answer's length in Chromium. Details in the queue.
-  - **Next:** none. The queue is finished; every remaining item is a parked lane that needs the owner (see the queue). A new session should report to the owner rather than start new work, and must not start #026 or a Batch 07.
+  - **Next** (then): none. The queue is finished; every remaining item is a parked lane that needs the owner (see the queue). Superseded on 2026-10-13: the owner authorized Batch 07 (#026–#030), at the top of this file.
 
 ## Stage 0 interview preparation (complete; interviewing not begun)
 
