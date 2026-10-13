@@ -25,9 +25,9 @@ research → number → risk list → implement → tests → adversarial audit 
 
 ## Now
 
-- **Step:** #029 Places by Choice (`places-by-choice`) is built, audited, squash-merged to `main`, and pushed (dossier: Implementation and Audit). Production check next.
-- **Next action:** verify #029 in production: the deploy, production's files against a local build, `.claude/qa/pbc-flow.cjs` against https://labs.eugeneyip.net in both engines, offline after one visit (`pbc-offline.cjs`'s checks on production, with the network cut), the homepage card, the smoke test, the daily check. Record it in the dossier, here, and in `.claude/FACTORY_STATE.md`, delete the local branch, then start discovery for #030 (the last the batch allows; never #031).
-- **Parked leads** for later discovery: exporting Word comments to a table; small-number suppression (both files and privacy, so only if clearly the strongest, given #027 and #028).
+- **Step:** discovery for #030, the last number the batch allows (never #031). #026 to #029 are shipped and verified in production.
+- **Next action:** discovery for #030 under the gate above. Domains so far: exams (#026), research data and privacy (#027), data protection (#028), allocation for groups (#029); a fifth in files and privacy would break the diversity rule, so look elsewhere (home, family, practice, outdoors, community). Screen candidates (the HOLDs in `CANDIDATES.md` that aren't files or privacy: volunteer rota, cross-country scoring, small-club year-end accounts, scene breakdown), take the strongest through A–G with current searches, and number one only if it survives. If none does, close the batch at four: strong evidence matters more than the count. Then the batch report.
+- **Parked leads:** exporting Word comments to a table; small-number suppression (both files and privacy).
 - **Research threads:** give each a bounded brief and write its findings to a file as it goes; if one stops, keep its partial leads, check them here, and carry on.
 ## Numbered experiments
 
@@ -36,7 +36,7 @@ research → number → risk list → implement → tests → adversarial audit 
 | 026 | Exam Timekeeper | exam-timekeeper | shipped 2026-10-13, verified in production | `026-exam-timekeeper.md` |
 | 027 | Transcript Pseudonyms | transcript-pseudonyms | shipped 2026-10-13, verified in production | `027-transcript-pseudonyms.md` |
 | 028 | Hidden Data Check | hidden-data-check | shipped 2026-10-13, verified in production | `028-hidden-data-check.md` |
-| 029 | Places by Choice | places-by-choice | shipped 2026-10-13; production check next | `029-places-by-choice.md` |
+| 029 | Places by Choice | places-by-choice | shipped 2026-10-13, verified in production | `029-places-by-choice.md` |
 
 ## Log
 
@@ -50,3 +50,4 @@ research → number → risk list → implement → tests → adversarial audit 
 - **2026-10-13:** #028 Hidden Data Check shipped (commit 02dc91e, deploy 38455167140) and verified in production: files byte-identical (67), 72 of 72 flow checks in both engines, offline, the homepage card, smoke 116/0, daily check 11/11. Discovery for #029 next.
 - **2026-10-13:** discovery for #029. The diversity rule set aside the files-and-privacy leads; allocation by ranked choices went through the gate with nine searches. Free options need Google (Alice Keeler's Scheduler: greedy rounds, broad permissions) or Moodle; the rest are paid, institutional, or code people write themselves; teachers sort paper slips by hand. #029 assigned to Places by Choice.
 - **2026-10-13:** #029 Places by Choice built and audited. The audit found eight defects, all fixed (a crash on a second file with fewer columns, the activities table on phones, a button wider than a phone at 200% text, a draw read from before it was typed, focus jumping on each new draw, rows cut without a word, a merged spelling's places box, literal byte-order marks in the source). Checked by exhaustive search (4,000 cases), an independent Hungarian solver (10 cases), 3,000 hostile inputs, 17 model checks, and 64 browser checks per engine; offline; the 30-page smoke test, 120 loads, 0 problems.
+- **2026-10-13:** #029 Places by Choice shipped (commit a9655d0, deploy 38462428804) and verified in production: files byte-identical (69), 64 of 64 flow checks in both engines, offline, the homepage card, smoke 120/0, daily check 11/11. Discovery for #030 next.

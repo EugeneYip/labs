@@ -9,13 +9,13 @@ The current state, kept short. `.claude/hooks/session-context.sh` prints this se
 - **Autonomy:** active
 - **Batch:** 07, Discovery Cycle 2: up to five new experiments, #026–#030, authorized by the owner on 2026-10-13. Never #031.
 - **Batch file:** `.claude/batch-07/BATCH_07.md`
-- **Experiment:** #029 Places by Choice (`places-by-choice`); dossier `.claude/batch-07/029-places-by-choice.md`.
-- **Lifecycle:** shipped (squash-merged to `main` and pushed); the production check is next. Audit record in the dossier.
-- **Where the work is:** `main`. The local branch `wip/029-places-by-choice` is merged and can be deleted once production is checked.
-- **Next action:** verify #029 in production and record it (the batch file's "Now" lists the checks), then start discovery for #030.
-- **Done and verified:** #026 Exam Timekeeper, #027 Transcript Pseudonyms, and #028 Hidden Data Check, shipped and verified in production on 2026-10-13.
+- **Experiment:** none numbered yet for #030 (the last the batch allows; never #031); discovery is under way. The last shipped is #029 Places by Choice (`places-by-choice`).
+- **Lifecycle:** discovery for #030 (research gate A–G before a number), or closing the batch at four if nothing survives.
+- **Where the work is:** `main`, which matches `origin/main`. No work-in-progress branch.
+- **Next action:** discovery for #030, as the batch file's "Now" describes.
+- **Done and verified:** #026 Exam Timekeeper, #027 Transcript Pseudonyms, #028 Hidden Data Check, and #029 Places by Choice, shipped and verified in production on 2026-10-13.
 - **Owner-blocked (parked; don't start them):** Fluency Check interviews or a pilot; the email to Open-Meteo; a no-account feedback address; regrouping Custody Calendar, Day Clock, and Frost Dates to Maintain; Firefox testing (it needs a permission rule). Details in `.claude/AUTONOMOUS_QUEUE.md`.
-- **After #029:** #030 the same way, then the batch report. Strong evidence matters more than the count: stopping short of #030 is fine, a weak experiment isn't.
+- **After #030:** the batch report. Strong evidence matters more than the count: stopping at four is fine, a weak fifth isn't.
 - **Autonomy values:** `active` (carry on without asking), `paused` (the owner asked to pause), `blocked` (everything left needs the owner), `complete` (the batch is finished and reported). Only `active` makes the Stop hook ask Claude to carry on, and never twice in a row.
 
 ## How to resume
@@ -34,7 +34,7 @@ This section is the current state. Everything below it is history: where an olde
 - **Still prohibited:** contacting anyone, posting or recruiting, spending money, accounts or backends, keyed services, analytics, weakening the constitution, permission workarounds (Firefox stays parked), and the parked owner lanes (Fluency Check interviews or pilot, the Open-Meteo email, a feedback email).
 - **Records:** `.claude/batch-07/BATCH_07.md` (the rules in short, the checkpoint under "Now", the log) and `.claude/batch-07/CANDIDATES.md` (every idea and its outcome). Each numbered experiment gets a dossier in `.claude/batch-07/`.
 - **Reconciled (2026-10-13):** `main` = `origin/main` = 3d08ca5, clean; production's 61 files byte-identical to a fresh build; the daily check passes 11 of 11 against production; every recent deploy succeeded.
-- **Shipped in Batch 07:** #026 Exam Timekeeper and #027 Transcript Pseudonyms (2026-10-13, both verified in production); #028 Hidden Data Check (2026-10-13, verified in production); #029 Places by Choice (2026-10-13, production check next).
+- **Shipped in Batch 07:** #026 Exam Timekeeper and #027 Transcript Pseudonyms (2026-10-13, both verified in production); #028 Hidden Data Check (2026-10-13, verified in production); #029 Places by Choice (2026-10-13, verified in production).
 - **Next action:** "Now" at the top of this file, then `.claude/batch-07/BATCH_07.md` under "Now".
 
 ## Shipped

@@ -102,7 +102,12 @@ Before the push, on the built site, in Chromium (Brave) and WebKit 27.2 through 
 
 ## Production verification
 
-(After the push.)
+2026-10-13, commit a9655d0, deploy run 38462428804 succeeded.
+- Production's 69 files are byte-identical to the local build of that commit.
+- `pbc-flow.cjs` against production: 64 of 64 in Chromium and in WebKit.
+- `pbc-offline-prod.cjs`: with the browser's network cut after one visit, an address never opened fails, while the page reloads, gives out the example's places, and reads a file, in both engines.
+- The homepage lists it under "Groups & community".
+- The 30-page smoke test on production: 120 page loads, 0 problems. The daily check: 11 of 11.
 
 ## Lifecycle recommendation
 
