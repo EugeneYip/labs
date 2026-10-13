@@ -53,7 +53,8 @@ The checkpoint for autonomous Labs batches. A new session must read `CLAUDE.md`,
     - Trip Board's damaged board is no longer hidden.
     - Rule for the next saved-format change: use a new key (old tabs would otherwise strip the new format at once).
   - P10 done (2026-10-12, commit 8d3fe38) and verified on GitHub (run 38325081794: 11 of 11). A daily check of the live site and Open-Meteo, `.github/workflows/daily-check.yml` with `.github/scripts/daily-check.ts`, type-checked with the site. Limit: GitHub stops scheduled runs after 60 days without a commit.
-  - **Next:** P11, dependencies and maintenance: vulnerabilities, unnecessary packages, warnings, and a clean-checkout build. GitHub Actions warns that `ubuntu-latest` moves to Ubuntu 26 from 2026-10-19.
+  - P11 done (2026-10-12), in `.claude/MAINTENANCE.md`. No vulnerabilities, no unused packages, actions current. A clean checkout builds byte-identically (61 of 61 files). Both workflows moved to `ubuntu-26.04` (commit b7f82f7), verified by a deploy and a daily check there.
+  - **Next:** P12, documentation and handoff: remove contradictions across CLAUDE.md, the constitution, this file, the portfolio files, the validation folders, the Product Log, and the queue.
 
 ## Stage 0 interview preparation (complete; interviewing not begun)
 

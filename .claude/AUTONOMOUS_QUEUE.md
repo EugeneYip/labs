@@ -30,8 +30,8 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ## Now
 
-- **Current:** P11, dependencies and maintenance.
-- **Next:** P12, documentation and handoff.
+- **Current:** P12, documentation and handoff.
+- **Next:** P13, evidence-based passive improvements.
 
 ## Parked lanes (human-blocked)
 
@@ -146,7 +146,12 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ### P11: Dependencies and maintenance
 
-- `[ ]` Vulnerabilities, unnecessary packages, warnings, and reproducibility from a clean checkout. **Input from P4:** the deploy log warns that `ubuntu-latest` moves to Ubuntu 26 from 2026-10-19.
+- `[x]` Done (2026-10-12). Details in `.claude/MAINTENANCE.md`.
+  - No vulnerabilities; all 10 direct packages used; every GitHub action on its latest major version.
+  - Two packages behind, neither needed: a patch to `@types/node`, and TypeScript 7.
+  - The deploy log's only warnings come from GitHub's own action and from git.
+  - A clean checkout builds the same: the deployed site's 61 files are byte-identical to a local build.
+  - **Changed:** both workflows name `ubuntu-26.04` instead of `ubuntu-latest` (commit b7f82f7). The deploy and the daily check both passed there, and the output is unchanged.
 
 ### P12: Documentation and handoff
 
@@ -157,6 +162,8 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 - `[ ]` Only fixes backed by the audits above.
 
 ## Log
+
+- **2026-10-12:** P11 done and verified. Deploy 38325368394 ran on Ubuntu 26.04.1 and succeeded, and production's 61 files are byte-identical to the local build. The daily check passed on 26.04 (run 38325487870, 11 of 11).
 
 - **2026-10-12:** P10 done and verified (commit 8d3fe38).
   - **On GitHub** (run 38325081794, started by hand): 11 of 11 checks pass, and the schedule is active.
