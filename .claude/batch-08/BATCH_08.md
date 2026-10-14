@@ -26,9 +26,9 @@ research → gate → number → `wip/<number>-<slug>` branch → principal fail
 
 ## Now
 
-- **Step:** #033 Captions Up chosen in the final diverse research pass (`CANDIDATES.md`, "Discovery for #033"); risk list in `033-captions-up.md`. Building on `wip/033-captions-up`.
-- **Next action:** on `wip/033-captions-up`, write `model.ts` (reading a script, splitting into captions) with tests, then the page.
-- **Numbered so far:** #030 Show Order (shipped); #031 New Classes (shipped); #032 Comp Desk (shipped); #033 Captions Up (building).
+- **Step:** #033 Captions Up shipped to `main` on 2026-10-14 after its audit (dossier log); production verification next.
+- **Next action:** verify #033 in production, record it, delete `wip/033-captions-up`; then #034 or the early close (section U), then the closeout (V).
+- **Numbered so far:** #030 Show Order (shipped); #031 New Classes (shipped); #032 Comp Desk (shipped); #033 Captions Up (shipped).
 
 ## Part A: Autonomous Ops v2.1
 
@@ -49,7 +49,7 @@ research → gate → number → `wip/<number>-<slug>` branch → principal fail
 | 030 | Show Order | show-order | shipped 2026-10-13, verified in production | `030-show-order.md` |
 | 031 | New Classes | new-classes | shipped 2026-10-14 (d9b99d8), verified in production | `031-new-classes.md` |
 | 032 | Comp Desk | comp-desk | shipped 2026-10-14 (b8f8a30; fix 52802a5), verified in production | `032-comp-desk.md` |
-| 033 | Captions Up | captions-up | building on `wip/033-captions-up` | `033-captions-up.md` |
+| 033 | Captions Up | captions-up | shipped 2026-10-14; production verification next | `033-captions-up.md` |
 
 ## Log
 
@@ -67,3 +67,4 @@ research → gate → number → `wip/<number>-<slug>` branch → principal fail
 - **2026-10-14:** #032 deployed (b8f8a30); production verification found an intermittent lost cell in Chromium. Three product causes (stale updates, stale reads at Enter, a delayed focus move) fixed on `wip/032-comp-desk-fix`, with regression checks; four clean runs on the build. Shipping the fix, then verifying production again.
 - **2026-10-14:** #032 verified in production after the fix (deploy 38524500178): byte-identical (75 files), the flow 107 of 107 in both engines on the live site, offline and the homepage card 7 of 7 in each, smoke 132 loads with no problems, daily check 11 of 11. Provisional lifecycle MAINTAIN. The nest visit planner put on HOLD (below); the final diverse research pass (section U) started: care and accessibility, outdoors and hobbies, small organisations' admin.
 - **2026-10-14:** the final diverse research pass (section U): care and accessibility, outdoors and hobby clubs, small organisations' admin. Admin and outdoors produced HOLDs only (matching subscription payments; running-club championship tables); care produced one narrow BUILD, checked here: **#033 assigned to Captions Up** (open captions for community theatre: the Fringe's own guidance prescribes the job; Captitles' free plan, an install and an account, is the strongest incumbent).
+- **2026-10-14:** #033 Captions Up built and audited on `wip/033-captions-up`: browser harness 96 of 96 in Chromium and WebKit, model checks 31 of 31, Python re-check 500 of 500, the cue script printed, the audience window reviewed at projector size. The audit found six product defects before any push, all fixed (dossier log). Shipped to `main` as one squashed commit.

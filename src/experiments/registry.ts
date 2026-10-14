@@ -328,6 +328,15 @@ export const experiments: readonly Experiment[] = [
     status: 'live',
     category: 'practice',
   },
+  {
+    number: 33,
+    slug: 'captions-up',
+    title: 'Captions Up',
+    summary: 'Turns a play’s script into open captions of two or three lines with each speaker’s name, for a company to check, correct, and run from a laptop at a performance, with the audience’s captions in a second window, without uploading the script.',
+    shipped: '2026-10-14',
+    status: 'live',
+    category: 'groups',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */
