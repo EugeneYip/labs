@@ -310,6 +310,15 @@ export const experiments: readonly Experiment[] = [
     status: 'live',
     category: 'groups',
   },
+  {
+    number: 31,
+    slug: 'new-classes',
+    title: 'New Classes',
+    summary: 'Mixes a year group into next year’s classes of the sizes you set, spreading what you choose as evenly as it can find, keeping apart the children you name, and giving each child a friend they chose wherever it finds a way, without uploading the children’s data.',
+    shipped: '2026-10-14',
+    status: 'live',
+    category: 'school',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */

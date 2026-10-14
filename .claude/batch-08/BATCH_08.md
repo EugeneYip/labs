@@ -26,8 +26,8 @@ research → gate → number → `wip/<number>-<slug>` branch → principal fail
 
 ## Now
 
-- **Step:** #031 New Classes chosen (`CANDIDATES.md`, "Discovery for #031"); risk list in `031-new-classes.md`. Building on `wip/031-new-classes`. Four research threads (nature volunteering, home and family life, arts and making, sports clubs) are gathering candidates for #032 onward into `research/f-*` to `i-*`.
-- **Next action:** on `wip/031-new-classes`, write `model.ts` (the rule, the hard-rule check, exact and searched placement) and `roster.ts` (reading a year group, matching friends' names) with tests (brute force, a Python reimplementation), then the page. When the threads report, record their outcomes in `CANDIDATES.md` on `main`-bound commits.
+- **Step:** #031 New Classes shipped to `main` on 2026-10-14 after its audit (dossier log); production verification next.
+- **Next action:** verify #031 in production (parity, the flow on the live site in both engines, offline and the homepage card, smoke, daily check), record it, delete `wip/031-new-classes`, then discovery for #032.
 - **Numbered so far:** #030 Show Order (shipped); #031 New Classes (building).
 
 ## Part A: Autonomous Ops v2.1
@@ -47,7 +47,7 @@ research → gate → number → `wip/<number>-<slug>` branch → principal fail
 | # | Title | Slug | Status | Dossier |
 |---|---|---|---|---|
 | 030 | Show Order | show-order | shipped 2026-10-13, verified in production | `030-show-order.md` |
-| 031 | New Classes | new-classes | building on `wip/031-new-classes` | `031-new-classes.md` |
+| 031 | New Classes | new-classes | shipped 2026-10-14; production verification next | `031-new-classes.md` |
 
 ## Log
 
@@ -57,3 +57,5 @@ research → gate → number → `wip/<number>-<slug>` branch → principal fail
 - **2026-10-13:** discovery round 1: five threads (early years and school, small producers, theatre, events and leisure, a broad scan) and direct checks. Rejected: heat-loss estimates, visual schedules, comparing name lists (a Batch 07 HOLD), rent division, Martyn's Law, silent auctions, average-quantity checks, alcohol duty relief, US childcare capacity, scene breakdown (a Batch 07 HOLD). HOLD: EYFS ratios, child performer hours, line notes, lifeguard rotations, TEN deadlines. Kept for later: class formation. **#030 assigned to Show Order** after a real studio line-up showed a careful hand order leaving 40 quick changes that a plain search removed.
 - **2026-10-13:** #030 Show Order shipped (commit a329ca8, deploy 38494521064) and verified in production: files byte-identical (71), the flow 102 of 102 and the audit in both engines on the live site, offline, the homepage card, smoke 124/0, daily check 11/11. The audit before the push found the page unresponsive at its limits (fixed: time slices, a separate progress bar, a resumable polish), two overclaims (narrowed), and print gaps (dancers per routine). Discovery for #031 next.
 - **2026-10-13:** discovery for #031: three of thread E's leads rejected (photo key, pitch marking, rotating lesson timetables); **#031 assigned to New Classes** (primary class formation: only paid tools, the cheapest a $199 trial-limited account service; children's data is the wedge), with the diversity cost stated. Four new threads started for #032 onward.
+- **2026-10-14:** the four round 2 threads stopped at the session's usage limit (2026-10-13) before gating anything; their scan notes are kept and the lanes parked (commit 7be6f93). #031's model and reader done on `wip/031-new-classes` (eda7c63); the first checks found a hang (counting placements without pruning on class minimums) and a weak last tiebreak, both fixed (dossier log).
+- **2026-10-14:** #031 New Classes built and audited on `wip/031-new-classes` (page milestone 5584238): browser harness 131 of 131 in Chromium and WebKit, model checks 53 of 53, Python recount 300 of 300, print to PDF, site smoke on the build. The audit found eleven product defects before any push, all fixed (dossier log). Shipped to `main` as one squashed commit.
