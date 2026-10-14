@@ -154,7 +154,7 @@ Also for the owner: the auto-memory note on batch authorization still says no ba
 
 - **Code:** the last code change is 9ca0a22 (#035 Collection Climate), deployed by run 38588208105 and verified in production.
 - **Repository:** `main` matches `origin/main`, with this closeout's commit on top (records only). No `wip/` branches; the working tree is clean.
-- **Live:** 35 experiments, #001–#035.
+- **Live:** 35 experiments, #001–#035. After the closing records' deploy (run 38654988248): live files byte-identical to a fresh build (81 files, 117 addresses); the daily check failed one of its 11 checks once, which one not captured, and passed 11 of 11 on each of the next three runs (a transient fault, most likely one of its three requests to outside services).
 - **Factory:** Autonomy set to `complete` in `FACTORY_STATE.md`; no further batch.
 
 ## Why the batch closes at #035
