@@ -26,9 +26,9 @@ research → gate → number → `wip/<number>-<slug>` branch → principal fail
 
 ## Now
 
-- **Step:** #030 Show Order passed the shipping gate (dossier) and is being shipped: squashed onto `main`, pushed, then verified in production.
-- **Next action:** verify #030 in production (the commit deployed, files byte-identical, the flow and audit on the live site in both engines, offline, the homepage card, the smoke test, the daily check), record it, delete `wip/030-show-order`, then discovery for #031 (class formation first, then thread E's leads; diversity in mind).
-- **Numbered so far:** #030 Show Order (shipping).
+- **Step:** #030 Show Order shipped and verified in production (dossier). Discovery for #031 begins.
+- **Next action:** discovery for #031: gate primary class formation (thread A's survivor) and the strongest of thread E's leads (pitch-marking plans, rotating lesson timetables, a numbered key for a group photo, a sprinkler audit), keeping diversity in mind (#030 is groups and events; #029, a Batch 07 allocation tool, makes class formation a second allocation tool), plus a fresh need-first round if those fail.
+- **Numbered so far:** #030 Show Order (shipped). #031 is the next number.
 
 ## Part A: Autonomous Ops v2.1
 
@@ -46,7 +46,7 @@ research → gate → number → `wip/<number>-<slug>` branch → principal fail
 
 | # | Title | Slug | Status | Dossier |
 |---|---|---|---|---|
-| 030 | Show Order | show-order | shipped 2026-10-13; production check in progress | `030-show-order.md` |
+| 030 | Show Order | show-order | shipped 2026-10-13, verified in production | `030-show-order.md` |
 
 ## Log
 
@@ -54,3 +54,4 @@ research → gate → number → `wip/<number>-<slug>` branch → principal fail
 - **2026-10-13:** Autonomous Ops v2.1 committed (e4ec9db) and deployed (run 38487235836): permissions for the routine lifecycle, writable records, the bounded QA runner, the Stop hook's loop guard (29 offline cases), session start checked. Production byte-identical; daily check 11 of 11.
 - **2026-10-13:** the Stop hook checked live: a routine stop with Autonomy `active` was turned into carrying on; the loop guard checked against the real transcript's format; 31 offline cases. Part A done.
 - **2026-10-13:** discovery round 1: five threads (early years and school, small producers, theatre, events and leisure, a broad scan) and direct checks. Rejected: heat-loss estimates, visual schedules, comparing name lists (a Batch 07 HOLD), rent division, Martyn's Law, silent auctions, average-quantity checks, alcohol duty relief, US childcare capacity, scene breakdown (a Batch 07 HOLD). HOLD: EYFS ratios, child performer hours, line notes, lifeguard rotations, TEN deadlines. Kept for later: class formation. **#030 assigned to Show Order** after a real studio line-up showed a careful hand order leaving 40 quick changes that a plain search removed.
+- **2026-10-13:** #030 Show Order shipped (commit a329ca8, deploy 38494521064) and verified in production: files byte-identical (71), the flow 102 of 102 and the audit in both engines on the live site, offline, the homepage card, smoke 124/0, daily check 11/11. The audit before the push found the page unresponsive at its limits (fixed: time slices, a separate progress bar, a resumable polish), two overclaims (narrowed), and print gaps (dancers per routine). Discovery for #031 next.

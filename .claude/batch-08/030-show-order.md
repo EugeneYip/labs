@@ -76,3 +76,16 @@ A dance-studio owner (or whoever runs a showcase, school concert, or variety sho
     - offline in Chromium and WebKit (the server stopped: plan, suggest, read a file);
     - a visual review at phone and desktop, light and dark;
     - after every fix: model 67 of 67, Python 397 of 397, the flow 102 of 102 in each engine, the audit 15 of 15 (Chromium) and 12 of 12 (WebKit).
+- **2026-10-13, shipped and verified in production.**
+  - **Ship:** commit a329ca8 (one squashed commit on `main`), deploy 38494521064 succeeded.
+  - **Production:**
+    - all 71 files byte-identical to a fresh build (102 addresses);
+    - the flow 102 of 102 in Chromium and in WebKit on the live site;
+    - the audit 15 of 15 and 12 of 12 (the real line-up, 400 routines searched in about 11 s with the page responsive, keyboard, print);
+    - offline with the network cut, in both engines (plan, suggest, read a file), the homepage card under Groups & community;
+    - the whole-site smoke test, 124 page loads, 0 problems; the daily check 11 of 11.
+  - `wip/030-show-order` deleted (nothing on it that `main` lacks).
+
+## Lifecycle (provisional, for the closeout)
+
+MAINTAIN, with promotion if studios use it. For: a named professional (the studio owner) with a recurring, error-prone job; no free tool found that suggests an order; a real line-up where a careful hand order left 40 quick changes that the search removed; verifiable correctness. Against: once or twice a year per studio; studio suites already check conflicts by hand; nobody has used it yet. Human validation that would settle it: a studio owner plans a real recital with it.
