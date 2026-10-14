@@ -26,9 +26,9 @@ research → gate → number → `wip/<number>-<slug>` branch → principal fail
 
 ## Now
 
-- **Step:** #031 New Classes shipped to `main` on 2026-10-14 after its audit (dossier log); production verification next.
-- **Next action:** verify #031 in production (parity, the flow on the live site in both engines, offline and the homepage card, smoke, daily check), record it, delete `wip/031-new-classes`, then discovery for #032.
-- **Numbered so far:** #030 Show Order (shipped); #031 New Classes (building).
+- **Step:** #031 New Classes shipped and verified in production (commit d9b99d8, deploy 38519276907). Discovery for #032.
+- **Next action:** discovery for #032: gate the strongest round 2 leads (`CANDIDATES.md`, "Round 2 threads"), from domains and interactions unlike #030 and #031; record each outcome in `CANDIDATES.md`.
+- **Numbered so far:** #030 Show Order (shipped); #031 New Classes (shipped).
 
 ## Part A: Autonomous Ops v2.1
 
@@ -47,7 +47,7 @@ research → gate → number → `wip/<number>-<slug>` branch → principal fail
 | # | Title | Slug | Status | Dossier |
 |---|---|---|---|---|
 | 030 | Show Order | show-order | shipped 2026-10-13, verified in production | `030-show-order.md` |
-| 031 | New Classes | new-classes | shipped 2026-10-14; production verification next | `031-new-classes.md` |
+| 031 | New Classes | new-classes | shipped 2026-10-14 (d9b99d8), verified in production | `031-new-classes.md` |
 
 ## Log
 
@@ -59,3 +59,4 @@ research → gate → number → `wip/<number>-<slug>` branch → principal fail
 - **2026-10-13:** discovery for #031: three of thread E's leads rejected (photo key, pitch marking, rotating lesson timetables); **#031 assigned to New Classes** (primary class formation: only paid tools, the cheapest a $199 trial-limited account service; children's data is the wedge), with the diversity cost stated. Four new threads started for #032 onward.
 - **2026-10-14:** the four round 2 threads stopped at the session's usage limit (2026-10-13) before gating anything; their scan notes are kept and the lanes parked (commit 7be6f93). #031's model and reader done on `wip/031-new-classes` (eda7c63); the first checks found a hang (counting placements without pruning on class minimums) and a weak last tiebreak, both fixed (dossier log).
 - **2026-10-14:** #031 New Classes built and audited on `wip/031-new-classes` (page milestone 5584238): browser harness 131 of 131 in Chromium and WebKit, model checks 53 of 53, Python recount 300 of 300, print to PDF, site smoke on the build. The audit found eleven product defects before any push, all fixed (dossier log). Shipped to `main` as one squashed commit.
+- **2026-10-14:** #031 New Classes verified in production (commit d9b99d8, deploy 38519276907): byte-identical (73 files), the flow 131 of 131 in both engines on the live site, offline and the homepage card 7 of 7 in each, smoke 128 loads with no problems, daily check 11 of 11. Provisional lifecycle MAINTAIN. Discovery for #032 next.
