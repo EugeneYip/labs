@@ -202,8 +202,8 @@ export default function CaptionsUp() {
                 the start of a line, or a name on a line of its own above the speech. Lines that continue a speech join it.
               </p>
               <p>
-                Stage directions in parentheses are left out; sounds in square brackets, such as <span className="font-mono text-ink">[Door slams]</span>, become captions of their own. Lines
-                starting Act, Scene, Prologue, Epilogue, or Interval become places to jump to.
+                Stage directions in parentheses are left out, and so are page numbers on lines of their own (from a pasted PDF); sounds in square brackets, such as{' '}
+                <span className="font-mono text-ink">[Door slams]</span>, become captions of their own. Lines starting Act, Scene, Prologue, Epilogue, or Interval become places to jump to.
               </p>
               <p>
                 Each speech is split into captions of at most two lines (or the number you choose) of at most 40 characters (or your number), following the Edinburgh Fringe’s advice of “around
@@ -409,7 +409,8 @@ function Prepare(props: { hasShow: boolean; onCancel?: () => void; onMake: (show
             {plural(result.captions.length, 'caption')} from {plural(result.script.items.filter((i) => i.kind === 'speech').length, 'speech', 'speeches')} and{' '}
             {plural(result.script.items.filter((i) => i.kind === 'sound').length, 'sound')}
             {result.script.scenes.length ? `, in ${plural(result.script.scenes.length, 'scene')}` : ''}
-            {result.script.dropped ? `; ${plural(result.script.dropped, 'stage direction')} left out` : ''}.
+            {result.script.dropped ? `; ${plural(result.script.dropped, 'stage direction')} left out` : ''}
+            {result.script.pages ? `; ${plural(result.script.pages, 'page number')} left out` : ''}.
           </p>
           <p className="text-dim">
             {result.script.speakers.length

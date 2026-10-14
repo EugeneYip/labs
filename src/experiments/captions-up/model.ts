@@ -48,6 +48,8 @@ export interface Script {
   items: Speech[]
   /** Stage directions left out. */
   dropped: number
+  /** Page numbers left out (lines like "12", "Page 12", or "- 12 -", from a pasted PDF). */
+  pages: number
   /** Speakers found, in order of first appearance. */
   speakers: string[]
 }
@@ -55,11 +57,11 @@ export interface Script {
 const tidy = (s: string) => s.replace(/\s+/g, ' ').trim()
 
 /** A name as scripts write it: one to four words, starting with a letter. */
-const NAME = "[\\p{Lu}\\p{N}][\\p{L}\\p{N}'’.\\-]*(?: [\\p{L}\\p{N}'’.\\-]+){0,3}"
+const NAME = "[\\p{Lu}\\p{N}][\\p{L}\\p{N}'’.\\-]*(?: [\\p{L}\\p{N}'’.#\\-]+){0,3}"
 const HEADING = /^(act|scene|prologue|epilogue|interval|intermission)\b[\s\w.:,–—-]*$/i
 const COLON = new RegExp(`^(${NAME})\\s*:\\s*(.*)$`, 'u')
 // Names in capitals, perhaps with a number first (1ST WITCH, 2ND OFFICER).
-const CAPS = "(?:\\p{N}+\\p{Lu}{0,2} )?\\p{Lu}[\\p{Lu}'’\\-]+(?: [\\p{Lu}'’\\-]+){0,3}"
+const CAPS = "(?:\\p{N}+\\p{Lu}{0,2} )?\\p{Lu}[\\p{Lu}'’\\-]+(?: (?:[\\p{Lu}'’\\-]+|#?\\p{N}+)){0,3}"
 const CAPS_DOT = new RegExp(`^(${CAPS})\\s*\\.\\s+(.+)$`, 'u')
 const CAPS_SPACE = new RegExp(`^(${CAPS})\\s+(?=.*\\p{Ll})(.+)$`, 'u')
 const CAPS_ALONE = new RegExp(`^(${CAPS.replace("'’\\-]+(?:", "'’.\\-]+(?:")})(?:\\s*\\([^)]*\\))?\\s*:?$`, 'u')
@@ -74,6 +76,7 @@ export function readScript(text: string): Script {
   const items: Speech[] = []
   const speakers: string[] = []
   let dropped = 0
+  let pages = 0
   let scene = -1
   let current: Speech | null = null
   let inDirection = false
@@ -98,6 +101,10 @@ export function readScript(text: string): Script {
     }
     if (!line) {
       close()
+      continue
+    }
+    if (/^(?:page\s*)?\d{1,4}$/i.test(line) || /^[-–—]\s*\d{1,4}\s*[-–—]$/.test(line) || /^page \d{1,4} of \d{1,4}$/i.test(line)) {
+      pages++
       continue
     }
     if (HEADING.test(line) && line.length <= 60) {
@@ -135,7 +142,7 @@ export function readScript(text: string): Script {
     else current = { kind: 'speech', speaker: '', text: cleaned, scene }
   }
   close()
-  return { scenes, items, dropped, speakers }
+  return { scenes, items, dropped, pages, speakers }
 }
 
 /** Breaks text into lines of at most `width` characters, between words (a longer word has a line of its own). */
