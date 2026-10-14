@@ -30,8 +30,8 @@ research → gate → number → `wip/<number>-<slug>` → pre-build failure rev
 
 ## Now
 
-- **Step:** #035 Collection Climate shipped and verified in production (2026-10-14); the decision for #036 next.
-- **Next action:** decide #036 from round 3 (`CANDIDATES.md`, "Discovery for #036"): the horse flu checker, the library weeding thread's modest lead, and the judging-panels fallback, against the batch's gate (A–H); if none clears it, a final broad pass in areas not yet searched, then the early-close test.
+- **Step:** the decision for #036 made (2026-10-14): no candidate from round 3 clears the gate (`CANDIDATES.md`, "Decision for #036"). The final broad pass is under way: threads P (route cards for walking expeditions, `research/p-route-cards.md`) and Q (wildlife records into the national schemes, `research/q-wildlife-records.md`), with the main session's own screens in `research/m-round3-main.md`.
+- **Next action:** when threads P and Q report, gate any lead they find (A–H) and build it as #036 if it clears; otherwise run the early-close test (the final pass done, HOLDs revisited, why the remaining candidates fail, why more search has diminishing value) and write `.claude/batch-09/CLOSEOUT.md` (the 19 items), then set Autonomy to complete.
 - **Numbered so far:** #034 Deputyship Accounts (shipped 2026-10-14, verified in production); #035 Collection Climate (shipped 2026-10-14, verified in production). #036 is the next number.
 
 ## Numbered experiments
