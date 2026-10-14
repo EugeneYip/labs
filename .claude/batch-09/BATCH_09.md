@@ -30,15 +30,16 @@ research → gate → number → `wip/<number>-<slug>` → pre-build failure rev
 
 ## Now
 
-- **Step:** discovery for #035.
-- **Next action:** gate the open lead (combining judges' scores: awards, grant panels, poster prizes, science fairs) against the batch's bar and the portfolio, and run a second round of need-first threads in domains round 1 didn't cover; record outcomes in `CANDIDATES.md`, and number #035 only after a lead passes the gate.
-- **Numbered so far:** #034 Deputyship Accounts (shipped 2026-10-14, verified in production). #035 is the next number.
+- **Step:** #035 Collection Climate, being built on `wip/035-collection-climate` (model first).
+- **Next action:** build `src/experiments/collection-climate/` (the logger reader, the guideline checks, the 24-hour windows, the monthly table, the graph) with its checks, as the dossier's risk list says; then the page, the audit, and the ship. Candidates after it: the horse flu vaccination checker (needs the bodies' rules read), judging panels (a fallback).
+- **Numbered so far:** #034 Deputyship Accounts (shipped 2026-10-14, verified in production); #035 Collection Climate (building). #036 is the next number.
 
 ## Numbered experiments
 
 | # | Title | Slug | Status | Dossier |
 |---|---|---|---|---|
 | 034 | Deputyship Accounts | deputyship-accounts | shipped 2026-10-14 (8f0b4a7), verified in production | `034-deputyship-accounts.md` |
+| 035 | Collection Climate | collection-climate | building | `035-collection-climate.md` |
 
 ## Log
 
@@ -46,3 +47,4 @@ research → gate → number → `wip/<number>-<slug>` → pre-build failure rev
 - **2026-10-14:** discovery round 1: five bounded threads (trades and small offices; household administration; makers and hobbies; creative production and teaching; rule-created jobs) and direct checks here (Harris matrices, league fixtures, archives' fixity checks, judging panels). Rejected: Harris matrices (Phaser, the field's own free browser tool), league fixtures with shared grounds (the FA's and ECB's free systems), Construction Act payment dates (legal-stakes date arithmetic), and the threads' weaker leads. Open: combining judges' scores (a gap, with a Penn State paper showing the job). **#034 assigned to Deputyship Accounts:** the money section of a lay deputy's yearly report to the OPG, from the bank's own downloads; the rule, the online report's types (from its public source code), the scale (64,456 deputyships), and deputies' accounts of the hours it takes were all checked here.
 - **2026-10-14:** #034 Deputyship Accounts built and audited on `wip/034-deputyship-accounts` (milestones c286dd2, 50a4a50): model checks 130 of 130, an independent Python re-check 32 of 32, the browser harness 166 of 166 in Chromium and WebKit, the site smoke test on the build 140 loads with no problems. The audit found twelve product defects before any push, all fixed (dossier log). Shipping as one squashed commit.
 - **2026-10-14:** #034 Deputyship Accounts shipped (8f0b4a7, deploy 38572132880) and verified in production: byte-identical (79 files), the flow 166 of 166 in both engines on the live site, offline and the homepage card 8 of 8 in each (WebKit's first run after the deploy timed out on its first offline reload, the known first-visit window; 4 of 5 runs passed), smoke 140 loads with no problems, daily check 11 of 11. Provisional lifecycle MAINTAIN. Discovery for #035 next.
+- **2026-10-14:** discovery for #035: five more threads (volunteer-run services; sports clubs' operations; archives, museums, and heritage; care and support paperwork; animals and land), three stopped early when the session's shared web-search allowance ran out. Two HOLDs revisited (running-club championships lean REJECT; lifeguard rotations REJECT). **#035 assigned to Collection Climate:** a climate report from temperature and humidity loggers' files against the Bizot guideline or the site's own band; the loggers' software gives graphs, the guideline's figures come from paid services (Conserv Pro $95 a month, eClimateNotebook about $120–180 a year) or a macro workbook limited to 8,000 readings. Next in line: a horse flu vaccination checker against competition rules; judging panels as a fallback.
