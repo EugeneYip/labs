@@ -26,9 +26,9 @@ research → gate → number → `wip/<number>-<slug>` branch → principal fail
 
 ## Now
 
-- **Step:** Part A, Autonomous Ops v2.1, is done (table below). Discovery for #030 has begun.
-- **Next action:** need-first discovery for #030: broad research lanes for jobs, failure modes, rules, and repeated manual work outside files and privacy; every serious candidate through the gate in `CANDIDATES.md`.
-- **Numbered so far:** none. #030 is the next number.
+- **Step:** #030 Show Order chosen (`CANDIDATES.md`, "Decision for #030"); risk list in `030-show-order.md`. Building on `wip/030-show-order`.
+- **Next action:** on `wip/030-show-order`, write `model.ts` (reading routines, the gap count, the search, the lower bound) with its tests (brute force, a separate Python counter, the real line-up), then the page.
+- **Numbered so far:** #030 Show Order (building). Leads for #031 onward are in `CANDIDATES.md` (class formation first, then thread E's).
 
 ## Part A: Autonomous Ops v2.1
 
@@ -46,9 +46,11 @@ research → gate → number → `wip/<number>-<slug>` branch → principal fail
 
 | # | Title | Slug | Status | Dossier |
 |---|---|---|---|---|
+| 030 | Show Order | show-order | building on `wip/030-show-order` | `030-show-order.md` |
 
 ## Log
 
 - **2026-10-13:** reconciled. Batch 07 is complete (closed at four, #026–#029, all live). `main` = `origin/main` = c157fe5, clean, no WIP branch, no Batch 08 work begun. Production's 69 files are byte-identical to a fresh build (99 addresses, `.claude/qa/prod-parity.mjs`, new); the daily check passes 11 of 11 against production, and GitHub's last scheduled run (38446088538) passed; every recent deploy succeeded. Batch 08 records created.
 - **2026-10-13:** Autonomous Ops v2.1 committed (e4ec9db) and deployed (run 38487235836): permissions for the routine lifecycle, writable records, the bounded QA runner, the Stop hook's loop guard (29 offline cases), session start checked. Production byte-identical; daily check 11 of 11.
 - **2026-10-13:** the Stop hook checked live: a routine stop with Autonomy `active` was turned into carrying on; the loop guard checked against the real transcript's format; 31 offline cases. Part A done.
+- **2026-10-13:** discovery round 1: five threads (early years and school, small producers, theatre, events and leisure, a broad scan) and direct checks. Rejected: heat-loss estimates, visual schedules, comparing name lists (a Batch 07 HOLD), rent division, Martyn's Law, silent auctions, average-quantity checks, alcohol duty relief, US childcare capacity, scene breakdown (a Batch 07 HOLD). HOLD: EYFS ratios, child performer hours, line notes, lifeguard rotations, TEN deadlines. Kept for later: class formation. **#030 assigned to Show Order** after a real studio line-up showed a careful hand order leaving 40 quick changes that a plain search removed.
