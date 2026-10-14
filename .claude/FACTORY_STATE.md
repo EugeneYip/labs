@@ -6,12 +6,12 @@ The checkpoint for autonomous Labs work. Read it down to the "History" heading; 
 
 The current state, kept short. `.claude/hooks/session-context.sh` prints this section at the start of every session and after the context is compacted, and `.claude/hooks/stop-continue.sh` reads **Autonomy** and **Next action** from it, so keep those two lines' wording as they are.
 
-- **Autonomy:** active
-- **Batch:** Batch 09 (Discovery Cycle 4), authorized by the owner on 2026-10-14: up to five new experiments, #034–#038, an upper limit, not a quota. Never #039; no further batch.
+- **Autonomy:** complete
+- **Batch:** Batch 09 (Discovery Cycle 4), authorized by the owner on 2026-10-14, is complete: closed early on 2026-10-14 with two experiments, #034 and #035; #036–#038 not assigned; never #039. No further batch without the owner's authorization. Report: `.claude/batch-09/CLOSEOUT.md`.
 - **Batch file:** `.claude/batch-09/BATCH_09.md` (the rules in short, the checkpoint, the log); every idea and its outcome in `.claude/batch-09/CANDIDATES.md`.
-- **Experiment:** none being built; the decision for #036 next (#035 Collection Climate shipped and verified 2026-10-14).
-- **Where the work is:** `main` (records); a `wip/036-<slug>` branch once #036 is chosen.
-- **Next action:** finish the final broad pass (threads P and Q), then build #036 or close the batch early, as the batch file's "Now" says.
+- **Experiment:** none being built.
+- **Where the work is:** `main`; no `wip/` branches.
+- **Next action:** none: Batch 09 is complete and reported (`.claude/batch-09/CLOSEOUT.md`); wait for the owner.
 - **Done and verified:** Batch 09: #035 Collection Climate (ship 9ca0a22, deploy 38588208105, verified in production 2026-10-14); #034 Deputyship Accounts (ship 8f0b4a7, deploy 38572132880, verified in production 2026-10-14); reconciled on 2026-10-14 (4c71d4b; production byte-identical, 77 files; daily check 11 of 11). Batch 08: #033 Captions Up (ship 97833cd, fix d289161, deploy 38536194341, verified in production 2026-10-14); #032 Comp Desk (ship b8f8a30, fix 52802a5, deploy 38524500178, verified 2026-10-14); #031 New Classes (d9b99d8, deploy 38519276907, verified 2026-10-14); #030 Show Order (a329ca8, deploy 38494521064, verified 2026-10-13); Autonomous Ops v2.1 (e4ec9db, deploy 38487235836; the Stop hook checked live). Batch 07 is complete: #026–#029 live and verified.
 - **Owner-blocked (parked; don't start them):**
   - Fluency Check interviews or a pilot;
@@ -23,9 +23,10 @@ The current state, kept short. `.claude/hooks/session-context.sh` prints this se
   - an automation permission to test #028 with workbooks saved by Excel itself;
   - Batch 08: the nest visit planner (permission to download two CC0 data files, and a sourced last-visit rule per species);
   - Batch 08: human validation of #031 New Classes, then #033 Captions Up;
-  - a private copy of `.claude/qa/` (the QA harnesses live only on this machine).
+  - a private copy of `.claude/qa/` (the QA harnesses live only on this machine);
+  - Batch 09: human validation of #034 Deputyship Accounts, then #035 Collection Climate.
 
-  Details are in `.claude/AUTONOMOUS_QUEUE.md` and the Batch 08 closeout.
+  Details are in `.claude/AUTONOMOUS_QUEUE.md` and the Batch 08 and Batch 09 closeouts.
 - **Autonomy values:** `active` (carry on without asking), `paused` (the owner asked to pause), `blocked` (everything left needs the owner), `complete` (the batch is finished and reported). Only `active` makes the Stop hook ask Claude to carry on, and it doesn't ask again until Claude has used a tool since it last asked (and at most 3 times in 10 minutes).
 
 ## How to resume

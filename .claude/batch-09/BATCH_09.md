@@ -30,8 +30,8 @@ research → gate → number → `wip/<number>-<slug>` → pre-build failure rev
 
 ## Now
 
-- **Step:** the decision for #036 made (2026-10-14): no candidate from round 3 clears the gate (`CANDIDATES.md`, "Decision for #036"). The final broad pass is under way: threads P (route cards for walking expeditions, `research/p-route-cards.md`) and Q (wildlife records into the national schemes, `research/q-wildlife-records.md`), with the main session's own screens in `research/m-round3-main.md`.
-- **Next action:** when threads P and Q report, gate any lead they find (A–H) and build it as #036 if it clears; otherwise run the early-close test (the final pass done, HOLDs revisited, why the remaining candidates fail, why more search has diminishing value) and write `.claude/batch-09/CLOSEOUT.md` (the 19 items), then set Autonomy to complete.
+- **Step:** Batch 09 is complete (2026-10-14): closed early with two experiments, #034 and #035, both live and verified in production; #036–#038 not assigned. The report is `CLOSEOUT.md`.
+- **Next action:** none. No further batch without the owner's authorization; the owner-blocked items are in `CLOSEOUT.md` (item 18).
 - **Numbered so far:** #034 Deputyship Accounts (shipped 2026-10-14, verified in production); #035 Collection Climate (shipped 2026-10-14, verified in production). #036 is the next number.
 
 ## Numbered experiments
@@ -39,7 +39,8 @@ research → gate → number → `wip/<number>-<slug>` → pre-build failure rev
 | # | Title | Slug | Status | Dossier |
 |---|---|---|---|---|
 | 034 | Deputyship Accounts | deputyship-accounts | shipped 2026-10-14 (8f0b4a7), verified in production | `034-deputyship-accounts.md` |
-| 035 | Collection Climate | collection-climate | building | `035-collection-climate.md` |
+| 035 | Collection Climate | collection-climate | shipped 2026-10-14 (9ca0a22), verified in production | `035-collection-climate.md` |
+| 036–038 | — | — | not assigned (the batch closed early) | — |
 
 ## Log
 
@@ -48,3 +49,6 @@ research → gate → number → `wip/<number>-<slug>` → pre-build failure rev
 - **2026-10-14:** #034 Deputyship Accounts built and audited on `wip/034-deputyship-accounts` (milestones c286dd2, 50a4a50): model checks 130 of 130, an independent Python re-check 32 of 32, the browser harness 166 of 166 in Chromium and WebKit, the site smoke test on the build 140 loads with no problems. The audit found twelve product defects before any push, all fixed (dossier log). Shipping as one squashed commit.
 - **2026-10-14:** #034 Deputyship Accounts shipped (8f0b4a7, deploy 38572132880) and verified in production: byte-identical (79 files), the flow 166 of 166 in both engines on the live site, offline and the homepage card 8 of 8 in each (WebKit's first run after the deploy timed out on its first offline reload, the known first-visit window; 4 of 5 runs passed), smoke 140 loads with no problems, daily check 11 of 11. Provisional lifecycle MAINTAIN. Discovery for #035 next.
 - **2026-10-14:** discovery for #035: five more threads (volunteer-run services; sports clubs' operations; archives, museums, and heritage; care and support paperwork; animals and land), three stopped early when the session's shared web-search allowance ran out. Two HOLDs revisited (running-club championships lean REJECT; lifeguard rotations REJECT). **#035 assigned to Collection Climate:** a climate report from temperature and humidity loggers' files against the Bizot guideline or the site's own band; the loggers' software gives graphs, the guideline's figures come from paid services (Conserv Pro $95 a month, eClimateNotebook about $120–180 a year) or a macro workbook limited to 8,000 readings. Next in line: a horse flu vaccination checker against competition rules; judging panels as a fallback.
+- **2026-10-14:** #035 Collection Climate built on `wip/035-collection-climate`: the model (brute force found readings at equal times not sharing a 24-hour window, fixed), the page, the browser flow, 7 defects found by the main session and 14 by an independent audit, all fixed; model checks 96, an independent Python re-check 13, the flow 156 per engine. Shipped (9ca0a22, deploy 38588208105) and verified in production: byte-identical (81 files, 117 addresses), the flow 156 of 156 in both engines on the live site, offline and the homepage card 7 of 7 in each, the smoke test 144 loads, the daily check 11 of 11. `wip/035-collection-climate` deleted.
+- **2026-10-14:** discovery for #036 (round 3) and the final broad pass: the main session's screens (plate layouts, drivers' hours, DNA match clusters, a landlord's compliance dates, days abroad), round 2's horse flu lead with the bodies' 2026 rules read, and threads L (households' tariffs), N (food labels), O (CREW weeding), P (route cards), and Q (wildlife records); P and Q were cut off twice by the usage limit and closed on their notes. No candidate clears the gate (`CANDIDATES.md`, "Decision for #036" and "The final broad pass").
+- **2026-10-14:** the early-close test passed and the batch closed at #035: `CLOSEOUT.md` (the 19 items, and why the batch closes). Autonomy set to `complete`.

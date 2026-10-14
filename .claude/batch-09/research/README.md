@@ -22,3 +22,5 @@ Round 3 (discovery for #036, started while #035's audit ran; threads of 10 searc
 - `l-energy-data.md`: households' smart-meter data against tariffs (thread)
 - `n-food-labels.md`: labels for food prepacked for direct sale, Natasha's Law (thread)
 - `o-library-weeding.md`: weeding a library's collection by the CREW method (thread)
+- `p-route-cards.md`: route cards for walking expeditions, DofE above all (thread; cut off twice by the usage limit, closed by the main session on its notes)
+- `q-wildlife-records.md`: wildlife records into iRecord and the county recorders (thread; the same)

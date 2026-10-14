@@ -94,6 +94,17 @@ No candidate clears the gate; nothing numbered.
 - **Library weeding by CREW: REJECT (round 2's decision stands, with new reasons recorded).** For: no free tool applies CREW's per-Dewey age-and-use rule to an export, and the manual vanished from TSLAC in 2025. Against, decisively: the evidence of pain is indirect (how-to guides saying "requires Excel skills", the manual's own Excel instructions, one forum question about where the manual went), the largest audience (US schools on Destiny) has a free age-only analysis where it works, the human half (MUSTIE, condition) can't come from a file, the formula table is under CC BY-NC-ND and needs checking against page images, a weeding-list generator from a public site risks being drawn into book-removal disputes (*Little v. Llano County* cites CREW), and it would be a third export-reading report in a row after #034 and #035 (portfolio overfitting). Reopen on direct evidence from small libraries that the spreadsheet step is the burden.
 - **Judging panels (combining judges' scores): REJECT for this batch.** The method is sound (the simulation above) and the gap real, but it sits in the event and organisation cluster the brief asks Batch 09 to move away from, the job comes once a year per event, and the method itself is contested (z-scores, a judge-plus-entry model, pairwise comparison). It stays a candidate for a later batch that allows the cluster.
 
+### The final broad pass (2026-10-14, after the decision for #036)
+
+Areas not yet searched in this batch, outside its clusters: a small landlord's compliance dates, counting days abroad, route cards for walking expeditions (thread P), and wildlife records into the national schemes (thread Q). Threads P and Q were each cut off twice by the session's usage limit; the second time they had written their notes as they went, and the main session closed both lanes on those notes (`research/p-route-cards.md`, `research/q-wildlife-records.md`).
+
+- **Route cards for walking expeditions (DofE, Scouts, schools, walking groups): REJECT.** Every DofE participant has OS mapping inside the DofE's own system since June 2022 (*verified*, OS and DofE pages), with a route card tool (create, edit, print as PDF) and GPX import and export (*source claim*, the eDofE help centre's article titles; its pages refuse fetchers); route cards are a taught, signed-off exercise; no friction surfaced.
+- **Wildlife records into iRecord and county recorders' formats: REJECT.** iRecord's importer maps any headings and hands back the failed rows to fix (*source claim*), and the Biological Records Centre's Record Cleaner online (September 2025, free, *verified*) checks dates, grid references, and names against the UK Species Inventory and the schemes' own plausibility rules; what's left is per-recipient formatting with no measure of its cost, and the species list's licence is unstated.
+- **A small landlord's compliance dates: REJECT** (a handful of fixed dates; the Renters' Rights Act still changing them; `research/m-round3-main.md`).
+- **Counting days abroad (Schengen, the UK residence test): REJECT** (the Commission's own calculator; HMRC's indicator and tax-advice ground).
+
+Result: no lead from the final pass; with the decision for #036 above, the batch closes at #035 (`CLOSEOUT.md`).
+
 ## HOLDs revisited (Batch 09)
 
 Only where new evidence could settle a HOLD here, without downloads, contact, or a new permission:
