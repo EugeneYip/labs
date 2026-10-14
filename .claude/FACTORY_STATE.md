@@ -9,10 +9,10 @@ The current state, kept short. `.claude/hooks/session-context.sh` prints this se
 - **Autonomy:** active
 - **Batch:** Batch 09 (Discovery Cycle 4), authorized by the owner on 2026-10-14: up to five new experiments, #034–#038, an upper limit, not a quota. Never #039; no further batch.
 - **Batch file:** `.claude/batch-09/BATCH_09.md` (the rules in short, the checkpoint, the log); every idea and its outcome in `.claude/batch-09/CANDIDATES.md`.
-- **Experiment:** #034 Deputyship Accounts (`deputyship-accounts`), being built; dossier `.claude/batch-09/034-deputyship-accounts.md`.
-- **Where the work is:** `wip/034-deputyship-accounts` (local, never pushed) for the experiment; `main` for records.
-- **Next action:** ship #034 (squash onto `main`, push, verify production), as the batch file's "Now" says; then discovery for #035.
-- **Done and verified:** Batch 09 reconciled on 2026-10-14 (4c71d4b; production byte-identical, 77 files; daily check 11 of 11). Batch 08: #033 Captions Up (ship 97833cd, fix d289161, deploy 38536194341, verified in production 2026-10-14); #032 Comp Desk (ship b8f8a30, fix 52802a5, deploy 38524500178, verified 2026-10-14); #031 New Classes (d9b99d8, deploy 38519276907, verified 2026-10-14); #030 Show Order (a329ca8, deploy 38494521064, verified 2026-10-13); Autonomous Ops v2.1 (e4ec9db, deploy 38487235836; the Stop hook checked live). Batch 07 is complete: #026–#029 live and verified.
+- **Experiment:** none being built; #035 is next.
+- **Where the work is:** `main`, which matches `origin/main`; no `wip/` branch.
+- **Next action:** discovery for #035, as the batch file's "Now" says.
+- **Done and verified:** Batch 09: #034 Deputyship Accounts (ship 8f0b4a7, deploy 38572132880, verified in production 2026-10-14); reconciled on 2026-10-14 (4c71d4b; production byte-identical, 77 files; daily check 11 of 11). Batch 08: #033 Captions Up (ship 97833cd, fix d289161, deploy 38536194341, verified in production 2026-10-14); #032 Comp Desk (ship b8f8a30, fix 52802a5, deploy 38524500178, verified 2026-10-14); #031 New Classes (d9b99d8, deploy 38519276907, verified 2026-10-14); #030 Show Order (a329ca8, deploy 38494521064, verified 2026-10-13); Autonomous Ops v2.1 (e4ec9db, deploy 38487235836; the Stop hook checked live). Batch 07 is complete: #026–#029 live and verified.
 - **Owner-blocked (parked; don't start them):**
   - Fluency Check interviews or a pilot;
   - the email to Open-Meteo;
