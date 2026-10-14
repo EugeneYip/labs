@@ -26,8 +26,8 @@ research → gate → number → `wip/<number>-<slug>` branch → principal fail
 
 ## Now
 
-- **Step:** #032 Comp Desk shipped to `main` on 2026-10-14 after its audit (dossier log); production verification next.
-- **Next action:** verify #032 in production (parity, the flow on the live site in both engines, offline and the homepage card, smoke, daily check), record it, delete `wip/032-comp-desk`, then #033 (the nest visit planner, queued in `CANDIDATES.md`).
+- **Step:** #032 Comp Desk shipped and verified in production (ship b8f8a30; a post-ship fix 52802a5, deploy 38524500178). #033: the nest visit planner on HOLD; the final diverse research pass under way (threads m, n, o).
+- **Next action:** gate the final pass's strongest leads (`research/m-care.md`, `n-outdoors.md`, `o-admin.md`) in `CANDIDATES.md`; BUILD #033 if one clears the bar, otherwise close early per section U and write the closeout (V).
 - **Numbered so far:** #030 Show Order (shipped); #031 New Classes (shipped); #032 Comp Desk (shipped).
 
 ## Part A: Autonomous Ops v2.1
@@ -48,7 +48,7 @@ research → gate → number → `wip/<number>-<slug>` branch → principal fail
 |---|---|---|---|---|
 | 030 | Show Order | show-order | shipped 2026-10-13, verified in production | `030-show-order.md` |
 | 031 | New Classes | new-classes | shipped 2026-10-14 (d9b99d8), verified in production | `031-new-classes.md` |
-| 032 | Comp Desk | comp-desk | shipped 2026-10-14; production verification next | `032-comp-desk.md` |
+| 032 | Comp Desk | comp-desk | shipped 2026-10-14 (b8f8a30; fix 52802a5), verified in production | `032-comp-desk.md` |
 
 ## Log
 
@@ -64,3 +64,4 @@ research → gate → number → `wip/<number>-<slug>` branch → principal fail
 - **2026-10-14:** discovery for #032: three threads (nest visits, climbing comps, label sheets) and direct checks. **#032 assigned to Comp Desk** (scoring one-day climbing comps from paper cards: a verified desk job with a deadline, only iPhone self-scoring apps and spreadsheets as alternatives). Labels rejected (Batch 07's printing family; Avery's free tool; print fragility). The nest visit planner is BUILD-worthy now that open species data was found (CC0 and no-copyright datasets), queued for #033. Kiln schedules, biotic indices, sprinkler audits and the round 2 scan leads rejected; choir risers held.
 - **2026-10-14:** #032 Comp Desk built and audited on `wip/032-comp-desk` (page milestone 4122d4c): browser harness 103 of 103 in Chromium and WebKit, model checks 46 of 46, Python recount 2,337 of 2,337, podiums and results printed to PDF, site smoke on the build. The audit found eight product defects before any push, all fixed (dossier log). Shipped to `main` as one squashed commit.
 - **2026-10-14:** #032 deployed (b8f8a30); production verification found an intermittent lost cell in Chromium. Three product causes (stale updates, stale reads at Enter, a delayed focus move) fixed on `wip/032-comp-desk-fix`, with regression checks; four clean runs on the build. Shipping the fix, then verifying production again.
+- **2026-10-14:** #032 verified in production after the fix (deploy 38524500178): byte-identical (75 files), the flow 107 of 107 in both engines on the live site, offline and the homepage card 7 of 7 in each, smoke 132 loads with no problems, daily check 11 of 11. Provisional lifecycle MAINTAIN. The nest visit planner put on HOLD (below); the final diverse research pass (section U) started: care and accessibility, outdoors and hobbies, small organisations' admin.
