@@ -9,9 +9,9 @@ The current state, kept short. `.claude/hooks/session-context.sh` prints this se
 - **Autonomy:** active
 - **Batch:** 08, Discovery Cycle 3, authorized by the owner on 2026-10-13 for up to five new experiments, #030–#034 (never #035, and no further batch). An upper limit, not a quota. Part A, Autonomous Ops v2.1, comes before discovery.
 - **Batch file:** `.claude/batch-08/BATCH_08.md`; every idea and its outcome in `.claude/batch-08/CANDIDATES.md`.
-- **Experiment:** none in progress. Discovery for #032 (`.claude/batch-08/CANDIDATES.md`).
-- **Where the work is:** `main`, which matches `origin/main`; no `wip/` branch.
-- **Next action:** discovery for #032: gate the strongest round 2 leads (`CANDIDATES.md`, "Round 2 threads", and `.claude/batch-08/research/f-*` to `i-*`), choosing from domains and interactions unlike #030 and #031 (both arrangement tools); REJECT, HOLD, or BUILD, recorded in `CANDIDATES.md`.
+- **Experiment:** #032 Comp Desk (`comp-desk`): scoring a one-day climbing competition from paper scorecards at one desk. Chosen 2026-10-14; dossier `.claude/batch-08/032-comp-desk.md`.
+- **Where the work is:** `wip/032-comp-desk` (local, never pushed): switch to it; its copy of this file is the current one. `main` matches `origin/main`.
+- **Next action:** on `wip/032-comp-desk`, `model.ts` (the four formats, ranking with shared places, card checks) with tests (hand cases from the rules, a Python reimplementation, brute-force ranking), then the page; the risk list is in the dossier. The nest visit planner is queued for #033 (`CANDIDATES.md`).
 - **Done and verified:** #031 New Classes (commit d9b99d8, deploy 38519276907, verified in production 2026-10-14); #030 Show Order (commit a329ca8, deploy 38494521064, verified in production 2026-10-13); the Batch 08 baseline; Autonomous Ops v2.1 (commit e4ec9db, deploy 38487235836, production byte-identical, daily check 11 of 11; the Stop hook checked live; results in the batch file). Batch 07 is complete: #026–#029 live and verified.
 - **Owner-blocked (parked; don't start them):**
   - Fluency Check interviews or a pilot;
