@@ -26,9 +26,9 @@ research → gate → number → `wip/<number>-<slug>` branch → principal fail
 
 ## Now
 
-- **Step:** #032 Comp Desk chosen (`CANDIDATES.md`, "Thread results for #032"); risk list in `032-comp-desk.md`. Building on `wip/032-comp-desk`. Labels rejected; the nest visit planner queued for #033 (data rights settled).
-- **Next action:** on `wip/032-comp-desk`, write `model.ts` (the four formats, ranking with shared places, card checks) with tests (hand cases, a Python reimplementation, brute-force ranking), then the page.
-- **Numbered so far:** #030 Show Order (shipped); #031 New Classes (shipped); #032 Comp Desk (building).
+- **Step:** #032 Comp Desk shipped to `main` on 2026-10-14 after its audit (dossier log); production verification next.
+- **Next action:** verify #032 in production (parity, the flow on the live site in both engines, offline and the homepage card, smoke, daily check), record it, delete `wip/032-comp-desk`, then #033 (the nest visit planner, queued in `CANDIDATES.md`).
+- **Numbered so far:** #030 Show Order (shipped); #031 New Classes (shipped); #032 Comp Desk (shipped).
 
 ## Part A: Autonomous Ops v2.1
 
@@ -48,7 +48,7 @@ research → gate → number → `wip/<number>-<slug>` branch → principal fail
 |---|---|---|---|---|
 | 030 | Show Order | show-order | shipped 2026-10-13, verified in production | `030-show-order.md` |
 | 031 | New Classes | new-classes | shipped 2026-10-14 (d9b99d8), verified in production | `031-new-classes.md` |
-| 032 | Comp Desk | comp-desk | building on `wip/032-comp-desk` | `032-comp-desk.md` |
+| 032 | Comp Desk | comp-desk | shipped 2026-10-14; production verification next | `032-comp-desk.md` |
 
 ## Log
 
@@ -62,3 +62,4 @@ research → gate → number → `wip/<number>-<slug>` branch → principal fail
 - **2026-10-14:** #031 New Classes built and audited on `wip/031-new-classes` (page milestone 5584238): browser harness 131 of 131 in Chromium and WebKit, model checks 53 of 53, Python recount 300 of 300, print to PDF, site smoke on the build. The audit found eleven product defects before any push, all fixed (dossier log). Shipped to `main` as one squashed commit.
 - **2026-10-14:** #031 New Classes verified in production (commit d9b99d8, deploy 38519276907): byte-identical (73 files), the flow 131 of 131 in both engines on the live site, offline and the homepage card 7 of 7 in each, smoke 128 loads with no problems, daily check 11 of 11. Provisional lifecycle MAINTAIN. Discovery for #032 next.
 - **2026-10-14:** discovery for #032: three threads (nest visits, climbing comps, label sheets) and direct checks. **#032 assigned to Comp Desk** (scoring one-day climbing comps from paper cards: a verified desk job with a deadline, only iPhone self-scoring apps and spreadsheets as alternatives). Labels rejected (Batch 07's printing family; Avery's free tool; print fragility). The nest visit planner is BUILD-worthy now that open species data was found (CC0 and no-copyright datasets), queued for #033. Kiln schedules, biotic indices, sprinkler audits and the round 2 scan leads rejected; choir risers held.
+- **2026-10-14:** #032 Comp Desk built and audited on `wip/032-comp-desk` (page milestone 4122d4c): browser harness 103 of 103 in Chromium and WebKit, model checks 46 of 46, Python recount 2,337 of 2,337, podiums and results printed to PDF, site smoke on the build. The audit found eight product defects before any push, all fixed (dossier log). Shipped to `main` as one squashed commit.

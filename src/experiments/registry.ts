@@ -319,6 +319,15 @@ export const experiments: readonly Experiment[] = [
     status: 'live',
     category: 'school',
   },
+  {
+    number: 32,
+    slug: 'comp-desk',
+    title: 'Comp Desk',
+    summary: 'Scores a bouldering competition from paper scorecards at the desk: type each card in, and every category’s standings follow by tops and zones, points, or the best problems, with a leaderboard for a second screen.',
+    shipped: '2026-10-14',
+    status: 'live',
+    category: 'practice',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */
