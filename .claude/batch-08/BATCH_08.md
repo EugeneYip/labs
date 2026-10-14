@@ -26,8 +26,8 @@ research → gate → number → `wip/<number>-<slug>` branch → principal fail
 
 ## Now
 
-- **Step:** #033 Captions Up shipped to `main` on 2026-10-14 after its audit (dossier log); production verification next.
-- **Next action:** verify #033 in production, record it, delete `wip/033-captions-up`; then #034 or the early close (section U), then the closeout (V).
+- **Step:** complete. Closed early on 2026-10-14 under section U with four experiments shipped and verified (#030–#033); the closeout report is `CLOSEOUT.md`.
+- **Next action:** none; nothing is authorized beyond this batch.
 - **Numbered so far:** #030 Show Order (shipped); #031 New Classes (shipped); #032 Comp Desk (shipped); #033 Captions Up (shipped).
 
 ## Part A: Autonomous Ops v2.1
@@ -49,7 +49,7 @@ research → gate → number → `wip/<number>-<slug>` branch → principal fail
 | 030 | Show Order | show-order | shipped 2026-10-13, verified in production | `030-show-order.md` |
 | 031 | New Classes | new-classes | shipped 2026-10-14 (d9b99d8), verified in production | `031-new-classes.md` |
 | 032 | Comp Desk | comp-desk | shipped 2026-10-14 (b8f8a30; fix 52802a5), verified in production | `032-comp-desk.md` |
-| 033 | Captions Up | captions-up | shipped 2026-10-14; production verification next | `033-captions-up.md` |
+| 033 | Captions Up | captions-up | shipped 2026-10-14 (97833cd; fix d289161), verified in production | `033-captions-up.md` |
 
 ## Log
 
@@ -68,3 +68,5 @@ research → gate → number → `wip/<number>-<slug>` branch → principal fail
 - **2026-10-14:** #032 verified in production after the fix (deploy 38524500178): byte-identical (75 files), the flow 107 of 107 in both engines on the live site, offline and the homepage card 7 of 7 in each, smoke 132 loads with no problems, daily check 11 of 11. Provisional lifecycle MAINTAIN. The nest visit planner put on HOLD (below); the final diverse research pass (section U) started: care and accessibility, outdoors and hobbies, small organisations' admin.
 - **2026-10-14:** the final diverse research pass (section U): care and accessibility, outdoors and hobby clubs, small organisations' admin. Admin and outdoors produced HOLDs only (matching subscription payments; running-club championship tables); care produced one narrow BUILD, checked here: **#033 assigned to Captions Up** (open captions for community theatre: the Fringe's own guidance prescribes the job; Captitles' free plan, an install and an account, is the strongest incumbent).
 - **2026-10-14:** #033 Captions Up built and audited on `wip/033-captions-up`: browser harness 96 of 96 in Chromium and WebKit, model checks 31 of 31, Python re-check 500 of 500, the cue script printed, the audience window reviewed at projector size. The audit found six product defects before any push, all fixed (dossier log). Shipped to `main` as one squashed commit.
+- **2026-10-14:** #033 verified in production (deploy 38529994425): byte-identical (77 files), the flow 96 of 96 in both engines on the live site, offline and the homepage card 7 of 7 in each, smoke 136 loads, daily check 11 of 11. At closeout, a comparison with Off Book's parser lessons found two defects (numbered names with a mark; page numbers pasted from PDFs shown as captions), fixed in d289161 (deploy 38536194341) and verified in production the same way.
+- **2026-10-14: Batch 08 closed early** under section U: the final diverse pass done (it produced #033 and HOLDs), the HOLDs revisited (none resolvable without the owner), the diminishing value of more search written down, and the four products compared with the strongest Labs tools (`CLOSEOUT.md`). Autonomy set to `complete`.

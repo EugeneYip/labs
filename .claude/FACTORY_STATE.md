@@ -6,13 +6,13 @@ The checkpoint for autonomous Labs work. Read it down to the "History" heading; 
 
 The current state, kept short. `.claude/hooks/session-context.sh` prints this section at the start of every session and after the context is compacted, and `.claude/hooks/stop-continue.sh` reads **Autonomy** and **Next action** from it, so keep those two lines' wording as they are.
 
-- **Autonomy:** active
-- **Batch:** 08, Discovery Cycle 3, authorized by the owner on 2026-10-13 for up to five new experiments, #030–#034 (never #035, and no further batch). An upper limit, not a quota. Part A, Autonomous Ops v2.1, comes before discovery.
-- **Batch file:** `.claude/batch-08/BATCH_08.md`; every idea and its outcome in `.claude/batch-08/CANDIDATES.md`.
-- **Experiment:** #033 Captions Up (`captions-up`): open captions for a live show. Shipped to `main` on 2026-10-14 (one squashed commit); dossier `.claude/batch-08/033-captions-up.md`.
-- **Where the work is:** `main` (pushed). `wip/033-captions-up` is kept until production is verified, then deleted.
-- **Next action:** verify #033 in production (parity; `cu-flow.cjs` on the live site in Chromium and WebKit; offline and the homepage card; smoke; daily check), record it, delete `wip/033-captions-up`; then decide #034 or the early close (section U: the final pass is done and the HOLDs revisited; write why more search has diminishing value and the comparison with the strongest Labs tools), then the closeout (V).
-- **Done and verified:** #032 Comp Desk (ship b8f8a30, fix 52802a5, deploy 38524500178, verified in production 2026-10-14); #031 New Classes (commit d9b99d8, deploy 38519276907, verified 2026-10-14); #030 Show Order (commit a329ca8, deploy 38494521064, verified 2026-10-13); the Batch 08 baseline; Autonomous Ops v2.1 (commit e4ec9db, deploy 38487235836; the Stop hook checked live). Batch 07 is complete: #026–#029 live and verified.
+- **Autonomy:** complete
+- **Batch:** none authorized. Batch 08 (Discovery Cycle 3) closed early on 2026-10-14 with four experiments, #030–#033, under section U of its authorization; #034 unassigned; no #035 or further batch without the owner.
+- **Batch file:** `.claude/batch-08/BATCH_08.md` (complete); the closeout report is `.claude/batch-08/CLOSEOUT.md`; every idea and its outcome in `.claude/batch-08/CANDIDATES.md`.
+- **Experiment:** none.
+- **Where the work is:** `main`, which matches `origin/main`; no `wip/` branch; the working tree clean.
+- **Next action:** none; nothing is authorized beyond Batch 08. The owner's choices are in the closeout (items 14 and 16) and under "Parked lanes" in `.claude/AUTONOMOUS_QUEUE.md`.
+- **Done and verified:** Batch 08: #033 Captions Up (ship 97833cd, fix d289161, deploy 38536194341, verified in production 2026-10-14); #032 Comp Desk (ship b8f8a30, fix 52802a5, deploy 38524500178, verified 2026-10-14); #031 New Classes (d9b99d8, deploy 38519276907, verified 2026-10-14); #030 Show Order (a329ca8, deploy 38494521064, verified 2026-10-13); Autonomous Ops v2.1 (e4ec9db, deploy 38487235836; the Stop hook checked live). Batch 07 is complete: #026–#029 live and verified.
 - **Owner-blocked (parked; don't start them):**
   - Fluency Check interviews or a pilot;
   - the email to Open-Meteo;
@@ -20,9 +20,12 @@ The current state, kept short. `.claude/hooks/session-context.sh` prints this se
   - regrouping Custody Calendar, Day Clock, and Frost Dates to Maintain;
   - Firefox testing, which needs a permission rule;
   - human validation of #028 Hidden Data Check, then #026 Exam Timekeeper (the closeout's recommendation);
-  - an automation permission to test #028 with workbooks saved by Excel itself.
+  - an automation permission to test #028 with workbooks saved by Excel itself;
+  - Batch 08: the nest visit planner (permission to download two CC0 data files, and a sourced last-visit rule per species);
+  - Batch 08: human validation of #031 New Classes, then #033 Captions Up;
+  - a private copy of `.claude/qa/` (the QA harnesses live only on this machine).
 
-  Details are in `.claude/AUTONOMOUS_QUEUE.md` and the closeout.
+  Details are in `.claude/AUTONOMOUS_QUEUE.md` and the Batch 08 closeout.
 - **Autonomy values:** `active` (carry on without asking), `paused` (the owner asked to pause), `blocked` (everything left needs the owner), `complete` (the batch is finished and reported). Only `active` makes the Stop hook ask Claude to carry on, and it doesn't ask again until Claude has used a tool since it last asked (and at most 3 times in 10 minutes).
 
 ## How to resume
@@ -33,9 +36,10 @@ The current state, kept short. `.claude/hooks/session-context.sh` prints this se
 4. When an experiment ships: on `main`, `git merge --squash wip/<number>-<slug>`, commit as "#0NN Title: summary", run `npm run build`, push, watch the deploy, check production, then record that here, in the batch file, and in the dossier; commit and push the record. Delete the `wip/` branch once `git diff main wip/<number>-<slug>` shows nothing that matters, and start the next discovery.
 5. Long runs: bound them (see "Long jobs" in `CLAUDE.md`), keep partial results in files, and when a lane stalls, record it here and carry on with another.
 
-## Batch 08: Discovery Cycle 3 (active)
+## Batch 08: Discovery Cycle 3 (complete)
 
 - **Authorized** by the owner on 2026-10-13: discover, build, audit, deploy, and resolve up to five new experiments, #030–#034, with no routine approval between experiments. Never #035; no further batch without the owner. Owner authorization once, autonomous execution after, the owner's attention only at real boundaries.
+- **Closed early on 2026-10-14** with four experiments shipped and verified (#030 Show Order, #031 New Classes, #032 Comp Desk, #033 Captions Up); the report and the section U reasons are in `.claude/batch-08/CLOSEOUT.md`.
 - **Part A, Autonomous Ops v2.1,** before discovery: permissions for the routine lifecycle, writable checkpoints, the WIP-branch lifecycle, session start, the Stop hook, long-work recovery, and one harmless autonomous cycle. Results in the batch file.
 - **Still prohibited:** contacting anyone, posting, recruiting, interviews, spending money, accounts or backends, keyed services, analytics, weakening the constitution, permission workarounds (Firefox stays parked), desktop-app automation needing a new owner permission, and the parked owner lanes.
 - **Records:** `.claude/batch-08/BATCH_08.md` (the rules in short, the checkpoint under "Now", the log), `.claude/batch-08/CANDIDATES.md` (every idea and its outcome), and a dossier per numbered experiment in `.claude/batch-08/`.

@@ -139,3 +139,7 @@ The four threads for #032 onward (nature volunteering, home and family life, art
   - **E8 Against:** Captitles Free already serves one amateur show; no present-day first-hand pain; captioning is skilled work (Stagetext's captioners train up to a year, *verified*), so the page must make the formatting rules easy to keep; script formats vary and parsing is brittle (so every caption is shown and editable before the show); a crash mid-show is very visible (so the show and its position are saved at every step); a third theatre-adjacent tool after #018 and #030; licensors' terms on projecting script text unchecked (the company's matter).
   - **Diversity:** a new domain for Labs (access for d/Deaf audiences) and a new interaction (an operator driving a second display live); the theatre adjacency is its cost, stated.
   - **Name:** "Caption Cues" is too close to Stagetext's research project CaptionCue, and "Stage Captions" is taken twice (Noteable's 2010 software; stagecaptions.io); nothing called "Captions Up" found.
+
+## Close (2026-10-14)
+
+No #034. The batch closed early under section U of the authorization; the reasons (the final pass's yield, the HOLDs' owner-only resolutions, the grounds the remaining leads fail on, and the comparison with the strongest Labs tools) are in `CLOSEOUT.md`, "Why the batch closes at #033".

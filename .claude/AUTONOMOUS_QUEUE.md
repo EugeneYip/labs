@@ -30,7 +30,7 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ## Now
 
-- **Current:** Batch 08 (Discovery Cycle 3, #030–#034), authorized by the owner on 2026-10-13; its checkpoint is `.claude/batch-08/BATCH_08.md`. Nothing in this queue: P1–P13 are done and verified. Batch 07 closed at four experiments (#026–#029); its closeout is `.claude/batch-07/CLOSEOUT.md`.
+- **Current:** nothing authorized. Batch 08 (Discovery Cycle 3) closed early on 2026-10-14 with four experiments, #030–#033; its closeout is `.claude/batch-08/CLOSEOUT.md`. P1–P13 are done and verified. Batch 07's closeout is `.claude/batch-07/CLOSEOUT.md`.
 - **Parked lanes** (below) stay parked until the owner chooses one; they never hold up other work.
 - **When something new needs the owner** (in any batch): add it under "Parked lanes" as BLOCKED — OWNER REQUIRED, with what's ready and what the owner would do, mention it in "Now" in `.claude/FACTORY_STATE.md`, and carry on with the rest.
 
@@ -46,6 +46,9 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
   - **#026:** an exams officer uses it through a mock series.
   - Either one means contacting people, so it's the owner's call. Fluency Check's prepared interviews are the cheaper start.
 - `[B]` **Hidden Data Check with workbooks Excel itself saves.** Excel for Mac is on this machine, but having Claude drive it needs a macOS automation permission. The owner could instead open a few workbooks in Excel, save them, and leave them in `.claude/qa/hdc/`. So far the only Excel-written file tested is the Solver add-in.
+- `[B]` **The nest visit planner (Batch 08 HOLD).** Needs the owner's permission to download two CC0 data files (Storchová & Hořák 2018 from Dryad, 245,901 bytes; Myhrvold et al. 2015, Ecological Archives E096-269, the Amniote database CSV), and a sourced last-visit rule for each species. The research is in `.claude/batch-08/research/j-nest.md` and `CANDIDATES.md`.
+- `[B]` **Human validation of Batch 08's experiments:** #031 New Classes first (a primary school's summer-term class mixing), then #033 Captions Up (a community company's captioned performance). Contacting people is the owner's call; the closeout says what each would settle.
+- `[B]` **A private copy of `.claude/qa/`.** The QA harnesses and fixtures (361 files, every flow check) are ignored by git by design and live only on this machine.
 
 ## Queue
 

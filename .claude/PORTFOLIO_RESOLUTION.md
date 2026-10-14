@@ -249,3 +249,17 @@ Recommended human validation, if the owner opens a lane:
 
 Fluency Check's prepared interviews are the cheaper start. Nobody has been contacted.
 
+## Batch 08 additions (2026-10-14)
+
+Batch 08 added four experiments, each researched before building, audited before its push, and verified in production. Their groups were decided at the batch's close; the reasons are in `.claude/batch-08/CLOSEOUT.md` and in each dossier. The assessed totals use the same framework, and are evidence, not the decision.
+
+| # | Experiment | Group | Assessed total | Deciding reason |
+|---|---|---|---|---|
+| 030 | Show Order | Maintain | 47 | Verified on a real studio's line-up (40 tight changes removed), but recitals come once or twice a year |
+| 031 | New Classes | Maintain | 51 | Children's data makes local-only the wedge and every alternative is paid, but the job is yearly and judgement-heavy |
+| 032 | Comp Desk | Maintain | 45 | Exact and fast at the paper desk, but no privacy wedge, and a free iPhone app serves phone-scored comps |
+| 033 | Captions Up | Maintain | 49 | The Edinburgh Fringe names the job; free alternatives need an install and an account; per production |
+
+Counts across all 33: 6 promote, 20 maintain, 5 experimental, 2 archive candidates. Public behavior doesn't change: all four new experiments are `live`.
+
+Recommended human validation, if the owner opens a lane: #031 New Classes (a primary school's summer-term class mixing), then #033 Captions Up (a community company's captioned performance), after Batch 07's #028 and #026. Nobody has been contacted.
