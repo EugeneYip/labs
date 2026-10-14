@@ -68,7 +68,7 @@ case "$verdict" in
   *)
     tools=${verdict% *}
     if [ "$tools" -eq 0 ] 2>/dev/null; then note "autonomy=active flag=$flag no tool since the last ask: stop"; exit 0; fi
-    how="tools since the last ask=$tools asks=${verdict#* }" ;;
+    how="tools since the last ask=$tools ask entries=${verdict#* }" ;;
 esac
 note "autonomy=active flag=$flag keys=${keys:-?} $how: continue"
 

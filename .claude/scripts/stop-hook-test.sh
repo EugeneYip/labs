@@ -60,6 +60,14 @@ for ask in "$ASK_USER" "$ASK_ATT" "$ASK_SYS"; do
   t=$(transcript "$U" "$ask" "$TOOL" "$RESULT" "$TEXT")
   check "ask as $kind, then work: carry on, flag true (flag stays true)" block "$(run "$(project active)" "$(input true "$t")")"
 done
+# The shape Claude Code 2.1 writes for one ask (seen live on 2026-10-13): three entries in a row.
+R1="{\"type\":\"user\",\"isMeta\":true,\"message\":{\"role\":\"user\",\"content\":\"Stop hook feedback:\\n$M Labs autonomy is active\"}}"
+R2="{\"type\":\"attachment\",\"attachment\":{\"type\":\"hook_blocking_error\",\"hookName\":\"Stop\",\"hookEvent\":\"Stop\",\"blockingError\":{\"blockingError\":\"$M Labs autonomy is active\",\"command\":\"sh stop-continue.sh\"}}}"
+R3="{\"type\":\"system\",\"subtype\":\"stop_hook_summary\",\"hookCount\":3,\"hookInfos\":[{\"command\":\"sh stop-continue.sh\"}],\"hookErrors\":[\"$M Labs autonomy is active\"],\"preventedContinuation\":false}"
+t=$(transcript "$U" "$TOOL" "$RESULT" "$TEXT" "$R1" "$R2" "$R3" "$TEXT")
+check "Claude Code's own three-entry ask, then no tool: stop, flag false" stop "$(run "$(project active)" "$(input false "$t")")"
+t=$(transcript "$U" "$TOOL" "$RESULT" "$TEXT" "$R1" "$R2" "$R3" "$TOOL" "$RESULT" "$TEXT")
+check "Claude Code's own three-entry ask, then work: carry on, flag true" block "$(run "$(project active)" "$(input true "$t")")"
 t=$(transcript "$U" "$ASK_USER" "$TOOL" "$RESULT" "$MINE" "$CAT_RESULT" "$TEXT")
 check "marker in Claude's own edit and in a tool result isn't an ask: carry on" block "$(run "$(project active)" "$(input true "$t")")"
 t=$(transcript "$U" "$TOOL" "$RESULT" "$ASK_USER" "$TEXT")
