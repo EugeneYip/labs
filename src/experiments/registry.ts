@@ -346,6 +346,15 @@ export const experiments: readonly Experiment[] = [
     status: 'live',
     category: 'family',
   },
+  {
+    number: 35,
+    slug: 'collection-climate',
+    title: 'Collection Climate',
+    summary: 'Reads the files temperature and humidity loggers export and reports each place against the Bizot guideline or your own band: the share of readings inside it, when the 24-hour humidity limit was broken, gaps, and each month, with a graph, a page to print, and a spreadsheet.',
+    shipped: '2026-10-14',
+    status: 'live',
+    category: 'school',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */

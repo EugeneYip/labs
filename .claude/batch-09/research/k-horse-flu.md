@@ -1,0 +1,10 @@
+# The horse flu vaccination checker: the bodies' rules (main session, 2026-10-14)
+
+Read while #035's audit ran, for the decision after #035 ships. Read-only; nobody contacted, nothing downloaded.
+
+- British Showjumping, "Equine Influenza Update", 21 May 2026 (britishshowjumping.co.uk/news/equine-influenza-update, *verified*): venues check passports on arrival; "Unvaccinated or horses with lapsed or incomplete vaccinations will not be allowed to unload and compete"; no refunds. The six-month booster is a recommendation (the Equine Infectious Disease Action Group "strongly recommend" six-monthly vaccination; bring the next booster forward if the last was more than six months ago), not a rule. The notice doesn't restate the rule itself.
+- Vet Times, "More sports introduce equine influenza rules", 26 May 2026 (*verified*): British Dressage, British Eventing, and British Showjumping gave the same message: not properly vaccinated, not competing; the six-month booster advised, not required; no body-specific intervals given.
+- British Carriage Driving, Annex 11 amendment, April 2026 (*source claim*, search result): the requirement of a booster within 6 months and 21 days before arrival deleted in March 2026; a booster still not within the 7 days before an event; the second primary dose 21–60 days after the first; boosters at most 12 months apart.
+- From round 2 (`j-animals-land.md`): the Pony Club's January 2026 rule (two first-course schedules, a 12-month booster limit, a restart when a gap breaks the rule, no competing within 7 days of a jab); racing every 6 months; the FEI's 6 months and 21 days.
+
+What this says for the gate: the rules differ by body in their details and changed during 2026 in both directions (a body dropping a six-month rule while others advise six months), and the bodies' own notices refer to rulebooks rather than restating the rules. A checker holding several bodies' rules would need re-reading every season, and a stale rule tells an owner a horse can compete when it can't, or the reverse; the vet, who gives and signs the vaccinations, applies the rules and sends reminders.

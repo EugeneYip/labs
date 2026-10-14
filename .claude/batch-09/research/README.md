@@ -15,3 +15,10 @@ Round 2 (discovery for #035; the same bounds; three threads stopped early when t
 - `h-heritage.md`: archives, museums, heritage (climate reports from logger files, oral history logs)
 - `i-care-paperwork.md`: care and support paperwork (other regimes' accounts, representative payees)
 - `j-animals-land.md`: animals and land (horse flu vaccination rules, medicine records)
+
+Round 3 (discovery for #036, started while #035's audit ran; threads of 10 searches and 6 page reads):
+- `k-horse-flu.md`: the bodies' horse flu vaccination rules, read by the main session for round 2's lead
+- `m-round3-main.md`: the main session's own screening (plate layouts, food labels, drivers' hours, library weeding)
+- `l-energy-data.md`: households' smart-meter data against tariffs (thread)
+- `n-food-labels.md`: labels for food prepacked for direct sale, Natasha's Law (thread)
+- `o-library-weeding.md`: weeding a library's collection by the CREW method (thread)

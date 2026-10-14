@@ -30,9 +30,9 @@ research → gate → number → `wip/<number>-<slug>` → pre-build failure rev
 
 ## Now
 
-- **Step:** #035 Collection Climate, being built on `wip/035-collection-climate` (model first).
-- **Next action:** build `src/experiments/collection-climate/` (the logger reader, the guideline checks, the 24-hour windows, the monthly table, the graph) with its checks, as the dossier's risk list says; then the page, the audit, and the ship. Candidates after it: the horse flu vaccination checker (needs the bodies' rules read), judging panels (a fallback).
-- **Numbered so far:** #034 Deputyship Accounts (shipped 2026-10-14, verified in production); #035 Collection Climate (building). #036 is the next number.
+- **Step:** #035 Collection Climate shipped to `main` (2026-10-14); production verification next.
+- **Next action:** verify #035 in production (the deploy run, `prod-parity.mjs`, `cc-flow.cjs` against https://labs.eugeneyip.net in both engines, `cc-prod-extra.cjs` in both, the smoke test, the daily check), record it (the dossier's lifecycle, this file, `FACTORY_STATE.md`), delete `wip/035-collection-climate`; then decide #036 from round 3 (`CANDIDATES.md`, "Discovery for #036").
+- **Numbered so far:** #034 Deputyship Accounts (shipped 2026-10-14, verified in production); #035 Collection Climate (shipped 2026-10-14). #036 is the next number.
 
 ## Numbered experiments
 
