@@ -9,9 +9,9 @@ The current state, kept short. `.claude/hooks/session-context.sh` prints this se
 - **Autonomy:** active
 - **Batch:** 08, Discovery Cycle 3, authorized by the owner on 2026-10-13 for up to five new experiments, #030–#034 (never #035, and no further batch). An upper limit, not a quota. Part A, Autonomous Ops v2.1, comes before discovery.
 - **Batch file:** `.claude/batch-08/BATCH_08.md`; every idea and its outcome in `.claude/batch-08/CANDIDATES.md`.
-- **Experiment:** none being built. #030 Show Order shipped and was verified in production on 2026-10-13. #031 is the next number, assigned only when a candidate passes the gate.
-- **Where the work is:** `main`, which matches `origin/main`. No work-in-progress branch.
-- **Next action:** discovery for #031: gate primary class formation and the strongest of thread E's leads (`.claude/batch-08/CANDIDATES.md`), with diversity in mind, then a fresh need-first round if they fail.
+- **Experiment:** #031 New Classes (`new-classes`): next year's classes from a year group, balanced, with friends and keep-apart pairs. Chosen 2026-10-13; dossier `.claude/batch-08/031-new-classes.md`.
+- **Where the work is:** `wip/031-new-classes` (local, never pushed): switch to it; its copy of this file is the current one. `main` matches `origin/main`.
+- **Next action:** on `wip/031-new-classes`, `model.ts` and `roster.ts` with tests (brute force, Python), then the page; the risk list is in the dossier. Research threads f–i report into `.claude/batch-08/research/` for #032 onward.
 - **Done and verified:** #030 Show Order (commit a329ca8, deploy 38494521064, verified in production 2026-10-13); the Batch 08 baseline; Autonomous Ops v2.1 (commit e4ec9db, deploy 38487235836, production byte-identical, daily check 11 of 11; the Stop hook checked live; results in the batch file). Batch 07 is complete: #026–#029 live and verified.
 - **Owner-blocked (parked; don't start them):**
   - Fluency Check interviews or a pilot;
