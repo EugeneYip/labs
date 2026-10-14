@@ -6,13 +6,13 @@ The checkpoint for autonomous Labs work. Read it down to the "History" heading; 
 
 The current state, kept short. `.claude/hooks/session-context.sh` prints this section at the start of every session and after the context is compacted, and `.claude/hooks/stop-continue.sh` reads **Autonomy** and **Next action** from it, so keep those two lines' wording as they are.
 
-- **Autonomy:** complete
-- **Batch:** none authorized. Batch 08 (Discovery Cycle 3) closed early on 2026-10-14 with four experiments, #030–#033, under section U of its authorization; #034 unassigned; no #035 or further batch without the owner.
-- **Batch file:** `.claude/batch-08/BATCH_08.md` (complete); the closeout report is `.claude/batch-08/CLOSEOUT.md`; every idea and its outcome in `.claude/batch-08/CANDIDATES.md`.
-- **Experiment:** none.
-- **Where the work is:** `main`, which matches `origin/main`; no `wip/` branch; the working tree clean.
-- **Next action:** none; nothing is authorized beyond Batch 08. The owner's choices are in the closeout (items 14 and 16) and under "Parked lanes" in `.claude/AUTONOMOUS_QUEUE.md`.
-- **Done and verified:** Batch 08: #033 Captions Up (ship 97833cd, fix d289161, deploy 38536194341, verified in production 2026-10-14); #032 Comp Desk (ship b8f8a30, fix 52802a5, deploy 38524500178, verified 2026-10-14); #031 New Classes (d9b99d8, deploy 38519276907, verified 2026-10-14); #030 Show Order (a329ca8, deploy 38494521064, verified 2026-10-13); Autonomous Ops v2.1 (e4ec9db, deploy 38487235836; the Stop hook checked live). Batch 07 is complete: #026–#029 live and verified.
+- **Autonomy:** active
+- **Batch:** Batch 09 (Discovery Cycle 4), authorized by the owner on 2026-10-14: up to five new experiments, #034–#038, an upper limit, not a quota. Never #039; no further batch.
+- **Batch file:** `.claude/batch-09/BATCH_09.md` (the rules in short, the checkpoint, the log); every idea and its outcome in `.claude/batch-09/CANDIDATES.md`.
+- **Experiment:** none numbered yet; #034 is next.
+- **Where the work is:** `main`, which matches `origin/main`; no `wip/` branch.
+- **Next action:** run discovery round 1 (need-first, outside Batch 07's and 08's clusters), as the batch file's "Now" says.
+- **Done and verified:** Batch 09 reconciled on 2026-10-14 (4c71d4b; production byte-identical, 77 files; daily check 11 of 11). Batch 08: #033 Captions Up (ship 97833cd, fix d289161, deploy 38536194341, verified in production 2026-10-14); #032 Comp Desk (ship b8f8a30, fix 52802a5, deploy 38524500178, verified 2026-10-14); #031 New Classes (d9b99d8, deploy 38519276907, verified 2026-10-14); #030 Show Order (a329ca8, deploy 38494521064, verified 2026-10-13); Autonomous Ops v2.1 (e4ec9db, deploy 38487235836; the Stop hook checked live). Batch 07 is complete: #026–#029 live and verified.
 - **Owner-blocked (parked; don't start them):**
   - Fluency Check interviews or a pilot;
   - the email to Open-Meteo;
@@ -35,6 +35,14 @@ The current state, kept short. `.claude/hooks/session-context.sh` prints this se
 3. Do the next action. Commit each verified milestone (on the `wip/` branch while an experiment is being built, otherwise on `main`) and update "Now" here and in the batch file.
 4. When an experiment ships: on `main`, `git merge --squash wip/<number>-<slug>`, commit as "#0NN Title: summary", run `npm run build`, push, watch the deploy, check production, then record that here, in the batch file, and in the dossier; commit and push the record. Delete the `wip/` branch once `git diff main wip/<number>-<slug>` shows nothing that matters, and start the next discovery.
 5. Long runs: bound them (see "Long jobs" in `CLAUDE.md`), keep partial results in files, and when a lane stalls, record it here and carry on with another.
+
+## Batch 09: Discovery Cycle 4 (active)
+
+- **Authorized** by the owner on 2026-10-14: discover, build, audit, deploy, and resolve up to five new experiments, #034–#038, with no routine approval between experiments. Never #039; no further batch. Owner authorization once, autonomous execution after.
+- **The bar is slightly higher** than Batch 08's: recurrence, a professional or organisational workflow, time or errors saved, a real local-processing advantage, an important artifact, a confirmed incumbent gap, or an official rule creating the job. Search outside Batch 07's and 08's clusters (files and privacy; school, event, and organisation tools).
+- **Still prohibited:** contacting anyone, posting, recruiting, interviews, spending money, external accounts, owner settings, backends or keyed services, analytics, weakening the constitution, permission workarounds (Firefox stays parked), downloads or new permissions to rescue a HOLD, changing the `.claude/qa/` local-only policy, and the parked owner lanes.
+- **Records:** `.claude/batch-09/BATCH_09.md` (the rules in short, the checkpoint under "Now", the log), `.claude/batch-09/CANDIDATES.md` (every idea and its outcome), research notes in `.claude/batch-09/research/`, and a dossier per numbered experiment in `.claude/batch-09/`.
+- **Close:** when the evidence says to stop (the brief's early-close test: a final broad pass in different areas, credible HOLDs revisited, the remaining candidates' failures documented, diminishing value written down), with the closeout report (its 19 items); then Autonomy goes to `complete`.
 
 ## Batch 08: Discovery Cycle 3 (complete)
 

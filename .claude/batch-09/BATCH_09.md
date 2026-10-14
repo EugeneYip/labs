@@ -1,0 +1,44 @@
+# Batch 09: Discovery Cycle 4
+
+Authorized by the owner on 2026-10-14. This file is the batch's checkpoint; `.claude/FACTORY_STATE.md` points here. A fresh session reads `CLAUDE.md`, the constitution, the factory state's "Now", and this file's "Now", checks `git status` and `git branch`, then continues from the next action.
+
+## Authorization, in short
+
+- **Goal:** discover, build, audit, deploy, and resolve up to five new experiments, #034–#038. Never #039, and no further batch. An upper limit, not a quota: if only two or three ideas survive the evidence bar, the batch closes there. The target is expected long-term value per experiment, not the count.
+- **Infrastructure:** Autonomous Ops v2.1 as it is; redesign it only if real evidence shows a regression.
+- **Allowed without routine approval:** research, rejecting ideas, numbering survivors, WIP branches, implementation, tests, browser checks, registry and Product Log entries, records and dossiers, commits, ordinary pushes, deploys, production checks, fixing defects found before or after ship, and moving on to the next candidate.
+- **Not allowed:** contacting anyone (email, recruiting, interviews, posting), spending money, external accounts, changing owner settings, backends or keyed services, analytics, weakening the constitution, permission workarounds (Firefox stays parked), downloading files or crossing a permission boundary to rescue a HOLD, changing the `.claude/qa/` local-only policy or making a private backup, the parked owner lanes, #039, another batch.
+- **Pattern:** need first, evidence second, product third. Start from a real workflow, a repeated failure, an awkward manual process, a rule people must implement, or a privacy, offline, or accountless constraint, never from "what small app can I build?". Generate broadly, reject aggressively.
+- **A slightly higher bar** (33 experiments already): prefer ideas with meaningful recurrence, a clear professional or organisational workflow, measurable time saved, error reduction, a real local-processing advantage, an important artifact, a confirmed incumbent gap, an unusually strong browser-native interaction, an official rule that creates the job, or a workflow held together with spreadsheets, paper, PowerPoint, or manual checking. Not merely neat.
+- **Portfolio overfitting:** Batch 08 added school, event, and organisation tools (#030–#033); Batch 07 privacy and file tools (#026–#029). Search outside those clusters (trades and field work, clubs, creative production, small offices, volunteers, sports operations, accessibility, household administration, makers, events, teaching outside classroom planning, community groups, performance, amateur competitions, archives, temporary projects, specialist hobbies), without forcing diversity on weak evidence.
+
+## Per-candidate gate (before a number)
+
+A audience (who specifically); B the exact workflow (just before, and what's needed after); C frequency or importance (at least one materially true: recurring, time-consuming, error-prone, privacy-sensitive, an important output, rule-constrained, costly in attention, repetitive reconciliation, important though occasional); D alternatives (products, free browser tools, apps, desktop software, plugins, templates, built-in features, manual methods); E the strongest incumbent, never minimized; F the Labs wedge; G Labs fit (reject if the useful version needs a backend, accounts, sync, real-time collaboration, payments, keyed APIs, server storage, or moderation); H falsification, the strongest reason not to build, searched for. Outcome: **REJECT** (reason kept, no number), **HOLD** (sparingly: one unresolved fact that would change the decision; never blocks the batch), or **BUILD** (then the next number).
+
+## Per-experiment sequence
+
+research → gate → number → `wip/<number>-<slug>` → pre-build failure review (only what applies: malformed input, duplicates, corrupt files, extreme values, large inputs, Unicode, dates and time zones, stale state, several tabs, downloads and imports, browser APIs, offline, accessibility, misleading output, privacy claims, changing rules) → implement → verify with independent evidence (brute force, exhaustive small cases, invariants, property tests, differential tests, a second implementation in another language, official examples, independent fixtures, files written by the software people use, public datasets where permitted) → adversarial audit → fix → shipping gate → one squashed commit on `main` → push → production verification → lifecycle record → next discovery. One numbered experiment at a time.
+
+**Shipping gate.** Product: the core workflow complete; no known material correctness defect or silent data loss; invalid input handled safely; material limitations visible; privacy and network wording matches behaviour. QA: model checks; `npm run build`; Chromium and WebKit; phone and desktop; light and dark; keyboard; console; direct route; offline where applicable; accessibility (keyboard core flow, visible focus, accessible names, announcements, 200% text, sensible Tab count, reduced motion, screen-reader structure; automated scans alone aren't enough). Records: registry, Product Log, dossier, this checkpoint, the factory state.
+
+**Production verification** (a green Actions run isn't enough): the intended commit; live files byte-identical to a fresh build (`sh .claude/scripts/qa.sh 300 prod-parity.mjs`); the live workflow exercised; console; representative responsive states; file, storage, download, and share behaviour where they apply; offline where it applies; the whole-site smoke test; the daily check. Only then "verified in production". A defect found later is fixed, verified, pushed, verified in production, and recorded in the dossier.
+
+**Claims:** never "safe", "compliant", "anonymous", "complete", "optimal", "nothing can go wrong", "works everywhere", or "fully private" without evidence for the exact claim. Network behaviour is checked before saying processing is local; a tool that checks part of a problem says which part.
+
+**Lessons to reuse where they apply** (`.claude/batch-07/CLOSEOUT.md`, `.claude/batch-08/CLOSEOUT.md`, the dossiers): parsers meet messier real input than any test set (Off Book, Captions Up); test files written by the real program (Hidden Data Check, Transcript Pseudonyms); check an optimizer against brute force and a second implementation (Places by Choice, New Classes, Show Order); fast typing outruns React state (Comp Desk: functional updates, reads from refs at Enter, no delayed focus moves); keep long work responsive with time slices (Hidden Data Check, Show Order); accessibility patterns (P2); saving through `useOtherTabs` and `NotSaving` (P9).
+
+## Now
+
+- **Step:** discovery round 1 (need-first, outside Batch 07's and 08's clusters).
+- **Next action:** run discovery round 1: bounded research threads in domains Labs hasn't covered, each lead checked here before any gate decision; record every idea and outcome in `CANDIDATES.md`.
+- **Numbered so far:** none. #034 is the next number.
+
+## Numbered experiments
+
+| # | Title | Slug | Status | Dossier |
+|---|---|---|---|---|
+
+## Log
+
+- **2026-10-14:** reconciled. Batch 08 is complete (closed early at four, #030–#033, all live and verified). `main` = `origin/main` = 4c71d4b, clean, no `wip/` branch, no stash, one worktree. Production's 77 files are byte-identical to a fresh build (111 addresses, `prod-parity.mjs`); the daily check passes 11 of 11 against production; GitHub's last scheduled daily run (38446088538, 2026-10-13) passed; the last eight deploys succeeded; Pages on `workflow`, the domain verified, HTTPS enforced, the certificate good until 2027-01-06. Autonomous Ops v2.1: the session-start hook printed the state at this session's start; the Stop hook passes its 31 offline cases. Batch 09 records created and the batch activated.
