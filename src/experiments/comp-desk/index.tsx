@@ -71,6 +71,11 @@ export default function CompDesk() {
   const [printing, setPrinting] = useState<'podiums' | 'results' | null>(null)
   const [said, setSaid] = useState('')
   const [note, setNote] = useState('')
+  // A new comp, the example, or a backup opened: focus goes to the desk's heading once it's drawn.
+  const [focusDesk, setFocusDesk] = useState(0)
+  useEffect(() => {
+    if (focusDesk) deskHeading.current?.focus()
+  }, [focusDesk])
   const searchBox = useRef<HTMLInputElement>(null)
   const deskHeading = useRef<HTMLHeadingElement>(null)
 
@@ -120,13 +125,19 @@ export default function CompDesk() {
     setUpdated(new Date())
   }
 
+  /** A change made to the latest comp, so quick edits (typing in the climber list) never undo each other. */
+  const changeWith = (f: (c: Comp) => Comp) => {
+    setComp((c) => (c ? f(c) : c))
+    setUpdated(new Date())
+  }
+
   const startFrom = (next: Comp, message: string) => {
     change(next)
     setSettingUp(false)
     setSelected(null)
     setLast(null)
     say(message)
-    requestAnimationFrame(() => deskHeading.current?.focus())
+    setFocusDesk((n) => n + 1)
   }
 
   const newComp = () => {
@@ -162,7 +173,6 @@ export default function CompDesk() {
           ? `Saved for ${c.name}: ${mine.score.text}, ${placeText(mine)} in ${comp.categories[c.category]}.`
           : `Saved for ${c.name}, but not scored: ${why ?? ''}`,
     )
-    requestAnimationFrame(() => searchBox.current?.focus())
   }
 
   const undoLast = () => {
@@ -318,7 +328,7 @@ export default function CompDesk() {
               <h2 id="climbers-heading" className="text-lg font-semibold tracking-tight">
                 Climbers
               </h2>
-              <Climbers comp={comp} onChange={change} say={say} />
+              <Climbers comp={comp} onChange={changeWith} say={say} />
             </section>
 
             <section aria-labelledby="share-heading" className="grid grid-cols-1 gap-3 print:hidden">
@@ -481,6 +491,8 @@ function Settings(props: { comp: Comp | null; onCancel?: () => void; onDone: (co
   const [d, setD] = useState<Draft>(() => draftOf(comp))
   const [why, setWhy] = useState('')
   const set = (patch: Partial<Draft>) => setD((x) => ({ ...x, ...patch }))
+  /** For lists: the change is made to the latest draft, so quick edits don't undo each other. */
+  const edit = (f: (x: Draft) => Partial<Draft>) => setD((x) => ({ ...x, ...f(x) }))
   const inUse = (k: number) => (comp && d.categories[k].from >= 0 ? comp.climbers.filter((c) => c.category === d.categories[k].from).length : 0)
   const problemCount = Math.max(0, Math.min(LIMITS.problems, Math.floor(Number(d.problems) || 0)))
 
@@ -555,13 +567,13 @@ function Settings(props: { comp: Comp | null; onCancel?: () => void; onDone: (co
           <fieldset className="grid grid-cols-1 gap-2">
             <legend className="pb-2 text-sm font-medium">Each problem’s value</legend>
             <div className="flex flex-wrap items-center gap-2">
-              <button type="button" className={small} onClick={() => set({ values: d.values.map((_, i) => String((i + 1) * 100)) })}>
+              <button type="button" className={small} onClick={() => edit((x) => ({ values: x.values.map((_, i) => String((i + 1) * 100)) }))}>
                 100, 200, 300…
               </button>
-              <button type="button" className={small} onClick={() => set({ values: d.values.map((_, i) => String((i + 1) * 10)) })}>
+              <button type="button" className={small} onClick={() => edit((x) => ({ values: x.values.map((_, i) => String((i + 1) * 10)) }))}>
                 10, 20, 30…
               </button>
-              <button type="button" className={small} onClick={() => set({ values: d.values.map(() => '100') })}>
+              <button type="button" className={small} onClick={() => edit((x) => ({ values: x.values.map(() => '100') }))}>
                 100 each
               </button>
             </div>
@@ -569,7 +581,10 @@ function Settings(props: { comp: Comp | null; onCancel?: () => void; onDone: (co
               {Array.from({ length: problemCount }, (_, i) => (
                 <label key={i} className="grid min-w-0 grid-cols-1 gap-1 text-sm">
                   <span className="text-dim">{i + 1}</span>
-                  <input aria-label={`Value of problem ${i + 1}`} className={`${field} w-full`} inputMode="numeric" value={d.values[i]} onChange={(e) => set({ values: d.values.map((v, j) => (j === i ? e.target.value : v)) })} />
+                  <input aria-label={`Value of problem ${i + 1}`} className={`${field} w-full`} inputMode="numeric" value={d.values[i]} onChange={(e) => {
+                      const value = e.target.value
+                      edit((x) => ({ values: x.values.map((v, j) => (j === i ? value : v)) }))
+                    }} />
                 </label>
               ))}
             </div>
@@ -580,20 +595,23 @@ function Settings(props: { comp: Comp | null; onCancel?: () => void; onDone: (co
           <legend className="pb-2 text-sm font-medium">Categories</legend>
           {d.categories.map((c, k) => (
             <div key={k} className="flex flex-wrap items-center gap-2">
-              <input aria-label={`Category ${k + 1}`} className={`${field} min-w-0 flex-1`} value={c.name} maxLength={80} onChange={(e) => set({ categories: d.categories.map((x, j) => (j === k ? { ...x, name: e.target.value } : x)) })} />
+              <input aria-label={`Category ${k + 1}`} className={`${field} min-w-0 flex-1`} value={c.name} maxLength={80} onChange={(e) => {
+                  const name = e.target.value
+                  edit((x) => ({ categories: x.categories.map((c, j) => (j === k ? { ...c, name } : c)) }))
+                }} />
               <button
                 type="button"
                 className={small}
                 disabled={d.categories.length < 2 || inUse(k) > 0}
                 title={inUse(k) ? `${plural(inUse(k), 'climber')} in it` : undefined}
-                onClick={() => set({ categories: d.categories.filter((_, j) => j !== k) })}
+                onClick={() => edit((x) => ({ categories: x.categories.filter((_, j) => j !== k) }))}
               >
                 Remove{inUse(k) ? ` (${inUse(k)} in it)` : ''}
               </button>
             </div>
           ))}
           <div>
-            <button type="button" className={small} disabled={d.categories.length >= LIMITS.categories} onClick={() => set({ categories: [...d.categories, { name: '', from: -1 }] })}>
+            <button type="button" className={small} disabled={d.categories.length >= LIMITS.categories} onClick={() => edit((x) => ({ categories: [...x.categories, { name: '', from: -1 }] }))}>
               Add a category
             </button>
           </div>
@@ -649,19 +667,28 @@ function NumberField({ label, value, onChange, step = '1' }: { label: string; va
 function CardDesk(props: { comp: Comp; selected: number | null; onSelect: (i: number | null) => void; onSave: (climber: number, card: (Result | null)[] | null) => void; searchBox: { current: HTMLInputElement | null } }) {
   const { comp, selected, onSelect, onSave, searchBox } = props
   const [query, setQuery] = useState('')
-  const matches = useMemo(() => {
-    const q = norm(query)
+  const matchesFor = (text: string) => {
+    const q = norm(text)
     if (!q) return []
     const exact = comp.climbers.map((c, i) => ({ c, i })).filter(({ c }) => c.bib && norm(c.bib) === q)
     const named = comp.climbers.map((c, i) => ({ c, i })).filter(({ c }) => norm(c.name).includes(q) || (c.bib && norm(c.bib).startsWith(q)))
     const seen = new Set<number>()
     return [...exact, ...named].filter(({ i }) => (seen.has(i) ? false : (seen.add(i), true))).slice(0, 8)
-  }, [query, comp.climbers])
+  }
+  const matches = matchesFor(query)
 
   const pick = (i: number) => {
     onSelect(i)
     setQuery('')
   }
+
+  // When a card closes (saved or cancelled), focus goes back to the search, at once: nothing waits to move it later,
+  // when someone may already be typing the next card.
+  const wasOpen = useRef(selected !== null)
+  useEffect(() => {
+    if (wasOpen.current && selected === null) searchBox.current?.focus()
+    wasOpen.current = selected !== null
+  }, [selected, searchBox])
 
   return (
     <div className="grid grid-cols-1 gap-3 rounded-xl border border-rule p-4">
@@ -679,12 +706,15 @@ function CardDesk(props: { comp: Comp; selected: number | null; onSelect: (i: nu
               autoComplete="off"
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === 'Enter' && matches.length) {
+                if (e.key === 'Enter') {
                   e.preventDefault()
+                  // What's in the box now (a bib typed and entered quickly, by hand or a scanner, may not be drawn yet).
                   // Only one climber: a bib that matches exactly, or the only match. Two with one bib are chosen from the list.
-                  const exact = matches.filter(({ c }) => c.bib && norm(c.bib) === norm(query))
+                  const now = e.currentTarget.value
+                  const found = matchesFor(now)
+                  const exact = found.filter(({ c }) => c.bib && norm(c.bib) === norm(now))
                   if (exact.length === 1) pick(exact[0].i)
-                  else if (!exact.length && matches.length === 1) pick(matches[0].i)
+                  else if (!exact.length && found.length === 1) pick(found[0].i)
                 }
                 if (e.key === 'ArrowDown' && matches.length) {
                   e.preventDefault()
@@ -727,14 +757,21 @@ function CardDesk(props: { comp: Comp; selected: number | null; onSelect: (i: nu
 function CardForm({ comp, climber, onSave, onCancel }: { comp: Comp; climber: number; onSave: (climber: number, card: (Result | null)[] | null) => void; onCancel: () => void }) {
   const c = comp.climbers[climber]
   const [cells, setCells] = useState<string[]>(() => comp.problems.map((_, p) => cellText(c.card?.[p] ?? null)))
+  // The cells as last typed, which saving reads: a quick Enter can come before the page has drawn the last change.
+  const latest = useRef(cells)
+  const setCell = (p: number, value: string) => {
+    latest.current = latest.current.map((x, i) => (i === p ? value : x))
+    setCells(latest.current)
+  }
   const [tried, setTried] = useState(false)
   const first = useRef<HTMLInputElement>(null)
   useEffect(() => {
     first.current?.focus()
   }, [])
-  const parsed = cells.map(parseCell)
-  const card = parsed.map((r) => (r.ok ? r.result : null))
-  const errors = parsed.map((r) => {
+  const read = (texts: string[]) => {
+    const parsed = texts.map(parseCell)
+    const card = parsed.map((r) => (r.ok ? r.result : null))
+    const errors = parsed.map((r) => {
     if (!r.ok) return r.why
     const res = r.result
     if (!res) return ''
@@ -743,8 +780,10 @@ function CardForm({ comp, climber, onSave, onCancel }: { comp: Comp; climber: nu
     const most = Math.max(res.zone ?? 0, res.top ?? 0)
     if (comp.maxAttempts && most > comp.maxAttempts) return `More than the ${comp.maxAttempts} attempts allowed.`
     return ''
-  })
-  const bad = errors.findIndex(Boolean)
+    })
+    return { parsed, card, errors, bad: errors.findIndex(Boolean) }
+  }
+  const { parsed, card, errors, bad } = read(cells)
   const problem = bad < 0 ? cardProblem(card, comp.rule, comp.maxAttempts) : null
   const score = bad < 0 && !problem ? scoreCard(card, comp.rule, comp.problems) : null
   const zones = usesZones(comp.rule)
@@ -752,11 +791,12 @@ function CardForm({ comp, climber, onSave, onCancel }: { comp: Comp; climber: nu
   const submit = (e?: FormEvent) => {
     e?.preventDefault()
     setTried(true)
-    if (bad >= 0) {
-      document.querySelector<HTMLInputElement>(`[data-cell="${bad}"]`)?.focus()
+    const now = read(latest.current)
+    if (now.bad >= 0) {
+      document.querySelector<HTMLInputElement>(`[data-cell="${now.bad}"]`)?.focus()
       return
     }
-    onSave(climber, card)
+    onSave(climber, now.card)
   }
 
   return (
@@ -792,7 +832,7 @@ function CardForm({ comp, climber, onSave, onCancel }: { comp: Comp; climber: nu
                 value={cells[p]}
                 autoComplete="off"
                 spellCheck={false}
-                onChange={(e) => setCells(cells.map((x, i) => (i === p ? e.target.value : x)))}
+                onChange={(e) => setCell(p, e.target.value)}
               />
               <span id={`${id}-read`} className={`min-h-4 text-xs break-words ${err ? 'text-red-800 dark:text-red-300' : 'text-dim'}`}>
                 {err ? err : cells[p].trim() ? resultWords(parsed[p].ok ? (parsed[p] as { result: Result | null }).result : null, comp.rule) : ''}
@@ -975,7 +1015,7 @@ function Leaderboard({ comp, all, updated }: { comp: Comp | null; all: Standings
 
 // --- Climbers
 
-function Climbers({ comp, onChange, say }: { comp: Comp; onChange: (c: Comp) => void; say: (m: string) => void }) {
+function Climbers({ comp, onChange, say }: { comp: Comp; onChange: (f: (c: Comp) => Comp) => void; say: (m: string) => void }) {
   const [name, setName] = useState('')
   const [bib, setBib] = useState('')
   const [category, setCategory] = useState(0)
@@ -997,7 +1037,7 @@ function Climbers({ comp, onChange, say }: { comp: Comp; onChange: (c: Comp) => 
       return
     }
     if (full) return
-    onChange({ ...comp, climbers: [...comp.climbers, { name: n.slice(0, 200), bib: bib.trim().slice(0, 40), category: Math.min(category, comp.categories.length - 1), card: null }] })
+    onChange((c) => ({ ...c, climbers: [...c.climbers, { name: n.slice(0, 200), bib: bib.trim().slice(0, 40), category: Math.min(category, c.categories.length - 1), card: null }] }))
     setWhy('')
     setName('')
     setBib((b) => (/^\d+$/.test(b.trim()) ? String(Number(b.trim()) + 1) : ''))
@@ -1025,17 +1065,17 @@ function Climbers({ comp, onChange, say }: { comp: Comp; onChange: (c: Comp) => 
       setWhy(`Up to ${LIMITS.climbers.toLocaleString('en')} climbers.`)
       return
     }
-    onChange({ ...comp, categories, climbers })
+    onChange((c) => ({ ...c, categories, climbers }))
     setPaste('')
     setWhy(read.notes.join(' '))
     say(`${plural(read.climbers.length, 'climber')} added.`)
   }
 
-  const update = (i: number, patch: Partial<Climber>) => onChange({ ...comp, climbers: comp.climbers.map((c, j) => (j === i ? { ...c, ...patch } : c)) })
+  const update = (i: number, patch: Partial<Climber>) => onChange((now) => ({ ...now, climbers: now.climbers.map((c, j) => (j === i ? { ...c, ...patch } : c)) }))
   const remove = (i: number) => {
     const c = comp.climbers[i]
     if (c.card && !window.confirm(`Remove ${c.name}? Their card goes too.`)) return
-    onChange({ ...comp, climbers: comp.climbers.filter((_, j) => j !== i) })
+    onChange((now) => ({ ...now, climbers: now.climbers.filter((_, j) => j !== i) }))
     say(`${c.name} removed.`)
   }
 
