@@ -42,3 +42,37 @@ A dance-studio owner (or whoever runs a showcase, school concert, or variety sho
 ## Log
 
 - **2026-10-13:** chosen (`CANDIDATES.md`). Risk list written.
+- **2026-10-13, model milestone** (`model.ts`, `roster.ts`): the rule, the gap count, the per-dancer floor, settling kept routines into their parts, the search, and the reader for lines and the three table shapes.
+  - **The tests caught a weak search:** with a reduced budget the annealing missed the best order on 2 of about 1,500 small shows. Fixed by comparing every allowed order when 8 or fewer routines can move (at most 40,320; then the page can say "best possible") and by ending each run with a swap-by-swap polish under the exact rule; the search also stops early once the floor proves the result and the distance has stopped improving.
+  - **Checks** (`.claude/qa/show-order-test.ts`, 60 of 60; `.claude/qa/show-order-check.py`): every small show matches a brute force written separately (levels on all, the closest order on at least 97%); the annealing alone matches brute force on 30 of 30 shows of 9 routines; a Python reimplementation recounts 397 results and finds each one is the best order by the rule, distance included; the floor equals the true fewest for one dancer in 3,000 cases and never exceeds the true fewest total; pins and parts hold; the same number replays the same order; never worse than the start.
+  - **The real line-up** (pseudonymized, `.claude/qa/show-order/real-2026.txt`): the studio's order counts 0 back to back and 40 with two between; the search, keeping the opener, removes all of them while moving 4 routines (proved: the floor is 0); with four between, 0 against the studio's 74.
+  - **Time** (node): 80 routines and 250 dancers in 0.8 s; 400 routines with 11,000 appearances in 10 s.
+- **2026-10-13, page milestone** (`index.tsx`, `example.ts`, registry entry): reading with a live summary, the running order in parts, quick changes marked on each routine, moves by buttons, keyboard, "move to number", and drag, pins, keeping routines before or after an intermission, suggest with progress, Stop, and Undo, the quick-change and dancer lists, print by section, CSV, and saving through `useOtherTabs`.
+  - **Found and fixed on the way:**
+    - a manual move shifted pinned routines (now only free routines shift round them, and a move onto a pinned place goes past it);
+    - stale parts after editing or changing an intermission (now settled again);
+    - the shape picker showing a choice it hadn't made;
+    - the read mode from a CSV file sticking after other text was pasted;
+    - a "Last, First" name column read as two-name lists;
+    - a suggestion moving the finale (openers and finales are now pinned by name, with a note naming them);
+    - wording ("12 1 between");
+    - grouped quick changes running together for screen readers;
+    - about 90 Tab stops before the rest of the page (a skip link);
+    - controls and dancer rows wider than a phone at 200% text.
+  - **Browser checks** (`.claude/qa/so-flow.cjs`, against the built site): 102 of 102 in Chromium and 102 of 102 in WebKit, at desktop light and phone dark. They cover: the example's counts against an independent count from the page's own text; a suggestion (28 quick changes to 2, pins kept, recounted from what the page shows); undo; moves with focus and announcements; moving past pins; move to number; intermissions; the rule from 1 to 5; reload; another tab's move taken up; editing with pins carried over; the CSV round trip; dancer-per-row and grid tables; merging a likely duplicate; print by section; a 150-routine show in about 2.3 s; Stop within 3 s; refused and damaged storage; 320 px, and 390 px and 1280 px with text at 200%, every fold open; axe at three points; no request during the flow, and only the site's own files after a reload; console clean.
+- **2026-10-13, audit** (`.claude/qa/so-audit.cjs`, `so-offline.cjs`, `so-shots.cjs`):
+  - **At the limits the page froze:** 400 routines with 19,478 places took 12.5 s to search with 16 timer ticks where 125 were due. Three causes, all fixed:
+    - work was cut by steps, not time (now 12 ms slices; the steps, and so the replay, are unchanged);
+    - every progress update redrew the whole list (now the bar updates on its own);
+    - the end-of-run polish compared 80,000 pairs in one go (now resumable, a few pairs at a time).
+    Now 103 of about 107 ticks in Chromium and 111 of 128 in WebKit; the search takes 10.7 s and 12.8 s.
+  - **Moves allocated per candidate:** each "move" step rebuilt 5,000 lists; it now counts without allocating and rebuilds only when a move is kept.
+  - **Two overclaims narrowed:** "nobody dances in back-to-back routines and quick changes are as few as possible" (neither is always possible, and the page proves it only sometimes) became "as few quick changes as the page can find"; "saved until you start again" now says a browser can clear it (Safari after about a week without a visit).
+  - **Print:** the running order prints each routine's dancers, without the screen's notes ("moved from", "pinned"); each section prints alone (checked from the PDFs' text).
+  - **Checks:**
+    - the real line-up pasted in: 27 routines, 92 dancers, 40 with two between, then 0 with the opener pinned;
+    - focus to the order after planning; headings h1, h2 sections, h3 parts;
+    - the skip link; 140 Tab presses, every stop visible;
+    - offline in Chromium and WebKit (the server stopped: plan, suggest, read a file);
+    - a visual review at phone and desktop, light and dark;
+    - after every fix: model 67 of 67, Python 397 of 397, the flow 102 of 102 in each engine, the audit 15 of 15 (Chromium) and 12 of 12 (WebKit).

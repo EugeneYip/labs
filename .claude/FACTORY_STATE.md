@@ -10,8 +10,8 @@ The current state, kept short. `.claude/hooks/session-context.sh` prints this se
 - **Batch:** 08, Discovery Cycle 3, authorized by the owner on 2026-10-13 for up to five new experiments, #030–#034 (never #035, and no further batch). An upper limit, not a quota. Part A, Autonomous Ops v2.1, comes before discovery.
 - **Batch file:** `.claude/batch-08/BATCH_08.md`; every idea and its outcome in `.claude/batch-08/CANDIDATES.md`.
 - **Experiment:** #030 Show Order (`show-order`): a running order where nobody has back-to-back numbers and quick changes are fewest. Chosen 2026-10-13; dossier `.claude/batch-08/030-show-order.md`.
-- **Where the work is:** `wip/030-show-order` (local, never pushed): switch to it; its copy of this file is the current one. `main` matches `origin/main`.
-- **Next action:** on `wip/030-show-order`, write `model.ts` (reading routines, the gap count, the search, the lower bound) with its tests, then the page; the risk list is in the dossier.
+- **Where the work is:** `main` (#030 squashed onto it); `wip/030-show-order` is kept until production is verified, then deleted.
+- **Next action:** verify #030 Show Order in production (deploy, byte parity, the flow and audit on the live site in both engines, offline, homepage card, smoke test, daily check), record it, delete `wip/030-show-order`, then discovery for #031.
 - **Done and verified:** the Batch 08 baseline (2026-10-13); Autonomous Ops v2.1 (commit e4ec9db, deploy 38487235836, production byte-identical, daily check 11 of 11; the Stop hook checked live; results in the batch file). Batch 07 is complete: #026–#029 live and verified.
 - **Owner-blocked (parked; don't start them):**
   - Fluency Check interviews or a pilot;

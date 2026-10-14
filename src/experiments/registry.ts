@@ -301,6 +301,15 @@ export const experiments: readonly Experiment[] = [
     status: 'live',
     category: 'groups',
   },
+  {
+    number: 30,
+    slug: 'show-order',
+    title: 'Show Order',
+    summary: 'Plans a recital’s or show’s running order so dancers aren’t in back-to-back numbers and have as few quick changes as it can find, around the numbers you pin, without uploading the cast.',
+    shipped: '2026-10-13',
+    status: 'live',
+    category: 'groups',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */

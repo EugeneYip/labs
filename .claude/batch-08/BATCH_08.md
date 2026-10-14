@@ -26,9 +26,9 @@ research → gate → number → `wip/<number>-<slug>` branch → principal fail
 
 ## Now
 
-- **Step:** #030 Show Order chosen (`CANDIDATES.md`, "Decision for #030"); risk list in `030-show-order.md`. Building on `wip/030-show-order`.
-- **Next action:** on `wip/030-show-order`, write `model.ts` (reading routines, the gap count, the search, the lower bound) with its tests (brute force, a separate Python counter, the real line-up), then the page.
-- **Numbered so far:** #030 Show Order (building). Leads for #031 onward are in `CANDIDATES.md` (class formation first, then thread E's).
+- **Step:** #030 Show Order passed the shipping gate (dossier) and is being shipped: squashed onto `main`, pushed, then verified in production.
+- **Next action:** verify #030 in production (the commit deployed, files byte-identical, the flow and audit on the live site in both engines, offline, the homepage card, the smoke test, the daily check), record it, delete `wip/030-show-order`, then discovery for #031 (class formation first, then thread E's leads; diversity in mind).
+- **Numbered so far:** #030 Show Order (shipping).
 
 ## Part A: Autonomous Ops v2.1
 
@@ -46,7 +46,7 @@ research → gate → number → `wip/<number>-<slug>` branch → principal fail
 
 | # | Title | Slug | Status | Dossier |
 |---|---|---|---|---|
-| 030 | Show Order | show-order | building on `wip/030-show-order` | `030-show-order.md` |
+| 030 | Show Order | show-order | shipped 2026-10-13; production check in progress | `030-show-order.md` |
 
 ## Log
 
