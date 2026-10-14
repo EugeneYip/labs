@@ -30,17 +30,18 @@ research → gate → number → `wip/<number>-<slug>` → pre-build failure rev
 
 ## Now
 
-- **Step:** #034 Deputyship Accounts, being built on `wip/034-deputyship-accounts` (model first).
-- **Next action:** build `src/experiments/deputyship-accounts/model.ts` (reading bank downloads, merging overlaps, the report's types, rules, transfer pairs, the summaries and balance trails) with its checks, as the dossier's risk list says; then the page, the audit, and the ship. Thread E (rule-created jobs) may still report: record its outcome in `CANDIDATES.md` on `main`.
+- **Step:** #034 Deputyship Accounts built and audited on `wip/034-deputyship-accounts`; shipping.
+- **Next action:** squash `wip/034-deputyship-accounts` onto `main` as "#034 Deputyship Accounts: …", build, push, watch the deploy, then verify production (parity, `dsa-flow.cjs` and `dsa-prod-extra.cjs` on the live site in both engines, smoke, daily check) and record it; then discovery for #035.
 - **Numbered so far:** #034 Deputyship Accounts (building). #035 is the next number.
 
 ## Numbered experiments
 
 | # | Title | Slug | Status | Dossier |
 |---|---|---|---|---|
-| 034 | Deputyship Accounts | deputyship-accounts | building | `034-deputyship-accounts.md` |
+| 034 | Deputyship Accounts | deputyship-accounts | built and audited, shipping | `034-deputyship-accounts.md` |
 
 ## Log
 
 - **2026-10-14:** reconciled. Batch 08 is complete (closed early at four, #030–#033, all live and verified). `main` = `origin/main` = 4c71d4b, clean, no `wip/` branch, no stash, one worktree. Production's 77 files are byte-identical to a fresh build (111 addresses, `prod-parity.mjs`); the daily check passes 11 of 11 against production; GitHub's last scheduled daily run (38446088538, 2026-10-13) passed; the last eight deploys succeeded; Pages on `workflow`, the domain verified, HTTPS enforced, the certificate good until 2027-01-06. Autonomous Ops v2.1: the session-start hook printed the state at this session's start; the Stop hook passes its 31 offline cases. Batch 09 records created and the batch activated.
 - **2026-10-14:** discovery round 1: five bounded threads (trades and small offices; household administration; makers and hobbies; creative production and teaching; rule-created jobs) and direct checks here (Harris matrices, league fixtures, archives' fixity checks, judging panels). Rejected: Harris matrices (Phaser, the field's own free browser tool), league fixtures with shared grounds (the FA's and ECB's free systems), Construction Act payment dates (legal-stakes date arithmetic), and the threads' weaker leads. Open: combining judges' scores (a gap, with a Penn State paper showing the job). **#034 assigned to Deputyship Accounts:** the money section of a lay deputy's yearly report to the OPG, from the bank's own downloads; the rule, the online report's types (from its public source code), the scale (64,456 deputyships), and deputies' accounts of the hours it takes were all checked here.
+- **2026-10-14:** #034 Deputyship Accounts built and audited on `wip/034-deputyship-accounts` (milestones c286dd2, 50a4a50): model checks 130 of 130, an independent Python re-check 32 of 32, the browser harness 166 of 166 in Chromium and WebKit, the site smoke test on the build 140 loads with no problems. The audit found twelve product defects before any push, all fixed (dossier log). Shipping as one squashed commit.

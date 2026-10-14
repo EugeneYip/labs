@@ -337,6 +337,15 @@ export const experiments: readonly Experiment[] = [
     status: 'live',
     category: 'groups',
   },
+  {
+    number: 34,
+    slug: 'deputyship-accounts',
+    title: 'Deputyship Accounts',
+    summary: 'Prepares the money section of a Court of Protection deputy’s yearly report from the bank’s own downloads: every payment in the report’s types, transfers between accounts paired, and where an account stops balancing, without uploading anything.',
+    shipped: '2026-10-14',
+    status: 'live',
+    category: 'family',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */
