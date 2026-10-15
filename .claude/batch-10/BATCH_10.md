@@ -54,15 +54,15 @@ May close before #040, but not merely because strong ideas got harder to find. B
 
 ## Now
 
-- **Step:** #036 Holiday Pay Average passed the shipping gate (model 197 checks, Python re-check with 6,000 random cases, browser flow 125 of 125 in each engine, the audit's 18 findings fixed, offline 6 of 6 in each, smoke 148 loads) and is being squashed to `main` and pushed.
-- **Next action:** verify #036 in production (the deploy run; parity with `prod-parity.mjs`; `hpa-flow.cjs` against https://labs.eugeneyip.net in both engines; `hpa-prod-extra.cjs` offline and the homepage card; the smoke test; the daily check), record it, delete `wip/036-holiday-pay-average`, then gate round 2's leads for #037 (thread G's best and worst lines through error bars; thread F when it reports).
-- **Numbered so far:** #036 Holiday Pay Average (being built). #037 is the next number.
+- **Step:** #036 Holiday Pay Average shipped (18a27a2, deploy 38685690990) and verified in production. Discovery for #037: round 2 (threads F, rules new in 2025–26, still running; G, science practicals, finished with one moderate lead).
+- **Next action:** gate round 2's leads for #037: check thread G's lead (best and worst lines through error bars, AQA/OCR/IB/Cambridge) against its deciding fact (the free tool beepboopmachines.com named in a 2023 IOP paper) and the boards' own wording; take thread F's report when it lands; assign #037 only to a candidate that clears the full gate, otherwise run the final broad pass and the early-close test.
+- **Numbered so far:** #036 Holiday Pay Average (shipped 2026-10-15, verified in production). #037 is the next number.
 
 ## Numbered experiments
 
 | # | Title | Slug | Status | Dossier |
 |---|---|---|---|---|
-| 036 | Holiday Pay Average | holiday-pay-average | shipped 2026-10-15; production verification next | `036-holiday-pay-average.md` |
+| 036 | Holiday Pay Average | holiday-pay-average | shipped 2026-10-15 (18a27a2), verified in production | `036-holiday-pay-average.md` |
 
 ## Log
 
@@ -72,4 +72,5 @@ May close before #040, but not merely because strong ideas got harder to find. B
 - **2026-10-14:** discovery round 1 started: five bounded threads (10 searches and 8 page reads each, notes written as they go): A field work, trades, maintenance and facilities (`research/a-field-facilities.md`); B clubs, associations, volunteers, local community administration (`b-clubs-community.md`); C land, woodland, farms, outdoor space (`c-land-woodland.md`); D small professional practices and household administration (`d-practices-household.md`); E archives, libraries, heritage beyond climate, creative production, makers, hobbies, indoor space (`e-heritage-makers.md`). Each starts from seed jobs chosen here and checks the earlier batches' records before researching a lead.
 - **2026-10-14:** discovery round 1 recorded (`CANDIDATES.md`): threads A, C, D, and E finished on their full budgets (10 searches and 8 reads each); B's partial notes read. Survivors: holiday pay's reference period (D), the felling licence exemption record (C, borderline), a percolation and soakaway test log (A, moderate); everything else rejected or weak, with reasons. The main session checked holiday pay's deciding facts on legislation.gov.uk (WTR reg 16 and the new reg 16B records duty from 6 April 2026), GOV.UK's employer guidance and its worked examples, GOV.UK's entitlement calculator, and a free calculator's inputs; and S.I. 1979/792 for the felling lead (no measuring rule since 1979). **#036 assigned to Holiday Pay Average** (`holiday-pay-average`): holiday pay by the 52-week rule from week-by-week pay, every week used or skipped shown, a record to keep.
 - **2026-10-15:** #036 Holiday Pay Average built and audited on `wip/036-holiday-pay-average` (milestones 57cba5b, 5d6e5ab, b984748, ee2d45c, 3817a69): model checks 197 of 197; the independent Python re-check agrees on the official examples and 6,000 random histories; the browser flow 125 of 125 in Chromium and WebKit; offline 6 of 6 in each; the site smoke test 148 loads with no problems. Found and fixed before any push: by the flow, a delayed focus move after clearing (keystrokes could land in the date field), two contrast failures, a wording claim; by the main session, focus lost when buttons were replaced; by the independent audit, 18 defects (two medium rule gaps: part-year and irregular-hours workers' 1.6 weeks under basic pay with extras, and regular overtime beyond normal hours in the varying-pay method, now stated; five medium paste and state defects; eleven low) and 8 suggestions. Round 2 discovery for #037 started meanwhile: threads F (rules new in 2025–26) and G (science practicals; one moderate lead, best and worst lines through error bars).
+- **2026-10-15:** #036 Holiday Pay Average shipped (18a27a2, deploy 38685690990) and verified in production: byte-identical (83 files, 120 addresses), the flow 125 of 125 in both engines on the live site, offline and the homepage card 6 of 6 in each, the smoke test 148 loads with no problems, the daily check 11 of 11. `wip/036-holiday-pay-average` deleted. Provisional lifecycle MAINTAIN.
 
