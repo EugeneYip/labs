@@ -63,18 +63,20 @@ May close before #041, never just because one thread failed or search got inconv
 
 ## Now
 
-- **Step:** discovery round 1 under way (2026-10-15): five bounded threads, A–E, organised by the source of evidence (notes in `research/`); the main session's first screen is in `CANDIDATES.md` (two survivors at Stage A: first article inspection ballooning, and breeders' pedigrees).
-- **Next action:** read threads A–E as they finish (keep the notes of any thread that is cut off); check every deciding claim in the main session; Stage B on the survivors, then the full gate on the strongest; assign #037 only if one clearly passes.
-- **Numbered so far:** none. #037 is the next number.
+- **Step:** #037 Ballooned Drawing (`ballooned-drawing`) assigned 2026-10-15 after discovery round 1 (the full gate in `CANDIDATES.md`). Next: the `wip/037-ballooned-drawing` branch, the dossier with the pre-build risk review, then the build.
+- **Next action:** build #037 on `wip/037-ballooned-drawing`: dossier (`037-ballooned-drawing.md`) and pre-build risk review first; then the model (requirement parsing, exact limits and pass/fail, zones, numbering, Form 3 export) with its tests and an independent Python check; then the page (PDF viewer, balloons, the characteristic list and editor, exports, saving); then browser QA in Chromium and WebKit, the adversarial audit, fixes, and the ship gate.
+- **Numbered so far:** #037 Ballooned Drawing (being built). #038 is the next number.
 
 ## Numbered experiments
 
 | # | Title | Slug | Status | Dossier |
 |---|---|---|---|---|
-| 037–041 | — | — | not assigned | — |
+| 037 | Ballooned Drawing | ballooned-drawing | being built on `wip/037-ballooned-drawing` | `037-ballooned-drawing.md` |
+| 038–041 | — | — | not assigned | — |
 
 ## Log
 
 - **2026-10-15:** reconciled against Batch 10's close. Batch 10 is complete (closed early at #036; #036 Holiday Pay Average live and verified in production). `main` = `origin/main` = 171d1ae, clean, no `wip/` branch, no stash, one worktree. The last deploy (38689117218) built 171d1ae and succeeded; the last thirteen runs succeeded. A fresh build's 83 files (120 addresses) are byte-identical in production (`prod-parity.mjs`). The daily check passes 11 of 11 against production with "no request needed another try", both locally and in GitHub's scheduled run 38761971045 (2026-10-15 15:37 UTC). Autonomy was `complete`. The daily check's diagnostics (which check failed, its error, whether a retry recovered) are in place from Batch 10 (b45a44a); no regression, so nothing in Autonomous Ops is redone.
 - **2026-10-15:** Batch 11 records created (`BATCH_11.md`, `CANDIDATES.md`, `research/`) and the batch activated (Autonomy `active`), commit de458c7. The auto-memory note on batch authorization was updated to say Batch 11 is authorized (the earlier refusals didn't recur).
 - **2026-10-15:** discovery round 1 started, workflow-first. Five bounded threads, each writing notes as it goes: A, first article inspection ballooning (Stage B evidence; 10 searches, 8 reads); B, breeders' pedigrees and inbreeding (Stage B evidence; 8 and 8); C, declined and long-open vendor feature requests (9 and 8); D, official and association worksheets, templates, and manuals (9 and 8); E, practitioners' own accounts of manual collation in hobbies and specialist volunteering (9 and 8). The main session's first screen (three searches): two survivors, ten rejects, five settled ideas found in the records before any search.
+- **2026-10-15:** discovery round 1 recorded (`CANDIDATES.md`). Threads A, B, C, and E finished on their full budgets; D was cut off by the account's usage limit after 6 of 9 searches and 6 of 8 reads, and its notes were kept rather than relaunched (both its leads already at Stage B, neither likely to beat ballooning). Survivors: first article inspection ballooning (A), breeders' pedigrees (B, narrowly), the VAT margin-scheme stock book (C), coin die comparison (E), museum pest traps and lot tracing (D). The main session checked the deciding facts itself: two feasibility spikes (pdf.js renders and reads drawings, pdf-lib places balloons exactly on rotated pages, both engines), one search confirming no free hosted local ballooning tool, the export-control and defence-contract rules (22 CFR 120.50, 120.54, 120.56; DFARS 252.204-7012) read from the primary texts, and the incumbents' own pages re-read. **#037 assigned to Ballooned Drawing** (`ballooned-drawing`): number every characteristic on a customer's drawing with a click, build the Form 3 table with results and pass or fail, and export the ballooned PDF and the table, with the drawing never leaving the computer.
