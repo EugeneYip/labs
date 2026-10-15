@@ -89,3 +89,11 @@ Two bounded threads (8 searches and 6 reads each): F, rules that took effect in 
 ### Decision for #037 (2026-10-15)
 
 No candidate clears the gate. Next: the final broad pass, outside the areas this batch has searched (field work and facilities; clubs and community; land and woodland; small practices and households; heritage, makers, and hobbies; new rules; science practicals), and then the early-close test.
+
+## The final broad pass (2026-10-15)
+
+Outside the areas the batch had searched: thread H (transport and mobility; non-clinical care, disability, and accessibility administration; youth organisations outside school; `research/h-final-pass.md`, decided below when it reports) and the main session's own screens in four more areas, each on what's already known (*inference* unless marked):
+- **Retail and hospitality, beyond food labels and tips:** unit pricing on shelf labels (a division; the Price Marking Order's exemptions cover the smallest shops), stock rotation and date labels (logs), staff rotas (saturated), the Scottish visitor levy (thread F, REJECT above). Nothing.
+- **Personal finance and household tax:** capital gains share matching (REJECT above, free tools); the High Income Child Benefit Charge, pension annual allowance tapering, student loan plans, marriage allowance (HMRC's and the Student Loans Company's own calculators); inheritance tax gift records (thread D, weak). Nothing.
+- **Language and communication work:** translators' counts (Batch 09), plain-English and easy-read checks (judgment, and readability scorers are everywhere), interpreters' bookings (scheduling software). Nothing.
+- **Faith communities and local life:** service registers and banns dates (trivial dates), electoral rolls (Batch 09 thread B: settled), the October attendance count for Statistics for Mission (an average, submitted in the Church of England's own online returns). Nothing.
