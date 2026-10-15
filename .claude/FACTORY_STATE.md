@@ -6,13 +6,13 @@ The checkpoint for autonomous Labs work. Read it down to the "History" heading; 
 
 The current state, kept short. `.claude/hooks/session-context.sh` prints this section at the start of every session and after the context is compacted, and `.claude/hooks/stop-continue.sh` reads **Autonomy** and **Next action** from it, so keep those two lines' wording as they are.
 
-- **Autonomy:** complete
-- **Batch:** Batch 10 (Discovery Cycle 5), authorized by the owner on 2026-10-14, is complete: closed early on 2026-10-15 with one experiment, #036 Holiday Pay Average; #037–#040 not assigned; never #041. No further batch without the owner's authorization. Report: `.claude/batch-10/CLOSEOUT.md`.
-- **Batch file:** `.claude/batch-10/BATCH_10.md` (the rules in short, the checkpoint, the log); every idea and its outcome in `.claude/batch-10/CANDIDATES.md`; thread notes in `.claude/batch-10/research/`.
-- **Experiment:** none being built; #036 Holiday Pay Average shipped and verified. #037 is the next number.
+- **Autonomy:** active
+- **Batch:** Batch 11 (Discovery Cycle 6), authorized by the owner on 2026-10-15: discover, build, audit, deploy, production-verify, and resolve up to five new experiments, #037–#041 (an upper bound, not a quota). Never #042; no Batch 12. Human validation parked for the whole batch. Batch 10 is complete (closed early at #036; `.claude/batch-10/CLOSEOUT.md`).
+- **Batch file:** `.claude/batch-11/BATCH_11.md` (the rules in short, the checkpoint, the log); every idea and its outcome in `.claude/batch-11/CANDIDATES.md`; thread notes in `.claude/batch-11/research/`.
+- **Experiment:** none being built. #037 is the next number.
 - **Where the work is:** `main`; no `wip/` branches.
-- **Next action:** none: Batch 10 is complete and reported (`.claude/batch-10/CLOSEOUT.md`); wait for the owner.
-- **Done and verified:** Batch 10: #036 Holiday Pay Average (ship 18a27a2, deploy 38685690990, verified in production 2026-10-15); reconciled against Batch 09's close (46866c7; production byte-identical, 81 files; daily check 11 of 11); the daily check now records which check failed, its error, and whether a retry recovered (7 of 7 injected faults). Batch 09: #035 Collection Climate (ship 9ca0a22, deploy 38588208105, verified in production 2026-10-14); #034 Deputyship Accounts (ship 8f0b4a7, deploy 38572132880, verified in production 2026-10-14). Batch 08: #033 Captions Up (ship 97833cd, fix d289161, deploy 38536194341, verified in production 2026-10-14); #032 Comp Desk (ship b8f8a30, fix 52802a5, deploy 38524500178, verified 2026-10-14); #031 New Classes (d9b99d8, deploy 38519276907, verified 2026-10-14); #030 Show Order (a329ca8, deploy 38494521064, verified 2026-10-13); Autonomous Ops v2.1 (e4ec9db, deploy 38487235836; the Stop hook checked live). Batch 07 is complete: #026–#029 live and verified.
+- **Next action:** run Batch 11's discovery round 1, workflow-first: bounded research threads in the less-covered directions (notes in `.claude/batch-11/research/`) and the main session's Stage A screen (`.claude/batch-11/CANDIDATES.md`), then Stage B on survivors and the full gate on the strongest.
+- **Done and verified:** Batch 11: reconciled against Batch 10's close (171d1ae; production byte-identical, 83 files; daily check 11 of 11 with no retries, locally and in GitHub's scheduled run 38761971045). Batch 10: #036 Holiday Pay Average (ship 18a27a2, deploy 38685690990, verified in production 2026-10-15); reconciled against Batch 09's close (46866c7; production byte-identical, 81 files; daily check 11 of 11); the daily check now records which check failed, its error, and whether a retry recovered (7 of 7 injected faults). Batch 09: #035 Collection Climate (ship 9ca0a22, deploy 38588208105, verified in production 2026-10-14); #034 Deputyship Accounts (ship 8f0b4a7, deploy 38572132880, verified in production 2026-10-14). Batch 08: #033 Captions Up (ship 97833cd, fix d289161, deploy 38536194341, verified in production 2026-10-14); #032 Comp Desk (ship b8f8a30, fix 52802a5, deploy 38524500178, verified 2026-10-14); #031 New Classes (d9b99d8, deploy 38519276907, verified 2026-10-14); #030 Show Order (a329ca8, deploy 38494521064, verified 2026-10-13); Autonomous Ops v2.1 (e4ec9db, deploy 38487235836; the Stop hook checked live). Batch 07 is complete: #026–#029 live and verified.
 - **Owner-blocked (parked; don't start them):**
   - Fluency Check interviews or a pilot;
   - the email to Open-Meteo;
@@ -27,7 +27,7 @@ The current state, kept short. `.claude/hooks/session-context.sh` prints this se
   - Batch 09: human validation of #034 Deputyship Accounts, then #035 Collection Climate;
   - Batch 10: human validation of #036 Holiday Pay Average (deferred by the owner for the batch; a future step, not a next action).
 
-  Details are in `.claude/AUTONOMOUS_QUEUE.md` and the Batch 08 and Batch 09 closeouts. In Batch 10 every human-validation lane stayed parked by the owner's instruction.
+  Details are in `.claude/AUTONOMOUS_QUEUE.md` and the Batch 08 and Batch 09 closeouts. In Batches 10 and 11 every human-validation lane stays parked by the owner's instruction.
 - **Autonomy values:** `active` (carry on without asking), `paused` (the owner asked to pause), `blocked` (everything left needs the owner), `complete` (the batch is finished and reported). Only `active` makes the Stop hook ask Claude to carry on, and it doesn't ask again until Claude has used a tool since it last asked (and at most 3 times in 10 minutes).
 
 ## How to resume
@@ -37,6 +37,16 @@ The current state, kept short. `.claude/hooks/session-context.sh` prints this se
 3. Do the next action. Commit each verified milestone (on the `wip/` branch while an experiment is being built, otherwise on `main`) and update "Now" here and in the batch file.
 4. When an experiment ships: on `main`, `git merge --squash wip/<number>-<slug>`, commit as "#0NN Title: summary", run `npm run build`, push, watch the deploy, check production, then record that here, in the batch file, and in the dossier; commit and push the record. Delete the `wip/` branch once `git diff main wip/<number>-<slug>` shows nothing that matters, and start the next discovery.
 5. Long runs: bound them (see "Long jobs" in `CLAUDE.md`), keep partial results in files, and when a lane stalls, record it here and carry on with another.
+
+## Batch 11: Discovery Cycle 6 (active)
+
+- **Authorized** by the owner on 2026-10-15: discover, build, audit, deploy, production-verify, and resolve up to five new experiments, #037–#041, with no routine approval between experiments. Never #042; no Batch 12. Owner authorization once, autonomous execution after (Autonomous Ops v2.1, not redone without evidence of a regression).
+- **Human validation parked** for the whole batch: no interviews, pilots, outreach, real-user tests, or organisation trials, and none surfaced as a next action; the closeout may list future targets briefly.
+- **The bar rises again** (36 live): several strong characteristics, not one; workflow depth (import → reconcile → inspect → decide → export) over formula depth; no more rule calculators unless the workflow itself is substantial; no narrower variant of a covered cluster without a distinct job and wedge. An upper bound, not a quota: shipping none is acceptable.
+- **The search strategy changes, not the gate:** workflow-first discovery from evidence of real work (manuals, handbooks, forms, inspection sheets, templates, worked examples, forum threads, declined feature requests), staged screening (A cheap kill, B opportunity check, C the full gate A–J).
+- **Still prohibited:** contacting anyone, spending money, external accounts, owner settings, backends or keyed services, analytics, weakening the constitution, permission workarounds (Firefox stays parked), downloads or new permissions to rescue a HOLD, and the parked owner lanes.
+- **Records:** `.claude/batch-11/BATCH_11.md` (the rules in short, the checkpoint under "Now", the log), `.claude/batch-11/CANDIDATES.md` (every idea and its outcome), research notes in `.claude/batch-11/research/`, and a dossier per numbered experiment in `.claude/batch-11/`.
+- **Close:** when the evidence says to stop (a final broad pass in domains materially different from anything shipped in the batch, credible HOLDs revisited, the remaining candidates' failures documented, diminishing value shown), with the closeout report (the brief's 24 items); then Autonomy goes to `complete`.
 
 ## Batch 10: Discovery Cycle 5 (complete)
 
