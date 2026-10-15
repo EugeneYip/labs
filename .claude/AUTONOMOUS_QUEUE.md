@@ -30,7 +30,7 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ## Now
 
-- **Current:** Batch 10 (Discovery Cycle 5), authorized by the owner on 2026-10-14: up to five new experiments, #036–#040, never #041; checkpoint `.claude/batch-10/BATCH_10.md`. Human validation is deferred for the batch: the parked lanes below stay parked and aren't next actions. Before it: Batch 09 (Discovery Cycle 4) closed early on 2026-10-14 with two experiments, #034 Deputyship Accounts and #035 Collection Climate (`.claude/batch-09/CLOSEOUT.md`). Batch 08 closed early on 2026-10-14 with four experiments, #030–#033 (`.claude/batch-08/CLOSEOUT.md`). P1–P13 are done and verified. Batch 07's closeout is `.claude/batch-07/CLOSEOUT.md`.
+- **Current:** none. Batch 10 (Discovery Cycle 5) closed early on 2026-10-15 with one experiment, #036 Holiday Pay Average (`.claude/batch-10/CLOSEOUT.md`); no further batch without the owner's authorization. Batch 09 closed early on 2026-10-14 with #034 and #035 (`.claude/batch-09/CLOSEOUT.md`); Batch 08 on 2026-10-14 with #030–#033 (`.claude/batch-08/CLOSEOUT.md`). P1–P13 are done and verified. Batch 07's closeout is `.claude/batch-07/CLOSEOUT.md`.
 - **Parked lanes** (below) stay parked until the owner chooses one; they never hold up other work.
 - **When something new needs the owner** (in any batch): add it under "Parked lanes" as BLOCKED — OWNER REQUIRED, with what's ready and what the owner would do, mention it in "Now" in `.claude/FACTORY_STATE.md`, and carry on with the rest.
 
@@ -48,6 +48,7 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 - `[B]` **Hidden Data Check with workbooks Excel itself saves.** Excel for Mac is on this machine, but having Claude drive it needs a macOS automation permission. The owner could instead open a few workbooks in Excel, save them, and leave them in `.claude/qa/hdc/`. So far the only Excel-written file tested is the Solver add-in.
 - `[B]` **The nest visit planner (Batch 08 HOLD).** Needs the owner's permission to download two CC0 data files (Storchová & Hořák 2018 from Dryad, 245,901 bytes; Myhrvold et al. 2015, Ecological Archives E096-269, the Amniote database CSV), and a sourced last-visit rule for each species. The research is in `.claude/batch-08/research/j-nest.md` and `CANDIDATES.md`.
 - `[B]` **Human validation of Batch 08's experiments:** #031 New Classes first (a primary school's summer-term class mixing), then #033 Captions Up (a community company's captioned performance). Contacting people is the owner's call; the closeout says what each would settle.
+- `[B]` **Human validation of #036 Holiday Pay Average** (Batch 10; deferred by the owner): an employer or bookkeeper working out a real worker's holiday pay with it, to see whether the week selection and the printed working save the spreadsheet hours that Xero's users describe.
 - `[B]` **A private copy of `.claude/qa/`.** The QA harnesses and fixtures (361 files, every flow check) are ignored by git by design and live only on this machine.
 
 ## Queue

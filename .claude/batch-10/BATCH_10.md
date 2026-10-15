@@ -54,8 +54,8 @@ May close before #040, but not merely because strong ideas got harder to find. B
 
 ## Now
 
-- **Step:** the final broad pass for #037: round 2 found nothing that clears the gate (`CANDIDATES.md`, "Decision for #037"); thread H searches three areas the batch hasn't (transport and mobility; non-clinical care, disability, and accessibility administration; youth organisations outside school), `research/h-final-pass.md`.
-- **Next action:** take thread H's report; gate anything that survives; if nothing clears the gate, run the early-close test (final pass done, HOLDs revisited, failures documented, diminishing value shown) and write `CLOSEOUT.md` (the brief's 21 items), then set Autonomy to `complete`.
+- **Step:** Batch 10 is complete (2026-10-15): closed early with one experiment, #036 Holiday Pay Average, live and verified in production; #037–#040 not assigned. The report is `CLOSEOUT.md`.
+- **Next action:** none. No further batch without the owner's authorization; the owner-blocked items are in `CLOSEOUT.md` (item 20).
 - **Numbered so far:** #036 Holiday Pay Average (shipped 2026-10-15, verified in production). #037 is the next number.
 
 ## Numbered experiments
@@ -63,6 +63,7 @@ May close before #040, but not merely because strong ideas got harder to find. B
 | # | Title | Slug | Status | Dossier |
 |---|---|---|---|---|
 | 036 | Holiday Pay Average | holiday-pay-average | shipped 2026-10-15 (18a27a2), verified in production | `036-holiday-pay-average.md` |
+| 037–040 | — | — | not assigned (the batch closed early) | — |
 
 ## Log
 
@@ -74,4 +75,5 @@ May close before #040, but not merely because strong ideas got harder to find. B
 - **2026-10-15:** #036 Holiday Pay Average built and audited on `wip/036-holiday-pay-average` (milestones 57cba5b, 5d6e5ab, b984748, ee2d45c, 3817a69): model checks 197 of 197; the independent Python re-check agrees on the official examples and 6,000 random histories; the browser flow 125 of 125 in Chromium and WebKit; offline 6 of 6 in each; the site smoke test 148 loads with no problems. Found and fixed before any push: by the flow, a delayed focus move after clearing (keystrokes could land in the date field), two contrast failures, a wording claim; by the main session, focus lost when buttons were replaced; by the independent audit, 18 defects (two medium rule gaps: part-year and irregular-hours workers' 1.6 weeks under basic pay with extras, and regular overtime beyond normal hours in the varying-pay method, now stated; five medium paste and state defects; eleven low) and 8 suggestions. Round 2 discovery for #037 started meanwhile: threads F (rules new in 2025–26) and G (science practicals; one moderate lead, best and worst lines through error bars).
 - **2026-10-15:** #036 Holiday Pay Average shipped (18a27a2, deploy 38685690990) and verified in production: byte-identical (83 files, 120 addresses), the flow 125 of 125 in both engines on the live site, offline and the homepage card 6 of 6 in each, the smoke test 148 loads with no problems, the daily check 11 of 11. `wip/036-holiday-pay-average` deleted. Provisional lifecycle MAINTAIN.
 - **2026-10-15:** discovery round 2 for #037 recorded: thread F (rules new in 2025–26; the Scottish visitor levy worksheet REJECT on the batch's pattern and moving rules), thread G (science practicals; best and worst lines REJECT, the free Data Grapher already does them), the main session's capital gains check (REJECT, free tools), and round 1's survivors decided (the felling record, the percolation log, the collection shift: REJECT). No candidate clears the gate. The final broad pass started: thread H.
+- **2026-10-15:** the final broad pass (thread H: transport and mobility, non-clinical care and disability administration, youth organisations; the main session's screens in four more areas) found nothing that clears the gate. The early-close test passed and the batch closed at #036: `CLOSEOUT.md` (the brief's 21 items, and why the batch closes). Autonomy set to `complete`.
 
