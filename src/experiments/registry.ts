@@ -355,6 +355,15 @@ export const experiments: readonly Experiment[] = [
     status: 'live',
     category: 'school',
   },
+  {
+    number: 36,
+    slug: 'holiday-pay-average',
+    title: 'Holiday Pay Average',
+    summary: 'Works out a week’s holiday pay in Great Britain when pay or hours vary, by the 52-week rule: which weeks count, back up to 104 weeks, why each other week is skipped, and a record to keep, without uploading anyone’s pay.',
+    shipped: '2026-10-15',
+    status: 'live',
+    category: 'school',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */
