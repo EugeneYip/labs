@@ -89,3 +89,24 @@ Query: `American Numismatic Society "Die Study Tool" OR CADS released free die s
 - Series-specific and online: the Tigranes die-matching tool, upload a photo, ranked candidate dies (https://blog.armnumres.org/?p=718).
 - *Inference:* the field's general tools are research prototypes or one-series services; nothing found that a collector can open, without an account or an upload, to align and overlay two coin photos and keep a study's die table.
 
+### R5 (5 of 8): CoinsWeekly (MünzenWoche), "How to detect forgeries", Part 4: transfer die forgeries (18 December 2009, no author named)
+https://coinsweekly.com/?p=60167 (*verified*, read 2026-10-15)
+- For transfer-die fakes, the recommended method is a die study: compare the questioned coin with all known specimens from the same die, gathered from auction catalogues and a reference library; called "a hard and lengthy business".
+- Worked example: a questioned Basil I solidus compared with die-identical coins (Dumbarton Oaks, the ANS, a Bonhams sale) showed a cross rendered as a "T" in the legend, exposing a fake made from a cast of an off-centre genuine coin.
+- No software, image database or tool is mentioned; the method relies on photographs, catalogues and drawings. So die comparison carries real money stakes for buyers as well as research value (*verified* as to the method; frequency not given).
+
+### S9 (9 of 9, searches done): L4, the practitioners' manual overlay method and any free tool
+Query: `"die match" coin photos overlay GIMP OR Photoshop OR "transparent layer" align rotate scale forum ancient coins OR "die marriage" attribution tool free`.
+- The manual method in collectors' words (*source claim*, summaries): a CoinTalk user overlays the two images in Photoshop, resizes and rotates them, and keeps "constantly adjusting the layer's opacity" (https://www.cointalk.com/goto/post?id=3564667 or nearby); coppercoins.com's guide answers "how I can tell for sure" with overlays aligned on hubbed features such as the date, then checks the mint mark position (https://coppercoins.com/edu/overlay.php ; forum https://coppercoins.com/forum/viewtopic.php?p=6441); an Adobe Community answer suggests the difference blend, where matching areas go black (https://community.adobe.com/t5/photoshop-ecosystem-discussions/superimposing-2-images-of-different-scale-and-rotation/m-p/11743280); a Numista forum tutorial on cropping and straightening coin images in GIMP (https://pl.numista.com/forum/topic39895.html).
+- US die-marriage attribution (PCGS forums, forums.collectors.com, several comments): collectors attribute by comparing photos of known die marriages and reference books (Logan-McCloskey for half dimes; EverythingHalfDimes.com); "never attribute a coin based on one side only" (*source claim*).
+- No dedicated free die-matching tool surfaced for US or ancient coins; ancient-coin matching is done against auction archives such as CNG's (*source claim*).
+
+### R6 (6 of 8, failed): coppercoins.com overlay guide
+https://coppercoins.com/edu/overlay.php: HTTP 404. Counted. Its content stays *source claim* (S9 summary).
+
+### R7 (7 of 8): Armenian Numismatic Research Organization, "Mid 2026 News from ANRO" (27 June 2026; byline Aram Manasaryan, signed "The ANRO Team")
+https://blog.armnumres.org/?p=718 (*verified*, read 2026-10-15)
+- A die-matching tool for Tigranes II tetradrachms, Main Group dies "for now": upload a straight-on photo of one side; it returns the three closest dies, ranked, with matching points marked; hosted on Hugging Face Spaces (server-side processing is this thread's *inference*); results are "candidates to confirm by eye"; works best with large, clean images and dies with several reference photos.
+- Context: "The die-matching stage is done", and the team has moved on to chronology. So the tool came after the study, to attribute new coins to a finished die list; nothing about cost, accounts or image retention; nothing on forgeries.
+- *Inference:* even the field's newest computer-vision tool ends in confirming by eye, and serves one series; a study in progress, or any other series, still needs side-by-side and overlay comparison.
+
