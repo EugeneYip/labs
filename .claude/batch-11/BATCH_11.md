@@ -63,8 +63,8 @@ May close before #041, never just because one thread failed or search got inconv
 
 ## Now
 
-- **Step:** Batch 11 activated (2026-10-15) after reconciling Batch 10's close (the log below). Discovery round 1, workflow-first, is starting.
-- **Next action:** run discovery round 1: bounded research threads that start from evidence of real work in the less-covered directions (notes in `research/`), plus the main session's own Stage A screen (`CANDIDATES.md`); then Stage B on the survivors and the full gate on the strongest.
+- **Step:** discovery round 1 under way (2026-10-15): five bounded threads, A–E, organised by the source of evidence (notes in `research/`); the main session's first screen is in `CANDIDATES.md` (two survivors at Stage A: first article inspection ballooning, and breeders' pedigrees).
+- **Next action:** read threads A–E as they finish (keep the notes of any thread that is cut off); check every deciding claim in the main session; Stage B on the survivors, then the full gate on the strongest; assign #037 only if one clearly passes.
 - **Numbered so far:** none. #037 is the next number.
 
 ## Numbered experiments
@@ -76,4 +76,5 @@ May close before #041, never just because one thread failed or search got inconv
 ## Log
 
 - **2026-10-15:** reconciled against Batch 10's close. Batch 10 is complete (closed early at #036; #036 Holiday Pay Average live and verified in production). `main` = `origin/main` = 171d1ae, clean, no `wip/` branch, no stash, one worktree. The last deploy (38689117218) built 171d1ae and succeeded; the last thirteen runs succeeded. A fresh build's 83 files (120 addresses) are byte-identical in production (`prod-parity.mjs`). The daily check passes 11 of 11 against production with "no request needed another try", both locally and in GitHub's scheduled run 38761971045 (2026-10-15 15:37 UTC). Autonomy was `complete`. The daily check's diagnostics (which check failed, its error, whether a retry recovered) are in place from Batch 10 (b45a44a); no regression, so nothing in Autonomous Ops is redone.
-- **2026-10-15:** Batch 11 records created (`BATCH_11.md`, `CANDIDATES.md`, `research/`) and the batch activated (Autonomy `active`).
+- **2026-10-15:** Batch 11 records created (`BATCH_11.md`, `CANDIDATES.md`, `research/`) and the batch activated (Autonomy `active`), commit de458c7. The auto-memory note on batch authorization was updated to say Batch 11 is authorized (the earlier refusals didn't recur).
+- **2026-10-15:** discovery round 1 started, workflow-first. Five bounded threads, each writing notes as it goes: A, first article inspection ballooning (Stage B evidence; 10 searches, 8 reads); B, breeders' pedigrees and inbreeding (Stage B evidence; 8 and 8); C, declined and long-open vendor feature requests (9 and 8); D, official and association worksheets, templates, and manuals (9 and 8); E, practitioners' own accounts of manual collation in hobbies and specialist volunteering (9 and 8). The main session's first screen (three searches): two survivors, ten rejects, five settled ideas found in the records before any search.
