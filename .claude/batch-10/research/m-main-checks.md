@@ -1,0 +1,17 @@
+# Main session's checks (Batch 10)
+
+Deciding facts for the leads, read by the main session from primary sources. Labels as in `../CANDIDATES.md`.
+
+## Holiday pay's reference period (thread D's lead)
+
+- **ERA 1996 s.224** (legislation.gov.uk, read 2026-10-14, "up to date with all changes known to be in force on or before 15 October 2026"): the statute's own text still says twelve weeks, with weeks of no remuneration skipped and earlier weeks brought in. The 52 weeks come from the Working Time Regulations, not from s.224 itself (*verified*).
+- **WTR 1998 reg 16** (legislation.gov.uk, read 2026-10-14; WebFetch summary with short quotations):
+  - ss.221–224 apply to holiday pay with modifications: the calculation date is the first day of the leave; "twelve" reads as 52, or the number of complete weeks employed if fewer; where s.223(2) or 224(3) applies, remuneration in weeks before the 104 weeks is disregarded (16(3)(e)–(f), from 6 April 2020) (*verified*).
+  - From 1 January 2024 (SI 2023/1426), for reg 13 leave (the 4 weeks) and reg 15B (irregular-hours and part-year workers): commission "intrinsically linked to the performance of tasks", payments for professional or personal status (service, seniority, qualifications), and other payments such as overtime "regularly paid to a worker in the 52 weeks preceding the calculation date" are added as an average over a relevant period (16(3ZA)–(3ZG)); weeks with no remuneration, sick leave, or statutory leave are left out of that average and earlier weeks used, up to 104 (*verified*).
+  - A week ends on Saturday unless the worker is paid weekly by a week ending on another day (16(3B)); if no weeks count, a sum that "fairly represents" a week's pay (16(3A)) (*verified*).
+  - So the selection is mechanical once each week is labelled, but the labels (is this overtime "regular"? is this payment "intrinsically linked"? how monthly pay is spread over weeks) are judgments, and the reg 13A 1.6 weeks follow the older basis. The tool would have to take those as the employer's inputs (*inference*).
+
+## The felling licence exemption (thread C's lead)
+
+- **S.I. 1979/792, the Forestry (Exceptions from Restriction of Felling) Regulations 1979** (legislation.gov.uk's scanned PDF, read 2026-10-14 from the images WebFetch saved; four pages): regulation 4 adds exceptions beyond s.9(2)–(4) of the Act (trees obstructing aerodromes, statutory undertakers' works and apparatus, works by water authorities and drainage boards, elms with Dutch elm disease (*Ceratocystis ulmi*) where the greater part of the crown is dead, and land under a forestry dedication covenant or agreement with an approved plan). It says nothing about measuring volume. Its explanatory note: the regulations re-enact the 1951–1977 ones "but omit the provision contained in the 1951 Regulations relating to the ascertainment of the cubic content of trees which is no longer required following the repeal of the relevant part of section 9(6) of the Forestry Act 1967 by the Forestry Act 1979" (*verified*).
+- So there was once a legal measuring rule for cubic content, and it was repealed in 1979. Today the law sets the 5 m³ and 2 m³ limits but no way of measuring them; the Forestry Commission's only aid is its 2005 "rough guide" table of log volumes by length and mid-diameter (thread C, R2, recomputed as Huber's formula). Any tool's figure is an estimate by a stated method (*verified* for the law; the consequence is *inference*).
