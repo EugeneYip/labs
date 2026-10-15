@@ -136,7 +136,7 @@ Unchanged from before the batch, and kept parked by the owner's instruction (hum
 
 - **Code:** the last code change is 18a27a2 (#036 Holiday Pay Average), deployed by run 38685690990 and verified in production. The only other change to the deployed site in this batch is the daily check's reporting (b45a44a, a GitHub script, not a page).
 - **Repository:** `main` matches `origin/main`, with this closeout's commits on top (records only). No `wip/` branches; the working tree is clean.
-- **Live:** 36 experiments, #001–#036.
+- **Live:** 36 experiments, #001–#036. After the closing records' deploy (run 38689008164): live files byte-identical to a fresh build (83 files, 120 addresses); the daily check 11 of 11, with no request needing another try (GitHub's runs with the new reporting: 38675718363, 11 of 11).
 - **Factory:** Autonomy set to `complete` in `FACTORY_STATE.md`; no further batch without the owner; the Stop hook passes its 31 offline cases.
 
 ## Why the batch closes at #036
