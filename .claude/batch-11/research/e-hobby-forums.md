@@ -42,3 +42,50 @@ Query: `community archaeology test pits OR fieldwalking finds by period per pit 
 - How the tables and maps are made (spreadsheet, GIS, drawn by hand) did not show in the summaries.
 - Lead L2 opened: **finds-by-period tables and distribution maps for a society's test pits or fieldwalking grid** (*inference*: a seasonal job, count and weight per pit or square and per period, mapped once per period).
 
+### R2 (2 of 8): Bingham Heritage Trails Association, fieldwalking method
+https://www.binghamheritage.org.uk/archaeology/field_walking/method.php (*verified*, read 2026-10-15)
+- Method: 10% sample, 2 m transects 20 m apart, 5 m stints; one bag per stint labelled transect, stint, collector's initials; washed, dried, each find bagged and numbered from the database; 12-figure grid reference per find spot; sorted into project categories; specialists (Trent & Peak Archaeology, consultants) identified them.
+- Recording and mapping: an Access database, ArcMap (ArcGIS 9) for maps, Excel for some processing; finds per hectare on a 100 m National Grid square grid for pre-enclosure periods, by historic field for later ones; classes by Jenks natural breaks.
+- Scale: 74 weeks over five years, 868 ha, a pool of about 45 volunteers rota'd weekly; ran over schedule, two extensions.
+- So one well-supported society needed a relational database plus paid desktop GIS to get per-period density maps (*verified* as to tools; *inference* that smaller groups without GIS skills struggle). No complaint in the society's own words on this page.
+
+### S4 (4 of 9): L2, how per-period test-pit maps get made
+Query: `community test pitting pottery "distribution maps" how to make QGIS volunteers struggle OR "no GIS" OR "drawn by hand" test pit results per period guidance`.
+- The format is a standard (all *source claim*, summaries): Access Cambridge Archaeology's community test-pit model publishes, per settlement, pottery reports and maps of pottery distribution "period by period, from the prehistoric to the modern" (Carenza Lewis's yearly reports in Medieval Settlement Research, e.g. https://archaeologydataservice.ac.uk/catalogue/adsdata/arch-1164-1/dissemination/pdf/Volume_33_2018/MSR33_074-085-Lewis.pdf); Shillington and Pegsdon (2020, 2021) copy it, with a specialist (Paul Blinkhorn) tabulating pottery weights and dates per pit in appendices; Pirton's history society published its test-pit work (https://pirtonhistory.org.uk/wp-content/uploads/2017/08/18909-humanities-04-00393.pdf); Dunning "Big Dig" (Scotland) a pilot run by students and residents.
+- No practitioner complaint about making the maps, and no guidance for doing it without GIS, surfaced. A US report mentions a hand-drawn map distinguishing single-find and multi-find units (*source claim*).
+- *Inference:* the maps are drawn by whoever in the group has GIS or drawing skills, or by the supporting unit; the per-pit table from the pottery specialist is the input and the HER's real need.
+
+### S5 (5 of 9): one-place studies again, practitioners' own methods (domains: one-placestudies.org, rootschat.com, familyhistoryfederation.com, balh.org.uk, localhistories.org)
+Query: `one-place studies spreadsheet census returns link households across decades "Custodian" OR Excel OR "by hand" one-placer methods`.
+- RootsChat practitioners (*source claim*, summaries): one keeps a Word file per surname to follow each family through the censuses because the tree software is only "fine for creating trees" (https://www.rootschat.com/forum/index.php?topic=223747.0); another enters census details in Excel with an ID column matching the GEDCOM ID (same thread); unnumbered cottages can't be matched between censuses by enumeration order (https://www.rootschat.com/forum/index.php?topic=403389.0 and related).
+- Nothing from the Society for One-Place Studies' own site surfaced. House histories combine censuses with tithe and enclosure maps, deeds, the 1910 valuation, directories (Family History Federation talk, *source claim*).
+- **L3 census household linking: weak.** Person tracking is the genealogy programs' job (and the genealogy cluster is settled); the house-matching part is judgment from several sources, not a computation (*inference*).
+
+### S6 (6 of 9): L1 widened to tithe apportionments (acres, roods, perches and £sd)
+Query: `tithe apportionment transcription project volunteers spreadsheet "acres, roods and perches" OR "roods" totals landowners occupiers summary local history society`.
+- The transcription is mostly done, county by county (all *source claim*, summaries): North Yorkshire Archives' volunteers typed over 300 apportionments into an Excel template, mostly in 2020-21, now on a website (https://nycroblog.com/2026/07/23/north-yorkshire-tithe-maps-website/); Devon's 500+ apportionments transcribed since 2011, finished, published as PDF and CSV (https://www.devon.gov.uk/historicenvironment/?p=2658); Gloucestershire's whole diocese transcribed by the Gloucester and District Archaeological Research Group, rentcharge omitted (https://www.gloucestershire.gov.uk/archives/finding-items-in-our-collections/tithe-apportionments-database); Warwickshire's database (owners, occupiers, land name, plot, size; no rentcharge); Widecombe's combined Excel sheet linked to page images (https://widecombearchive.org.uk/tithe_and_apps.php); Dorset OPC pages per parish.
+- Devon warns of reading errors; nobody surfaced complaining about summing acres-roods-perches or checking the apportionment's own totals.
+- **L1 (old-units transcriptions checked against their own totals): weak, leaning REJECT.** The big tabular transcriptions are being finished by record offices with Excel templates and published as CSV; the rest is pivot-table summary; no friction in the practitioners' own words in R1 or here (*inference*).
+
+### S7 (7 of 9): specialist collecting, coin die studies and die matching
+Query: `numismatic "die study" amateur how to compare coin photos die links spreadsheet by hand software tool die-link diagram`.
+- Practitioner thread with the method's own phrase: CoinTalk, "Is there a tool to simplify checking for die-matches?" (https://www.cointalk.com/goto/post?id=4726712 ; also post 4725687). Per the summary (*source claim*): collectors "just compare the images visually"; one resizes and superimposes images by hand; false matches from a pellet or small detail; die shifts, graffiti, countermarks and flan problems add false "features"; acsearch's image search is "hit & miss".
+- Incumbents named (*source claim*): the American Numismatic Society's Computer Aided Die Studies program, CADS (https://numismatics.org/pocketchange/cads/), which calls comparing images on large issues "very tedious", with a beta then planned; the Tigranes Die-Matching Tool (Armenian Numismatic Research Organization, one series; upload a photo, get ranked candidate dies) (https://blog.armnumres.org/?p=718); a 2025 SSIM-based die-pair scoring paper with a 329-image dataset (https://arxiv.org/abs/2502.01186v1). CoinsWeekly on detecting forgeries (https://coinsweekly.com/?p=60167) suggests die matching also serves authentication (to read before relying on it).
+- Lead L4 opened: **comparing coin photographs for die matches, and keeping a die study's die assignments and links** (*inference*: browser-native image alignment and overlay, local images, no upload).
+
+### R3 (3 of 8, failed): CoinTalk die-match thread
+https://www.cointalk.com/goto/post?id=4726712: fetch failed ("unable to verify the first certificate"). Counted against the budget anyway. The thread's content stays *source claim* (S7 summary only).
+
+### R4 (4 of 8): ANS Pocket Change, "The Computer Aided Die Studies Program" (Peter van Alfen, 21 April 2017)
+https://numismatics.org/pocketchange/cads/ (*verified*, read 2026-10-15)
+- The manual job in the field's own words: "laborious and time-consuming gathering" of images or casts; comparing them is a "tedious and arduous task", "mind-numbingly difficult". Scale: the Tarentum didrachm study (about 8,000 coins) took its author "nearly a decade"; the Athenian owls (about 60,000) "would undoubtedly take a lifetime".
+- CADS in 2017: in development; a $10,000 gift to fund a beta "by the end of this year"; the late Rick Witschonke hoped it would be free and open source. The page shows CADS-made "die connections" and overlays of die-matched owls; it says nothing on method, access, uploads or accounts, and nothing confirms a release.
+- So the incumbent's current state is unknown from this page; S8 checks it.
+
+### S8 (8 of 9): L4's incumbent, did CADS or any general die-study tool ship?
+Query: `American Numismatic Society "Die Study Tool" OR CADS released free die study software coins upload images 2022 OR 2023 OR 2024 OR 2025`.
+- No public release of CADS surfaced (all *source claim*, summaries): CADS "functioning well with certain types of coinage" by 2015 but needing more work; a Trinity University honours thesis (May 2020) on CADS's computer vision (https://digitalcommons.trinity.edu/compsci_honors/54); the ANS "Money Talks: Coins and Computation" session with Zachary Taylor and Peter van Alfen, members only (https://numismatics.org/pocketchange/money-talks-coins-and-computation-zachary-taylor-and-peter-van-alfen/); the ANS's Roman Republican Die Project is a database, not software (https://numismatics.org/rrdp/).
+- Other research efforts, none shown as a public tool: the Ashmolean's DIEGEST project (https://www.ashmolean.org/node/4943716); a French ANR project, 2023 (https://anr.fr/Project-ANR-23-CE38-0014); a 2025 Montpellier conference paper (https://hal.umontpellier.fr/SU-LETTRES/hal-05483886v1); Nomisma's "die study" concept and a KBR "Die Studies Database" talk page.
+- Series-specific and online: the Tigranes die-matching tool, upload a photo, ranked candidate dies (https://blog.armnumres.org/?p=718).
+- *Inference:* the field's general tools are research prototypes or one-series services; nothing found that a collector can open, without an account or an upload, to align and overlay two coin photos and keep a study's die table.
+

@@ -12,7 +12,75 @@
 
 ## Summary
 
-(written at the end)
+Budget used: 8 of 8 searches, 8 of 8 reads (three reads failed: Homesteading Today sends bots to a TollBit pay-per-crawl gate, cloud-lines.com redirects to a gambling-spam site, and the Reddit mirror's certificate was invalid; none was followed further). Labels as in the header; the log below has every URL.
+
+### Verdict: ADVANCE to the full gate, narrowly
+
+Batch 09's screen-out doesn't hold up. The "free online calculators" that searches return are spam pages, and the Kennel Club's tool works on its own records, so presumably only on dogs registered with it (*inference* from *source claim* snippets). No free tool turned up that opens a breeder's own spreadsheet in a browser, with nothing to install, and ranks the possible mates for a chosen animal. The closest is pawlineR, published in February 2026, which does most of the job for cats but only after installing R. The lead meets several parts of the bar: a recurring decision with real stakes, the workflow shape Labs prefers (import, check, compute, decide, print), a confirmed weakness in the free alternatives, and a direction Labs hasn't covered (small-scale breeding). Two things are weak: there is little direct evidence from breeders themselves (two forum reads were blocked), and the breeders with the most at stake already have better tools.
+
+Two checks the main session should run first. Either one, if it fails, should make this a REJECT:
+1. **Audience:** is there direct evidence that breeders outside registries keep their own ID, sire and dam lists in spreadsheets and work COI out by hand, or ask for a tool? Places to look: The Goat Spot, rabbit and cavy forums, pigeon forums, US Livestock Conservancy breed associations.
+2. **Free tools not checked here:** PMx, the free tiers of Breeders Assistant or BreedMate, PawPeds test matings, ADGA's tools, and Pigeon Planner. If any of them ranks mates from a breeder's own file with nothing to install, the gap closes.
+
+### Stage B fields
+
+- **Actual workflow.** Before each mating, the breeder chooses which male goes with which female. Inside a breed society with an online herd book, members have several options:
+  - compare pedigree certificates for shared ancestors, the "traditional method" (*verified*, R5);
+  - run Grassroots' Check Mate, which shows the offspring's four-generation pedigree with shared ancestors coloured but gives no number and no ranking (*verified*, R1);
+  - ask the society office for a kinship analysis, compared with the breed mean (*verified*, R1);
+  - in the Kunekune society, get a COI on all generations for a pairing, plus a traffic-light "best match for a dam" from Stud Adviser (*verified*, R5).
+
+  Dog breeders use the Kennel Club's Mate Select, which works on all of the Kennel Club's records and shows the breed average (*source claim*); that it covers registered dogs only is *inference*. Outside registries, breeders use:
+  - paid record-keeping apps that put a COI on a pairing (*source claim*, S2);
+  - volunteer-built database tools, which break or disappear (*source claim*, R8);
+  - working it out by hand: one breeder asked for a way to get a 10-generation COI "besides by hand" (R8).
+- **Recurrence and stakes.**
+  - **How often:** every breeding season for every female. That is yearly for sheep, goats, pigs, cattle and ponies, and several times a year for rabbits and cavies (*inference*).
+  - **Inbreeding depression:** effects "biologically significant above F = 0.10", and fitness effects at F of 0.125 or more in mammals (*verified*: cited in the pawlineR paper, R2).
+  - **Registration:** the Kunekune society registers green and amber pairings and steers breeders away from red ones (*verified*, R5); its other page says red birth notifications are blocked (*source claim*). The Kennel Club won't register parent-offspring or full-sibling matings (*source claim*).
+  - **Rare breeds:** RBST ranks breeds by effective population size (*source claim*), and Roslin (2025) reports that genetic diversity monitoring is lacking (*source claim*).
+  - **Cost of a mistake:** a poor pairing costs a generation and can't be undone (*inference*).
+- **Strongest incumbents.** None of these is weakened here.
+  - **Registry tools,** built on the whole breed's pedigree (no spreadsheet can match that):
+    - Kennel Club Mate Select (*source claim*);
+    - Grassroots herd books, free to members (*verified*, R1);
+    - Kunekune Kinship and Stud Adviser, which already rank mates for a female (*verified*, R5);
+    - SPARKS for Shire horses (*source claim*).
+  - **Free, working from your own file:**
+    - **pawlineR** (*verified*, R2): imports a spreadsheet; checks for duplicates, the same animal as both parents, wrong sexes and loops; computes Wright's COI over all generations; tests one pair at a time. Limits: needs R or RStudio installed (or a private server), tested on cats only, licence for non-commercial use, ranks no mates, checks no dates.
+    - **EVA** (NordGen, *verified*, R4): a free desktop program for Windows, Linux and Mac that works out optimal contributions and matings across a population. A tool for whoever manages a breeding programme.
+    - ENDOG, Pedigree Viewer, Retriever and Pointer, and PMx: desktop software, mostly for Windows (*source claim* or *inference*).
+    - QuickPed: online, but built for human family trees, and the file goes to its server (*source claim* or *inference*).
+    - Code libraries: FnR, pedtools and ribd, PyPedal.
+  - **Paid apps:** Everbreed (a subscription; gives a pair "Relatedness Score"), Evans (Windows, one lifetime fee), ZooEasy (a listing says $125.91 once), Breeder Cloud Pro (from $6.99 a month), Pigree and Omniburrow (all *source claim*). Cloud Lines, a subscription service whose domain now redirects to spam, may be defunct (*inference*).
+- **Current manual alternative.** Look over paper pedigrees for shared ancestors, or count paths by hand with Wright's formula. Hand counting goes wrong easily: leaving out the shared ancestors' own inbreeding gave 8.59% instead of 11.03% for one pair (R8). Otherwise, ask the registrar or pay for an app.
+- **The Labs wedge.** Free, no account, nothing to install, nothing uploaded, any species, working from the list the breeder already keeps. The page would:
+  - check for impossible pedigrees: an animal that is its own ancestor, a female as sire or a male as dam, one animal as both parents, a parent born after its offspring or too young, duplicate or near-duplicate IDs;
+  - compute Wright's COI over all known generations, including the shared ancestors' own inbreeding, and say how complete each pedigree is;
+  - show the relationship between any two animals;
+  - rank the possible mates for a chosen animal by their offspring's COI, with the share of unknown ancestors next to each;
+  - print a pedigree.
+
+  What it adds over each incumbent: compared with pawlineR, no R install, any species, a ranking, and date checks; compared with registry tools, it works for animals outside the registry; compared with the apps, no subscription; compared with Check Mate, a number and a ranking instead of a picture (*inference*).
+- **Technical feasibility.** High (*inference*).
+  - **Computation:** the tabular method or Meuwissen and Luo for COI, and memoised kinship, handle thousands of animals in the browser. Ranking mates means one kinship calculation per candidate of the opposite sex.
+  - **Independent checks:** results from pedtools, ribd or FnR, textbook pedigrees, and brute-force path counting on small cases.
+  - **Import:** CSV can be read with code in the experiment's own folder. Reading Excel files would mean copying Hidden Data Check's zip reader (`src/experiments/hidden-data-check/zip.ts`) into the new folder, with no new package (*verified* that the file exists).
+  - **Output:** a pedigree printed from HTML or SVG. Saving could be skipped entirely (re-open the file), or done through `useOtherTabs`.
+- **Strongest reason not to build.** The breeders with the most at stake already have better tools on better data. Their society computes COI over the whole breed back to its foundation, and one (Kunekune) already ranks the best matches for a female. A breeder's own spreadsheet begins with their own foundation animals, so its COI will usually be lower than the registry's, and the two numbers disagreeing could mislead. Outside registries, breeders who keep digital pedigrees mostly do it in cheap apps that already show a pair COI. This thread found no direct evidence that a meaningful number keep sire and dam spreadsheets with no tool: there is one forum thread from 2010 and one paper's statement of need. The audience is real but split across species, each with its own conventions and incumbents.
+
+### Conventions a tool must get right
+
+- **Formula:** Wright's COI is the sum, over every path through every shared ancestor A, of (1/2)^(n1+n2+1) x (1 + F_A). It equals the kinship between the sire and the dam. Leaving out the (1 + F_A) term is a known error (R8; *source claim*). The tabular method is safer than listing paths, even by hand (S5; *source claim*).
+- **Generations:** registries and pawlineR use all known generations (*verified*, R2 and R5; the Kennel Club is a *source claim*). Certificates and server-limited tools use 5 generations, at most 8 (R8). BSAVA says "at least five generations". Using fewer generations lowers the figure (R8). So a tool should state the depth it used and offer a cap, so its figures can be compared with other tools' (*inference*).
+- **Unknown ancestors:** treated as unrelated founders with F = 0 (*verified*, R2), so the figure is a lower bound. Show pedigree completeness next to it (*inference*).
+- **Kinship and mean kinship:** kinship between two animals is the COI their offspring would have. Mean kinship is used by Highland Pony (avoid matches above the breed mean of about 4%), Southdown, SPARKS and Cloud Lines (*source claim*). Ancestor loss (AVK) is offered by one breed club's tool (R8).
+- **Thresholds:** either relative to the breed mean (the Kennel Club, Highland Pony, Southdown) or absolute: Kunekune green under 15%, amber 15-20%, red over 20% (*verified*); BSAVA 12.5% where no breed average exists (*source claim*); pawlineR's bands at 6.25%, 12.5% and 25% (*verified*). No RBST threshold for members turned up. FAO's guideline of at most about 1% more inbreeding per generation was not read (*inference*).
+
+### Side leads (Stage A)
+
+1. **Diversity report for small breed associations and conservation breeders without a herd-book system:** from a herd-book export, show pedigree completeness, mean COI by year of birth, the rate of inbreeding and the effective population size it implies, founder and ancestor contributions, and each animal's mean kinship (which animals are genetically valuable, and how many matings each male should get). Free desktop programs already do this: EVA, ENDOG, Pedigree Viewer, PMx. *Inference:* it survives Stage A only as a second view in the same tool, not as a separate experiment. Not settled earlier (`kw.py` found nothing before this file).
+2. None other met. Dog breeding licence litter limits were already settled (Batch 09).
 
 ## Log
 
@@ -117,3 +185,28 @@ https://www.britishkunekunesociety.org.uk/tools-to-help-plan-your-breeding/ (*ve
 - Thresholds are absolute: green 0-15%, amber 15-20%, red over 20% (Nov 2022 and Jan 2024 tables); green and amber offspring are registered; keep future pairings green where possible; thresholds "monitored by the committee". (The S7 snippet's claim that red pairings are blocked at birth notification is on the society's other COI page, not this one; still *source claim*.)
 - Stud Adviser's suggestions can be unusable when boars are sold or dead; members are asked to mark animals sold or deceased.
 - *Inference:* a rare-breed society can already give its members exactly the idea's core (all-generation COI for a pairing plus a ranked best-match list for a female) inside its herd book, built on the whole breed's pedigree, which a breeder's own spreadsheet can never match. Where such a herd book exists, a Labs page is strictly worse on data. **Cloud Lines** is a new incumbent to check (who can use it and at what price), since it may offer the same to individual breeders of any species.
+
+### S8 (search 8 of 8, search budget spent): Cloud Lines pedigree herd book software breeders kinship stud adviser price free individual breeders
+
+All *source claim* (snippets):
+- **Cloud-Lines.com** (MA Systems Ltd, 2018) lets "livestock farmers, breeders & breed societies" pick matches that keep diversity "using only pedigree data"; aimed at everyone from home breeders and smallholders to breed societies; listed features include four-generation certificates, COI, mean kinship per animal, real-time breed analysis, and a Stud Male Calculator or Selector included in the subscription; no price found https://groundswellag.com/?p=8355 , Farmers Guide "Record your own livestock online" https://www.farmersguide.co.uk/?p=18447 .
+- The Kunekune society's FAQ on the tools it offers members for planning breeding https://www.britishkunekunesociety.org.uk/?p=1855 ; Herd Detective (pricing page on G2) https://www.g2.com/products/herd-detective/pricing (not read).
+
+### R6 (read 6 of 8): cloud-lines.com (attempted)
+
+https://cloud-lines.com/
+- Not read: the domain answers with a 301 redirect to an unrelated gambling-spam site (webslotgacor.org). Not followed. Counted as a read.
+- *Inference:* Cloud Lines' own domain has lapsed or been taken over, so the product may be discontinued or moved; the Kunekune society's member links already point at breeds.grassroots.co.uk/KUNEK (R5), which suggests that society is on Grassroots now and its "Cloud Lines" wording is out of date. Treat Cloud Lines as an unconfirmed, possibly defunct incumbent; the main session shouldn't rely on it either way without a fresh check.
+
+### R7 (read 7 of 8): r/MeatRabbitry "metrics and data collecting" via the lr.vern.cc mirror (attempted)
+
+https://lr.vern.cc/r/MeatRabbitry/comments/1cukfa8/metrics_and_data_collecting/
+- Not read: the mirror's TLS certificate doesn't cover lr.vern.cc, so the fetch failed. Counted as a read. Only the S2 snippets stand (*source claim*: one commenter uses Everbreed on a monthly or annual subscription; others recommend Evans, "one fee for life", the lifetime version).
+
+### R8 (read 8 of 8, read budget spent): Wolfdog.org forum, Breeding, "puppies tool" (posts 25 Feb to 12 Oct 2010; Czechoslovakian Wolfdog)
+
+https://wolfdog.org/forum/showthread.php?p=282868 (practitioners' own words, read through a summarising fetch; *source claim* for what the posters say)
+- A breeder asked for a tool for "theoretical puppies" that would "calculate wright coefficient"; the community database's "wright" module (match a male to a female, see pedigrees, Wright's coefficient) had stopped working, reportedly after a disk crash; a member asked how else to get a 10-generation COI "besides by hand".
+- **Elf's CSV Stat "Mating tool"** (a French breed club site, amicale-chien-loup-tchecoslovaque.com) gave COI and AVK (ancestor loss) plus ancestors' hip and conformation statistics; default 5 generations, adjustable 1-8 "because the server is limited". Its example pair: about 8.59% with the truncated formula (common ancestors' own F taken as 0) against about 11.03% with the complete formula, x (1 + F_A).
+- Depth arguments: "the more generations ... the more objectively the outcome"; an Australian Shepherd genetics article (ASHGI) recommends about 10 generations, saying fewer "frequently causes the number to drop"; for this breed, 8-10 generations reach the founder wolves, but young dogs need deeper pedigrees because of heavy early inbreeding to one dog (Rep z Pohraniční stráže).
+- *Inference:* old (2010) but exact on the conventions a tool must get right (all generations, the (1 + F_A) term, AVK), and it shows the pattern seen for small breeds outside big registries: volunteer-built database tools that are fragile, server-limited, or vanish, after which breeders fall back to hand calculation.
