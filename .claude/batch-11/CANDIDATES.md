@@ -15,6 +15,16 @@ Everything settled in the first cycle and Batches 07–10 stays settled unless n
 - Batch 07: Word comments to a table, small-number suppression (files and privacy).
 - Batch 10 left none new; school food menu checks are a REJECT with a stated condition (revisit if the government's promised tools for the September 2027 standards turn out not to be a checker).
 
+## HOLDs revisited (Batch 11, at the start)
+
+Read against Batch 10's notes ("HOLDs revisited") and this batch's rules; no autonomous evidence is in sight that could settle any of them, so none is reopened and no search is spent:
+- **EYFS ratio planning, child performer hours (Batch 08):** parked. Each still needs a practitioner's word (asking a person is outside this batch) or carries safeguarding liability.
+- **Stage manager line notes, choir riser planner, Temporary Event Notice planner (Batch 08):** not reopened. Theatre, performance, and events are covered clusters, and nothing new has appeared since Batch 10.
+- **Subscription payment matching (Batch 08):** not reopened. Reading bank exports is #034's pattern, and there is still no treasurer's account of the time it takes.
+- **Word comments to a table, small-number suppression (Batch 07):** not reopened (files and privacy, a covered cluster).
+- **The nest visit planner (Batch 08):** owner-blocked (two CC0 downloads and a sourced last-visit rule per species); parked.
+- **School food menu checks (Batch 10's conditional REJECT):** not reopened. The condition (the government's promised tools for September 2027 turning out not to be a checker) can't be known before those tools appear.
+
 ## Portfolio at the start
 
 36 experiments, #001–#036. Homepage categories (registry): groups 8, practice 7, school 7, home 5, files 5, family 4. Clusters already covered (no narrower variant without a distinct job and wedge): privacy and file inspection; school allocation; event scheduling; theatre and performance; competition operations; professional reporting; spreadsheet import; legal and rule-based calculations; family administration.
