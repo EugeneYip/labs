@@ -30,7 +30,7 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ## Now
 
-- **Current:** none. Batch 09 (Discovery Cycle 4) closed early on 2026-10-14 with two experiments, #034 Deputyship Accounts and #035 Collection Climate (`.claude/batch-09/CLOSEOUT.md`); no further batch without the owner's authorization. Batch 08 closed early on 2026-10-14 with four experiments, #030–#033 (`.claude/batch-08/CLOSEOUT.md`). P1–P13 are done and verified. Batch 07's closeout is `.claude/batch-07/CLOSEOUT.md`.
+- **Current:** Batch 10 (Discovery Cycle 5), authorized by the owner on 2026-10-14: up to five new experiments, #036–#040, never #041; checkpoint `.claude/batch-10/BATCH_10.md`. Human validation is deferred for the batch: the parked lanes below stay parked and aren't next actions. Before it: Batch 09 (Discovery Cycle 4) closed early on 2026-10-14 with two experiments, #034 Deputyship Accounts and #035 Collection Climate (`.claude/batch-09/CLOSEOUT.md`). Batch 08 closed early on 2026-10-14 with four experiments, #030–#033 (`.claude/batch-08/CLOSEOUT.md`). P1–P13 are done and verified. Batch 07's closeout is `.claude/batch-07/CLOSEOUT.md`.
 - **Parked lanes** (below) stay parked until the owner chooses one; they never hold up other work.
 - **When something new needs the owner** (in any batch): add it under "Parked lanes" as BLOCKED — OWNER REQUIRED, with what's ready and what the owner would do, mention it in "Now" in `.claude/FACTORY_STATE.md`, and carry on with the rest.
 

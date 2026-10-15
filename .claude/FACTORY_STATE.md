@@ -6,13 +6,13 @@ The checkpoint for autonomous Labs work. Read it down to the "History" heading; 
 
 The current state, kept short. `.claude/hooks/session-context.sh` prints this section at the start of every session and after the context is compacted, and `.claude/hooks/stop-continue.sh` reads **Autonomy** and **Next action** from it, so keep those two lines' wording as they are.
 
-- **Autonomy:** complete
-- **Batch:** Batch 09 (Discovery Cycle 4), authorized by the owner on 2026-10-14, is complete: closed early on 2026-10-14 with two experiments, #034 and #035; #036–#038 not assigned; never #039. No further batch without the owner's authorization. Report: `.claude/batch-09/CLOSEOUT.md`.
-- **Batch file:** `.claude/batch-09/BATCH_09.md` (the rules in short, the checkpoint, the log); every idea and its outcome in `.claude/batch-09/CANDIDATES.md`.
-- **Experiment:** none being built.
+- **Autonomy:** active
+- **Batch:** Batch 10 (Discovery Cycle 5), authorized by the owner on 2026-10-14: discover, build, audit, deploy, and resolve up to five new experiments, #036–#040; never #041; no Batch 11. Human validation is deferred for the whole batch (those lanes stay parked and aren't next actions).
+- **Batch file:** `.claude/batch-10/BATCH_10.md` (the rules in short, the checkpoint, the log); every idea and its outcome in `.claude/batch-10/CANDIDATES.md`; thread notes in `.claude/batch-10/research/`.
+- **Experiment:** none being built; #036 is the next number.
 - **Where the work is:** `main`; no `wip/` branches.
-- **Next action:** none: Batch 09 is complete and reported (`.claude/batch-09/CLOSEOUT.md`); wait for the owner.
-- **Done and verified:** Batch 09: #035 Collection Climate (ship 9ca0a22, deploy 38588208105, verified in production 2026-10-14); #034 Deputyship Accounts (ship 8f0b4a7, deploy 38572132880, verified in production 2026-10-14); reconciled on 2026-10-14 (4c71d4b; production byte-identical, 77 files; daily check 11 of 11). Batch 08: #033 Captions Up (ship 97833cd, fix d289161, deploy 38536194341, verified in production 2026-10-14); #032 Comp Desk (ship b8f8a30, fix 52802a5, deploy 38524500178, verified 2026-10-14); #031 New Classes (d9b99d8, deploy 38519276907, verified 2026-10-14); #030 Show Order (a329ca8, deploy 38494521064, verified 2026-10-13); Autonomous Ops v2.1 (e4ec9db, deploy 38487235836; the Stop hook checked live). Batch 07 is complete: #026–#029 live and verified.
+- **Next action:** run discovery round 1 for Batch 10: bounded research threads in new domains writing notes to `.claude/batch-10/research/`; screen and gate their leads; assign #036 only to a candidate that passes the full gate (`.claude/batch-10/BATCH_10.md`).
+- **Done and verified:** Batch 10: reconciled against Batch 09's close (46866c7; production byte-identical, 81 files; daily check 11 of 11); the daily check now records which check failed, its error, and whether a retry recovered (7 of 7 injected faults). Batch 09: #035 Collection Climate (ship 9ca0a22, deploy 38588208105, verified in production 2026-10-14); #034 Deputyship Accounts (ship 8f0b4a7, deploy 38572132880, verified in production 2026-10-14). Batch 08: #033 Captions Up (ship 97833cd, fix d289161, deploy 38536194341, verified in production 2026-10-14); #032 Comp Desk (ship b8f8a30, fix 52802a5, deploy 38524500178, verified 2026-10-14); #031 New Classes (d9b99d8, deploy 38519276907, verified 2026-10-14); #030 Show Order (a329ca8, deploy 38494521064, verified 2026-10-13); Autonomous Ops v2.1 (e4ec9db, deploy 38487235836; the Stop hook checked live). Batch 07 is complete: #026–#029 live and verified.
 - **Owner-blocked (parked; don't start them):**
   - Fluency Check interviews or a pilot;
   - the email to Open-Meteo;
@@ -26,7 +26,7 @@ The current state, kept short. `.claude/hooks/session-context.sh` prints this se
   - a private copy of `.claude/qa/` (the QA harnesses live only on this machine);
   - Batch 09: human validation of #034 Deputyship Accounts, then #035 Collection Climate.
 
-  Details are in `.claude/AUTONOMOUS_QUEUE.md` and the Batch 08 and Batch 09 closeouts.
+  Details are in `.claude/AUTONOMOUS_QUEUE.md` and the Batch 08 and Batch 09 closeouts. In Batch 10 every human-validation lane stays parked by the owner's instruction and isn't a next action.
 - **Autonomy values:** `active` (carry on without asking), `paused` (the owner asked to pause), `blocked` (everything left needs the owner), `complete` (the batch is finished and reported). Only `active` makes the Stop hook ask Claude to carry on, and it doesn't ask again until Claude has used a tool since it last asked (and at most 3 times in 10 minutes).
 
 ## How to resume
@@ -37,9 +37,19 @@ The current state, kept short. `.claude/hooks/session-context.sh` prints this se
 4. When an experiment ships: on `main`, `git merge --squash wip/<number>-<slug>`, commit as "#0NN Title: summary", run `npm run build`, push, watch the deploy, check production, then record that here, in the batch file, and in the dossier; commit and push the record. Delete the `wip/` branch once `git diff main wip/<number>-<slug>` shows nothing that matters, and start the next discovery.
 5. Long runs: bound them (see "Long jobs" in `CLAUDE.md`), keep partial results in files, and when a lane stalls, record it here and carry on with another.
 
-## Batch 09: Discovery Cycle 4 (active)
+## Batch 10: Discovery Cycle 5 (active)
+
+- **Authorized** by the owner on 2026-10-14: discover, build, audit, deploy, and resolve up to five new experiments, #036–#040, with no routine approval between experiments. Never #041; no Batch 11. Owner authorization once, autonomous execution after (Autonomous Ops v2.1).
+- **Human validation deferred:** the owner has no time for interviews, pilots, recruiting, emailing, posting, usability studies with real people, or real-organisation deployment. Every such lane stays parked and isn't surfaced as a next action; the closeout may list them briefly.
+- **The bar is higher** than Batch 09's, and the recent clusters are avoided (privacy and file inspection, school allocation, events and performance, professional reporting, spreadsheet and file parsing, competition operations). An upper bound, not a target: a number is assigned only if the product is meaningfully better for Labs than leaving it unassigned.
+- **Still prohibited:** contacting anyone, spending money, external accounts, owner settings, backends or keyed services, analytics, weakening the constitution, permission workarounds (Firefox stays parked), downloads or new permissions to rescue a HOLD, and the parked owner lanes.
+- **Records:** `.claude/batch-10/BATCH_10.md` (the rules in short, the checkpoint under "Now", the log), `.claude/batch-10/CANDIDATES.md` (every idea and its outcome), research notes in `.claude/batch-10/research/`, and a dossier per numbered experiment in `.claude/batch-10/`.
+- **Close:** when the evidence says to stop (a final broad pass outside the batch's explored domains, credible HOLDs revisited, the remaining candidates' failures documented, diminishing value shown), with the closeout report (the brief's 21 items); then Autonomy goes to `complete`.
+
+## Batch 09: Discovery Cycle 4 (complete)
 
 - **Authorized** by the owner on 2026-10-14: discover, build, audit, deploy, and resolve up to five new experiments, #034–#038, with no routine approval between experiments. Never #039; no further batch. Owner authorization once, autonomous execution after.
+- **Closed early on 2026-10-14** with two experiments shipped and verified (#034 Deputyship Accounts, #035 Collection Climate); #036–#038 not assigned. The report is `.claude/batch-09/CLOSEOUT.md`. (This heading said "active" until Batch 10's reconciliation corrected it; "Now" had already said complete.)
 - **The bar is slightly higher** than Batch 08's: recurrence, a professional or organisational workflow, time or errors saved, a real local-processing advantage, an important artifact, a confirmed incumbent gap, or an official rule creating the job. Search outside Batch 07's and 08's clusters (files and privacy; school, event, and organisation tools).
 - **Still prohibited:** contacting anyone, posting, recruiting, interviews, spending money, external accounts, owner settings, backends or keyed services, analytics, weakening the constitution, permission workarounds (Firefox stays parked), downloads or new permissions to rescue a HOLD, changing the `.claude/qa/` local-only policy, and the parked owner lanes.
 - **Records:** `.claude/batch-09/BATCH_09.md` (the rules in short, the checkpoint under "Now", the log), `.claude/batch-09/CANDIDATES.md` (every idea and its outcome), research notes in `.claude/batch-09/research/`, and a dossier per numbered experiment in `.claude/batch-09/`.
@@ -99,6 +109,12 @@ Complete on 2026-10-13. Everything below this section is history: where an older
 | 027 | Transcript Pseudonyms | transcript-pseudonyms | Research data / privacy | Paste or open a transcript, review suggestions, consistent whole-word replacement, a key to reuse; nothing stored | Qualitative researchers, research students | 2026-10-13 |
 | 028 | Hidden Data Check | hidden-data-check | Privacy / data protection (files) | Open a workbook; every place data hides that isn’t on screen, with what it holds (folded) and how to remove it; a printable record; nothing stored | FOI and information-governance staff, anyone sending spreadsheets out | 2026-10-13 |
 | 029 | Places by Choice | places-by-choice | Groups / allocation | Paste or open a form’s ranked choices, set places, get everyone placed by a stated rule with lists, reasons, and a replayable draw; nothing stored | School staff (enrichment, electives, activities weeks), project and workshop organizers | 2026-10-13 |
+| 030 | Show Order | show-order | Events / performance (running order) | Paste or type the numbers and casts, pin what's fixed, get an order with no back-to-back dancers and few quick changes; print | Dance-school and show organizers | 2026-10-13 |
+| 031 | New Classes | new-classes | School / class formation | Paste the year group, set class sizes, spread chosen attributes, keep named pairs apart, give each child a chosen friend; print and spreadsheet | Primary school staff mixing classes for next year | 2026-10-14 |
+| 032 | Comp Desk | comp-desk | Sports / competition scoring | Type paper scorecards in at the desk; live standings by tops and zones, points, or best problems; a second-screen leaderboard | Climbing walls and clubs running bouldering comps | 2026-10-14 |
+| 033 | Captions Up | captions-up | Accessibility / theatre captions | Paste a script, check and correct the caption cues, run them from a laptop with the audience's captions in a second window | Community and school theatre companies | 2026-10-14 |
+| 034 | Deputyship Accounts | deputyship-accounts | Family & care / Court of Protection paperwork | Open the bank's own downloads; payments sorted into the report's types, transfers paired, where an account stops balancing; spreadsheet | Lay property and affairs deputies (England and Wales) | 2026-10-14 |
+| 035 | Collection Climate | collection-climate | Collections care / environmental monitoring | Open loggers' exports; time in band against the Bizot guideline or your own, 24-hour RH limit breaks, gaps, months; graph, print, spreadsheet | Small museums, archives, libraries, historic houses | 2026-10-14 |
 
 ## Procedure per experiment
 
@@ -139,7 +155,7 @@ Where applicable: core flow; persistence or file handling; several edge cases; i
   - `route-preload.cjs` serves a built folder at `https://labs.local` with no server: `ROUTE_DIR=<built site> node -r ./route-preload.cjs <script>.cjs https://labs.local [engine]`, from `.claude/qa/`. Service-worker checks need a real server instead: the `pages` launch config (port 4174).
   - The 26-page smoke test: `node browser/smoke.cjs https://labs.eugeneyip.net out/<name>.json chromium webkit` (104 page loads).
   - macOS has no `timeout`: bound a run with `perl -e 'alarm shift; exec @ARGV' <seconds> node …`. Every wait inside a script is bounded too (the P5 harness once hung for 1 h 40 min on an unbounded one). Foreground `sleep` is blocked: wait for a background command, or use Monitor.
-- **Daily check:** `node --experimental-strip-types --disable-warning=ExperimentalWarning .github/scripts/daily-check.ts` runs the same check as GitHub's daily run, against production.
+- **Daily check:** `node --experimental-strip-types --disable-warning=ExperimentalWarning .github/scripts/daily-check.ts` runs the same check as GitHub's daily run, against production. Its last lines repeat each failure with its group and error (the network's own code, a timeout, or an error status with the service's reason) and list every request that needed another try, with whether it recovered, so keep at least the tail of a failing run in the batch log. `sh .claude/scripts/qa.sh 900 daily-check-faults.sh` checks that reporting with seven injected faults.
 - Storage keys must be `labs:<slug>` (Constitution, amended 2026-10-09 with owner authorization).
 
 ---

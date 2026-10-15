@@ -1,0 +1,71 @@
+# Batch 10: Discovery Cycle 5
+
+Authorized by the owner on 2026-10-14. This file is the batch's checkpoint; `.claude/FACTORY_STATE.md` points here. A fresh session reads `CLAUDE.md`, the constitution, the factory state's "Now", and this file's "Now", checks `git status` and `git branch`, then continues from the next action.
+
+## Authorization, in short
+
+- **Goal:** discover, build, audit, deploy, and resolve up to five new experiments, #036–#040. Never #041, and no Batch 11. An upper bound, not a target: one or two unusually strong products with extensive negative evidence beat five mediocre tools. Before a number: is this meaningfully better for Labs than leaving the number unassigned?
+- **Operating model:** Autonomous Ops v2.1 as it is. Owner authorization once, autonomous execution after; no routine supervision. Don't stop after one product, a rejected round, a usage-limit pause, a finished thread, a compaction, or a QA repair; don't ask whether to continue, which candidate to pick, or whether to start the next one.
+- **First, before product work:** reconcile Batch 09's close (done), correct the stale "(active)" heading (done), and make the minimum repair so a future daily-check failure records which check failed, the error or status, and whether a retry recovered (done; the log below).
+- **Allowed without routine approval:** research, rejecting ideas, numbering survivors, WIP branches, implementation, tests, browser checks, registry and Product Log entries, records and dossiers, commits, ordinary pushes, deploys, production checks, fixing defects found before or after ship, moving on to the next candidate.
+- **Human validation is deferred:** the owner has no time for interviews, pilots, recruiting, emailing, posting, real-person usability studies, real-organisation deployment, or asking contacts to test. Those lanes stay parked (Fluency Check, Hidden Data Check, Exam Timekeeper, New Classes, Captions Up, Deputyship Accounts, Collection Climate, and any new ones). Don't surface them as next actions; at closeout they may be listed briefly as future work.
+- **Not allowed:** contacting anyone, spending money, external accounts, changing owner settings, backends or keyed services, analytics, weakening the constitution, permission workarounds (Firefox stays parked), downloading files or crossing a permission boundary to rescue a HOLD, the parked owner lanes, #041, another batch.
+- **The bar is higher** (35 experiments): a candidate should have several of: a named user or role; a concrete recurring workflow; measurable time saved; meaningful error reduction; a real privacy or local-processing advantage; an important artifact or decision produced; an official rule or process creating the work; an incumbent gap confirmed by research; a workflow done today with spreadsheets, paper, email, PowerPoint, templates, or manual checking; a browser-native interaction materially easier than the alternatives; useful offline or locked-down-device behaviour. "Nice little utility" ideas are rejected unless the evidence is unusually strong.
+- **Recent clusters to avoid** (don't build narrower variations of a familiar pattern): privacy and file inspection (#002, #027, #028); school allocation (#029, #031); events and performance (#030, #032, #033); professional reporting (#034, #035); spreadsheet and file parsing (#005, #028, #034, #035); competition operations (#024, #032). Search deliberately in different domains: field work and trades, maintenance and facilities, archives and heritage beyond climate, volunteer operations, specialist hobbies, amateur science, physical-space planning, workshops and makers, clubs and associations, local community administration, creative production outside stage scripts, small professional practices, household administration, inspections and checklists with substantial calculation or reconciliation, temporary workflows that don't justify SaaS, offline-first operational tools. Diversity never overrides evidence.
+
+## Per-candidate gate (before a number)
+
+Need first: begin from a real job, never from app features.
+- **A. Audience:** who specifically does this.
+- **B. Immediate job:** what they're doing just before opening the tool, and the concrete result they need after.
+- **C. Why it matters:** recurring, tedious, error-prone, time-critical, privacy-sensitive, rule-constrained, an important artifact, manually reconciled, expensive in attention, or hard with general-purpose software.
+- **D. Current alternatives:** free web tools, paid products, mobile apps, desktop software, plugins, spreadsheets and templates, official calculators, built-in features, established manual methods.
+- **E. Strongest incumbent:** named, never weakened to keep the thesis.
+- **F. Labs wedge:** no account, no install, local-only, offline, private, restricted devices, faster, substantially clearer, an awkward format, several manual steps combined, a better final artifact. "Cleaner UI" isn't enough.
+- **G. Technical fit:** reject if the valuable version needs server-side state, accounts, real-time collaboration, payments, proprietary or keyed APIs, private credentials, moderation, persistent backend storage, or human support on every use.
+- **H. Falsification:** the strongest reason not to build, actively searched for. A BUILD must survive it.
+
+**Outcomes:** **REJECT** (evidence says no; reason recorded; no number). **HOLD** only when one specific unresolved fact could change the decision; it never blocks the batch, and if settling it needs a person, a download, the owner, or another prohibited boundary, it's parked. **BUILD** only after the full gate; then the next number (#036 first, then in order to at most #040). Once implementation starts, the number is permanent.
+
+**Research discipline:** staged, so weak ideas die cheaply (no 20 searches to prove a saturated category saturated); unusually strong ones get their deciding facts checked from primary or authoritative sources in the main session. Check `CANDIDATES.md` in Batches 07–10 and the research notes before launching a lane. Threads get one bounded purpose and write findings to `research/` as they go; a thread that stalls or hits a limit is closed on its notes, relaunched only when the expected value is high, and never relaunched twice for a low-value lane. Kill duplicate queries early, switch from search to reading the primary source once it's known, and don't spend the allowance on one marginal family of ideas. Old HOLDs are revisited only when new public evidence can settle them here.
+
+## Per-experiment sequence
+
+research → gate → number → `wip/<number>-<slug>` → pre-build risk review → implementation → correctness testing → browser QA → adversarial audit → fixes → shipping gate → one squashed commit on `main` → push → deploy → production verification → record → next discovery. One numbered experiment at a time; research threads may run alongside.
+
+- **Pre-build risk review** (what applies): malformed input, duplicates, ambiguous dates, Unicode, huge inputs, stale state, several tabs, import and export, browser storage, privacy, downloads, print, outside rules, arithmetic precision, incomplete data, accessibility, misleading conclusions. It drives the tests.
+- **Independent correctness evidence:** never the product's own code alone: exhaustive small cases, brute force, invariants, randomized properties, a second implementation (Python), official worked examples, an independent fixture generator, files written by the real software, real public examples. The more consequential the output, the stronger.
+- **Real formats:** files or documented layouts from the real software, not only hand-written fixtures; several encodings and separators where realistic; malformed and oversized inputs; overlapping exports; explicit uncertainty where a vendor format is inferred.
+- **Beyond stated limits:** if the page allows N rows, records, or characters, test near N. Look for argument-spread limits, recursion, quadratic loops, giant DOM, pathological regexes, memory growth, blocking synchronous parsing. Never declare a limit that wasn't exercised.
+- **Fast interaction (Comp Desk):** fast typing, Enter right after input, rapid repeated actions, opening a second item before a delayed focus or state update finishes, several state changes in one render.
+- **Accessibility:** keyboard core flow, visible focus, accessible names, live announcements where needed, 200% text, phone width, desktop, light and dark, Tab order, reduced motion, print legibility if printing is core. Automated scans are evidence, not the audit.
+- **Browsers:** Chromium (Brave) and WebKit required; Firefox is owner-blocked and doesn't stop the batch.
+- **Offline and privacy:** check network behaviour, offline after a first visit, stored state; say plainly anything sent out. Never "safe", "compliant", "anonymous", "complete", or "guaranteed" unless the exact claim is proven and appropriate.
+
+**Shipping gate.** Product: the core workflow complete; no known material defect or silent data loss; invalid input handled safely; limitations visible; claims accurate. Correctness: model and logic checks; independent evidence; realistic upper-limit tests. Browser and UI: Chromium, WebKit, phone, desktop, light, dark, keyboard, accessibility, console, print, download, and import where relevant. Operational: production build, registry, Product Log, dossier, this checkpoint, the factory state. Then the squash-to-main lifecycle; push normally; never force.
+
+**Production verification** (a deploy isn't verification): the intended commit; live files byte-identical to a fresh build (`sh .claude/scripts/qa.sh 300 prod-parity.mjs`); the real live flow; console; representative responsive states; persistence, import, and export where relevant; offline where it applies; the whole-site smoke test; the daily check. Only then "verified in production". A defect found later in an experiment shipped this batch: fix, test, push, deploy, verify in production, update the dossier.
+
+**Lessons to reuse** (the Batch 07–09 closeouts and dossiers): parsers meet messier input than any test set; test files written by the real program; brute force and a second implementation for anything optimized or counted; fast typing outruns React state (functional updates, reads from refs at Enter, no delayed focus moves); time slices for long work; spreading big arrays into arguments is a crash class; read the primary source, not secondary quotes; the Write and Bash tools rewrite `\u` escapes (placeholders, then a scan); a deferred report needs the harness to wait for it to settle; saving through `useOtherTabs` and `NotSaving`.
+
+## Early close and closeout
+
+May close before #040, but not merely because strong ideas got harder to find. Before closing: a final broad pass outside the domains the batch already explored; credible autonomous HOLDs revisited; why the remaining candidates fail, documented; diminishing expected value shown. The closeout (`CLOSEOUT.md`) reports the brief's 21 items: experiments shipped; numbers unassigned; ideas considered; candidates researched materially; rejected; HOLDs; strongest incumbents; audience and job per experiment; pre-ship defects; post-ship defects; independent correctness evidence; high-limit and performance tests; browser, accessibility, and offline verification; production verification; lifecycle recommendation; portfolio comparison; maintenance debt; reusable lessons; research and search-limit events; owner-blocked items; the exact repository, deployment, and factory state. Then Autonomy goes to `complete`. No Batch 11, no #041.
+
+## Now
+
+- **Step:** discovery round 1 (need-first, outside the recent clusters).
+- **Next action:** run discovery round 1: bounded research threads in new domains, each writing notes to `research/`; screen and gate their leads here; assign #036 only to a candidate that passes the full gate.
+- **Numbered so far:** none. #036 is the next number.
+
+## Numbered experiments
+
+| # | Title | Slug | Status | Dossier |
+|---|---|---|---|---|
+| — | — | — | none yet | — |
+
+## Log
+
+- **2026-10-14:** reconciled against Batch 09's close. Batch 09 is complete (closed early at #035; #034 and #035 live and verified). `main` = `origin/main` = 46866c7, clean, no `wip/` branch, no stash, one worktree. A fresh build's 81 files (117 addresses) are byte-identical in production (`prod-parity.mjs`); the daily check passes 11 of 11 against production; GitHub's last scheduled daily run (38592959311, 2026-10-14) passed; the last fourteen deploys succeeded; Pages on `workflow`, the domain verified, HTTPS enforced, the certificate good until 2027-01-06. The factory state's Batch 09 heading still said "(active)" while its "Now" said complete; corrected. The "Shipped" table there stopped at #029; #030–#035 added.
+- **2026-10-14:** the daily check's failure reporting repaired (`.github/scripts/daily-check.ts`). Batch 09's one transient failure couldn't be traced because the output didn't say which check failed in the part that was kept, retries were silent, and Node's fetch reports every network error as "fetch failed". Now each failure is repeated at the end with its group and error (the network's own code, such as ECONNRESET, a 30-second timeout, or an error status with the service's reason); every request that needed another try is listed with each try's reason and whether a later try recovered; a page or file that fails no longer stops the rest of its group being checked; and Open-Meteo's three requests are separate groups, so one failing doesn't hide the others. The same lines go to GitHub's run summary. Checked: the type check passes; against production 11 of 11, "no request needed another try"; seven injected faults (`.claude/qa/daily-check-faults.sh`: a 503 then recovery, the archive down, a 400 with its reason, a reset page that recovers, a page timing out every try, a missing script file, the place search down) each record the right check, error, and retry outcome, 7 of 7. No change to what is checked or when.
+- **2026-10-14:** Batch 10 records created (`BATCH_10.md`, `CANDIDATES.md`, `research/`) and the batch activated (Autonomy `active`).
