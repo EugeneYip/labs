@@ -333,8 +333,8 @@ The rejected leads would score below the portfolio's middle: pedigrees about 39,
 ### 24. Repository, deployment, and factory at close
 
 - **Code:** the last code changes are 0cd5262 (#037 Ballooned Drawing, with the service worker's change) and 119ff63 (the warm-up's retry and the daily check's fix). They were deployed by runs 38854558526 and 38855446108 and verified in production.
-- **Repository:** `main` matches `origin/main`, with this closeout's commits on top (records only). The `wip/037-ballooned-drawing` branch was deleted after the squash. No `wip/` branches; the working tree is clean.
-- **Live:** 37 experiments, #001–#037. The records' deploy and its check are recorded below once they've run.
+- **Repository:** `main` matches `origin/main`, with this closeout's commits on top (55b7497 and the one recording this line; records only). The `wip/037-ballooned-drawing` branch was deleted after the squash. No `wip/` branches; the working tree is clean. The Stop hook passes its 31 offline cases.
+- **Live:** 37 experiments, #001–#037. After the closing records' deploy (run 38873930936, for 55b7497): live files byte-identical to a fresh build (274 files, 312 addresses); the daily check 11 of 11, with no request needing another try.
 - **Factory:** Autonomy set to `complete` in `FACTORY_STATE.md`. No Batch 12 and no #042 without the owner.
 
 ## Why the batch closes at #037
