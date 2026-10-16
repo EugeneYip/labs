@@ -109,7 +109,9 @@ await step('files', async () => {
     } catch (error) {
       missing.push(`${queue[i]} (${describe(error)})`)
     }
-    for (const m of code.matchAll(/["'`](?:\.\/|\/?assets\/)([\w.-]+\.(?:js|css))["'`]/g)) {
+    // A quoted name used as an object's key (pdf.js's worker keys its WebAssembly imports by "./qcms_bg.js") isn't a
+    // file the page loads.
+    for (const m of code.matchAll(/["'`](?:\.\/|\/?assets\/)([\w.-]+\.(?:js|css))["'`](?!\s*:)/g)) {
       const path = `/assets/${m[1]}`
       if (assets.has(path)) continue
       assets.add(path)

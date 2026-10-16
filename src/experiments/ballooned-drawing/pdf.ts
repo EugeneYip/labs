@@ -79,12 +79,37 @@ export function warmUp(): void {
     window.addEventListener('online', warmUp, { once: true })
     return
   }
-  const urls = [DATA.wasmUrl['jbig2.wasm'], DATA.wasmUrl['openjpeg.wasm'], ...Object.values(DATA.standardFontDataUrl), ...Object.values(DATA.cMapUrl)].filter(Boolean)
+  inTurn([DATA.wasmUrl['jbig2.wasm'], DATA.wasmUrl['openjpeg.wasm'], ...Object.values(DATA.standardFontDataUrl), ...Object.values(DATA.cMapUrl)].filter(Boolean), true)
+}
+
+/**
+ * Fetches files one at a time, so a drawing being opened isn't kept waiting. Any that fail (a dropped connection, or a
+ * background tab whose loads the browser cancels) are tried once more when the page is next shown and online.
+ */
+function inTurn(urls: string[], retry: boolean): void {
+  const failed: string[] = []
   let i = 0
-  // One at a time, so the drawing being opened isn't kept waiting.
-  const next = () => {
+  const next = (): void => {
     const url = urls[i++]
-    if (url) fetch(url).then(next, next)
+    if (url) {
+      fetch(url).then(
+        (r) => (r.ok ? undefined : failed.push(url)),
+        () => failed.push(url),
+      ).then(next)
+      return
+    }
+    if (!failed.length || !retry) return
+    const again = () => {
+      if (document.visibilityState !== 'visible' || !navigator.onLine) return false
+      document.removeEventListener('visibilitychange', again)
+      window.removeEventListener('online', again)
+      setTimeout(() => inTurn(failed, false), 1000)
+      return true
+    }
+    if (!again()) {
+      document.addEventListener('visibilitychange', again)
+      window.addEventListener('online', again)
+    }
   }
   next()
 }
