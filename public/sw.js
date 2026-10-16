@@ -7,7 +7,7 @@
  *   visit), the saved copy when offline or when the network is very slow.
  * - Built files in /assets/ have content hashes in their names, so a saved
  *   copy never goes stale; other files are refreshed in the background.
- * - Old built files are dropped once there are more than 150, except the ones
+ * - Old built files are dropped once there are more than 400, except the ones
  *   a saved page still uses, so every saved page keeps working offline.
  * - Only this site's own files are kept. Requests to outside services (such
  *   as weather data) pass straight through and are never stored, and nothing
@@ -20,8 +20,11 @@
 const VERSION = 1
 const PAGES = `labs-pages-${VERSION}`
 const FILES = `labs-files-${VERSION}`
-/** Old built files pile up across deploys; past this many, ones no saved page uses are dropped, oldest first. */
-const MAX_FILES = 150
+/**
+ * Old built files pile up across deploys; past this many, ones no saved page uses are dropped, oldest first. (The
+ * Ballooned Drawing alone keeps about 200 data files: the PDF reader's fonts, decoders, and character maps.)
+ */
+const MAX_FILES = 400
 /** How long to wait for a page on a bad connection before using the saved copy. */
 const PATIENCE_MS = 4000
 
@@ -97,15 +100,11 @@ async function file(event, hashed) {
   const files = await caches.open(FILES)
   const saved = await files.match(event.request)
   if (saved && hashed) return saved
-  const network = store(files, event.request, fetch(event.request)).then(async (response) => {
-    await trim(files)
-    return response
-  })
-  if (saved) {
-    event.waitUntil(network.catch(() => {}))
-    return saved
-  }
-  return network
+  const network = store(files, event.request, fetch(event.request))
+  // A saved copy is answered at once while the network refreshes it. Tidying the saved files reads every saved page
+  // and script, so it's done after the response, not before it.
+  event.waitUntil(network.then(() => trim(files)).catch(() => {}))
+  return saved ?? network
 }
 
 async function trim(cache) {
@@ -118,7 +117,9 @@ async function trim(cache) {
 
 /**
  * The files saved pages still need: the scripts and styles each page names, and the files
- * those scripts load in turn (an experiment's own code, named "./<name>-<hash>.js").
+ * those scripts load in turn (an experiment's own code, named "./<name>-<hash>.js", and the
+ * data files a script names by address, "/assets/<name>-<hash>.<ext>", such as a PDF
+ * reader's decoders and fonts).
  */
 async function neededFiles(files) {
   const pages = await caches.open(PAGES)
@@ -136,7 +137,10 @@ async function neededFiles(files) {
   while (scripts.length) {
     const href = scripts.pop()
     const script = await files.match(href)
-    if (script) for (const [, name] of (await script.text()).matchAll(/["'`]\.\/([\w.-]+\.(?:js|css))["'`]/g)) add(new URL(name, href).href)
+    if (!script) continue
+    const text = await script.text()
+    for (const [, name] of text.matchAll(/["'`]\.\/([\w.-]+\.(?:js|css))["'`]/g)) add(new URL(name, href).href)
+    for (const [, path] of text.matchAll(/["'`](\/assets\/[\w.-]+\.\w+)["'`]/g)) add(new URL(path, self.location.origin).href)
   }
   return needed
 }

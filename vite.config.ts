@@ -7,6 +7,9 @@ import { experiments } from './src/experiments/registry.ts'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss(), experimentPages()],
+  // The largest file is the PDF reader's worker (1.3 MB), which only Ballooned Drawing loads, and only when a drawing
+  // is opened; every page's own code stays small.
+  build: { chunkSizeWarningLimit: 1400 },
 })
 
 /**

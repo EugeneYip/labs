@@ -364,6 +364,15 @@ export const experiments: readonly Experiment[] = [
     status: 'live',
     category: 'school',
   },
+  {
+    number: 37,
+    slug: 'ballooned-drawing',
+    title: 'Ballooned Drawing',
+    summary: 'Numbers every characteristic on a customer’s drawing as you click, keeps your results against the limits, and exports the ballooned PDF and a Form 3 table for a first article inspection, without the drawing leaving your computer.',
+    shipped: '2026-10-16',
+    status: 'live',
+    category: 'school',
+  },
 ]
 
 /** Formats an experiment number for display: 1 → "#001". */

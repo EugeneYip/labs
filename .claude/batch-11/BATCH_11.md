@@ -63,8 +63,8 @@ May close before #041, never just because one thread failed or search got inconv
 
 ## Now
 
-- **Step:** #037 Ballooned Drawing (`ballooned-drawing`) assigned 2026-10-15 after discovery round 1 (the full gate in `CANDIDATES.md`). Next: the `wip/037-ballooned-drawing` branch, the dossier with the pre-build risk review, then the build.
-- **Next action:** build #037 on `wip/037-ballooned-drawing`: dossier (`037-ballooned-drawing.md`) and pre-build risk review first; then the model (requirement parsing, exact limits and pass/fail, zones, numbering, Form 3 export) with its tests and an independent Python check; then the page (PDF viewer, balloons, the characteristic list and editor, exports, saving); then browser QA in Chromium and WebKit, the adversarial audit, fixes, and the ship gate.
+- **Step:** #037 Ballooned Drawing audited (32 findings, `037-audit.md`), every finding fixed and checked on `wip/037-ballooned-drawing` (the model 287, the browser flow 130 in each engine, the fixtures 100 in each, the audit's own probes rerun). Next: the last checks (the offline checks, the site-wide offline check for the service worker's change, the smoke test), then the ship gate.
+- **Next action:** finish #037's checks after the audit (bd-offline.cjs and bd-annots.cjs in both engines, p5-offline.cjs for public/sw.js, the smoke test), then the ship gate: the Product Log entry (`product-log-037.md`, ready), the registry date (2026-10-16, set), squash to `main`, push, deploy, and verify in production.
 - **Numbered so far:** #037 Ballooned Drawing (being built). #038 is the next number.
 
 ## Numbered experiments
