@@ -136,3 +136,58 @@ Three bounded threads, again by source of evidence: **F** the vendor boards thre
   - **First-hand pain, passed:** Northamptonshire's recorder handles over 95,000 records a year and was "falling behind" in early 2025, so 2024 and 2025 make one report due by the end of 2026. He matches app records' grid references to sites by hand and calls it very time-consuming (*verified*).
   - **Terms:** the British List follows AviList from January 2026 (*verified*), and AviList is CC BY 4.0 (*source claim*), so a species list could ship with attribution. eBird's terms forbid passing data on, which a page that never receives the data respects.
 - **Against it:** about a hundred volunteers, each with their own master file. The useful work (site matching, duplicates, rarities, sensitive records) depends on lists each recorder sets up. The largest source's format can't be seen without an account. Once merged, the tables are pivot tables. It is also next to Batch 09's REJECT, though that lead was observers sending records and this is the recorder receiving them.
+
+### Thread J: a final broad pass in twelve domains materially different from the batch's (finished 2026-10-16; 8 searches, 8 reads, 1 failed)
+
+Domains: marine operations, elections and civic administration, non-clinical care administration, courts beyond bundles, transport and small fleets, hospitality operations, music and performing-arts production, sports clubs beyond tournaments, religious and community organisations, research administration, journalism and FOI, and small landlords' admin. Three were searched (marine, six of the searches; elections; music licensing). The rest were screened from the records (about 170 keywords, which found cue sheets, Day Out of Days, tips, bar stocktakes, AGAR, spending returns, rent arrears, deposits, service charges, and drivers' hours already settled) and by judgement (about 45 ideas, one line each in `research/j-final-broad-pass.md`).
+- **Laytime statements from the agent's statement of facts, checked against the counterparty's: narrow, weak to moderate; not recommended for the gate without first-hand evidence.** The workflow is deep, and money and a time bar ride on every voyage-charter port call (the Shipowners' Club's guidance, *verified*). But the deciding difficulty is legal (whether the notice of readiness was valid, how the exceptions read). Platforms already read scanned statements and compare them (BV Laytime's "Discrepancy Discoverer", *verified*). A 2026 browser calculator exists (Heisenberg's, single port, *verified*). The pain rests on vendors' claims, and confidentiality is a preference, not #037's legal bar.
+- **Seafarers' hours of rest: REJECT** (the rule is primary, SI 2018/58, *verified*, but at least five products check it, one free with an account; a daily log kept all month). **Walk sheets and knock-up lists from the electoral register: REJECT** (parties' own systems; paid tools for independents; every four years or so). **Community radio music returns: REJECT** (a column mapping; one unanswered post).
+- **The thread's advice:** don't relaunch these lanes; the pass supports the early close's "diminishing expected value".
+
+### HOLD revisited after round 2: Word comments to a table (Batch 07): REJECT
+
+Thread F found an incumbent, and the main session read its page (2026-10-16). pdfannotations.com's "Export Word comments" exports a .docx's comments (comment ID, author, date, status when available, comment text, and anchor text) to CSV, Markdown, or TXT free. Excel and JSON are Pro. The page says "Files are processed in your browser and are not sent to a server", with no sign-up (*verified*, its own page). That is the free, local, account-free job the HOLD was waiting on; what's left (page numbers, replies) is an increment.
+
+## Round 2: the weighing, and the full gate for #038 (2026-10-16)
+
+**The survivors weighed:**
+- **Breeders' pedigrees:** the most workflow depth (import, validate the pedigree, inbreeding over all generations, rank every mate, print). It passed thread H's two checks narrowly.
+- **The county bird recorder's merge (thread I):** narrow. Its largest source's export (BirdTrack's county download) can't be seen without an account, so the brief's real-format verification can't be met autonomously.
+- **Laytime statements (thread J):** narrow. No first-hand evidence, and the hard part is legal.
+- **Coin die comparison:** moderate. A small expert audience, and free editors already overlay.
+- **The VAT margin-scheme stock book:** a third UK money-rules tool.
+- **Museum pest traps:** next to #035.
+- **Lot tracing:** records in every shape.
+- **Landed cost and the geophysics composite:** weak.
+
+Only pedigrees go to the full gate.
+
+### Full gate: inbreeding and mate choice from a breeder's own records
+
+- **A. Audience:** breeders of rabbits, goats, sheep, pigs, poultry, cats, and dogs who keep their own records (a spreadsheet of animals with sire and dam), especially of unregistered animals or breeds whose registries offer no mating tool.
+- **B. Trigger:** choosing a mate before each breeding season, and buying in or keeping back stock.
+- **C. Input:** the breeder's list: ID or name, sire, dam, sex, and birth date, as CSV or XLSX.
+- **D. Output:**
+  - each animal's inbreeding over all known generations, with how complete its pedigree is;
+  - every possible mate for a chosen animal, ranked by the offspring's inbreeding;
+  - the pedigree's errors (an animal its own ancestor, a sire recorded as female, a parent younger than its offspring, duplicates);
+  - a printed pedigree.
+- **E. Frequency and stakes:** seasonal, and the stakes are real but slow: inbreeding depression and recessive disease.
+- **F. Current workflow:** spreadsheets with no inbreeding (Rabbit Talk, 2016 to 2022, breeders asking how to add it, unanswered; *verified* by thread H); paid apps; registries' tools for members.
+- **G. Strongest incumbents (re-checked in the main session, 2026-10-16):**
+  - **MiniInbred**, from the University of Minnesota's Department of Animal Science (Garbe and Da, user manual version 2.1, 2014): it "calculates the inbreeding coefficients resulting from all potential matings" of the current breeding animals and identifies the lowest (*source claim*: the search engine's summary of its record; the record's page is behind a firewall check, which wasn't bypassed). It is a free download, format unconfirmed.
+  - **PMx:** free; a Windows program; mate suitability ranking (*verified* by thread H from its manual).
+  - **optiSel** (R): plans matings from a kinship matrix. **PEDIG** (INRAE). **pawlineR** (R).
+  - **QuickPed:** a free hosted web app that computes inbreeding and kinship from a pedigree file, built for small human pedigrees.
+  - **Accounts and paid apps:** Pedigree Database Online (an account; up to 10-generation inbreeding with CSV import); PigeonDB; Farmbrite (paid, COI per mating); paid breeding apps.
+  - **Registries on full breed records:** the Kennel Club's Mate Select; ADGA's planning tool; PawPeds' test matings; the Kunekune society's Stud Adviser.
+- **H. Labs wedge:** in the browser, with nothing installed, no account, and nothing uploaded, on the breeder's whole list. That's the same kind of narrowness as #037's, but **without #037's decisive reason**. No law or customer bars a breeder's records from a cloud service or a desktop program; privacy here is a preference.
+- **I. Technical fit:** good. The tabular method or Meuwissen and Luo's algorithm for thousands of animals; an independent check by path counting in Python; generated pedigrees with known answers.
+- **J. Falsification:**
+  - *Free tools already rank every mating:* MiniInbred (by its record's description) and PMx do it. They are desktop programs, but no reason in this job rules them out the way #037's rules out the cloud.
+  - *Partial records read low and could reassure wrongly:* a breeder's own three or four generations give a figure below the truth. A completeness index can say so, but the number most likely to be quoted is still the low one.
+  - *Thin first-hand demand:* one forum thread across two goes, unanswered, and other species' evidence by source claim only.
+  - *The breeders with most at stake are served:* registries' tools work on the whole breed's records, which a breeder's own list can't match.
+- **Verdict: REJECT.** The workflow is deep and buildable, but the thesis rests on "in a browser" alone. Free tools already compute and rank the matings for anyone who can run a program, the breeders with most at stake have their registries' figures on full records, and demand is thin. It would score about 39 on the portfolio framework, far below #037's 51 and the portfolio's middle.
+
+**The decision (2026-10-16): no candidate is assigned #038.** Every remaining lead fails on one of the batch's usual grounds. Its free or official tool already does the job where its users work; or its decisive check can't be done autonomously (a real export behind an account); or it rests on vendors' claims alone; or it repeats a covered pattern. The early-close test follows in `CLOSEOUT.md`.

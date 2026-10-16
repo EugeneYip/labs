@@ -6,13 +6,13 @@ The checkpoint for autonomous Labs work. Read it down to the "History" heading; 
 
 The current state, kept short. `.claude/hooks/session-context.sh` prints this section at the start of every session and after the context is compacted, and `.claude/hooks/stop-continue.sh` reads **Autonomy** and **Next action** from it, so keep those two lines' wording as they are.
 
-- **Autonomy:** active
-- **Batch:** Batch 11 (Discovery Cycle 6), authorized by the owner on 2026-10-15: discover, build, audit, deploy, production-verify, and resolve up to five new experiments, #037–#041 (an upper bound, not a quota). Never #042; no Batch 12. Human validation parked for the whole batch. Batch 10 is complete (closed early at #036; `.claude/batch-10/CLOSEOUT.md`).
+- **Autonomy:** complete
+- **Batch:** Batch 11 (Discovery Cycle 6), authorized by the owner on 2026-10-15 for up to five new experiments (#037–#041), is complete: it closed early at #037 on 2026-10-16 (`.claude/batch-11/CLOSEOUT.md`). Never #042; no Batch 12 without the owner. Human validation stayed parked for the whole batch.
 - **Batch file:** `.claude/batch-11/BATCH_11.md` (the rules in short, the checkpoint, the log); every idea and its outcome in `.claude/batch-11/CANDIDATES.md`; thread notes in `.claude/batch-11/research/`.
-- **Experiment:** #037 Ballooned Drawing (`ballooned-drawing`), assigned 2026-10-15, being built; dossier `.claude/batch-11/037-ballooned-drawing.md`. #038 is the next number.
-- **Where the work is:** `wip/037-ballooned-drawing` (local, never pushed) for #037; records on `main`.
-- **Next action:** #037 Ballooned Drawing is built and checked on `wip/037-ballooned-drawing`; run its adversarial audit, fix what it finds, then the ship gate, following the batch file's "Now".
-- **Done and verified:** Batch 11: reconciled against Batch 10's close (171d1ae; production byte-identical, 83 files; daily check 11 of 11 with no retries, locally and in GitHub's scheduled run 38761971045). Batch 10: #036 Holiday Pay Average (ship 18a27a2, deploy 38685690990, verified in production 2026-10-15); reconciled against Batch 09's close (46866c7; production byte-identical, 81 files; daily check 11 of 11); the daily check now records which check failed, its error, and whether a retry recovered (7 of 7 injected faults). Batch 09: #035 Collection Climate (ship 9ca0a22, deploy 38588208105, verified in production 2026-10-14); #034 Deputyship Accounts (ship 8f0b4a7, deploy 38572132880, verified in production 2026-10-14). Batch 08: #033 Captions Up (ship 97833cd, fix d289161, deploy 38536194341, verified in production 2026-10-14); #032 Comp Desk (ship b8f8a30, fix 52802a5, deploy 38524500178, verified 2026-10-14); #031 New Classes (d9b99d8, deploy 38519276907, verified 2026-10-14); #030 Show Order (a329ca8, deploy 38494521064, verified 2026-10-13); Autonomous Ops v2.1 (e4ec9db, deploy 38487235836; the Stop hook checked live). Batch 07 is complete: #026–#029 live and verified.
+- **Experiment:** none in progress. #037 Ballooned Drawing (`ballooned-drawing`) is live and verified in production (2026-10-16). #038 is the next number, for a new authorization only.
+- **Where the work is:** `main` (no `wip/` branches).
+- **Next action:** none: Batch 11 is complete and reported (`.claude/batch-11/CLOSEOUT.md`); everything left needs the owner (a new batch, or one of the owner-blocked lanes below).
+- **Done and verified:** Batch 11: #037 Ballooned Drawing (ship 0cd5262, fix 119ff63, deploys 38854558526 and 38855446108, verified in production 2026-10-16: live files byte-identical, 274 files; the flow 130 of 130 and offline 14 of 14 in each engine; the smoke test 152 loads; the daily check 11 of 11); closed early with the closeout (`.claude/batch-11/CLOSEOUT.md`); reconciled against Batch 10's close (171d1ae; production byte-identical, 83 files; daily check 11 of 11 with no retries, locally and in GitHub's scheduled run 38761971045). Batch 10: #036 Holiday Pay Average (ship 18a27a2, deploy 38685690990, verified in production 2026-10-15); reconciled against Batch 09's close (46866c7; production byte-identical, 81 files; daily check 11 of 11); the daily check now records which check failed, its error, and whether a retry recovered (7 of 7 injected faults). Batch 09: #035 Collection Climate (ship 9ca0a22, deploy 38588208105, verified in production 2026-10-14); #034 Deputyship Accounts (ship 8f0b4a7, deploy 38572132880, verified in production 2026-10-14). Batch 08: #033 Captions Up (ship 97833cd, fix d289161, deploy 38536194341, verified in production 2026-10-14); #032 Comp Desk (ship b8f8a30, fix 52802a5, deploy 38524500178, verified 2026-10-14); #031 New Classes (d9b99d8, deploy 38519276907, verified 2026-10-14); #030 Show Order (a329ca8, deploy 38494521064, verified 2026-10-13); Autonomous Ops v2.1 (e4ec9db, deploy 38487235836; the Stop hook checked live). Batch 07 is complete: #026–#029 live and verified.
 - **Owner-blocked (parked; don't start them):**
   - Fluency Check interviews or a pilot;
   - the email to Open-Meteo;
@@ -25,7 +25,9 @@ The current state, kept short. `.claude/hooks/session-context.sh` prints this se
   - Batch 08: human validation of #031 New Classes, then #033 Captions Up;
   - a private copy of `.claude/qa/` (the QA harnesses live only on this machine);
   - Batch 09: human validation of #034 Deputyship Accounts, then #035 Collection Climate;
-  - Batch 10: human validation of #036 Holiday Pay Average (deferred by the owner for the batch; a future step, not a next action).
+  - Batch 10: human validation of #036 Holiday Pay Average (deferred by the owner for the batch; a future step, not a next action);
+  - Batch 11: human validation of #037 Ballooned Drawing (inspectors on real, non-controlled drawings);
+  - Batch 11: the county bird recorder's merge, which needs a real BirdTrack county download (an account) before it could be built and checked.
 
   Details are in `.claude/AUTONOMOUS_QUEUE.md` and the Batch 08 and Batch 09 closeouts. In Batches 10 and 11 every human-validation lane stays parked by the owner's instruction.
 - **Autonomy values:** `active` (carry on without asking), `paused` (the owner asked to pause), `blocked` (everything left needs the owner), `complete` (the batch is finished and reported). Only `active` makes the Stop hook ask Claude to carry on, and it doesn't ask again until Claude has used a tool since it last asked (and at most 3 times in 10 minutes).
@@ -38,7 +40,7 @@ The current state, kept short. `.claude/hooks/session-context.sh` prints this se
 4. When an experiment ships: on `main`, `git merge --squash wip/<number>-<slug>`, commit as "#0NN Title: summary", run `npm run build`, push, watch the deploy, check production, then record that here, in the batch file, and in the dossier; commit and push the record. Delete the `wip/` branch once `git diff main wip/<number>-<slug>` shows nothing that matters, and start the next discovery.
 5. Long runs: bound them (see "Long jobs" in `CLAUDE.md`), keep partial results in files, and when a lane stalls, record it here and carry on with another.
 
-## Batch 11: Discovery Cycle 6 (active)
+## Batch 11: Discovery Cycle 6 (complete)
 
 - **Authorized** by the owner on 2026-10-15: discover, build, audit, deploy, production-verify, and resolve up to five new experiments, #037–#041, with no routine approval between experiments. Never #042; no Batch 12. Owner authorization once, autonomous execution after (Autonomous Ops v2.1, not redone without evidence of a regression).
 - **Human validation parked** for the whole batch: no interviews, pilots, outreach, real-user tests, or organisation trials, and none surfaced as a next action; the closeout may list future targets briefly.
@@ -46,6 +48,7 @@ The current state, kept short. `.claude/hooks/session-context.sh` prints this se
 - **The search strategy changes, not the gate:** workflow-first discovery from evidence of real work (manuals, handbooks, forms, inspection sheets, templates, worked examples, forum threads, declined feature requests), staged screening (A cheap kill, B opportunity check, C the full gate A–J).
 - **Still prohibited:** contacting anyone, spending money, external accounts, owner settings, backends or keyed services, analytics, weakening the constitution, permission workarounds (Firefox stays parked), downloads or new permissions to rescue a HOLD, and the parked owner lanes.
 - **Records:** `.claude/batch-11/BATCH_11.md` (the rules in short, the checkpoint under "Now", the log), `.claude/batch-11/CANDIDATES.md` (every idea and its outcome), research notes in `.claude/batch-11/research/`, and a dossier per numbered experiment in `.claude/batch-11/`.
+- **Closed early at #037 on 2026-10-16** (`.claude/batch-11/CLOSEOUT.md`): #037 Ballooned Drawing shipped and verified; round 2 and a final broad pass in twelve new domains found no candidate that clears the gate (the one gated in full, breeders' pedigrees, was rejected); #038–#041 not assigned.
 - **Close:** when the evidence says to stop (a final broad pass in domains materially different from anything shipped in the batch, credible HOLDs revisited, the remaining candidates' failures documented, diminishing value shown), with the closeout report (the brief's 24 items); then Autonomy goes to `complete`.
 
 ## Batch 10: Discovery Cycle 5 (complete)

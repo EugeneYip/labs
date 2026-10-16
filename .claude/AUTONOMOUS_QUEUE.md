@@ -30,7 +30,7 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 
 ## Now
 
-- **Current:** Batch 11 (Discovery Cycle 6), authorized by the owner on 2026-10-15: up to five new experiments, #037–#041, never #042; human validation parked for the whole batch. The checkpoint is `.claude/batch-11/BATCH_11.md`. Batch 10 (Discovery Cycle 5) closed early on 2026-10-15 with one experiment, #036 Holiday Pay Average (`.claude/batch-10/CLOSEOUT.md`). Batch 09 closed early on 2026-10-14 with #034 and #035 (`.claude/batch-09/CLOSEOUT.md`); Batch 08 on 2026-10-14 with #030–#033 (`.claude/batch-08/CLOSEOUT.md`). P1–P13 are done and verified. Batch 07's closeout is `.claude/batch-07/CLOSEOUT.md`.
+- **Current:** none. Batch 11 (Discovery Cycle 6), authorized by the owner on 2026-10-15 for up to five new experiments (#037–#041), is complete: it closed early at #037 on 2026-10-16 (`.claude/batch-11/CLOSEOUT.md`); #037 Ballooned Drawing is live and verified. No Batch 12, no #042, without the owner.
 - **Parked lanes** (below) stay parked until the owner chooses one; they never hold up other work.
 - **When something new needs the owner** (in any batch): add it under "Parked lanes" as BLOCKED — OWNER REQUIRED, with what's ready and what the owner would do, mention it in "Now" in `.claude/FACTORY_STATE.md`, and carry on with the rest.
 
@@ -49,6 +49,8 @@ Labs Autonomous Continuation Mode, authorized by the owner on 2026-10-11.
 - `[B]` **The nest visit planner (Batch 08 HOLD).** Needs the owner's permission to download two CC0 data files (Storchová & Hořák 2018 from Dryad, 245,901 bytes; Myhrvold et al. 2015, Ecological Archives E096-269, the Amniote database CSV), and a sourced last-visit rule for each species. The research is in `.claude/batch-08/research/j-nest.md` and `CANDIDATES.md`.
 - `[B]` **Human validation of Batch 08's experiments:** #031 New Classes first (a primary school's summer-term class mixing), then #033 Captions Up (a community company's captioned performance). Contacting people is the owner's call; the closeout says what each would settle.
 - `[B]` **Human validation of #036 Holiday Pay Average** (Batch 10; deferred by the owner): an employer or bookkeeper working out a real worker's holiday pay with it, to see whether the week selection and the printed working save the spreadsheet hours that Xero's users describe.
+- `[B]` **Human validation of #037 Ballooned Drawing** (Batch 11; parked by the owner for the batch): two or three shops' inspectors on real, non-controlled drawings, timing the ballooning and the table against their current method, and asking whether their customers accept the outputs.
+- `[B]` **The county bird recorder's merge** (Batch 11 lead): it needs a real BirdTrack county download, which only an account gives, before it could be built and checked against real files; the evidence is in `.claude/batch-11/research/i-bird-report-checks.md`.
 - `[B]` **A private copy of `.claude/qa/`.** The QA harnesses and fixtures (361 files, every flow check) are ignored by git by design and live only on this machine.
 
 ## Queue

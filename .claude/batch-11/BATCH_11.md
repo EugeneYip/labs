@@ -63,16 +63,16 @@ May close before #041, never just because one thread failed or search got inconv
 
 ## Now
 
-- **Step:** #037 Ballooned Drawing audited (32 findings, `037-audit.md`), every finding fixed and checked on `wip/037-ballooned-drawing` (the model 287, the browser flow 130 in each engine, the fixtures 100 in each, the audit's own probes rerun). Next: the last checks (the offline checks, the site-wide offline check for the service worker's change, the smoke test), then the ship gate.
-- **Next action:** finish #037's checks after the audit (bd-offline.cjs and bd-annots.cjs in both engines, p5-offline.cjs for public/sw.js, the smoke test), then the ship gate: the Product Log entry (`product-log-037.md`, ready), the registry date (2026-10-16, set), squash to `main`, push, deploy, and verify in production.
-- **Numbered so far:** #037 Ballooned Drawing (being built). #038 is the next number.
+- **Step:** Batch 11 closed early at #037 (`CLOSEOUT.md`). #037 Ballooned Drawing shipped (0cd5262, fix 119ff63) and verified in production on 2026-10-16. Round 2 and the final broad pass gave no candidate that clears the gate (`CANDIDATES.md`, "Round 2: the weighing").
+- **Next action:** none in this batch. Autonomy is `complete`; no Batch 12, no #042, without the owner.
+- **Numbered so far:** #037 Ballooned Drawing (live). #038–#041 not assigned.
 
 ## Numbered experiments
 
 | # | Title | Slug | Status | Dossier |
 |---|---|---|---|---|
-| 037 | Ballooned Drawing | ballooned-drawing | being built on `wip/037-ballooned-drawing` | `037-ballooned-drawing.md` |
-| 038–041 | — | — | not assigned | — |
+| 037 | Ballooned Drawing | ballooned-drawing | live; ship 0cd5262, fix 119ff63; deploys 38854558526, 38855446108; verified in production 2026-10-16 | `037-ballooned-drawing.md` |
+| 038–041 | — | — | not assigned (the batch closed early) | — |
 
 ## Log
 
@@ -80,3 +80,15 @@ May close before #041, never just because one thread failed or search got inconv
 - **2026-10-15:** Batch 11 records created (`BATCH_11.md`, `CANDIDATES.md`, `research/`) and the batch activated (Autonomy `active`), commit de458c7. The auto-memory note on batch authorization was updated to say Batch 11 is authorized (the earlier refusals didn't recur).
 - **2026-10-15:** discovery round 1 started, workflow-first. Five bounded threads, each writing notes as it goes: A, first article inspection ballooning (Stage B evidence; 10 searches, 8 reads); B, breeders' pedigrees and inbreeding (Stage B evidence; 8 and 8); C, declined and long-open vendor feature requests (9 and 8); D, official and association worksheets, templates, and manuals (9 and 8); E, practitioners' own accounts of manual collation in hobbies and specialist volunteering (9 and 8). The main session's first screen (three searches): two survivors, ten rejects, five settled ideas found in the records before any search.
 - **2026-10-15:** discovery round 1 recorded (`CANDIDATES.md`). Threads A, B, C, and E finished on their full budgets; D was cut off by the account's usage limit after 6 of 9 searches and 6 of 8 reads, and its notes were kept rather than relaunched (both its leads already at Stage B, neither likely to beat ballooning). Survivors: first article inspection ballooning (A), breeders' pedigrees (B, narrowly), the VAT margin-scheme stock book (C), coin die comparison (E), museum pest traps and lot tracing (D). The main session checked the deciding facts itself: two feasibility spikes (pdf.js renders and reads drawings, pdf-lib places balloons exactly on rotated pages, both engines), one search confirming no free hosted local ballooning tool, the export-control and defence-contract rules (22 CFR 120.50, 120.54, 120.56; DFARS 252.204-7012) read from the primary texts, and the incumbents' own pages re-read. **#037 assigned to Ballooned Drawing** (`ballooned-drawing`): number every characteristic on a customer's drawing with a click, build the Form 3 table with results and pass or fail, and export the ballooned PDF and the table, with the drawing never leaving the computer.
+- **2026-10-15 to 16:** #037 Ballooned Drawing built on `wip/037-ballooned-drawing` and checked: the model; the browser flow; the fixtures; exports read back by pypdf and drawn by macOS's renderer; offline.
+- **2026-10-16:** the adversarial audit (`037-audit.md`) found 32 defects (7 high, 12 medium, 13 low) and made 14 suggestions. The account's usage limit cut it off once, and it resumed from its own transcript. Every finding was reproduced and fixed, and 10 suggestions were taken. The evidence after the fixes:
+  - the model 287 checks, with the generator's 1,598 requirements, 1,600 results, and 3,000 zone points;
+  - the flow 130 in each engine;
+  - the fixtures 100 in each;
+  - offline 14 in each;
+  - the annotation notice 3 in each;
+  - the site-wide offline check 30 in each;
+  - the smoke test 152 loads.
+- **2026-10-16:** round 2 recorded: threads F (vendors' boards), G (tool chains), H (the pedigree checks), I (the bird report checks), and J (a final broad pass in twelve new domains). The usage limit cut F and G once; both resumed and finished.
+- **2026-10-16:** #037 shipped: squash 0cd5262, deploy 38854558526. Production verification found two problems (WebKit's cancelled background loads; a false alarm in the daily check), fixed in 119ff63, deploy 38855446108. Verified in production: live files byte-identical (274 files, 312 addresses); the flow 130 and offline 14 in each engine; the smoke test 152 loads; the daily check 11 of 11.
+- **2026-10-16:** the weighing for #038. The pedigree lead was gated in full and rejected: free programs already rank every mating, registries serve the breeders with most at stake, demand is thin, and there's no reason like #037's to stay local. The other leads were narrow or weak. The Batch 07 HOLD "Word comments to a table" became REJECT (pdfannotations.com does it free and locally, *verified*). The batch closes early at #037 (`CLOSEOUT.md`).
